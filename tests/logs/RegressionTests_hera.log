@@ -1,7 +1,7 @@
 ====START OF HERA REGRESSION TESTING LOG====
 
 UFSWM hash used in testing:
-a2e9a82310f4751d42237cde6f8d92b4efbe29a9
+71825f70facb7a1e7370c18b1995677d0a66c44f
 
 Submodule hashes used in testing:
  9265006502a859d2d3f21029fbb86107ba50ce0e AQM (v0.2.0-54-g9265006)
@@ -13,9 +13,9 @@ Submodule hashes used in testing:
  bcf7777bb037ae2feb2a8a8ac51aacb3511b52d9 HYCOM-interface/HYCOM (2.3.00-122-gbcf7777)
  c4d2337d8607ec994b3cd61179eb974e0a237841 LM4-driver (baseline_change_240904-6-gc4d2337)
  9c8b26c2d870636f359f2ef62ef775639132b3ba MOM6-interface/MOM6 (dev/master/repository_split_2014.10.10-10723-g9c8b26c2d)
- a0363fd82ba2c4a44b3e80904f550868b321024c NOAHMP-interface/noahmp (v3.7.1-466-ga0363fd)
- 6d4dc071df9c5ac93cff31d5df4c72d2e3091b74 UFSATM (remotes/origin/moorthi_cover)
- 99d831f201a78bf7f8833f116716634fc7a0e90f WW3 (remotes/origin/dev2devufspluswarningfix)
+ 2c7b3bc2a8096f6232020c47507593058795102e NOAHMP-interface/noahmp (v3.7.1-471-g2c7b3bc)
+ 371b34ec353b51762a24c5d557c8aa9f6f974021 UFSATM (remotes/origin/faster)
+ 560cb9c0f9fdc8ec96f746576dcac6503ed14eef WW3 (6.07.1-495-g560cb9c0)
  05cad173feeb598431e3ef5f17c2df6562c8d101 fire_behavior (v0.2.0-1-g05cad17)
  97b24f8e40f1de0980388c8326c48b442e5a5e61 stochastic_physics (ufs-v2.0.0-282-g97b24f8)
 
@@ -26,417 +26,474 @@ The first time is for the full script (prep+run+finalize).
 The second time is specifically for the run phase.
 Times/Memory will be empty for failed tests.
 
-BASELINE DIRECTORY: /scratch3/NAGAPE/epic/role.epic/UFS-WM_RT/NEMSfv3gfs/develop-20251024
-COMPARISON DIRECTORY: /scratch3/NCEPDEV/stmp/Fernando.Andrade-maldonado/RT_RUNDIRS/Fernando.Andrade-maldonado/FV3_RT/rt_718205
+BASELINE DIRECTORY: /scratch3/NAGAPE/epic/role.epic/UFS-WM_RT/NEMSfv3gfs/develop-20251029
+COMPARISON DIRECTORY: /scratch3/NCEPDEV/stmp/Fernando.Andrade-maldonado/RT_RUNDIRS/Fernando.Andrade-maldonado/FV3_RT/rt_1852468
 
 RT.SH OPTIONS USED:
 * (-a) - HPC PROJECT ACCOUNT: epic
 * (-e) - USE ECFLOW
 
-PASS -- COMPILE 's2swa_32bit_intel' [13:11, 11:46] ( 1 warnings 1045 remarks )
-PASS -- TEST 'cpld_control_p8_mixedmode_intel' [14:10, 11:18](2210 MB)
-PASS -- TEST 'cpld_control_gefs_intel' [27:59, 15:42](3056 MB)
-PASS -- TEST 'cpld_restart_gefs_intel' [17:59, 05:09](2745 MB)
-PASS -- TEST 'cpld_dcp_gefs_intel' [27:59, 15:57](3071 MB)
+PASS -- COMPILE 's2swa_32bit_intel' [19:11, 18:01] ( 1 warnings 1045 remarks )
+PASS -- TEST 'cpld_control_p8_mixedmode_intel' [14:08, 11:23](2203 MB)
+PASS -- TEST 'cpld_control_gefs_intel' [30:58, 19:09](3053 MB)
+PASS -- TEST 'cpld_restart_gefs_intel' [19:42, 05:49](2707 MB)
+PASS -- TEST 'cpld_dcp_gefs_intel' [31:06, 18:57](3056 MB)
 
-PASS -- COMPILE 's2swa_32bit_pdlib_intel' [17:11, 15:14] ( 1 warnings 1044 remarks )
-PASS -- TEST 'cpld_control_gfsv17_intel' [21:54, 19:09](2080 MB)
-PASS -- TEST 'cpld_control_gfsv17_iau_intel' [23:03, 20:46](2275 MB)
-PASS -- TEST 'cpld_restart_gfsv17_intel' [09:58, 07:59](1371 MB)
-PASS -- TEST 'cpld_restart_gfsv17_iau_intel' [11:03, 08:57](2206 MB)
-PASS -- TEST 'cpld_mpi_gfsv17_intel' [25:53, 23:11](1888 MB)
+PASS -- COMPILE 's2swa_32bit_pdlib_intel' [20:11, 18:12] ( 1 warnings 1044 remarks )
+PASS -- TEST 'cpld_control_gfsv17_intel' [20:58, 18:55](2083 MB)
+PASS -- TEST 'cpld_control_gfsv17_iau_intel' [22:01, 20:07](2281 MB)
+PASS -- TEST 'cpld_restart_gfsv17_intel' [09:01, 07:02](1366 MB)
+PASS -- TEST 'cpld_restart_gfsv17_iau_intel' [11:05, 08:34](2212 MB)
+PASS -- TEST 'cpld_mpi_gfsv17_intel' [25:01, 22:16](1887 MB)
 
-PASS -- COMPILE 's2swa_32bit_pdlib_sfs_intel' [17:11, 15:38] ( 1 warnings 1044 remarks )
-PASS -- TEST 'cpld_control_sfs_intel' [21:38, 19:49](2068 MB)
+PASS -- COMPILE 's2swa_32bit_pdlib_sfs_intel' [20:12, 18:17] ( 1 warnings 1044 remarks )
+PASS -- TEST 'cpld_control_sfs_intel' [20:46, 18:52](2065 MB)
 
-PASS -- COMPILE 's2swa_32bit_pdlib_debug_intel' [05:11, 04:05] ( 847 warnings 2765 remarks )
-PASS -- TEST 'cpld_debug_gfsv17_intel' [23:54, 21:26](1940 MB)
+PASS -- COMPILE 's2swa_32bit_pdlib_debug_intel' [05:11, 03:55] ( 847 warnings 2765 remarks )
+PASS -- TEST 'cpld_debug_gfsv17_intel' [23:53, 21:48](1930 MB)
 
-PASS -- COMPILE 's2swa_intel' [13:11, 11:42] ( 1 warnings 1045 remarks )
-PASS -- TEST 'cpld_control_p8_intel' [15:19, 12:30](2284 MB)
-PASS -- TEST 'cpld_control_p8.v2.sfc_intel' [14:25, 11:57](2293 MB)
-PASS -- TEST 'cpld_restart_p8_intel' [08:06, 06:10](1897 MB)
-PASS -- TEST 'cpld_control_qr_p8_intel' [14:10, 11:50](2296 MB)
-PASS -- TEST 'cpld_restart_qr_p8_intel' [09:13, 06:08](1891 MB)
-PASS -- TEST 'cpld_2threads_p8_intel' [13:08, 10:26](2349 MB)
-PASS -- TEST 'cpld_decomp_p8_intel' [14:10, 11:45](2273 MB)
-PASS -- TEST 'cpld_mpi_p8_intel' [14:10, 11:20](2071 MB)
-PASS -- TEST 'cpld_control_ciceC_p8_intel' [14:18, 11:53](2297 MB)
-PASS -- TEST 'cpld_control_c192_p8_intel' [18:08, 14:19](2662 MB)
-PASS -- TEST 'cpld_restart_c192_p8_intel' [12:32, 08:42](2823 MB)
+PASS -- COMPILE 's2swa_intel' [19:12, 17:46] ( 1 warnings 1045 remarks )
+PASS -- TEST 'cpld_control_p8_intel' [15:22, 12:18](2288 MB)
+PASS -- TEST 'cpld_control_p8.v2.sfc_intel' [14:20, 11:36](2278 MB)
+PASS -- TEST 'cpld_restart_p8_intel' [08:13, 06:00](1883 MB)
+PASS -- TEST 'cpld_control_qr_p8_intel' [14:10, 11:29](2300 MB)
+PASS -- TEST 'cpld_restart_qr_p8_intel' [08:18, 06:02](1879 MB)
+PASS -- TEST 'cpld_2threads_p8_intel' [12:08, 10:09](2342 MB)
+PASS -- TEST 'cpld_decomp_p8_intel' [14:09, 11:34](2274 MB)
+PASS -- TEST 'cpld_mpi_p8_intel' [14:09, 11:23](2062 MB)
+PASS -- TEST 'cpld_control_ciceC_p8_intel' [14:15, 11:14](2273 MB)
+PASS -- TEST 'cpld_control_c192_p8_intel' [17:59, 14:16](2654 MB)
+PASS -- TEST 'cpld_restart_c192_p8_intel' [13:52, 09:10](2842 MB)
 
-PASS -- COMPILE 's2swal_intel' [13:11, 11:59] ( 1 warnings 1066 remarks )
-PASS -- TEST 'cpld_control_p8_lnd_intel' [15:15, 12:16](2127 MB)
-PASS -- TEST 'cpld_restart_p8_lnd_intel' [09:11, 06:18](1734 MB)
-PASS -- TEST 'cpld_s2sa_p8_intel' [10:07, 07:15](2255 MB)
+PASS -- COMPILE 's2swal_intel' [20:11, 18:29] ( 1 warnings 1066 remarks )
+PASS -- TEST 'cpld_control_p8_lnd_intel' [14:16, 12:04](2119 MB)
+PASS -- TEST 'cpld_restart_p8_lnd_intel' [08:16, 06:04](1729 MB)
+PASS -- TEST 'cpld_s2sa_p8_intel' [09:02, 06:53](2266 MB)
 
-PASS -- COMPILE 's2sw_intel' [13:11, 11:13] ( 1 warnings 1013 remarks )
-PASS -- TEST 'cpld_control_noaero_p8_intel' [13:59, 11:33](2098 MB)
-PASS -- TEST 'cpld_control_nowave_noaero_p8_intel' [09:07, 06:17](2184 MB)
+PASS -- COMPILE 's2sw_intel' [19:12, 17:41] ( 1 warnings 1013 remarks )
+PASS -- TEST 'cpld_control_noaero_p8_intel' [12:56, 10:54](2120 MB)
+PASS -- TEST 'cpld_control_nowave_noaero_p8_intel' [08:09, 06:08](2157 MB)
 
-PASS -- COMPILE 's2swa_debug_intel' [06:11, 04:09] ( 846 warnings 2014 remarks )
-PASS -- TEST 'cpld_debug_p8_intel' [15:52, 13:08](2303 MB)
+PASS -- COMPILE 's2swa_debug_intel' [05:12, 04:00] ( 846 warnings 2014 remarks )
+PASS -- TEST 'cpld_debug_p8_intel' [16:08, 13:37](2311 MB)
 
-PASS -- COMPILE 's2sw_debug_intel' [05:11, 03:40] ( 846 warnings 1996 remarks )
-PASS -- TEST 'cpld_debug_noaero_p8_intel' [08:54, 06:28](2114 MB)
+PASS -- COMPILE 's2sw_debug_intel' [05:11, 03:46] ( 846 warnings 1996 remarks )
+PASS -- TEST 'cpld_debug_noaero_p8_intel' [08:50, 06:34](2112 MB)
 
-PASS -- COMPILE 's2s_aoflux_intel' [11:11, 09:37] ( 1 warnings 949 remarks )
-PASS -- TEST 'cpld_control_noaero_p8_agrid_intel' [06:52, 04:23](2167 MB)
+PASS -- COMPILE 's2s_aoflux_intel' [18:11, 16:31] ( 1 warnings 949 remarks )
+PASS -- TEST 'cpld_control_noaero_p8_agrid_intel' [05:53, 04:03](2157 MB)
 
-PASS -- COMPILE 's2swa_faster_intel' [14:11, 12:19] ( 1 warnings 1031 remarks )
-PASS -- TEST 'cpld_control_p8_faster_intel' [13:54, 11:21](2287 MB)
+PASS -- COMPILE 's2swa_faster_intel' [19:11, 18:06] ( 1 warnings 1031 remarks )
+PASS -- TEST 'cpld_control_p8_faster_intel' [14:07, 11:15](2291 MB)
 
-PASS -- COMPILE 's2sw_pdlib_intel' [17:11, 15:47] ( 1 warnings 1037 remarks )
-PASS -- TEST 'cpld_control_pdlib_p8_intel' [19:56, 17:38](2122 MB)
-PASS -- TEST 'cpld_restart_pdlib_p8_intel' [10:01, 07:57](1373 MB)
-PASS -- TEST 'cpld_mpi_pdlib_p8_intel' [21:57, 19:56](1940 MB)
-PASS -- TEST 'cpld_control_c48_5deg_intel' [09:42, 07:49](3082 MB)
-PASS -- TEST 'cpld_warmstart_c48_5deg_intel' [04:44, 02:27](3050 MB)
-PASS -- TEST 'cpld_restart_c48_5deg_intel' [03:39, 01:27](2521 MB)
-PASS -- TEST 'cpld_control_c24_5deg_intel' [03:36, 01:14](2261 MB)
-PASS -- TEST 'cpld_warmstart_c24_5deg_intel' [02:37, 00:42](2268 MB)
-PASS -- TEST 'cpld_restart_c24_5deg_intel' [02:28, 00:34](1587 MB)
-PASS -- TEST 'cpld_control_c24_9deg_intel' [03:37, 01:15](2253 MB)
-PASS -- TEST 'cpld_warmstart_c24_9deg_intel' [02:38, 00:42](2252 MB)
-PASS -- TEST 'cpld_restart_c24_9deg_intel' [02:28, 00:34](1586 MB)
-PASS -- TEST 'cpld_control_c12_9deg_intel' [02:36, 00:44](2184 MB)
-PASS -- TEST 'cpld_warmstart_c12_9deg_intel' [02:29, 00:36](2184 MB)
-PASS -- TEST 'cpld_restart_c12_9deg_intel' [02:28, 00:29](1537 MB)
+PASS -- COMPILE 's2sw_pdlib_intel' [20:11, 18:30] ( 1 warnings 1037 remarks )
+PASS -- TEST 'cpld_control_pdlib_p8_intel' [17:54, 15:31](2107 MB)
+PASS -- TEST 'cpld_restart_pdlib_p8_intel' [09:01, 07:06](1371 MB)
+PASS -- TEST 'cpld_mpi_pdlib_p8_intel' [20:54, 18:13](1949 MB)
+PASS -- TEST 'cpld_control_c48_5deg_intel' [08:39, 06:53](3091 MB)
+PASS -- TEST 'cpld_warmstart_c48_5deg_intel' [04:36, 02:10](3088 MB)
+PASS -- TEST 'cpld_restart_c48_5deg_intel' [03:36, 01:17](2530 MB)
+PASS -- TEST 'cpld_control_c24_5deg_intel' [03:30, 01:14](2243 MB)
+PASS -- TEST 'cpld_warmstart_c24_5deg_intel' [02:29, 00:42](2262 MB)
+PASS -- TEST 'cpld_restart_c24_5deg_intel' [02:31, 00:33](1589 MB)
+PASS -- TEST 'cpld_control_c24_9deg_intel' [03:29, 01:13](2243 MB)
+PASS -- TEST 'cpld_warmstart_c24_9deg_intel' [02:29, 00:42](2266 MB)
+PASS -- TEST 'cpld_restart_c24_9deg_intel' [02:29, 00:33](1577 MB)
+PASS -- TEST 'cpld_control_c12_9deg_intel' [02:34, 00:44](2189 MB)
+PASS -- TEST 'cpld_warmstart_c12_9deg_intel' [02:34, 00:34](2193 MB)
+PASS -- TEST 'cpld_restart_c12_9deg_intel' [02:37, 00:29](1533 MB)
 
-PASS -- COMPILE 's2sw_pdlib_debug_intel' [05:11, 03:45] ( 847 warnings 2747 remarks )
-PASS -- TEST 'cpld_debug_pdlib_p8_intel' [28:44, 27:09](1986 MB)
+PASS -- COMPILE 's2sw_pdlib_debug_intel' [05:10, 03:38] ( 847 warnings 2747 remarks )
+PASS -- TEST 'cpld_debug_pdlib_p8_intel' [29:43, 28:01](1997 MB)
 
-PASS -- COMPILE 'atm_dyn32_intel' [11:11, 09:47] ( 1 warnings 502 remarks )
-PASS -- TEST 'control_flake_intel' [05:22, 03:22](827 MB)
-PASS -- TEST 'control_CubedSphereGrid_intel' [04:22, 02:23](1718 MB)
-PASS -- TEST 'control_CubedSphereGrid_parallel_intel' [04:24, 02:34](1734 MB)
-PASS -- TEST 'control_latlon_intel' [04:18, 02:29](1733 MB)
-PASS -- TEST 'control_wrtGauss_netcdf_parallel_intel' [04:24, 02:32](1739 MB)
-PASS -- TEST 'control_c48_intel' [09:24, 07:17](1729 MB)
-PASS -- TEST 'control_c48.v2.sfc_intel' [08:23, 06:38](850 MB)
-PASS -- TEST 'control_c48_lnd_iau_intel' [09:24, 07:28](1726 MB)
-PASS -- TEST 'control_c192_intel' [09:36, 07:37](1923 MB)
-PASS -- TEST 'control_c384_intel' [11:23, 08:27](2009 MB)
-PASS -- TEST 'control_c384gdas_intel' [12:23, 08:39](1398 MB)
-PASS -- TEST 'control_stochy_intel' [03:20, 01:40](786 MB)
-PASS -- TEST 'control_stochy_restart_intel' [02:20, 00:59](633 MB)
-PASS -- TEST 'control_lndp_intel' [03:19, 01:34](787 MB)
-PASS -- TEST 'control_iovr4_intel' [04:19, 02:32](784 MB)
-PASS -- TEST 'control_iovr4_gfdlmpv3_intel' [04:33, 03:01](1082 MB)
-PASS -- TEST 'control_iovr5_intel' [04:20, 02:30](784 MB)
-PASS -- TEST 'control_p8_intel' [04:45, 02:59](2016 MB)
-PASS -- TEST 'control_p8.v2.sfc_intel' [05:49, 03:09](2016 MB)
-PASS -- TEST 'control_p8_ugwpv1_intel' [04:39, 02:54](2013 MB)
-PASS -- TEST 'control_p8_ugwpv1_tempo_intel' [04:43, 02:53](2042 MB)
-PASS -- TEST 'control_p8_ugwpv1_tempo_aerosol_intel' [04:45, 03:03](2052 MB)
-PASS -- TEST 'control_p8_ugwpv1_tempo_aerosol_hail_intel' [04:44, 02:06](2391 MB)
-PASS -- TEST 'control_restart_p8_intel' [03:41, 01:45](1281 MB)
-PASS -- TEST 'control_noqr_p8_intel' [04:41, 02:57](2010 MB)
-PASS -- TEST 'control_restart_noqr_p8_intel' [03:41, 01:42](1282 MB)
-PASS -- TEST 'control_decomp_p8_intel' [04:40, 03:02](2013 MB)
-PASS -- TEST 'control_2threads_p8_intel' [05:41, 03:19](2028 MB)
-PASS -- TEST 'control_p8_lndp_intel' [07:34, 05:12](2020 MB)
-PASS -- TEST 'control_p8_rrtmgp_intel' [06:43, 04:15](2076 MB)
-PASS -- TEST 'control_p8_mynn_intel' [05:41, 03:08](2029 MB)
-PASS -- TEST 'merra2_thompson_intel' [05:39, 03:32](2018 MB)
-PASS -- TEST 'merra2_hf_thompson_intel' [06:30, 04:53](2032 MB)
-PASS -- TEST 'regional_control_intel' [07:34, 05:19](1224 MB)
-PASS -- TEST 'regional_restart_intel' [04:32, 02:53](1239 MB)
-PASS -- TEST 'regional_decomp_intel' [07:32, 05:34](1213 MB)
-PASS -- TEST 'regional_2threads_intel' [05:32, 03:59](1093 MB)
-PASS -- TEST 'regional_noquilt_intel' [07:35, 05:15](1505 MB)
-PASS -- TEST 'regional_netcdf_parallel_intel' [07:34, 05:17](1225 MB)
-PASS -- TEST 'regional_2dwrtdecomp_intel' [07:34, 05:17](1227 MB)
-PASS -- TEST 'regional_wofs_intel' [08:33, 06:44](2041 MB)
+PASS -- COMPILE 'atm_dyn32_intel' [12:11, 10:41] ( 1 warnings 502 remarks )
+PASS -- TEST 'control_flake_intel' [05:22, 03:09](829 MB)
+PASS -- TEST 'control_CubedSphereGrid_intel' [04:25, 02:10](1712 MB)
+PASS -- TEST 'control_CubedSphereGrid_parallel_intel' [04:26, 02:30](1731 MB)
+PASS -- TEST 'control_latlon_intel' [04:23, 02:28](1736 MB)
+PASS -- TEST 'control_wrtGauss_netcdf_parallel_intel' [04:27, 02:30](1726 MB)
+PASS -- TEST 'control_c48_intel' [08:26, 06:13](1724 MB)
+PASS -- TEST 'control_c48.v2.sfc_intel' [07:24, 06:01](853 MB)
+PASS -- TEST 'control_c48_lnd_iau_intel' [08:26, 06:21](1721 MB)
+PASS -- TEST 'control_c192_intel' [08:33, 06:44](1922 MB)
+PASS -- TEST 'control_c384_intel' [10:16, 07:30](2005 MB)
+PASS -- TEST 'control_c384gdas_intel' [11:20, 08:04](1399 MB)
+PASS -- TEST 'control_stochy_intel' [03:20, 01:33](779 MB)
+PASS -- TEST 'control_stochy_restart_intel' [02:22, 00:55](629 MB)
+PASS -- TEST 'control_lndp_intel' [03:20, 01:27](781 MB)
+PASS -- TEST 'control_iovr4_intel' [04:21, 02:20](793 MB)
+PASS -- TEST 'control_iovr4_gfdlmpv3_intel' [04:32, 02:49](1069 MB)
+PASS -- TEST 'control_iovr5_intel' [04:21, 02:23](782 MB)
+PASS -- TEST 'control_p8_intel' [04:50, 02:44](2011 MB)
+PASS -- TEST 'control_p8.v2.sfc_intel' [04:55, 02:48](2011 MB)
+PASS -- TEST 'control_p8_ugwpv1_intel' [04:47, 02:41](2014 MB)
+PASS -- TEST 'control_p8_ugwpv1_tempo_intel' [04:49, 02:40](2009 MB)
+PASS -- TEST 'control_p8_ugwpv1_tempo_aerosol_intel' [04:49, 02:44](2047 MB)
+PASS -- TEST 'control_p8_ugwpv1_tempo_aerosol_hail_intel' [03:46, 02:00](2407 MB)
+PASS -- TEST 'control_restart_p8_intel' [03:47, 01:37](1288 MB)
+PASS -- TEST 'control_noqr_p8_intel' [04:43, 02:37](2010 MB)
+PASS -- TEST 'control_restart_noqr_p8_intel' [03:38, 01:33](1274 MB)
+PASS -- TEST 'control_decomp_p8_intel' [04:38, 02:46](1995 MB)
+PASS -- TEST 'control_2threads_p8_intel' [04:38, 03:01](2036 MB)
+PASS -- TEST 'control_p8_lndp_intel' [06:35, 04:36](2019 MB)
+PASS -- TEST 'control_p8_rrtmgp_intel' [05:44, 03:49](2050 MB)
+PASS -- TEST 'control_p8_mynn_intel' [04:41, 02:50](2027 MB)
+PASS -- TEST 'merra2_thompson_intel' [05:41, 03:08](2014 MB)
+PASS -- TEST 'merra2_hf_thompson_intel' [06:28, 04:34](2026 MB)
+PASS -- TEST 'regional_control_intel' [06:30, 04:49](1223 MB)
+PASS -- TEST 'regional_restart_intel' [04:33, 02:38](1241 MB)
+PASS -- TEST 'regional_decomp_intel' [06:31, 04:58](1213 MB)
+PASS -- TEST 'regional_2threads_intel' [05:32, 03:40](1080 MB)
+PASS -- TEST 'regional_noquilt_intel' [06:35, 04:46](1507 MB)
+PASS -- TEST 'regional_netcdf_parallel_intel' [06:36, 04:40](1226 MB)
+PASS -- TEST 'regional_2dwrtdecomp_intel' [06:34, 04:44](1226 MB)
+PASS -- TEST 'regional_wofs_intel' [07:33, 06:00](2043 MB)
 
-PASS -- COMPILE 'atm_dyn32_rad32_intel' [11:11, 09:31] ( 1 warnings 482 remarks )
-PASS -- TEST 'control_p8_rrtmgp_rad32_intel' [05:47, 04:07](2053 MB)
+PASS -- COMPILE 'atm_dyn32_rad32_intel' [12:11, 10:10] ( 1 warnings 482 remarks )
+PASS -- TEST 'control_p8_rrtmgp_rad32_intel' [05:44, 03:35](2045 MB)
 
-PASS -- COMPILE 'rrfs_intel' [10:11, 08:47] ( 4 warnings 449 remarks )
-PASS -- TEST 'rap_control_intel' [06:35, 04:09](1179 MB)
-PASS -- TEST 'regional_spp_sppt_shum_skeb_intel' [06:56, 04:09](1330 MB)
-PASS -- TEST 'rap_decomp_intel' [06:35, 04:17](1173 MB)
-PASS -- TEST 'rap_2threads_intel' [06:35, 04:41](1190 MB)
-PASS -- TEST 'rap_restart_intel' [04:32, 02:14](1173 MB)
-PASS -- TEST 'rap_sfcdiff_intel' [05:37, 04:08](1181 MB)
-PASS -- TEST 'rap_sfcdiff_decomp_intel' [06:35, 04:19](1170 MB)
-PASS -- TEST 'rap_sfcdiff_restart_intel' [04:34, 02:14](1173 MB)
-PASS -- TEST 'hrrr_control_intel' [05:34, 03:58](1172 MB)
-PASS -- TEST 'hrrr_control_decomp_intel' [05:29, 04:05](1147 MB)
-PASS -- TEST 'hrrr_control_2threads_intel' [06:29, 04:19](1171 MB)
-PASS -- TEST 'hrrr_control_restart_intel' [04:21, 02:07](1137 MB)
-PASS -- TEST 'rrfs_v1beta_intel' [09:32, 07:35](1225 MB)
-PASS -- TEST 'rrfs_v1nssl_intel' [11:19, 09:25](2117 MB)
-PASS -- TEST 'rrfs_v1nssl_nohailnoccn_intel' [10:20, 09:00](2182 MB)
+PASS -- COMPILE 'rrfs_intel' [11:11, 09:14] ( 4 warnings 449 remarks )
+PASS -- TEST 'rap_control_intel' [05:34, 03:20](1180 MB)
+PASS -- TEST 'regional_spp_sppt_shum_skeb_intel' [05:52, 03:44](1327 MB)
+PASS -- TEST 'rap_decomp_intel' [05:32, 03:32](1170 MB)
+PASS -- TEST 'rap_2threads_intel' [05:29, 03:56](1186 MB)
+PASS -- TEST 'rap_restart_intel' [03:35, 01:49](1175 MB)
+PASS -- TEST 'rap_sfcdiff_intel' [05:33, 03:21](1168 MB)
+PASS -- TEST 'rap_sfcdiff_decomp_intel' [05:31, 03:32](1165 MB)
+PASS -- TEST 'rap_sfcdiff_restart_intel' [03:36, 01:50](1174 MB)
+PASS -- TEST 'hrrr_control_intel' [05:35, 03:13](1177 MB)
+PASS -- TEST 'hrrr_control_decomp_intel' [05:30, 03:22](1150 MB)
+PASS -- TEST 'hrrr_control_2threads_intel' [05:30, 03:45](1165 MB)
+PASS -- TEST 'hrrr_control_restart_intel' [03:23, 01:46](1128 MB)
+PASS -- TEST 'rrfs_v1beta_intel' [07:35, 06:03](1212 MB)
+PASS -- TEST 'rrfs_v1nssl_intel' [10:20, 08:09](2117 MB)
+PASS -- TEST 'rrfs_v1nssl_nohailnoccn_intel' [09:20, 07:36](2182 MB)
 
-PASS -- COMPILE 'csawmg_intel' [10:11, 08:37] ( 1 warnings 418 remarks )
-PASS -- TEST 'control_csawmg_intel' [08:30, 06:12](1161 MB)
-PASS -- TEST 'control_ras_intel' [05:18, 03:20](868 MB)
+PASS -- COMPILE 'csawmg_intel' [11:11, 09:18] ( 1 warnings 418 remarks )
+PASS -- TEST 'control_csawmg_intel' [07:30, 05:37](1158 MB)
+PASS -- TEST 'control_ras_intel' [04:19, 03:07](859 MB)
 
-PASS -- COMPILE 'wam_intel' [10:11, 08:37] ( 1 warnings 396 remarks )
-PASS -- TEST 'control_wam_intel' [13:43, 11:31](1788 MB)
+PASS -- COMPILE 'wam_intel' [10:11, 08:46] ( 1 warnings 396 remarks )
+PASS -- TEST 'control_wam_intel' [12:38, 10:23](1796 MB)
 
-PASS -- COMPILE 'atm_faster_dyn32_intel' [10:11, 08:32] ( 1 warnings 412 remarks )
-PASS -- TEST 'control_p8_faster_intel' [04:44, 02:49](2017 MB)
-PASS -- TEST 'regional_control_faster_intel' [06:35, 04:51](1219 MB)
+PASS -- COMPILE 'atm_faster_dyn32_intel' [10:11, 08:58] ( 1 warnings 412 remarks )
+PASS -- TEST 'control_p8_faster_intel' [04:40, 02:49](2021 MB)
+PASS -- TEST 'regional_control_faster_intel' [06:33, 04:47](1222 MB)
 
-PASS -- COMPILE 'atm_debug_dyn32_intel' [06:11, 04:12] ( 906 warnings 590 remarks )
-PASS -- TEST 'control_CubedSphereGrid_debug_intel' [04:22, 02:09](1751 MB)
-PASS -- TEST 'control_wrtGauss_netcdf_parallel_debug_intel' [04:24, 02:15](1756 MB)
-PASS -- TEST 'control_stochy_debug_intel' [04:18, 03:02](961 MB)
-PASS -- TEST 'control_lndp_debug_intel' [04:20, 02:40](959 MB)
-PASS -- TEST 'control_csawmg_debug_intel' [06:35, 04:14](1272 MB)
-PASS -- TEST 'control_ras_debug_intel' [04:20, 02:46](978 MB)
-PASS -- TEST 'control_diag_debug_intel' [04:30, 02:44](1817 MB)
-PASS -- TEST 'control_debug_p8_intel' [04:37, 02:36](2048 MB)
-PASS -- TEST 'regional_debug_intel' [19:33, 17:17](1225 MB)
-PASS -- TEST 'rap_control_debug_intel' [06:21, 04:52](1341 MB)
-PASS -- TEST 'hrrr_control_debug_intel' [06:20, 04:49](1341 MB)
-PASS -- TEST 'hrrr_gf_debug_intel' [06:19, 04:52](1345 MB)
-PASS -- TEST 'hrrr_c3_debug_intel' [06:19, 04:47](1338 MB)
-PASS -- TEST 'rap_unified_drag_suite_debug_intel' [06:19, 04:53](1326 MB)
-PASS -- TEST 'rap_diag_debug_intel' [08:18, 05:16](1428 MB)
-PASS -- TEST 'rap_cires_ugwp_debug_intel' [06:19, 04:53](1340 MB)
-PASS -- TEST 'rap_unified_ugwp_debug_intel' [06:18, 04:56](1338 MB)
-PASS -- TEST 'rap_lndp_debug_intel' [06:19, 04:56](1340 MB)
-PASS -- TEST 'rap_progcld_thompson_debug_intel' [06:19, 04:50](1351 MB)
-PASS -- TEST 'rap_noah_debug_intel' [06:19, 04:43](1335 MB)
-PASS -- TEST 'rap_sfcdiff_debug_intel' [07:13, 04:56](1344 MB)
-PASS -- TEST 'rap_noah_sfcdiff_cires_ugwp_debug_intel' [10:19, 08:13](1350 MB)
-PASS -- TEST 'rap_clm_lake_debug_intel' [07:00, 04:51](1342 MB)
-PASS -- TEST 'rap_flake_debug_intel' [06:50, 04:54](1342 MB)
-PASS -- TEST 'gnv1_c96_no_nest_debug_intel' [10:31, 08:26](1352 MB)
+PASS -- COMPILE 'atm_debug_dyn32_intel' [06:11, 04:13] ( 906 warnings 590 remarks )
+PASS -- TEST 'control_CubedSphereGrid_debug_intel' [04:23, 02:12](1743 MB)
+PASS -- TEST 'control_wrtGauss_netcdf_parallel_debug_intel' [04:23, 02:13](1751 MB)
+PASS -- TEST 'control_stochy_debug_intel' [04:20, 03:01](965 MB)
+PASS -- TEST 'control_lndp_debug_intel' [04:19, 02:39](955 MB)
+PASS -- TEST 'control_csawmg_debug_intel' [06:33, 04:24](1271 MB)
+PASS -- TEST 'control_ras_debug_intel' [04:19, 02:46](968 MB)
+PASS -- TEST 'control_diag_debug_intel' [04:30, 02:44](1814 MB)
+PASS -- TEST 'control_debug_p8_intel' [04:37, 02:39](2047 MB)
+PASS -- TEST 'regional_debug_intel' [19:34, 17:08](1236 MB)
+PASS -- TEST 'rap_control_debug_intel' [06:21, 05:03](1340 MB)
+PASS -- TEST 'hrrr_control_debug_intel' [06:21, 04:46](1344 MB)
+PASS -- TEST 'hrrr_gf_debug_intel' [06:21, 04:57](1341 MB)
+PASS -- TEST 'hrrr_c3_debug_intel' [06:20, 05:00](1338 MB)
+PASS -- TEST 'rap_unified_drag_suite_debug_intel' [06:20, 04:58](1343 MB)
+PASS -- TEST 'rap_diag_debug_intel' [07:30, 05:15](1423 MB)
+PASS -- TEST 'rap_cires_ugwp_debug_intel' [06:19, 04:57](1350 MB)
+PASS -- TEST 'rap_unified_ugwp_debug_intel' [06:19, 05:01](1350 MB)
+PASS -- TEST 'rap_lndp_debug_intel' [06:20, 04:57](1340 MB)
+PASS -- TEST 'rap_progcld_thompson_debug_intel' [06:22, 05:00](1340 MB)
+PASS -- TEST 'rap_noah_debug_intel' [06:20, 04:54](1336 MB)
+PASS -- TEST 'rap_sfcdiff_debug_intel' [06:23, 04:53](1339 MB)
+PASS -- TEST 'rap_noah_sfcdiff_cires_ugwp_debug_intel' [09:22, 08:01](1331 MB)
+PASS -- TEST 'rap_clm_lake_debug_intel' [06:23, 05:00](1350 MB)
+PASS -- TEST 'rap_flake_debug_intel' [06:23, 04:57](1335 MB)
+PASS -- TEST 'gnv1_c96_no_nest_debug_intel' [10:33, 08:24](1361 MB)
 
-PASS -- COMPILE 'wam_debug_intel' [04:11, 03:01] ( 863 warnings 396 remarks )
-PASS -- TEST 'control_wam_debug_intel' [14:38, 13:05](1819 MB)
+PASS -- COMPILE 'wam_debug_intel' [04:11, 02:47] ( 863 warnings 396 remarks )
+PASS -- TEST 'control_wam_debug_intel' [15:40, 13:48](1815 MB)
 
-PASS -- COMPILE 'rrfs_dyn32_phy32_intel' [10:11, 08:28] ( 4 warnings 416 remarks )
-PASS -- TEST 'regional_spp_sppt_shum_skeb_dyn32_phy32_intel' [06:52, 03:53](1179 MB)
-PASS -- TEST 'rap_control_dyn32_phy32_intel' [05:30, 03:31](1116 MB)
-PASS -- TEST 'hrrr_control_dyn32_phy32_intel' [05:29, 03:23](1098 MB)
-PASS -- TEST 'rap_2threads_dyn32_phy32_intel' [06:09, 03:58](1021 MB)
-PASS -- TEST 'hrrr_control_2threads_dyn32_phy32_intel' [05:44, 03:49](1014 MB)
-PASS -- TEST 'hrrr_control_decomp_dyn32_phy32_intel' [05:31, 03:36](1029 MB)
-PASS -- TEST 'rap_restart_dyn32_phy32_intel' [03:38, 01:54](1067 MB)
-PASS -- TEST 'hrrr_control_restart_dyn32_phy32_intel' [03:29, 01:51](1052 MB)
+PASS -- COMPILE 'rrfs_dyn32_phy32_intel' [10:11, 08:57] ( 4 warnings 416 remarks )
+PASS -- TEST 'regional_spp_sppt_shum_skeb_dyn32_phy32_intel' [05:58, 03:41](1182 MB)
+PASS -- TEST 'rap_control_dyn32_phy32_intel' [04:32, 03:03](1106 MB)
+PASS -- TEST 'hrrr_control_dyn32_phy32_intel' [04:29, 02:59](1100 MB)
+PASS -- TEST 'rap_2threads_dyn32_phy32_intel' [05:31, 03:29](1031 MB)
+PASS -- TEST 'hrrr_control_2threads_dyn32_phy32_intel' [05:29, 03:25](1047 MB)
+PASS -- TEST 'hrrr_control_decomp_dyn32_phy32_intel' [04:30, 03:07](1029 MB)
+PASS -- TEST 'rap_restart_dyn32_phy32_intel' [03:29, 01:40](1071 MB)
+PASS -- TEST 'hrrr_control_restart_dyn32_phy32_intel' [03:20, 01:49](1050 MB)
 
-PASS -- COMPILE 'rrfs_dyn32_phy32_faster_intel' [10:11, 08:33] ( 4 warnings 393 remarks )
-PASS -- TEST 'conus13km_control_intel' [05:08, 02:59](1463 MB)
-PASS -- TEST 'conus13km_2threads_intel' [04:05, 01:18](1293 MB)
-PASS -- TEST 'conus13km_decomp_intel' [04:42, 03:01](1484 MB)
-PASS -- TEST 'conus13km_restart_intel' [03:44, 01:42](1333 MB)
+PASS -- COMPILE 'rrfs_dyn32_phy32_faster_intel' [10:11, 08:45] ( 4 warnings 393 remarks )
+PASS -- TEST 'conus13km_control_intel' [04:53, 02:56](1464 MB)
+PASS -- TEST 'conus13km_2threads_intel' [03:40, 01:17](1298 MB)
+PASS -- TEST 'conus13km_decomp_intel' [04:44, 02:57](1486 MB)
+PASS -- TEST 'conus13km_restart_intel' [03:37, 01:42](1330 MB)
 
-PASS -- COMPILE 'rrfs_dyn64_phy32_intel' [10:11, 08:30] ( 4 warnings 416 remarks )
-PASS -- TEST 'rap_control_dyn64_phy32_intel' [06:32, 04:14](1122 MB)
+PASS -- COMPILE 'rrfs_dyn64_phy32_intel' [10:11, 08:58] ( 4 warnings 416 remarks )
+PASS -- TEST 'rap_control_dyn64_phy32_intel' [05:33, 03:47](1117 MB)
 
-PASS -- COMPILE 'rrfs_dyn32_phy32_debug_intel' [04:11, 02:48] ( 796 warnings 422 remarks )
-PASS -- TEST 'rap_control_debug_dyn32_phy32_intel' [06:20, 04:56](1222 MB)
-PASS -- TEST 'hrrr_control_debug_dyn32_phy32_intel' [06:20, 04:46](1213 MB)
-PASS -- TEST 'conus13km_debug_intel' [24:37, 22:22](1499 MB)
-PASS -- TEST 'conus13km_debug_qr_intel' [30:39, 22:24](1200 MB)
-PASS -- TEST 'conus13km_debug_2threads_intel' [21:49, 19:41](1338 MB)
-PASS -- TEST 'conus13km_debug_decomp_intel' [24:51, 22:20](1524 MB)
-PASS -- TEST 'conus13km_radar_tten_debug_intel' [24:52, 22:23](1560 MB)
+PASS -- COMPILE 'rrfs_dyn32_phy32_debug_intel' [04:11, 02:49] ( 796 warnings 422 remarks )
+PASS -- TEST 'rap_control_debug_dyn32_phy32_intel' [06:21, 04:52](1217 MB)
+PASS -- TEST 'hrrr_control_debug_dyn32_phy32_intel' [06:21, 04:43](1221 MB)
+PASS -- TEST 'conus13km_debug_intel' [23:40, 21:54](1507 MB)
+PASS -- TEST 'conus13km_debug_qr_intel' [24:40, 22:49](1192 MB)
+PASS -- TEST 'conus13km_debug_2threads_intel' [21:35, 19:45](1330 MB)
+PASS -- TEST 'conus13km_debug_decomp_intel' [25:37, 23:09](1532 MB)
+PASS -- TEST 'conus13km_radar_tten_debug_intel' [24:37, 23:01](1573 MB)
 
-PASS -- COMPILE 'rrfs_dyn64_phy32_debug_intel' [04:11, 02:47] ( 796 warnings 416 remarks )
-PASS -- TEST 'rap_control_dyn64_phy32_debug_intel' [06:24, 05:00](1280 MB)
+PASS -- COMPILE 'rrfs_dyn64_phy32_debug_intel' [04:11, 02:49] ( 796 warnings 416 remarks )
+PASS -- TEST 'rap_control_dyn64_phy32_debug_intel' [06:24, 05:01](1275 MB)
 
-PASS -- COMPILE 'hafsw_intel' [12:11, 10:31] ( 1 warnings 696 remarks )
-PASS -- TEST 'hafs_regional_atm_intel' [05:49, 03:41](921 MB)
-PASS -- TEST 'hafs_regional_atm_gfdlmpv3_intel' [08:39, 05:17](1105 MB)
-PASS -- TEST 'hafs_regional_atm_thompson_gfdlsf_intel' [05:35, 03:33](1168 MB)
-PASS -- TEST 'hafs_regional_atm_wav_intel' [30:53, 28:49](962 MB)
-PASS -- TEST 'hafs_regional_1nest_atm_intel' [07:41, 05:11](498 MB)
-PASS -- TEST 'hafs_regional_telescopic_2nests_atm_intel' [07:50, 05:59](510 MB)
-PASS -- TEST 'hafs_global_1nest_atm_intel' [04:35, 02:33](371 MB)
-PASS -- TEST 'hafs_global_multiple_4nests_atm_intel' [09:10, 06:29](428 MB)
-PASS -- TEST 'hafs_regional_specified_moving_1nest_atm_intel' [05:33, 03:30](524 MB)
-PASS -- TEST 'hafs_regional_storm_following_1nest_atm_intel' [05:37, 03:17](526 MB)
-PASS -- TEST 'hafs_global_storm_following_1nest_atm_intel' [03:25, 01:07](402 MB)
-PASS -- TEST 'gnv1_nested_intel' [05:53, 03:36](1857 MB)
+PASS -- COMPILE 'hafsw_intel' [15:11, 13:36] ( 1 warnings 696 remarks )
+PASS -- TEST 'hafs_regional_atm_intel' [05:42, 03:38](911 MB)
+PASS -- TEST 'hafs_regional_atm_gfdlmpv3_intel' [08:23, 05:23](1105 MB)
+PASS -- TEST 'hafs_regional_atm_thompson_gfdlsf_intel' [05:25, 03:12](1170 MB)
+PASS -- TEST 'hafs_regional_atm_wav_intel' [30:45, 28:49](1102 MB)
+PASS -- TEST 'hafs_regional_1nest_atm_intel' [06:37, 04:53](491 MB)
+PASS -- TEST 'hafs_regional_telescopic_2nests_atm_intel' [07:43, 05:43](506 MB)
+PASS -- TEST 'hafs_global_1nest_atm_intel' [04:30, 02:26](369 MB)
+PASS -- TEST 'hafs_global_multiple_4nests_atm_intel' [09:12, 06:17](434 MB)
+PASS -- TEST 'hafs_regional_specified_moving_1nest_atm_intel' [05:34, 03:20](528 MB)
+PASS -- TEST 'hafs_regional_storm_following_1nest_atm_intel' [05:32, 03:08](525 MB)
+PASS -- TEST 'hafs_global_storm_following_1nest_atm_intel' [02:22, 01:04](403 MB)
+PASS -- TEST 'gnv1_nested_intel' [05:55, 03:26](1865 MB)
 
-PASS -- COMPILE 'hafs_mom6w_intel' [12:11, 10:40] ( 1 warnings 929 remarks )
-PASS -- TEST 'hafs_regional_storm_following_1nest_atm_ocn_wav_mom6_intel' [13:12, 10:21](672 MB)
+PASS -- COMPILE 'hafs_mom6w_intel' [13:11, 11:16] ( 1 warnings 929 remarks )
+PASS -- TEST 'hafs_regional_storm_following_1nest_atm_ocn_wav_mom6_intel' [13:12, 10:50](662 MB)
 
-PASS -- COMPILE 'hafs_all_intel' [12:11, 10:43] ( 1 warnings 638 remarks )
-PASS -- TEST 'hafs_regional_docn_intel' [07:46, 05:51](933 MB)
-PASS -- TEST 'hafs_regional_docn_oisst_intel' [07:43, 05:55](918 MB)
+PASS -- COMPILE 'hafs_all_intel' [12:11, 10:46] ( 1 warnings 638 remarks )
+PASS -- TEST 'hafs_regional_docn_intel' [07:41, 05:33](937 MB)
+PASS -- TEST 'hafs_regional_docn_oisst_intel' [07:42, 05:36](920 MB)
 
-PASS -- COMPILE 'datm_cdeps_intel' [08:12, 06:26] ( 561 remarks )
-PASS -- TEST 'datm_cdeps_control_cfsr_intel' [04:18, 03:01](2002 MB)
-PASS -- TEST 'datm_cdeps_restart_cfsr_intel' [03:20, 01:55](1955 MB)
-PASS -- TEST 'datm_cdeps_control_gefs_intel' [04:17, 02:52](1269 MB)
-PASS -- TEST 'datm_cdeps_iau_gefs_intel' [04:17, 02:56](1264 MB)
-PASS -- TEST 'datm_cdeps_stochy_gefs_intel' [04:17, 02:49](1264 MB)
-PASS -- TEST 'datm_cdeps_ciceC_cfsr_intel' [04:17, 03:05](2001 MB)
-PASS -- TEST 'datm_cdeps_bulk_cfsr_intel' [04:18, 03:00](2012 MB)
-PASS -- TEST 'datm_cdeps_bulk_gefs_intel' [04:17, 02:47](1266 MB)
-PASS -- TEST 'datm_cdeps_mx025_cfsr_intel' [09:30, 07:02](1782 MB)
-PASS -- TEST 'datm_cdeps_mx025_gefs_intel' [09:14, 06:56](1162 MB)
-PASS -- TEST 'datm_cdeps_multiple_files_cfsr_intel' [04:15, 03:02](2005 MB)
-PASS -- TEST 'datm_cdeps_3072x1536_cfsr_intel' [06:18, 04:52](4965 MB)
-PASS -- TEST 'datm_cdeps_gfs_intel' [06:18, 04:51](4968 MB)
+PASS -- COMPILE 'datm_cdeps_intel' [17:11, 15:54] ( 561 remarks )
+PASS -- TEST 'datm_cdeps_control_cfsr_intel' [04:19, 03:00](2004 MB)
+PASS -- TEST 'datm_cdeps_restart_cfsr_intel' [03:20, 01:57](1950 MB)
+PASS -- TEST 'datm_cdeps_control_gefs_intel' [04:17, 02:48](1263 MB)
+PASS -- TEST 'datm_cdeps_iau_gefs_intel' [04:19, 03:00](1262 MB)
+PASS -- TEST 'datm_cdeps_stochy_gefs_intel' [04:18, 02:53](1261 MB)
+PASS -- TEST 'datm_cdeps_ciceC_cfsr_intel' [04:18, 03:01](2017 MB)
+PASS -- TEST 'datm_cdeps_bulk_cfsr_intel' [04:18, 02:59](2017 MB)
+PASS -- TEST 'datm_cdeps_bulk_gefs_intel' [04:18, 02:48](1268 MB)
+PASS -- TEST 'datm_cdeps_mx025_cfsr_intel' [10:14, 07:25](1779 MB)
+PASS -- TEST 'datm_cdeps_mx025_gefs_intel' [09:05, 07:07](1164 MB)
+PASS -- TEST 'datm_cdeps_multiple_files_cfsr_intel' [04:16, 02:59](2010 MB)
+PASS -- TEST 'datm_cdeps_3072x1536_cfsr_intel' [06:19, 04:57](4965 MB)
+PASS -- TEST 'datm_cdeps_gfs_intel' [06:18, 04:49](4965 MB)
 
-PASS -- COMPILE 'datm_cdeps_debug_intel' [04:11, 02:51] ( 4 warnings 561 remarks )
-PASS -- TEST 'datm_cdeps_debug_cfsr_intel' [08:17, 06:42](1917 MB)
+PASS -- COMPILE 'datm_cdeps_debug_intel' [04:12, 02:47] ( 4 warnings 561 remarks )
+PASS -- TEST 'datm_cdeps_debug_cfsr_intel' [08:19, 06:48](1917 MB)
 
-PASS -- COMPILE 'datm_cdeps_faster_intel' [08:11, 06:22] ( 561 remarks )
-PASS -- TEST 'datm_cdeps_control_cfsr_faster_intel' [05:17, 03:12](1999 MB)
+PASS -- COMPILE 'datm_cdeps_faster_intel' [18:11, 16:15] ( 561 remarks )
+PASS -- TEST 'datm_cdeps_control_cfsr_faster_intel' [04:17, 03:05](2006 MB)
 
-PASS -- COMPILE 'datm_cdeps_land_intel' [02:11, 01:05] ( 126 remarks )
-PASS -- TEST 'datm_cdeps_lnd_gswp3_intel' [02:28, 00:52](250 MB)
-PASS -- TEST 'datm_cdeps_lnd_era5_intel' [02:22, 00:34](307 MB)
-PASS -- TEST 'datm_cdeps_lnd_era5_rst_intel' [02:25, 00:23](307 MB)
+PASS -- COMPILE 'datm_cdeps_land_intel' [02:11, 01:00] ( 126 remarks )
+PASS -- TEST 'datm_cdeps_lnd_gswp3_intel' [02:36, 01:01](250 MB)
+PASS -- TEST 'datm_cdeps_lnd_era5_intel' [03:23, 01:15](311 MB)
+PASS -- TEST 'datm_cdeps_lnd_era5_rst_intel' [02:22, 00:41](305 MB)
 
-PASS -- COMPILE 'datm_cdeps_lm4_intel' [03:11, 01:18] ( 164 remarks )
-PASS -- TEST 'datm_cdeps_lm4_gswp3_intel' [02:35, 00:33](629 MB)
-PASS -- TEST 'datm_cdeps_lm4_gswp3_rst_intel' [02:33, 00:17](521 MB)
+PASS -- COMPILE 'datm_cdeps_lm4_intel' [03:12, 01:12] ( 164 remarks )
+PASS -- TEST 'datm_cdeps_lm4_gswp3_intel' [02:29, 00:32](630 MB)
+PASS -- TEST 'datm_cdeps_lm4_gswp3_rst_intel' [02:41, 00:17](503 MB)
 
-PASS -- COMPILE 'atm_ds2s_docn_pcice_intel' [11:11, 09:20] ( 1 warnings 612 remarks )
-PASS -- TEST 'atm_ds2s_docn_pcice_intel' [05:56, 03:40](2094 MB)
+PASS -- COMPILE 'atm_ds2s_docn_pcice_intel' [18:12, 16:45] ( 1 warnings 612 remarks )
+PASS -- TEST 'atm_ds2s_docn_pcice_intel' [05:52, 03:22](2102 MB)
 
-PASS -- COMPILE 'atm_ds2s_docn_dice_intel' [10:11, 08:50] ( 1 warnings 500 remarks )
-PASS -- TEST 'atm_ds2s_docn_dice_intel' [06:44, 04:42](2108 MB)
+PASS -- COMPILE 'atm_ds2s_docn_dice_intel' [11:11, 09:14] ( 1 warnings 500 remarks )
+PASS -- TEST 'atm_ds2s_docn_dice_intel' [06:42, 04:22](2111 MB)
 
-PASS -- COMPILE 'atml_intel' [11:11, 09:41] ( 9 warnings 553 remarks )
-PASS -- TEST 'control_p8_atmlnd_intel' [05:47, 03:13](1856 MB)
-PASS -- TEST 'control_restart_p8_atmlnd_intel' [03:35, 01:50](1120 MB)
+PASS -- COMPILE 'atml_intel' [12:12, 10:22] ( 9 warnings 553 remarks )
+PASS -- TEST 'control_p8_atmlnd_intel' [04:43, 02:58](1846 MB)
+PASS -- TEST 'control_restart_p8_atmlnd_intel' [03:35, 01:42](1122 MB)
 
-PASS -- COMPILE 'atml_debug_intel' [05:11, 03:48] ( 911 warnings 553 remarks )
-PASS -- TEST 'control_p8_atmlnd_debug_intel' [06:45, 04:52](1874 MB)
+PASS -- COMPILE 'atml_debug_intel' [05:12, 03:48] ( 911 warnings 553 remarks )
+PASS -- TEST 'control_p8_atmlnd_debug_intel' [06:44, 04:45](1879 MB)
 
-PASS -- COMPILE 'atmw_intel' [12:11, 10:36] ( 1 warnings 521 remarks )
-PASS -- TEST 'atmwav_control_noaero_p8_intel' [03:41, 01:55](2037 MB)
+PASS -- COMPILE 'atmw_intel' [12:12, 10:26] ( 1 warnings 521 remarks )
+PASS -- TEST 'atmwav_control_noaero_p8_intel' [03:40, 01:48](2028 MB)
 
-PASS -- COMPILE 'atmaero_intel' [10:11, 09:01] ( 1 warnings 414 remarks )
-PASS -- TEST 'atmaero_control_p8_intel' [06:47, 04:11](2105 MB)
-PASS -- TEST 'atmaero_control_p8_rad_intel' [06:36, 04:52](1891 MB)
-PASS -- TEST 'atmaero_control_p8_rad_micro_intel' [06:37, 04:57](1896 MB)
+PASS -- COMPILE 'atmaero_intel' [13:11, 11:16] ( 1 warnings 414 remarks )
+PASS -- TEST 'atmaero_control_p8_intel' [05:48, 03:49](2113 MB)
+PASS -- TEST 'atmaero_control_p8_rad_intel' [06:35, 04:27](1892 MB)
+PASS -- TEST 'atmaero_control_p8_rad_micro_intel' [06:37, 04:23](1894 MB)
 
-PASS -- COMPILE 'atmaq_intel' [10:11, 08:31] ( 1 warnings 599 remarks )
-PASS -- TEST 'regional_atmaq_intel' [17:47, 15:02](2920 MB)
-PASS -- TEST 'regional_atmaq_canopy_intel' [21:26, 18:25](2924 MB)
+PASS -- COMPILE 'atmaq_intel' [11:11, 09:38] ( 1 warnings 599 remarks )
+PASS -- TEST 'regional_atmaq_intel' [15:43, 12:54](2926 MB)
+PASS -- TEST 'regional_atmaq_canopy_intel' [18:36, 15:59](2932 MB)
 
-PASS -- COMPILE 'atmaq_debug_intel' [04:11, 03:04] ( 880 warnings 599 remarks )
-PASS -- TEST 'regional_atmaq_debug_intel' [42:23, 39:56](2935 MB)
+PASS -- COMPILE 'atmaq_debug_intel' [04:11, 02:58] ( 880 warnings 599 remarks )
+PASS -- TEST 'regional_atmaq_debug_intel' [42:25, 39:20](2935 MB)
 
-PASS -- COMPILE 'atm_fbh_intel' [10:11, 08:17] ( 4 warnings 423 remarks )
-PASS -- TEST 'cpld_regional_atm_fbh_intel' [13:30, 11:33](1185 MB)
+PASS -- COMPILE 'atm_fbh_intel' [10:11, 08:52] ( 4 warnings 423 remarks )
+PASS -- TEST 'cpld_regional_atm_fbh_intel' [13:25, 11:13](1188 MB)
 
-PASS -- COMPILE 'rrfs_dyn32_phy32_intelllvm' [05:11, 04:00]
-PASS -- TEST 'rap_control_dyn32_phy32_intelllvm' [05:29, 04:07](1102 MB)
+PASS -- COMPILE 'rrfs_dyn32_phy32_intelllvm' [07:11, 05:16]
+PASS -- TEST 'rap_control_dyn32_phy32_intelllvm' [05:29, 03:30](1105 MB)
 
-PASS -- COMPILE 'rrfs_dyn64_phy32_intelllvm' [05:11, 04:08]
-PASS -- TEST 'rap_control_dyn64_phy32_intelllvm' [06:31, 04:40](1124 MB)
+PASS -- COMPILE 'rrfs_dyn64_phy32_intelllvm' [06:11, 05:08]
+PASS -- TEST 'rap_control_dyn64_phy32_intelllvm' [05:32, 04:06](1132 MB)
 
-PASS -- COMPILE 'atm_gnu' [05:11, 04:01]
-PASS -- TEST 'control_c48_gnu' [11:24, 09:34](1535 MB)
-PASS -- TEST 'control_stochy_gnu' [04:18, 02:50](604 MB)
-PASS -- TEST 'control_ras_gnu' [06:17, 04:40](610 MB)
-PASS -- TEST 'control_p8_gnu' [06:43, 04:19](1552 MB)
-PASS -- TEST 'control_p8_ugwpv1_gnu' [06:37, 04:14](1551 MB)
-PASS -- TEST 'control_flake_gnu' [07:18, 05:22](652 MB)
+PASS -- COMPILE 'atm_gnu' [06:11, 04:13]
+PASS -- TEST 'control_c48_gnu' [11:25, 09:27](1539 MB)
+PASS -- TEST 'control_stochy_gnu' [04:17, 02:54](606 MB)
+PASS -- TEST 'control_ras_gnu' [06:17, 04:41](611 MB)
+PASS -- TEST 'control_p8_gnu' [06:45, 04:24](1542 MB)
+PASS -- TEST 'control_p8_ugwpv1_gnu' [06:42, 04:14](1562 MB)
+PASS -- TEST 'control_flake_gnu' [07:20, 05:28](652 MB)
 
-PASS -- COMPILE 'rrfs_gnu' [05:11, 03:55]
-PASS -- TEST 'rap_control_gnu' [07:30, 05:53](943 MB)
-PASS -- TEST 'rap_decomp_gnu' [07:27, 05:54](950 MB)
-PASS -- TEST 'rap_2threads_gnu' [08:33, 06:54](1020 MB)
-PASS -- TEST 'rap_restart_gnu' [04:31, 03:03](677 MB)
-PASS -- TEST 'rap_sfcdiff_gnu' [07:30, 05:51](944 MB)
-PASS -- TEST 'rap_sfcdiff_decomp_gnu' [07:27, 05:58](949 MB)
-PASS -- TEST 'rap_sfcdiff_restart_gnu' [04:30, 03:01](687 MB)
-PASS -- TEST 'hrrr_control_gnu' [07:30, 05:42](950 MB)
-PASS -- TEST 'hrrr_control_noqr_gnu' [07:26, 05:41](940 MB)
-PASS -- TEST 'hrrr_control_2threads_gnu' [08:28, 06:34](1012 MB)
-PASS -- TEST 'hrrr_control_decomp_gnu' [07:25, 05:42](950 MB)
-PASS -- TEST 'hrrr_control_restart_gnu' [04:19, 02:57](681 MB)
-PASS -- TEST 'hrrr_control_restart_noqr_gnu' [04:20, 02:57](770 MB)
-PASS -- TEST 'rrfs_v1beta_gnu' [12:33, 10:55](943 MB)
+PASS -- COMPILE 'rrfs_gnu' [05:11, 03:51]
+PASS -- TEST 'rap_control_gnu' [07:31, 05:58](945 MB)
+PASS -- TEST 'rap_decomp_gnu' [07:29, 06:01](941 MB)
+PASS -- TEST 'rap_2threads_gnu' [08:32, 06:57](1021 MB)
+PASS -- TEST 'rap_restart_gnu' [04:32, 03:03](681 MB)
+PASS -- TEST 'rap_sfcdiff_gnu' [07:31, 05:53](948 MB)
+PASS -- TEST 'rap_sfcdiff_decomp_gnu' [07:28, 05:59](943 MB)
+PASS -- TEST 'rap_sfcdiff_restart_gnu' [04:31, 03:07](684 MB)
+PASS -- TEST 'hrrr_control_gnu' [07:30, 05:43](955 MB)
+PASS -- TEST 'hrrr_control_noqr_gnu' [07:28, 05:39](941 MB)
+PASS -- TEST 'hrrr_control_2threads_gnu' [08:27, 06:34](1012 MB)
+PASS -- TEST 'hrrr_control_decomp_gnu' [07:29, 05:39](951 MB)
+PASS -- TEST 'hrrr_control_restart_gnu' [04:21, 02:58](688 MB)
+PASS -- TEST 'hrrr_control_restart_noqr_gnu' [04:20, 03:00](774 MB)
+PASS -- TEST 'rrfs_v1beta_gnu' [12:32, 10:52](945 MB)
 
-PASS -- COMPILE 'csawmg_gnu' [05:12, 03:42]
-PASS -- TEST 'control_csawmg_gnu' [10:30, 08:22](865 MB)
+PASS -- COMPILE 'csawmg_gnu' [05:11, 03:31]
+PASS -- TEST 'control_csawmg_gnu' [10:30, 08:17](855 MB)
 
-PASS -- COMPILE 'atm_dyn32_debug_gnu' [08:12, 06:46]
-PASS -- TEST 'control_diag_debug_gnu' [03:26, 01:33](1377 MB)
-PASS -- TEST 'regional_debug_gnu' [10:31, 08:15](871 MB)
-PASS -- TEST 'rap_control_debug_gnu' [04:18, 02:30](957 MB)
-PASS -- TEST 'hrrr_control_debug_gnu' [04:19, 02:30](962 MB)
-PASS -- TEST 'hrrr_gf_debug_gnu' [04:18, 02:32](973 MB)
-PASS -- TEST 'hrrr_c3_debug_gnu' [04:17, 02:31](969 MB)
-PASS -- TEST 'rap_diag_debug_gnu' [04:27, 02:43](1048 MB)
-PASS -- TEST 'rap_noah_sfcdiff_cires_ugwp_debug_gnu' [05:20, 04:00](953 MB)
-PASS -- TEST 'rap_progcld_thompson_debug_gnu' [04:18, 02:30](961 MB)
-PASS -- TEST 'control_ras_debug_gnu' [03:18, 01:27](598 MB)
-PASS -- TEST 'control_stochy_debug_gnu' [03:18, 01:37](597 MB)
-PASS -- TEST 'control_debug_p8_gnu' [03:34, 01:38](1563 MB)
-PASS -- TEST 'rap_flake_debug_gnu' [04:20, 02:28](964 MB)
-PASS -- TEST 'rap_clm_lake_debug_gnu' [04:20, 02:33](963 MB)
-PASS -- TEST 'gnv1_c96_no_nest_debug_gnu' [06:32, 04:14](979 MB)
+PASS -- COMPILE 'atm_dyn32_debug_gnu' [08:11, 06:46]
+PASS -- TEST 'control_diag_debug_gnu' [03:27, 01:32](1378 MB)
+PASS -- TEST 'regional_debug_gnu' [10:34, 08:15](873 MB)
+PASS -- TEST 'rap_control_debug_gnu' [04:19, 02:33](961 MB)
+PASS -- TEST 'hrrr_control_debug_gnu' [04:18, 02:27](961 MB)
+PASS -- TEST 'hrrr_gf_debug_gnu' [04:19, 02:37](963 MB)
+PASS -- TEST 'hrrr_c3_debug_gnu' [04:20, 02:30](964 MB)
+PASS -- TEST 'rap_diag_debug_gnu' [04:29, 02:43](1048 MB)
+PASS -- TEST 'rap_noah_sfcdiff_cires_ugwp_debug_gnu' [05:19, 04:05](954 MB)
+PASS -- TEST 'rap_progcld_thompson_debug_gnu' [04:20, 02:29](958 MB)
+PASS -- TEST 'control_ras_debug_gnu' [03:19, 01:29](589 MB)
+PASS -- TEST 'control_stochy_debug_gnu' [03:19, 01:37](592 MB)
+PASS -- TEST 'control_debug_p8_gnu' [03:35, 01:38](1545 MB)
+PASS -- TEST 'rap_flake_debug_gnu' [04:21, 02:36](952 MB)
+PASS -- TEST 'rap_clm_lake_debug_gnu' [04:19, 02:33](959 MB)
+PASS -- TEST 'gnv1_c96_no_nest_debug_gnu' [06:31, 04:20](972 MB)
 
-PASS -- COMPILE 'wam_debug_gnu' [03:10, 02:08]
-PASS -- TEST 'control_wam_debug_gnu' [08:37, 06:24](1400 MB)
+PASS -- COMPILE 'wam_debug_gnu' [03:11, 01:59]
+PASS -- TEST 'control_wam_debug_gnu' [08:37, 06:24](1396 MB)
 
-PASS -- COMPILE 'atm_debug_dyn32_gnu' [05:11, 03:40]
-PASS -- TEST 'control_csawmg_debug_gnu' [04:31, 02:16](838 MB)
+PASS -- COMPILE 'atm_debug_dyn32_gnu' [05:11, 03:30]
+PASS -- TEST 'control_csawmg_debug_gnu' [04:30, 02:18](831 MB)
 
-PASS -- COMPILE 'rrfs_dyn32_phy32_gnu' [05:11, 03:44]
-PASS -- TEST 'rap_control_dyn32_phy32_gnu' [06:28, 05:04](796 MB)
-PASS -- TEST 'hrrr_control_dyn32_phy32_gnu' [06:26, 05:00](805 MB)
-PASS -- TEST 'rap_2threads_dyn32_phy32_gnu' [07:26, 06:02](850 MB)
-PASS -- TEST 'hrrr_control_2threads_dyn32_phy32_gnu' [07:25, 05:54](847 MB)
-PASS -- TEST 'hrrr_control_decomp_dyn32_phy32_gnu' [06:24, 05:04](804 MB)
-PASS -- TEST 'rap_restart_dyn32_phy32_gnu' [04:26, 02:37](648 MB)
-PASS -- TEST 'hrrr_control_restart_dyn32_phy32_gnu' [04:18, 02:36](658 MB)
-PASS -- TEST 'conus13km_control_gnu' [06:50, 04:49](1026 MB)
-PASS -- TEST 'conus13km_2threads_gnu' [03:40, 02:01](1014 MB)
-PASS -- TEST 'conus13km_decomp_gnu' [06:41, 04:56](1033 MB)
-PASS -- TEST 'conus13km_restart_gnu' [04:38, 02:42](721 MB)
+PASS -- COMPILE 'rrfs_dyn32_phy32_gnu' [05:11, 03:40]
+PASS -- TEST 'rap_control_dyn32_phy32_gnu' [06:29, 05:05](795 MB)
+PASS -- TEST 'hrrr_control_dyn32_phy32_gnu' [06:27, 05:00](806 MB)
+PASS -- TEST 'rap_2threads_dyn32_phy32_gnu' [07:28, 06:02](853 MB)
+PASS -- TEST 'hrrr_control_2threads_dyn32_phy32_gnu' [07:26, 05:53](846 MB)
+PASS -- TEST 'hrrr_control_decomp_dyn32_phy32_gnu' [06:26, 05:05](804 MB)
+PASS -- TEST 'rap_restart_dyn32_phy32_gnu' [04:27, 02:41](646 MB)
+PASS -- TEST 'hrrr_control_restart_dyn32_phy32_gnu' [04:19, 02:41](650 MB)
+PASS -- TEST 'conus13km_control_gnu' [06:49, 04:49](1027 MB)
+PASS -- TEST 'conus13km_2threads_gnu' [03:39, 02:05](1015 MB)
+PASS -- TEST 'conus13km_decomp_gnu' [06:43, 04:51](1031 MB)
+PASS -- TEST 'conus13km_restart_gnu' [04:38, 02:43](730 MB)
 
-PASS -- COMPILE 'atm_dyn64_phy32_gnu' [13:11, 11:48]
-PASS -- TEST 'rap_control_dyn64_phy32_gnu' [07:32, 05:39](828 MB)
+PASS -- COMPILE 'atm_dyn64_phy32_gnu' [11:11, 09:40]
+PASS -- TEST 'rap_control_dyn64_phy32_gnu' [07:31, 05:40](828 MB)
 
-PASS -- COMPILE 'atm_dyn32_phy32_debug_gnu' [08:10, 06:45]
-PASS -- TEST 'rap_control_debug_dyn32_phy32_gnu' [04:20, 02:28](803 MB)
-PASS -- TEST 'hrrr_control_debug_dyn32_phy32_gnu' [04:18, 02:23](810 MB)
-PASS -- TEST 'conus13km_debug_gnu' [13:35, 11:11](1044 MB)
-PASS -- TEST 'conus13km_debug_qr_gnu' [12:36, 10:49](768 MB)
-PASS -- TEST 'conus13km_debug_2threads_gnu' [10:39, 08:57](1030 MB)
-PASS -- TEST 'conus13km_debug_decomp_gnu' [13:38, 11:17](1038 MB)
-PASS -- TEST 'conus13km_radar_tten_debug_gnu' [12:39, 11:02](1115 MB)
+PASS -- COMPILE 'atm_dyn32_phy32_debug_gnu' [08:11, 06:33]
+PASS -- TEST 'rap_control_debug_dyn32_phy32_gnu' [04:21, 02:30](807 MB)
+PASS -- TEST 'hrrr_control_debug_dyn32_phy32_gnu' [04:21, 02:26](815 MB)
+PASS -- TEST 'conus13km_debug_gnu' [12:38, 10:46](1046 MB)
+PASS -- TEST 'conus13km_debug_qr_gnu' [13:36, 11:11](775 MB)
+PASS -- TEST 'conus13km_debug_2threads_gnu' [10:33, 08:56](1043 MB)
+PASS -- TEST 'conus13km_debug_decomp_gnu' [12:35, 11:02](1049 MB)
+PASS -- TEST 'conus13km_radar_tten_debug_gnu' [12:34, 11:07](1111 MB)
 
-PASS -- COMPILE 'atm_dyn64_phy32_debug_gnu' [08:11, 06:52]
-PASS -- TEST 'rap_control_dyn64_phy32_debug_gnu' [04:21, 02:34](832 MB)
+PASS -- COMPILE 'atm_dyn64_phy32_debug_gnu' [08:11, 06:56]
+PASS -- TEST 'rap_control_dyn64_phy32_debug_gnu' [04:20, 02:33](835 MB)
 
-PASS -- COMPILE 's2swa_gnu' [18:11, 16:51]
-PASS -- TEST 'cpld_control_p8_gnu' [13:06, 11:06](1699 MB)
+PASS -- COMPILE 's2swa_gnu' [18:11, 16:31]
+PASS -- TEST 'cpld_control_p8_gnu' [13:05, 11:01](1691 MB)
 
-PASS -- COMPILE 's2s_gnu' [17:11, 15:35]
-PASS -- TEST 'cpld_control_nowave_noaero_p8_gnu' [11:56, 09:48](1641 MB)
+PASS -- COMPILE 's2s_gnu' [18:11, 16:13]
+PASS -- TEST 'cpld_control_nowave_noaero_p8_gnu' [11:52, 09:53](1636 MB)
 
-PASS -- COMPILE 's2swa_debug_gnu' [04:11, 02:51]
-PASS -- TEST 'cpld_debug_p8_gnu' [08:52, 06:43](1696 MB)
+PASS -- COMPILE 's2swa_debug_gnu' [04:11, 02:43]
+PASS -- TEST 'cpld_debug_p8_gnu' [08:52, 06:47](1686 MB)
 
-PASS -- COMPILE 's2sw_pdlib_gnu' [17:11, 15:47]
-PASS -- TEST 'cpld_control_pdlib_p8_gnu' [19:46, 17:41](1600 MB)
+PASS -- COMPILE 's2sw_pdlib_gnu' [18:11, 16:24]
+PASS -- TEST 'cpld_control_pdlib_p8_gnu' [19:48, 17:50](1612 MB)
 
-PASS -- COMPILE 's2sw_pdlib_debug_gnu' [04:11, 02:29]
-PASS -- TEST 'cpld_debug_pdlib_p8_gnu' [12:43, 10:53](1551 MB)
+PASS -- COMPILE 's2sw_pdlib_debug_gnu' [04:11, 02:28]
+PASS -- TEST 'cpld_debug_pdlib_p8_gnu' [12:46, 11:01](1558 MB)
 
-PASS -- COMPILE 'datm_cdeps_gnu' [17:11, 15:34]
-PASS -- TEST 'datm_cdeps_control_cfsr_gnu' [05:17, 03:26](1555 MB)
+PASS -- COMPILE 'datm_cdeps_gnu' [17:12, 15:36]
+PASS -- TEST 'datm_cdeps_control_cfsr_gnu' [05:17, 03:25](1557 MB)
 
-PASS -- COMPILE 'atm_mpas_dyn32_gnu' [04:11, 03:06]
-PASS -- TEST 'control_gfs_mpas_gnu' [02:26, 00:47](6336 MB)
+PASS -- COMPILE 'atm_mpas_dyn32_gnu' [05:11, 03:20]
+PASS -- TEST 'control_gfs_mpas_gnu' [02:25, 00:46](6339 MB)
 
-PASS -- COMPILE 'pm_ideal_doubly_periodic_intel' [10:11, 08:32] ( 1 warnings 404 remarks )
-PASS -- TEST 'pm_ideal_supercell_intel' [03:27, 01:24](1169 MB)
+PASS -- COMPILE 'pm_ideal_doubly_periodic_intel' [10:11, 09:00] ( 1 warnings 404 remarks )
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'pm_ideal_supercell_intel' [, ]( MB)
 
 SYNOPSIS:
-Starting Date/Time: 20251026 22:08:52
-Ending Date/Time: 20251027 00:01:15
-Total Time: 01h:52m:47s
+Starting Date/Time: 20251030 07:34:56
+Ending Date/Time: 20251030 09:25:44
+Total Time: 01h:51m:26s
 Compiles Completed: 63/63
-Tests Completed: 272/272
+Tests Completed: 271/272
+Failed Tests:
+* TEST pm_ideal_supercell_intel: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /scratch3/NAGAPE/epic/Fernando.Andrade-maldonado/reg-test/wm/2942/ufs-weather-model/tests/logs/log_hera/run_pm_ideal_supercell_intel.log
+
+NOTES:
+A file 'test_changes.list' was generated with list of all failed tests.
+You can use './rt.sh -c -b test_changes.list' to create baselines for the failed tests.
+If you are using this log as a pull request verification, please commit 'test_changes.list'.
+
+Result: FAILURE
+
+====END OF HERA REGRESSION TESTING LOG====
+====START OF HERA REGRESSION TESTING LOG====
+
+UFSWM hash used in testing:
+71825f70facb7a1e7370c18b1995677d0a66c44f
+
+Submodule hashes used in testing:
+ 9265006502a859d2d3f21029fbb86107ba50ce0e AQM (v0.2.0-54-g9265006)
+ 9f53664ef2e607ad25d6b6c939f2eac9ec818ee6 CDEPS-interface/CDEPS (cdeps0.4.17-432-g9f53664)
+ 90ed2522ba8dd04d75237a77aae6b49e7acca523 CICE-interface/CICE (CICE6.0.0-432-g90ed252)
+ 374373588e22cd86f1b8eb670d489c2967a6b40a CMEPS-interface/CMEPS (cmeps_v0.4.1-2324-g3743735)
+ 9b7652c75b40d9cbb40e52b824f8c0a423922757 CMakeModules (v1.0.0-33-g9b7652c)
+ 9ff3df9545dd582f415f682d3297e8c6c841e5cb GOCART (sdr_v2.1.2.6-291-g9ff3df9)
+ bcf7777bb037ae2feb2a8a8ac51aacb3511b52d9 HYCOM-interface/HYCOM (2.3.00-122-gbcf7777)
+ c4d2337d8607ec994b3cd61179eb974e0a237841 LM4-driver (baseline_change_240904-6-gc4d2337)
+ 9c8b26c2d870636f359f2ef62ef775639132b3ba MOM6-interface/MOM6 (dev/master/repository_split_2014.10.10-10723-g9c8b26c2d)
+ 2c7b3bc2a8096f6232020c47507593058795102e NOAHMP-interface/noahmp (v3.7.1-471-g2c7b3bc)
+ 371b34ec353b51762a24c5d557c8aa9f6f974021 UFSATM (remotes/origin/faster)
+ 560cb9c0f9fdc8ec96f746576dcac6503ed14eef WW3 (6.07.1-495-g560cb9c0)
+ 05cad173feeb598431e3ef5f17c2df6562c8d101 fire_behavior (v0.2.0-1-g05cad17)
+ 97b24f8e40f1de0980388c8326c48b442e5a5e61 stochastic_physics (ufs-v2.0.0-282-g97b24f8)
+
+
+NOTES:
+[Times](Memory) are at the end of each compile/test in format [MM:SS](Size).
+The first time is for the full script (prep+run+finalize).
+The second time is specifically for the run phase.
+Times/Memory will be empty for failed tests.
+
+BASELINE DIRECTORY: /scratch3/NAGAPE/epic/role.epic/UFS-WM_RT/NEMSfv3gfs/develop-20251029
+COMPARISON DIRECTORY: /scratch3/NCEPDEV/stmp/Fernando.Andrade-maldonado/RT_RUNDIRS/Fernando.Andrade-maldonado/FV3_RT/rt_110031
+
+RT.SH OPTIONS USED:
+* (-a) - HPC PROJECT ACCOUNT: epic
+* (-n) - RUN SINGLE TEST: pm_ideal_supercell
+* (-e) - USE ECFLOW
+
+PASS -- COMPILE 'pm_ideal_doubly_periodic_intel' [11:11, 09:10] ( 1 warnings 404 remarks )
+PASS -- TEST 'pm_ideal_supercell_intel' [03:30, 01:24](1169 MB)
+
+SYNOPSIS:
+Starting Date/Time: 20251030 17:07:22
+Ending Date/Time: 20251030 17:23:25
+Total Time: 00h:16m:08s
+Compiles Completed: 1/1
+Tests Completed: 1/1
 
 NOTES:
 A file 'test_changes.list' was generated but is empty.
