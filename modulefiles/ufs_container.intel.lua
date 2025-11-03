@@ -23,12 +23,6 @@ setenv("CC", "mpiicx")
 setenv("CXX", "mpiicpx")
 setenv("FC", "mpiifort")
 setenv("F90", "mpiifort")
--- setenv("MPICC", "mpiicx")
--- etenv("MPICXX", "mpiicpx")
--- etenv("MPIF90", "mpiifort")
--- setenv("I_MPI_CC", "mpiicx")
--- setenv("I_MPI_CXX", "mpiicpx")
--- setenv("I_MPI_F90", "mpiifort")
 
 setenv("CMAKE_Platform", "container.intel")
 
