@@ -1407,8 +1407,9 @@ export LSOIL_INCR=3
 export LAND_IAU_FILTER_INC=.false.
 export LAND_IAU_UPD_STC=.true.
 export LAND_IAU_UPD_SLC=.true.
-export LAND_IAU_DP_STCSMC_ADJ=.true.
+export LAND_IAU_DO_STCSMC_ADJ=.true.
 export LAND_IAU_MIN_T_INC=0.0001
+export LAND_IAU_MIN_SLC_INC=0.000001
 }
 
 # Add section for tiled grid namelist
