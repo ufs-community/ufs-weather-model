@@ -1121,7 +1121,8 @@ export DO_MYNNEDMF=.false.
 export HURR_PBL=.false.
 export MONINQ_FAC=1.0
 export SFCLAY_COMPUTE_FLUX=.false.
-
+export TTE_EDMF=.false.
+export CSCALE=1.0
 # Shallow/deep convection
 export DO_DEEP=.true.
 export SHAL_CNV=.true.
