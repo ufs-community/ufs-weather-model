@@ -22,7 +22,9 @@ load(pathJoin("nccmp", nccmp_ver))
 setenv("CC", "mpiicx")
 setenv("CXX", "mpiicpx")
 setenv("FC", "mpiifort")
-setenv("F90", "mpiifort")
+setenv("I_MPI_CC", "icx")
+setenv("I_MPI_CXX", "icpx")
+setenv("I_MPI_F90", "ifort")
 
 setenv("CMAKE_Platform", "container.intel")
 
