@@ -14,7 +14,15 @@ jobs:
       pull-requests: write
       issues: write
     steps:
-      - uses: actions/add-to-project@v1.0.2
+      - name: Add PR
+        uses: actions/add-to-project@v1.0.2
         with:
           project-url: https://github.com/orgs/ufs-community/projects/70
           github-token: ${{ secrets.PR_PROJECT_TOKEN }}
+      - name: Add date created
+        uses: nipe0324/update-project-v2-item-field@v2.0.2
+        with:
+          project-url: https://github.com/orgs/ufs-community/projects/70
+          github-token: ${{ secrets.PR_PROJECT_TOKEN }}
+          field-name: 'Date Opened'
+          field-value: ${{ github.event.pull_request.created_at }}

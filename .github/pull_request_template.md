@@ -124,8 +124,8 @@ For baseline changes, make sure to submit the test_changes.list file generated b
 If there are changes to input data for a test, provide information here. Delete options that are not needed.
 -->
 - [ ] None.
-- [ ] New input data.
-- [ ] Updated input data.
+- [ ] PR adds input data.
+- [ ] PR changes existing input data.
 
 ### Library Changes/Upgrades:
 <!-- Library updates take time. Provide library and version information here, and delete what is not needed. 
