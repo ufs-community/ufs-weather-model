@@ -34,7 +34,7 @@ Users who have access to :term:`HPSS` can generate initial conditions (:term:`IC
    
    In order to generate all necessary configuration, data, input, and fix files to run a configuration similar to the July 2020 CAPE case for another date (still C48 resolution), the user first needs to run the base ``ufs_test.sh`` script for the default July 2020 CAPE case as described in :numref:`Section %s <run-2020-cape>`. 
 
-To generate coldstart ICs via the UFS_UTILS ``gdas_init``/``chgres_cube`` utilities on an :term:`RDHPCS` with :term:`HPSS` access (e.g., Hera), the user can run the following commands:
+To generate coldstart ICs via the UFS_UTILS ``gdas_init``/``chgres_cube`` utilities on an :term:`RDHPCS` with :term:`HPSS` access (e.g., Ursa), the user can run the following commands:
 
 .. code-block:: console 
    
@@ -45,7 +45,7 @@ To generate coldstart ICs via the UFS_UTILS ``gdas_init``/``chgres_cube`` utilit
    ./build_all.sh
    cd util/gdas_init
 
-where ``<platform>`` is Hera.
+where ``<platform>`` is ursa.
 
 Then, users will need to edit the ``config`` file to: 
 
@@ -100,7 +100,7 @@ The July 2020 CAPE case can be run as-is without adjusting the configuration. Us
 Different Date
 ^^^^^^^^^^^^^^^^
 
-Users may choose to run a similar UFS WM configuration for different dates with user-generated :term:`ICs` (see :numref:`Section %s <chgres-data>` for instructions on downloading this data from :term:`HPSS`). In this case, users will need to copy the ``gfs*.nc`` and ``sfc*.nc`` files from ``OUTDIR/gfs.YYYYMMDD/HH/model_data/atmos/input`` into the ``INPUT`` directory of a UFS WM run directory. (The run directory is set in ``create_xml.py`` as ``${PTMP}/${USER}/FV3_RT/rt_${pid}`` for HSD cases.) Note that this will only work when the run directory uses ICs of the same resolution. 
+Users may choose to run a similar UFS WM configuration for different dates with user-generated :term:`ICs` (see :numref:`Section %s <chgres-data>` for instructions on downloading this data from :term:`HPSS`). In this case, users will need to copy the ``gfs*.nc`` and ``sfc*.nc`` files from ``OUTDIR/gfs.YYYYMMDD/HH/model_data/atmos/input`` into the ``INPUT`` directory of a UFS WM run directory. (The run directory is set in ``${UFS_WM}/tests-dev/machine_config/create_xml.py`` as ``${PTMP}/${USER}/FV3_RT/rt_${pid}`` for HSD cases.) Note that this will only work when the run directory uses ICs of the same resolution. 
 
 Additionally, users will need to adjust the model start time in the ``model_configure`` file. For example: 
 
