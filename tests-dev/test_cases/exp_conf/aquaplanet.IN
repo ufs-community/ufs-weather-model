@@ -190,3 +190,8 @@ if [ $CPLCHM = .true. ]; then
   cp      ${PATHRT}/parm/gocart/*.rc .
   ln -sf  @[INPUTDATA_ROOT]/GOCART/p8/ExtData .
 fi
+
+#overwrite ICs created after 90-day spin-up for aquaplanet case
+  cp -r @[INPUTDATA_ROOT]/HSD_input_data/aquaplanet/INPUT/* ./INPUT/.
+#overwrite monthly SST data for aquaplanet case
+  cp -r @[INPUTDATA_ROOT]/HSD_input_data/aquaplanet/clim/RTGSST.1982.2012.monthly.clim.grb .
