@@ -1,7 +1,7 @@
 ====START OF URSA REGRESSION TESTING LOG====
 
 UFSWM hash used in testing:
-4ec82c99bda10bc886e66ff9fc2d20f41b11bd63
+3d2680955b2299b29bef3a99bd6a36f79b677f7b
 
 Submodule hashes used in testing:
  9265006502a859d2d3f21029fbb86107ba50ce0e AQM (v0.2.0-54-g9265006)
@@ -19,9 +19,9 @@ Submodule hashes used in testing:
  65ef5c73bc7f5663d5688f75c3855d431da4baea MOM6-interface/MOM6/pkg/CVMix-src (65ef5c7)
  29e64d652786e1d076a05128c920f394202bfe10 MOM6-interface/MOM6/pkg/GSW-Fortran (29e64d6)
  2c7b3bc2a8096f6232020c47507593058795102e NOAHMP-interface/noahmp (v3.7.1-471-g2c7b3bc)
- f4d191edaf4fd1dcaaeabdd45a2f81d001d21c4d UFSATM (heads/develop)
+ 2d53bcb2fd5c6d4aabfe987bf28377c8e177cea6 UFSATM (heads/entr_f0f1)
  11359cb04a420fc87e4cf0f035f4d1215ab24488 UFSATM/ccpp/framework (2025-01-06-dev-5-g11359cb)
- 881ee0d91c44a8cff6a8eff4c59a134f93b90df1 UFSATM/ccpp/physics (EP4-2021-g881ee0d9)
+ ce69a44e3f74219ca3e4bff7d1c027e769673bef UFSATM/ccpp/physics (EP4-2022-gce69a44e)
  c62efd27caa26f660edf24232f33f154e608b77a UFSATM/ccpp/physics/physics/MP/TEMPO/TEMPO (c62efd2)
  41c5fcd950fed09b8afe186dede266824eca7fd3 UFSATM/ccpp/physics/physics/Radiation/RRTMGP/rte-rrtmgp (41c5fcd)
  1c6732030b5bc8dd77347bb639952ff123b808ad UFSATM/fv3/atmos_cubed_sphere (201912_public_release-426-g1c67320)
@@ -41,21 +41,31 @@ The second time is specifically for the run phase.
 Times/Memory will be empty for failed tests.
 
 BASELINE DIRECTORY: /scratch4/NAGAPE/epic/role-epic/UFS-WM_RT/NEMSfv3gfs/develop-20251031
-COMPARISON DIRECTORY: /scratch4/NCEPDEV/stmp/Anning.Cheng/RT_RUNDIRS/Anning.Cheng/FV3_RT/rt_2914725
+COMPARISON DIRECTORY: /scratch4/NCEPDEV/stmp/Anning.Cheng/RT_RUNDIRS/Anning.Cheng/FV3_RT/rt_987993
 
 RT.SH OPTIONS USED:
 * (-a) - HPC PROJECT ACCOUNT: fv3-cpu
 * (-k) - KEEP RUN DIRECTORY
 
-PASS -- COMPILE 's2swa_32bit_intel' [15:11, 13:24] ( 1 warnings 1045 remarks )
-PASS -- TEST 'cpld_control_p8_mixedmode_intel' [08:54, 06:22](2193 MB)
+PASS -- COMPILE 's2swa_32bit_intel' [14:10, 12:29] ( 1 warnings 1045 remarks )
+PASS -- TEST 'cpld_control_p8_mixedmode_intel' [08:55, 06:24](2187 MB)
+PASS -- TEST 'cpld_control_gefs_intel' [29:35, 20:00](3263 MB)
+PASS -- TEST 'cpld_restart_gefs_intel' [15:32, 05:50](2971 MB)
+PASS -- TEST 'cpld_dcp_gefs_intel' [42:19, 32:40](3460 MB)
+
+PASS -- COMPILE 's2swa_32bit_pdlib_intel' [15:11, 13:56] ( 1 warnings 1044 remarks )
+PASS -- TEST 'cpld_control_gfsv17_intel' [11:50, 09:20](2065 MB)
+PASS -- TEST 'cpld_control_gfsv17_iau_intel' [13:01, 10:04](2593 MB)
+PASS -- TEST 'cpld_restart_gfsv17_intel' [06:46, 03:50](1511 MB)
+PASS -- TEST 'cpld_restart_gfsv17_iau_intel' [06:50, 04:47](2351 MB)
+PASS -- TEST 'cpld_mpi_gfsv17_intel' [18:42, 16:43](1987 MB)
 
 SYNOPSIS:
-Starting Date/Time: 20251103 23:31:55
-Ending Date/Time: 20251103 23:56:00
-Total Time: 00h:24m:09s
-Compiles Completed: 1/1
-Tests Completed: 1/1
+Starting Date/Time: 20251105 12:12:43
+Ending Date/Time: 20251105 15:15:37
+Total Time: 03h:02m:58s
+Compiles Completed: 2/2
+Tests Completed: 9/9
 
 NOTES:
 A file 'test_changes.list' was generated but is empty.
