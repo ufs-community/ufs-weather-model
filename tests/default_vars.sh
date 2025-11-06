@@ -469,7 +469,6 @@ export FV3_RUN=control_run.IN
 export INPUT_NML=control.nml.IN
 export CCPP_SUITE=FV3_GFS_v16
 
-export DOGP_CLDOPTICS_LUT=.false.
 export DOGP_LWSCAT=.false.
 export IAER=111
 export ICLIQ_SW=1
@@ -548,7 +547,7 @@ export_mpas ()
     export MPAS_RESOLUTION=120
 
     export ATM_compute_tasks=4
-    
+
     #DJS2025 START: We don't need this for MPAS, but to setup the tests we do. CLEAN THIS UP!!!
     #Set defaults if ATMRES and DT_ATMOS are not set
     export ATMRES=${ATMRES:-"C96"}
@@ -647,7 +646,6 @@ export_gfs_physics ()
     export HYBEDMF=.false.
     # RRTMGP
     export DO_RRTMGP=.false.
-    export DOGP_CLDOPTICS_LUT=.true.
     export DOGP_LWSCAT=.true.
     export DOGP_SGS_CNV=.true.
     export USE_LW_JACOBIAN=.false.
@@ -664,7 +662,7 @@ export_gfs_physics ()
     export RRTMGP_NGPTSLW=128
     export RRTMGP_NBANDSLW=16
     export RRTMGP_NBANDSSW=14
-    
+
     # Microphysics
     export IMP_PHYSICS=8
     export NWAT=6
@@ -731,7 +729,7 @@ export_gfs_physics ()
     export KNOB_UGWP_TAUAMP=3.0e-3
     export KNOB_UGWP_LHMET=200.0e3
     export KNOB_UGWP_OROSOLV="'pss-1986'"
-    
+
     export KNOB_UGWP_TAUAMP=3.0e-3
     export DO_UGWP_V0_NST_ONLY=.false.
 
@@ -885,6 +883,7 @@ export NTILES=6
 export INPES=${INPES_dflt}
 export JNPES=${JNPES_dflt}
 export RESTART_INTERVAL=0
+export USE_FV3_ROUTEHANDLES=.false.
 export QUILTING=.true.
 export QUILTING_RESTART=.true.
 export WRITE_GROUP=1
@@ -986,9 +985,8 @@ export TTENDLIM=-999
 
 # Radiation
 export DO_RRTMGP=.false.
-export DOGP_CLDOPTICS_LUT=.true.
 export DOGP_LWSCAT=.true.
-export DOGP_SGS_CNV=.true.
+export DOGP_SGS_CNV=.false.
 export USE_LW_JACOBIAN=.false.
 export DAMP_LW_FLUXADJ=.false.
 export RRTMGP_LW_PHYS_BLKSZ=2
@@ -1409,8 +1407,9 @@ export LSOIL_INCR=3
 export LAND_IAU_FILTER_INC=.false.
 export LAND_IAU_UPD_STC=.true.
 export LAND_IAU_UPD_SLC=.true.
-export LAND_IAU_DP_STCSMC_ADJ=.true.
+export LAND_IAU_DO_STCSMC_ADJ=.true.
 export LAND_IAU_MIN_T_INC=0.0001
+export LAND_IAU_MIN_SLC_INC=0.000001
 }
 
 # Add section for tiled grid namelist
@@ -1634,6 +1633,7 @@ export_mom6() {
   export MOM6_CHLCLIM=seawifs_1998-2006_smoothed_2X.nc
   export MOM6_USE_LI2016=True
   export MOM6_TOPOEDITS=''
+  export MOM6_HFREEZE=20.0
   # since CPL_SLOW is set to DT_THERM, this should be always be false
   export MOM6_THERMO_SPAN=False
   export MOM6_USE_WAVES=True
@@ -1875,9 +1875,8 @@ export LSEASPRAY=.true.
 
 # RRTMGP
 export DO_RRTMGP=.false.
-export DOGP_CLDOPTICS_LUT=.true.
 export DOGP_LWSCAT=.true.
-export DOGP_SGS_CNV=.true.
+export DOGP_SGS_CNV=.false.
 
 # CA
 export DO_CA=.true.
@@ -2098,6 +2097,7 @@ export_hafs_regional ()
   export FILENAME_BASE="'atm' 'sfc'"
   export OUTPUT_GRID="'regional_latlon'"
   export OUTPUT_FILE="'netcdf'"
+  export ZSTANDARD_LEVEL=0
   export IDEFLATE=0
   export QUANTIZE_NSD=0
   export CEN_LON=-62.0
