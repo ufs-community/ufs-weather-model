@@ -24,11 +24,12 @@ Preconfigured (Level 1) systems for the UFS WM already have the required externa
 Currently, Level 1 (or Tier-1) platforms for regression testing are: 
 
    * WCOSS2 (Intel)
-   * Gaea (Intel)
-   * Hera (Intel/GNU compilers)
+   * Gaea C6 (Intel)
+   * Ursa (Intel/GNU compilers)
    * Jet (Intel)
    * Orion (Intel)
    * Hercules (Intel/GNU compilers)
+   * Derecho (Intel/GNU compilers)
    * AWS Docker container (Intel)
 
 More information is available in the :wm-wiki:`UFS WM wiki <Regression-Test-Policy-for-Weather-Model-Platforms-and-Compilers>`. 
@@ -46,52 +47,70 @@ Currently, Level 2 platforms for regression testing are:
 UFS Weather Model Hierarchical Repository Structure
 ===================================================
 
-The UFS :term:`WM` repository supports the :term:`UFS` short- and medium-range weather applications (:term:`SRW` / :term:`MRW` Apps). The WM repository contains atmosphere, ocean, sea ice, land, and wave components, as well as some infrastructure components. Each of these subcomponents has its own repository. All the repositories are currently located in GitHub with public access to the broader community. :numref:`Table %s <Repo_Structure>` describes the list of repositories that comprise the UFS WM.
+The UFS :term:`WM` repository supports the :term:`UFS` short-range weather applications (:term:`SRW`). The WM repository contains atmosphere, ocean, sea ice, land, and wave components, as well as some infrastructure components. Each of these subcomponents has its own repository. All the repositories are currently located in GitHub with public access to the broader community. :numref:`Table %s <Repo_Structure>` describes the list of repositories that comprise the UFS WM.
 
 .. _Repo_Structure:
 
 .. list-table:: *List of Repositories that comprise the ufs-weather-model*
-  :widths: 50 50
-  :header-rows: 1
+   :widths: 20 50 30
+   :header-rows: 1
 
-  * - Repository Description
-    - Authoritative repository URL
-  * - Umbrella repository for the UFS Weather Model
-    - https://github.com/ufs-community/ufs-weather-model
-  * - Framework to connect the :term:`CCPP` library to a host model
-    - https://github.com/NCAR/ccpp-framework
-  * - CCPP library of physical parameterizations
-    - https://github.com/NCAR/ccpp-physics
-  * - Umbrella repository for the physics and dynamics of the atmospheric model (FV3) 
-    - https://github.com/NOAA-EMC/fv3atm
-  * - :term:`FV3` dynamical core
-    - https://github.com/NOAA-GFDL/GFDL_atmos_cubed_sphere
-  * - Stochastic physics pattern generator
-    - https://github.com/NOAA-PSL/stochastic_physics
-  * - Modular Ocean Model (:term:`MOM6`)
-    - https://github.com/NOAA-EMC/MOM6
-  * - HYbrid Coordinate Ocean Model (:term:`HYCOM`)
-    - https://github.com/NOAA-EMC/HYCOM-src
-  * - Los Alamos sea ice model (:term:`CICE6`)
-    - https://github.com/NOAA-EMC/CICE
-  * - NOAA/NCEP WAVEWATCH III Model (:term:`WW3`)
-    - https://github.com/NOAA-EMC/WW3
-  * - The Goddard Chemistry Aerosol Radiation and Transport (:term:`GOCART`)
-    - https://github.com/GEOS-ESM/GOCART 
-  * - NUOPC Community Mediator for Earth Prediction Systems (:term:`CMEPS`)
-    - https://github.com/NOAA-EMC/CMEPS
-  * - Community Data Models for Earth Prediction Systems (:term:`CDEPS`)
-    - https://github.com/NOAA-EMC/CDEPS
-  * - Air Quality Model (:term:`AQM`)
-    - https://github.com/NOAA-EMC/AQM
-  * - Noah-MP Land Surface Model (Noah-MP)
-    - https://github.com/NOAA-EMC/noahmp
-  * - NOAA-GFDL Land Model (:term:`LM4`)
-    - https://github.com/NOAA-GFDL/LM4-NUOPC-driver
-  * - Community Fire Behavior Model
-    - https://github.com/NOAA-EMC/fire_behavior
+   * - Repository name
+     - Repository Description
+     - Authoritative repository URL
+   * - UFS Weather Model
+     - Umbrella repository for the UFS Weather Model
+     - https://github.com/ufs-community/ufs-weather-model
+   * - CCPP Framework
+     - Framework to connect the :term:`CCPP` library to a host model
+     - https://github.com/NCAR/ccpp-framework
+   * - CCPP Physics
+     - CCPP library of physical parameterizations
+     - https://github.com/NCAR/ccpp-physics
+   * - UFSATM
+     - Umbrella repository for the physics and dynamics of the atmospheric model
+     - https://github.com/NOAA-EMC/ufsatm
+   * - GFDL_atmos_cubed_sphere
+     - :term:`FV3` dynamical core
+     - https://github.com/NOAA-GFDL/GFDL_atmos_cubed_sphere
+   * - Stochastic Physics
+     - Stochastic physics pattern generator
+     - https://github.com/NOAA-PSL/stochastic_physics
+   * - MOM6
+     - Modular Ocean Model (:term:`MOM6`)
+     - https://github.com/NOAA-EMC/MOM6
+   * - HYCOM-src
+     - HYbrid Coordinate Ocean Model (:term:`HYCOM`)
+     - https://github.com/NOAA-EMC/HYCOM-src
+   * - CICE
+     - Los Alamos sea ice model (:term:`CICE6`)
+     - https://github.com/NOAA-EMC/CICE
+   * - WW3
+     - NOAA/NCEP WAVEWATCH III Model (:term:`WW3`)
+     - https://github.com/NOAA-EMC/WW3
+   * - GOCART
+     - The Goddard Chemistry Aerosol Radiation and Transport (:term:`GOCART`)
+     - https://github.com/GEOS-ESM/GOCART
+   * - CMEPS
+     - NUOPC Community Mediator for Earth Prediction Systems (:term:`CMEPS`)
+     - https://github.com/NOAA-EMC/CMEPS
+   * - CDEPS
+     - Community Data Models for Earth Prediction Systems (:term:`CDEPS`)
+     - https://github.com/NOAA-EMC/CDEPS
+   * - AQM
+     - Air Quality Model (:term:`AQM`)
+     - https://github.com/NOAA-EMC/AQM
+   * - Noah-MP
+     - Noah-MP Land Surface Model (Noah-MP)
+     - https://github.com/NOAA-EMC/noahmp
+   * - LM4-NUOPC-driver
+     - NOAA-GFDL Land Model (:term:`LM4`)
+     - https://github.com/NOAA-GFDL/LM4-NUOPC-driver
+   * - Fire Behavior
+     - Community Fire Behavior Model
+     - https://github.com/NOAA-EMC/fire_behavior
 
-In the table, the left-hand column contains a description of each repository, and the 
+In the table, the left-hand column contains the name of each repository, the middle column contains the repository description and the 
 right-hand column shows the GitHub location of the authoritative component repositories. 
 The UFS WM currently uses Git submodules to manage these subcomponents.
    
@@ -114,6 +133,7 @@ The umbrella repository for the UFS WM is named ``ufs-weather-model``. Under thi
     │         ├── (datm)                            -------- CDEPS DATM
     │         ├── (docn)                            -------- CDEPS DOCN
     │         └── (dice)                            -------- CDEPS DICE
+    ├── ci
     ├── CICE-interface
     │    └── CICE                                   -------- CICE6 sea ice model
     │         ├── (icepack)                         -------- Sea ice column physics
@@ -127,21 +147,6 @@ The umbrella repository for the UFS WM is named ``ufs-weather-model``. Under thi
     ├── doc                                         -------- User Guide files
     ├── driver
     ├── fire_behavior                               -------- Community Fire Behavior Model
-    ├── FV3                                         -------- UFSAtm atmosphere model
-    │    ├── (atmos_cubed_sphere)                   -------- FV3 dynamical core
-    │    │    ├── (docs)
-    │    │    ├── (driver)
-    │    │    ├── (model)
-    │    │    └── (tools)
-    │    ├── (ccpp)                                 -------- Common Community Physics Package
-    │    │    ├── (config)
-    │    │    ├── (driver)
-    │    │    ├── (framework)                       -------- CCPP framework
-    │    │    ├── (physics)                         -------- CCPP-compliant physics schemes
-    │    │    └── (suites)                          -------- CCPP physics suite definition files (SDFs)
-    │    ├── (cpl)                                  -------- Coupling field data structures
-    │    ├── (io)                                   -------- UFSAtm write grid comp code
-    │    └── (stochastic_physics)                   -------- Wrapper for stochastic physics
     ├── GOCART
     │    └── (ESMF)                                 -------- GOCART model
     ├── HYCOM-interface
@@ -171,6 +176,23 @@ The umbrella repository for the UFS WM is named ``ufs-weather-model``. Under thi
     ├── tests-dev                                   -------- developmental testing framework
     │    ├── test_cases
     │    └── machine_config
+    ├── UFSATM                                      -------- UFSATM atmosphere model
+    │    ├── (ccpp)                                 -------- Common Community Physics Package
+    │    │    ├── (config)
+    │    │    ├── (driver)
+    │    │    ├── (framework)                       -------- CCPP framework
+    │    │    ├── (physics)                         -------- CCPP-compliant physics schemes
+    │    │    └── (suites)                          -------- CCPP physics suite definition files (SDFs)
+    │    ├── (cpl)                                  -------- Coupling field data structures
+    │    ├── (fv3)
+    │    │    └── (atmos_cubed_sphere)              -------- FV3 dynamical core
+    │    │         ├── (docs)
+    │    │         ├── (driver)
+    │    │         ├── (model)
+    │    │         └── (tools)
+    │    ├── (io)                                   -------- UFSATM write grid component code
+    │    ├── (mpas)                                 -------- MPAS dynamical core
+    │    └── (upp)                                  -------- Unified Post Processor
     └── WW3
          └── (model)                                -------- WW3 model
              └── (src)                              -------- NUOPC WW3 caps
