@@ -93,6 +93,13 @@ export ICE_tasks_cdeps_025=48
 export INPES_aqm=33
 export JNPES_aqm=8
 
+export INPES_sfs=4
+export JNPES_sfs=6
+export THRD_sfs=1
+export WPG_sfs=24
+export OCN_tasks_sfs=168
+export ICE_tasks_sfs=48
+
 export THRD_cpl_unstr=1
 export INPES_cpl_unstr=3
 export JNPES_cpl_unstr=8
@@ -121,6 +128,7 @@ export fbh_omp_num_threads=1
 
 export histaux_enabled=.false.
 export BMIC=.false.
+export SFS=.false.
 
 if [[ ${MACHINE_ID} = wcoss2 || ${MACHINE_ID} = acorn ]]; then
 
@@ -1046,6 +1054,7 @@ export RRFS_RESTART=NO
 export SEAS_OPT=2
 
 # GWD
+export DO_NGW_EC=.false.
 export LDIAG_UGWP=.false.
 export DO_UGWP=.false.
 export DO_TOFD=.false.
@@ -1113,7 +1122,8 @@ export DO_MYNNEDMF=.false.
 export HURR_PBL=.false.
 export MONINQ_FAC=1.0
 export SFCLAY_COMPUTE_FLUX=.false.
-
+export TTE_EDMF=.false.
+export CSCALE=1.0
 # Shallow/deep convection
 export DO_DEEP=.true.
 export SHAL_CNV=.true.
@@ -1250,6 +1260,7 @@ export PERT_MP=.false.
 export PERT_RADTEND=.false.
 export PERT_CLDS=.false.
 
+export NEW_LSCALE=.false.
 export STOCHINI=.false.
 export DO_SPPT=.false.
 export DO_SHUM=.false.
