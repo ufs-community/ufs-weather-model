@@ -105,7 +105,7 @@ the data required to run the WM RTs are already available at the following ``DIS
 
 Within ``DISKNM``, input data for the UFS WM is located at the following locations: 
 
-  * **INPUTDATA_ROOT**: ``${DISKNM}/NEMSfv3gfs/input-data-20250507``
+  * **INPUTDATA_ROOT**: ``${DISKNM}/NEMSfv3gfs/input-data-20251015``
   * **INPUTDATA_ROOT_WW3** ``${INPUTDATA_ROOT}/WW3_input_data_20250807``
   * **INPUTDATA_ROOT_BMIC**: ``${DISKNM}/NEMSfv3gfs/BM_IC-20220207``
   * **INPUTDATA_LM4**: ``${INPUTDATA_ROOT}/LM4_input_data``
@@ -117,10 +117,10 @@ The regression testing script (``rt.sh``) has certain default data directories (
 The corresponding data is publicly available in the data bucket. To view the data, users can visit https://noaa-ufs-regtests-pds.s3.amazonaws.com/index.html. 
 Users can download the data and update the ``rt.sh`` script to point to the appropriate locations in order to run RTs on their own system: 
   
-* ``INPUTDATA_ROOT``: https://noaa-ufs-regtests-pds.s3.amazonaws.com/index.html#input-data-20250507/
-* ``INPUTDATA_ROOT_WW3``: https://noaa-ufs-regtests-pds.s3.amazonaws.com/index.html#input-data-20250507/WW3_input_data_20250807/
+* ``INPUTDATA_ROOT``: https://noaa-ufs-regtests-pds.s3.amazonaws.com/index.html#input-data-20251015
+* ``INPUTDATA_ROOT_WW3``: https://noaa-ufs-regtests-pds.s3.amazonaws.com/index.html#input-data-20251015/WW3_input_data_20250807/
 * ``INPUTDATA_ROOT_BMIC``: https://noaa-ufs-regtests-pds.s3.amazonaws.com/index.html#BM_IC-20220207/
-* ``INPUTDATA_LM4``: https://noaa-ufs-regtests-pds.s3.amazonaws.com/index.html#input-data-20250507/LM4_input_data/
+* ``INPUTDATA_LM4``: https://noaa-ufs-regtests-pds.s3.amazonaws.com/index.html#input-data-20251015/LM4_input_data/
 
 To download data, users must select the files they want from the bucket and download them either in their browser, via a ``wget`` command, or through the AWS CLI. 
 
