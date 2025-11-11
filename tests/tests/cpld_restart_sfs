@@ -1,15 +1,11 @@
 #
-#  cpld_control_sfs test
+#  cpld_restart_sfs test
 #
-export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS system - C192 MX025 - SFS test"
+export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS system - C192 MX025 - SFS restart test"
 
 export CNTL_DIR=cpld_control_sfs
 
-export LIST_FILES="sfcf024.nc \
-                   atmf024.nc \
-                   GFSFLX.GrbF24 \
-                   GFSPRS.GrbF24 \
-                   RESTART/19940502.000000.coupler.res \
+export LIST_FILES="RESTART/19940502.000000.coupler.res \
                    RESTART/19940502.000000.fv_core.res.nc \
                    RESTART/19940502.000000.fv_core.res.tile1.nc \
                    RESTART/19940502.000000.fv_core.res.tile2.nc \
@@ -65,12 +61,12 @@ export CCPP_SUITE=FV3_GFS_v17_coupled_p8_ugwpv1
 
 export DAYS=1.
 export FHMAX=24
-export RESTART_N=12
-export RESTART_INTERVAL="${RESTART_N} -1"
-export FHROT=0
+export FHROT=12
+export RESTART_N=$((FHMAX-$FHROT))
 
 export OUTPUT_FH="24 -1"
 export FHZERO=24
+
 export OUTPUT_GRID=gaussian_grid
 export WRITE_DOPOST=.true.
 export QUILTING_RESTART=.true.
@@ -88,6 +84,9 @@ export SDAY=01
 export SHOUR=00
 export CHOUR=00
 export SECS=`expr $SHOUR \* 3600`
+
+export RESTART_FILE_PREFIX="${SYEAR}${SMONTH}${SDAY}.$(printf "%02d" $(( ${FHROT} + ${SHOUR} )))0000"
+export RESTART_FILE_SUFFIX_SECS="${SYEAR}-${SMONTH}-${SDAY}-$(printf "%05d" $(( (${FHROT}+ ${SHOUR})*3600 )))"
 
 export DOMAINS_STACK_SIZE=16000000
 
@@ -141,23 +140,17 @@ export MOM6_FRUNOFF=runoff.daitren.clim.${NX_GLB}x${NY_GLB}.v20180328.nc
 export MOM6_RIVER_RUNOFF=True
 export MOM6_USE_WAVES=False
 export MOM6_DIAG_COORD_DEF_Z_FILE=interpolate_zgrid_32L.nc
-
 # ATM IAU
 export IAUFHRS=0
 export DO_LAND_IAU=.false.
-export READ_INCREMENT=.true.
+export READ_INCREMENT=.false.
 export RES_LATLON_DYNAMICS="'atminc.nc'"
 export IAU_INC_FILES="''"
 
 # MOM6 IAU
-export ODA_INCUPD=True
-export ODA_INCUPD_NHOURS=0.0
-export ODA_TEMPINC_VAR="t_pert"
-export ODA_SALTINC_VAR="s_pert"
-export ODA_THK_VAR="h_anl"
-export ODA_INCUPD_UV=True
-export ODA_UINC_VAR="u_pert"
-export ODA_VINC_VAR="v_pert"
+export ODA_INCUPD=False
+export ODA_INCUPD_UV=False
+export nccmp_exclude="--exclude=oda_incupd_ncount"
 
 # MOM6 frequency
 export MOM6_OUTPUT_FH=24
@@ -171,12 +164,21 @@ export DO_OCN_SPPT=True
 export DO_SPPT=True
 export PERT_EPBL=True
 
-# use downscaled warmstarts for ocean and ice
-export OCNICE_WARMSTART=.true.
-export MOM6_INIT_FROM_Z=False
-export MOM6_INIT_UV=file
-export MOM6_WARMSTART_FILE=mom6.warmstart.nc
-export CICE_ICE_IC=cice.warmstart.nc
+# ATM warm start
+export WARM_START=.true.
+export NA_INIT=0
+export EXTERNAL_IC=.false.
+export NGGPS_IC=.false.
+export MOUNTAIN=.true.
+export NSTF_NAME=2,0,0,0,0
+
+# ICE warm start
+export CICE_RUNTYPE=continue
+export RUNTYPE=continue
+export CICE_USE_RESTART_TIME=.true.
+
+# MOM6 warm start
+export MOM6_RESTART_SETTING=r
 
 export FNALBC="'C192.snowfree_albedo.tileX.nc'"
 export FNALBC2="'C192.facsf.tileX.nc'"
@@ -237,14 +239,10 @@ export PROGSIGMA=.true.
 
 export TTE_EDMF=.true.
 export CSCALE=0.5
-
 # GFDL MP
 export DNATS=0
 # Thompson MP
 export LRADAR=.true.
-
-# Merra2 Aerosols & NSST
-export NSTF_NAME=2,1,0,0,0
 
 # RRTMGP
 export DOGP_CLDOPTICS_LUT=.false.
@@ -253,6 +251,7 @@ export DOGP_LWSCAT=.false.
 # Stochastic physics
 export NEW_LSCALE=.true.
 export SPPTINT=0
+export STOCHINI=.true.
 export DO_SPPT=.true.
 export PERT_CLDS=.true.
 export ISEED_CA=1115337723
