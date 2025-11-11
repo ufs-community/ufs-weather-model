@@ -4,6 +4,11 @@
 Data: Input, Model Configuration, and Output Files
 *****************************************************
 
+.. attention::
+
+  The most up-to-date files are located in the `UFS Weather Model Regression Test Data Bucket <https://noaa-ufs-regtests-pds.s3.amazonaws.com/index.html>`_ for the most recent dates listed. 
+  File descriptions will appear below, but due to ongoing updates, we cannot guarantee that every file will appear, especially when running different configurations. 
+
 The UFS Weather Model can be run in one of several configurations (sometimes referred to as "applications"), from a single-component atmospheric 
 model to a fully coupled model with multiple earth system components (e.g., atmosphere, ocean, sea-ice and 
 mediator). Currently, supported configurations include:
@@ -16,45 +21,45 @@ mediator). Currently, supported configurations include:
 
    * - Configuration Name
      - Description
-   * - :ref:`ATM <atm>`
+   * - ATM
      - Standalone Atmospheric Model (:term:`ATM`)
-   * - :ref:`ATMW <atmw>`
+   * - ATMW
      - :term:`ATM` coupled to :term:`WW3`
-   * - :ref:`ATMAERO <atmaero>`
+   * - ATMAERO
      - :term:`ATM` coupled to :term:`GOCART`
-   * - :ref:`ATMAQ <atmaq>`
+   * - ATMAQ
      - :term:`ATM` coupled to :term:`CMAQ`
-   * - :ref:`ATML <atml>`
+   * - ATML
      - :term:`ATM` coupled to :term:`NOAHMP`
-   * - :ref:`ATMF <atmf>`
+   * - ATMF
      - :term:`ATM` coupled to the Community Fire Behavior Model (aka :term:`UFS FIRE`) 
-   * - :ref:`ATM_DS2S <atm_ds2s>`
+   * - ATM_DS2S
      - Coupled :term:`ATM` - :term:`DOCN` - :term:`DICE` - :term:`CDEPS`
-   * - :ref:`ATM_DS2S-PCICE <atm_ds2s-pcice>`
+   * - ATM_DS2S-PCICE
      - Coupled :term:`ATM` - :term:`DOCN` - :term:`CICE6` (prescribed ice mode) - :term:`CDEPS`
-   * - :ref:`S2S <s2s>`
+   * - S2S
      - Coupled :term:`ATM` - :term:`MOM6` - :term:`CICE6` - :term:`CMEPS`
-   * - :ref:`S2SA <s2sa>`
+   * - S2SA
      - Coupled :term:`ATM` - :term:`MOM6` - :term:`CICE6` - :term:`GOCART` - :term:`CMEPS`
-   * - :ref:`S2SW <s2sw>`
+   * - S2SW
      - Coupled :term:`ATM` - :term:`MOM6` - :term:`CICE6` - :term:`WW3` - :term:`CMEPS`
-   * - :ref:`S2SWA <s2swa>`
+   * - S2SWA
      - Coupled :term:`ATM` - :term:`MOM6` - :term:`CICE6` - :term:`GOCART` - :term:`WW3` - :term:`CMEPS`
-   * - :ref:`S2SWAL <s2swal>`
+   * - S2SWAL
      - Coupled :term:`ATM` - :term:`MOM6` - :term:`CICE6` - :term:`GOCART` - :term:`WW3` - :term:`CMEPS` - :term:`NOAHMP`
-   * - :ref:`NG-GODAS <ng-godas>`
+   * - NG-GODAS
      - Coupled :term:`CDEPS` - :term:`DATM` - :term:`MOM6` - :term:`CICE6` - :term:`CMEPS`
-   * - :ref:`LND <lnd>`
+   * - LND
      - Coupled :term:`CDEPS` - :term:`DATM` - :term:`NOAHMP`
-   * - :ref:`LND-LM4 <lnd-lm4>`
+   * - LND-LM4
      - Coupled :term:`CDEPS` - :term:`DATM` - :term:`LM4`
-   * - :ref:`HAFS <hafs>`
+   * - HAFS
      - Coupled :term:`ATM` - :term:`HYCOM` - :term:`CMEPS`
-   * - :ref:`HAFSW <hafsw>`
+   * - HAFSW
      - Coupled :term:`ATM` - :term:`HYCOM` - :term:`WW3` - :term:`CMEPS`
-   * - :ref:`HAFS-MOM6W <hafs-mom6w>`
-     - Coupled :term:`ATM` - :term:`HYCOM` - :term:`CMEPS`
-   * - :ref:`HAFS-ALL <hafs-all>`
+   * - HAFS-MOM6W
+     - Coupled :term:`ATM` - :term:`MOM6`- :term:`WW3` - :term:`CMEPS`
+   * - HAFS-ALL
      - Coupled :term:`CDEPS` - :term:`ATM` - :term:`HYCOM` - :term:`WW3` - :term:`CMEPS`
 
 .. COMMENT: Should HAFS-ALL be DATM instead of ATM?
@@ -97,8 +102,12 @@ The static input files for global configurations are listed and described in :nu
      - Description
    * - aerosol.dat
      - External aerosols data file
+   * - CCN_ACTIVATE.BIN
+     - Cloud condensation nuclei activation binary file
    * - CFSR.SEAICE.1982.2012.monthly.clim.grb
-     - CFS reanalysis of monthly sea ice climatology
+     - :term:`CFS <CFSR>` reanalysis of monthly sea ice climatology
+   * - freezeH2O.dat
+     - Defines freezing behavior of water under different temperatures and pressures
    * - co2historicaldata_YYYY.txt
      - Monthly CO2 in PPMV data for year YYYY
    * - global_albedo4.1x1.grb
@@ -136,6 +145,12 @@ The static input files for global configurations are listed and described in :nu
      - Climatological vegetation type
    * - global_zorclim.1x1.grb
      - Climatological surface roughness
+   * - IMS-NIC.blended.ice.monthly.clim.grb
+     - Monthly climatology of global sea ice concentration from blended :term:`IMS` and :term:`NIC` datasets
+   * - qr_acr_qgV2.dat
+     - Precomputed data for rain-graupel collection processes
+   * - qr_acr_qsV2.dat:
+     - Precomputed data for rain–snow collection processes
    * - RTGSST.1982.2012.monthly.clim.grb
      - Monthly, climatological, real-time global sea surface temperature
    * - seaice_newland.grb
@@ -224,7 +239,7 @@ MOM6
 Static Datasets (i.e., *fix files*)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The static input files for global configurations are listed and described in :numref:`Table %s <MOM6_FixFiles>`.
+The static input files for global configurations are listed and described in :numref:`Table %s <MOM6_FixFiles>`. Note that not all files are required for all resolutions. 
 
 .. _MOM6_FixFiles:
 
@@ -235,33 +250,39 @@ The static input files for global configurations are listed and described in :nu
    * - Filename
      - Description
      - Used in resolution
-   * - runoff.daitren.clim.1440x1080.v20180328.nc
+   * - runoff.daitren.clim.1440x1080.v20180328.nc 
      - climatological runoff
      - 0.25
-   * - runoff.daitren.clim.720x576.v20180328.nc
+   * - runoff.daitren.clim.720x576.v20180328.nc 
      - climatological runoff
      - 0.50
-   * - seawifs-clim-1997-2010.1440x1080.v20180328.nc
+   * - runoff.daitren.iaf.720x576.v20180328.nc 
+     - interannually varying runoff forcing
+     - 0.50
+   * - seawifs-clim-1997-2010.1440x1080.v20180328.nc 
      - climatological chlorophyll concentration in sea water
      - 0.25
-   * - seawifs-clim-1997-2010.720x576.v20180328.nc
+   * - seawifs-clim-1997-2010.720x576.v20180328.nc 
      - climatological chlorophyll concentration in sea water
      - 0.50
-   * - seawifs_1998-2006_smoothed_2X.nc
+   * - seawifs_1998-2006_smoothed_2X.nc  
      - climatological chlorophyll concentration in sea water
      - 1.00
-   * - tidal_amplitude.v20140616.nc
+   * - tidal_amplitude.v20140616.nc 
      - climatological tide amplitude
      - 0.25
-   * - tidal_amplitude.nc
+   * - tidal_amplitude.nc 
      - climatological tide amplitude
      - 0.50, 1.00
-   * - geothermal_davies2013_v1.nc
+   * - geothermal_davies2013_v1.nc 
      - climatological geothermal heat flow
      - 0.50, 0.25
-   * - KH_background_2d.nc
+   * - KH_background_2d.nc 
      - climatological 2-d background harmonic viscosities
      - 1.00
+   * - salt_restore_PHC2.720x576.v20180405.nc 
+     - climatological salinity restoring field (PHC source)
+     - 0.50
 
 .. _mom-grid-ic-files:
 
@@ -279,49 +300,105 @@ The input files containing grid information and the initial conditions for globa
    
    * - Filename
      - Description
-     - Valid RES options
+     - Valid resolution options
      - Date-dependent
-   * - ocean_hgrid.nc
+   * - ocean_hgrid.nc 
      - horizonal grid information
-     - 1.00, 0.50, 0.25
+     - 9.00, 5.00, 1.00, 0.50, 0.25
      -
-   * - ocean_mosaic.nc
+   * - oceanda_zgrid_25L.nc
+     - defines the vertical z-coordinate depth structure for 25 ocean layers used in data assimilation
+     - 5.00
+     -
+   * - vgrid_75_2m.nc 
+     - vertical grid levels 
+     - 1.00
+     -
+   * - ocean_mosaic.nc 
      - specify horizonal starting and ending points index
-     - 1.00, 0.50, 0.25
+     - 9.00, 5.00, 1.00, 0.50, 0.25
      -
-   * - ocean_topog.nc
+   * - ocean_topog.nc 
      - ocean topography
-     - 1.00, 0.50, 0.25
+     - 0.50, 0.25
      -
-   * - ocean_mask.nc
-     - lans/sea mask
-     - 1.00, 0.50, 0.25
+   * - ocean_mask.nc 
+     - ocean mask 
+     - 9.00, 5.00, 1.00, 0.50, 0.25
      -
-   * - hycom1_75_800m.nc
+   * - ocean_static.nc 
+     - static ocean grid and mask data
+     - 0.50
+     -
+   * - land_mosaic_tile1Xocean_mosaic_tile1.nc 
+     - land/ocean mosaic tiles 
+     - 1.00, 0.50
+     -
+   * - atmos_mosaic_tile1Xland_mosaic_tile1.nc 
+     - atmosphere/land mosaic tiles
+     - 1.00
+     -
+   * - atmos_mosaic_tile1Xocean_mosaic_tile1.nc 
+     - atmosphere/ocean mosaic tiles 
+     - 1.00
+     -
+   * - land_mask.nc 
+     - land mask
+     - 1.00, 0.50
+     -
+   * - basin_codes.nc 
+     - ocean basin classification grid
+     - 0.50
+     -
+   * - hycom1_25.nc
+     - vertical coordinate thickness defining 25 vertical levels
+     - 9.00, 5.00
+     -
+   * - hycom1_75_800m.nc 
      - vertical coordinate level thickness
      - 1.00, 0.50, 0.25
      -
-   * - layer_coord.nc
+   * - layer_coord.nc 
      - vertical layer target potential density
      - 1.00, 0.50, 0.25
      -
-   * - All_edits.nc
+   * - layer_coord25.nc
+     - vertical layer target potential density defining 25 vertical levels 
+     - 9.00, 5.00
+     -
+   * - All_edits.nc 
      - specify grid points where topography are manually modified to adjust throughflow strength for narrow channels
      - 0.25
      -
-   * - topo_edits_011818.nc
+   * - topo_edits_011818.nc 
      - specify grid points where topography are manually modified to adjust throughflow strength for narrow channels
      - 1.00
      -
-   * - MOM_channels_global_025
+   * - ufs.topo_edits_011818.nc
+     - UFS specific grid points where topography are manually modified to adjust throughflow strength for narrow channels
+     - 1.00
+     -
+   * - topog.nc  
+     - topography
+     - 9.00, 1.00, 0.25
+     -   
+   * - MOM_channels_global_025 
      - specifies restricted channel widths
      - 0.50, 0.25
      -
-   * - MOM_channel_SPEAR
+   * - MOM_layout 
+     - specifies parameters for testing mask_tables in a non-FRE enviroment (production use is not recommended )
+     - 0.50, 0.25
+     - 
+   * - MOM_override 
+     - blank file for overriding default MOM6 parameters
+     - 9.00, 5.00, 1.00, 0.50, 0.25
+     -
+   * - MOM_channels_SPEAR
      - specifies restricted channel widths
      - 1.00
      -
-   * - interpolate_zgrid_40L.nc
+   * - interpolate_zgrid_40L.nc 
      - specify target depth for output
      - 1.00, 0.50, 0.25
      -
@@ -330,10 +407,26 @@ The input files containing grid information and the initial conditions for globa
      - 0.25
      - ✔
    * - MOM6_IC_TS.nc
-     - ocean temperature and salinity initial conditions (from CFSR)
+     - ocean temperature and salinity initial conditions (from :term:`CFSR`)
      - 1.00, 0.50, 0.25
      - ✔
-
+   * - woa18_decav_s00_01.nc
+     - global annual climatological average ocean salinity from 1955–2017 (from :term:`NCEI`)
+     - 1.00
+     - ✔
+   * - woa18_decav_t00_01.nc
+     - global annual climatological average ocean temperature from 1955–2017 (from :term:`NCEI`)
+     - 1.00
+     - ✔
+   * - mom6.mx050.2021032206.warmstart.nc
+     - MOM6 warm restart file
+     - 0.50
+     - ✔
+   * - mom6.mx100.2021032206.warmstart.nc
+     - MOM6 warm restart file
+     - 1.00
+     - ✔
+    
 .. _hycom-in:
 
 -------
@@ -530,14 +623,22 @@ The input files containing grid information and the initial conditions for globa
      - cice model IC or restart file
      - 1.00, 0.50, 0.25
      - ✔
+   * - cice.mxRES.YYYYMMDDHH.warmstart.nc
+     - warm restart file used to continue a previous CICE run from an existing model state
+     - 1.00, 0.50
+     - ✔
    * - grid_cice_NEMS_mxRES.nc
      - cice model grid at resolution RES
-     - 100, 050, 025
+     - 9.00, 5.00, 1.00, 0.50, 0.25
      -
    * - kmtu_cice_NEMS_mxRES.nc
      - cice model land mask at resolution RES
-     - 100, 050, 025
+     - 9.00, 5.00, 1.00, 0.50, 0.25
      -
+   * - mesh.mxRES.nc
+     - CICE mesh at resolution RES
+     - 9.00, 5.00, 1.00, 0.50, 0.25
+     - 
 
 .. _ww3-in:
 
@@ -679,7 +780,7 @@ Coupled regional configurations require forcing files to fill regions that canno
      - Interpolated wind data from GFS
      - 6 min
 
-The model driver input (ww3_multi.inp) includes the input, model and output grids definition, the starting and ending times for the entire model run and output types and intervals. The ww3_multi.inp.IN template is located under tests/parm/ directory. The inputs are described hereinafter:
+The model driver input (ww3_shel.nml.IN) includes the input, model and output grids definition, the starting and ending times for the entire model run and output types and intervals. The ww3_multi.inp.IN template is located under tests/parm/ directory. The inputs are described hereinafter:
 
 .. _WW3_Driver:
 
@@ -806,7 +907,7 @@ The input files containing grid information and the time-varying forcing files f
 
 .. note:: 
 
-   Users can find atmospheric forcing files for use with the land (:ref:`LND <lnd>`) component in the `Land Data Assimilation (DA) data bucket <https://registry.opendata.aws/noaa-ufs-land-da/>`_. These files provide atmospheric forcing data related to precipitation, solar radiation, longwave radiation, temperature, pressure, winds, humidity, topography, and mesh data. Forcing files for the land component configuration come from the Global Soil Wetness Project Phase 3 (`GSWP3 <https://hydro.iis.u-tokyo.ac.jp/GSWP3/>`_) dataset. 
+   Users can find atmospheric forcing files for use with the Noah-MP land component (LND) in the `Land Data Assimilation (DA) data bucket <https://registry.opendata.aws/noaa-ufs-land-da/>`_. These files provide atmospheric forcing data related to precipitation, solar radiation, longwave radiation, temperature, pressure, winds, humidity, topography, and mesh data. Forcing files for the land component configuration come from the Global Soil Wetness Project Phase 3 (`GSWP3 <https://hydro.iis.u-tokyo.ac.jp/GSWP3/>`_) dataset. 
 
    .. code-block:: console
 
@@ -1267,7 +1368,7 @@ Registration of diagnostic fields is done using the following syntax
 
    diag_id = register_diag_field(module_name, diag_name, axes, ...)
 
-in file ``FV3/atmos_cubed_sphere/tools/fv_diagnostics.F90``.  As an example, the sea level pressure is registered as:
+in file ``ufsatm/FV3/atmos_cubed_sphere/tools/fv_diagnostics.F90``.  As an example, the sea level pressure is registered as:
 
 .. code-block:: console
 
@@ -1330,13 +1431,12 @@ Each WM component has its own ``diag_table`` with associated variables. :numref:
    * - WM Component
      - Diag Table
      - Source File
-   * - FV3
+   * - UFSatm 
      - :ref:`FV3 Variables <fv3diagtable>`
-     - `GFS_diagnostics.F90 <https://github.com/NOAA-EMC/fv3atm/blob/develop/ccpp/driver/GFS_diagnostics.F90>`_
+     - `GFS_diagnostics.F90 <https://github.com/NOAA-EMC/ufsatm/blob/develop/ccpp/driver/GFS_diagnostics.F90>`_
    * - MOM6
      - `MOM6 Variables <https://ncar.github.io/MOM6/APIs/namespacemom__diagnostics.html>`_
-     - `MOM_diagnostics.F90 <https://github.com/NOAA-EMC/MOM6/blob/main/src/diagnostics/MOM_diagnostics.F90>`_
-
+     - `MOM_diagnostics.F90 <https://github.com/NOAA-EMC/MOM6/blob/dev/emc/src/diagnostics/MOM_diagnostics.F90>`_
 
 A brief example of the diag_table is shown below.  ``"..."`` denotes where lines have been removed.
 
@@ -2081,8 +2181,7 @@ A sample subset of this namelist is shown below:
      FNABSC   = 'global_mxsnoalb.uariz.t126.384.190.rg.grb'
    /
 
-Additional variables for the ``&namsfc`` namelist can be found in the ``FV3/ccpp/physics/physics/Interstitials/UFS_SCM_NEPTUNE/sfcsub.F`` file.
-
+Additional variables for the ``&namsfc`` namelist can be found in the ``ufsatm/ccpp/physics/physics/Interstitials/UFS_SCM_NEPTUNE/sfcsub.F`` file. 
 .. _atmos_model_nml_section:
 
 ^^^^^^^^^^^^^^^^^^^^
@@ -2187,8 +2286,7 @@ A sample subset of this namelist is shown below:
      cplflx       = .true.
    /
 
-Additional variables for the ``&gfs_physics_nml`` namelist can be found in the ``FV3/ccpp/data/GFS_typedefs.F90``
-file.
+Additional variables for the ``&gfs_physics_nml`` namelist can be found in the `GFS_typedefs.F90 <https://github.com/NOAA-EMC/ufsatm/blob/develop/ccpp/data/CCPP_typedefs.F90>`_
 
 .. _OutputFiles:
 
@@ -2196,10 +2294,10 @@ file.
 Output files
 =============
 
-.. _fv3atm-out:
+.. _UFSatm-out:
 
 -------
-FV3Atm
+UFSAtm
 -------
 
 The output files generated when running ``fv3.exe`` are defined in the ``diag_table`` file. For the default global configuration, the following files are output (six files of each kind, corresponding to the six tiles of the model grid):
