@@ -15,8 +15,6 @@ export LIST_FILES="dynf006.nc \
 
 export_fv3_v16
 
-export EXCLUSIVE_NODES=.true.
-
 export FV3_RUN=regional_run.IN
 
 export OZ_PHYS_OLD=.false.
@@ -48,3 +46,7 @@ export WRITE_GROUP=1
 export WRTTASK_PER_GROUP=10
 export NTILES=1
 export FHROT=3
+
+if [[ ${MACHINE_ID} = ursa ]]; then
+   export EXCLUSIVE_NODES=.true.
+fi 

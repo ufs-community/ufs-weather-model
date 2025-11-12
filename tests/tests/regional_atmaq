@@ -24,8 +24,6 @@ export LIST_FILES="sfcf000.nc \
 
 export_fv3_v16
 
-export EXCLUSIVE_NODES=.true.
-
 export SYEAR=2019
 export SMONTH=08
 export SDAY=1
@@ -94,4 +92,7 @@ export CCPP_SUITE=FV3_GFS_v16
 
 if [[ $MACHINE_ID = orion ]]; then
    WLCLK=40
+fi
+if [[ ${MACHINE_ID} = ursa ]]; then
+   export EXCLUSIVE_NODES=.true.
 fi

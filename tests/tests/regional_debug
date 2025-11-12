@@ -15,8 +15,6 @@ export LIST_FILES="dynf000.nc \
 
 export_fv3_v16
 
-export EXCLUSIVE_NODES=.true.
-
 export FV3_RUN=regional_run.IN
 
 export OZ_PHYS_OLD=.false.
@@ -51,3 +49,7 @@ fi
 if [[ $MACHINE_ID = derecho ]]; then
   export WLCLK=50
 fi
+
+if [[ ${MACHINE_ID} = ursa ]]; then
+   export EXCLUSIVE_NODES=.true.
+fi 

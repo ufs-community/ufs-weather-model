@@ -24,8 +24,6 @@ export LIST_FILES="sfcf000.nc \
 
 export_fv3_v16
 
-export EXCLUSIVE_NODES=.true.
-
 export SYEAR=2019
 export SMONTH=08
 export SDAY=1
@@ -93,3 +91,7 @@ export MODEL_CONFIGURE=model_configure_atmaq.IN
 export UFS_CONFIGURE=ufs.configure.atmaq.IN
 export FV3_RUN=regional_atmaq.IN
 export CCPP_SUITE=FV3_GFS_v16
+
+if [[ ${MACHINE_ID} = ursa ]]; then
+   export EXCLUSIVE_NODES=.true.
+fi

@@ -19,8 +19,6 @@ export LIST_FILES="dynf000.nc \
 
 export_fv3_v16
 
-export EXCLUSIVE_NODES=.true.
-
 export FV3_RUN=regional_run.IN
 
 export OZ_PHYS_OLD=.false.
@@ -64,3 +62,7 @@ export IMFSHALCNV=-1
 export IMFDEEPCNV=-1
 export LSOIL_LSM=4
 export NSTF_NAME="2, 1, 0, 0, 0"
+
+if [[ ${MACHINE_ID} = ursa ]]; then
+   export EXCLUSIVE_NODES=.true.
+fi 

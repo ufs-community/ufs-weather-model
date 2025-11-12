@@ -21,8 +21,6 @@ export_fv3_v16
 
 export FV3_RUN=regional_run.IN
 
-export EXCLUSIVE_NODES=.true.
-
 export OZ_PHYS_OLD=.false.
 export OZ_PHYS_NEW=.true.
 export H2O_PHYS=.true.
@@ -52,3 +50,6 @@ fi
 if [[ $MACHINE_ID = orion ]]; then
    export WLCLK=40
 fi
+if [[ ${MACHINE_ID} = ursa ]]; then
+   export EXCLUSIVE_NODES=.true.
+fi 
