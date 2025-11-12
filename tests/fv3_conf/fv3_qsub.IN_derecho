@@ -6,6 +6,7 @@
 #PBS -q @[QUEUE]
 #PBS -l select=@[NODES]:ncpus=@[TPN]:mpiprocs=@[TPN]:ompthreads=@[THRD]
 #PBS -l walltime=00:@[WLCLK]:00
+@[EXCLUSIVE_NODES_OPT]
 
 set -eux
 echo -n " $( date +%s )," >  job_timestamp.txt

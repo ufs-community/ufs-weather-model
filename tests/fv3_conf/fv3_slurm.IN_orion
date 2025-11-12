@@ -9,7 +9,7 @@
 #SBATCH --ntasks-per-node=@[TPN]
 #SBATCH --time=@[WLCLK]
 #SBATCH --job-name="@[JBNME]"
-#SBATCH --exclusive
+@[EXCLUSIVE_NODES_OPT]
 
 set -eux
 echo -n " $( date +%s )," >  job_timestamp.txt

@@ -417,7 +417,7 @@ export EXCLUSIVE_NODES_OPT=""
 
 if [[ ${SCHEDULER} = 'pbs' ]]; then
   if [[ ${EXCLUSIVE_NODES} == .true. ]]; then
-    export EXCLUSIVE_NODES_OPT="#PBS -l place=exclhost"
+    export EXCLUSIVE_NODES_OPT="#PBS -l place=excl"
   fi
     	  
   if [[ -e ${PATHRT}/fv3_conf/fv3_qsub.IN_${MACHINE_ID} ]]; then
