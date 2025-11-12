@@ -413,7 +413,11 @@ fi
 
 export NCPUS=$(( TPN * THRD ))
 
+export EXCLUSIVE_NODES_OPT=""
+
 if [[ ${SCHEDULER} = 'pbs' ]]; then
+  if [[ ${EXCLUSIVE_NODES} == .true. ]] && export EXCLUSIVE_NODES_OPT=""
+    	  
   if [[ -e ${PATHRT}/fv3_conf/fv3_qsub.IN_${MACHINE_ID} ]]; then
     atparse < "${PATHRT}/fv3_conf/fv3_qsub.IN_${MACHINE_ID}" > job_card
   else
@@ -421,6 +425,7 @@ if [[ ${SCHEDULER} = 'pbs' ]]; then
     exit 1
   fi
 elif [[ ${SCHEDULER} = 'slurm' ]]; then
+  if [[ ${EXCLUSIVE_NODES} == .true. ]] && export EXCLUSIVE_NODES_OPT="#SBATCH --exclusive"
   if [[ -e ${PATHRT}/fv3_conf/fv3_slurm.IN_${MACHINE_ID} ]]; then
     atparse < "${PATHRT}/fv3_conf/fv3_slurm.IN_${MACHINE_ID}" > job_card
   else

@@ -122,7 +122,7 @@ export fbh_omp_num_threads=1
 export histaux_enabled=.false.
 export BMIC=.false.
 
-export EXCLUSIVE_SLURM=""
+export EXCLUSIVE_NODES=.false.
 
 if [[ ${MACHINE_ID} = wcoss2 || ${MACHINE_ID} = acorn ]]; then
 
