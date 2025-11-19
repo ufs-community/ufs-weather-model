@@ -82,6 +82,11 @@ elif [[ ${MACHINE_ID} = gaeac6 ]]; then
     fi
     module reset
 
+elif [[ ${MACHINE_ID} = container ]] ; then
+    # We are in a container
+    source /usr/lmod/lmod/init/bash
+    module purge
+
 elif [[ ${MACHINE_ID} = noaacloud ]] ; then
     # We are on NOAA Cloud
     module purge
