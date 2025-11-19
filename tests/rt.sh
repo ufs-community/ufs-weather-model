@@ -11,13 +11,14 @@ die() { echo "$@" >&2; exit 1; }
 usage() {
   set +x #No reason to print out a bunch of echo statements here
   echo
-  echo "Usage: $0 -a <account> | -b <file> | -c | -d | -e | -h | -k | -l <file> | -m | -n <name> | -o | -r | -v | -w"
+  echo "Usage: $0 -a <account> | -b <file> | -c | -d | -e | -g | -h | -k | -l <file> | -m | -n <name> | -o | -r | -v | -w"
   echo
   echo "  -a  <account> to use on for HPC queue"
   echo "  -b  create new baselines only for tests listed in <file>"
   echo "  -c  create new baseline results"
   echo "  -d  delete run directories that are not used by other tests"
   echo "  -e  use ecFlow workflow manager"
+  echo "  -g  use global-workflow fix files for tests"
   echo "  -h  display this help"
   echo "  -k  keep run directory after rt.sh is completed"
   echo "  -l  runs test specified in <file>"
@@ -591,7 +592,7 @@ export RTVERBOSE
 export STOP_ECFLOW_AT_END=false
 ACCNR=${ACCNR:-""}
 
-while getopts ":a:b:cl:mn:dwkreovh" opt; do
+while getopts ":a:b:cl:mn:dwkreovgh" opt; do
   case ${opt} in
     a)
       ACCNR=${OPTARG}
@@ -650,6 +651,12 @@ while getopts ":a:b:cl:mn:dwkreovh" opt; do
       ;;
     v)
       RTVERBOSE=true
+      ;;
+    g)
+      export GLOPARA_DATA=true
+      echo "*** Using global workflow fix files"
+      echo "*** -g option only working for cpld global tests for now"
+      echo "*** Other tests will default to standard fix files"
       ;;
     h)
       usage

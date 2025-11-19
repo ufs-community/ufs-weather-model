@@ -146,8 +146,13 @@ esac
 if [[ -n "${FV3_RUN}" ]]; then
   for i in ${FV3_RUN}
   do
+#If glopara flag was set, use global-workflow FV3_RUN file
+    if [[ "${GLOPARA_DATA:-false}" == true ]] && [[ "${i}" == "cpld_control_run.IN" ]]; then
+      echo "Setting FV3_RUN to glopara template"
+      i = "cpld_control_glopara_run.IN"
+    fi
     atparse < "${PATHRT}/fv3_conf/${i}" >> fv3_run
-  done
+    done
 else
   echo "No FV3_RUN set in test file"
   exit 1
