@@ -10,7 +10,7 @@ Supported Platforms & Compilers
 Before running the Weather Model (:term:`WM`), users should determine which of the 
 :ref:`levels of support <SupportedPlatforms>` 
 is applicable to their system. Generally, Level 1 & 2 systems are restricted to those with access 
-through NOAA and its affiliates. These systems are named (e.g., Hera, Orion, Derecho). 
+through NOAA and its affiliates. These systems are named (e.g., Ursa, Orion, Derecho). 
 Level 3 & 4 systems include certain personal computers or non-NOAA-affiliated HPC systems. 
 The prerequisite software libraries for building the WM already exist in a centralized location on Level 1/preconfigured 
 systems, so users may skip directly to :ref:`getting the data <GetData>` and downloading the code. 
@@ -37,29 +37,28 @@ The WM uses two categories of libraries, which are available as a bundle via
 Common Modules
 ----------------
 
-As of February 24, 2025, the UFS WM Regression Tests (:term:`RTs <RT>`) on Level 1 systems use the following common modules: 
+As of October 20, 2025, the UFS WM Regression Tests (:term:`RTs <RT>`) on Level 1 systems use the following common modules: 
 
 .. code-block:: console
 
    bacio/2.4.1
-   crtm/2.4.0
-   esmf/8.6.0
-   fms/2024.01
+   crtm/2.4.0.1
+   esmf/8.8.0
+   fms/2024.02
    g2/3.5.1
    g2tmpl/1.13.0
-   gftl-shared/1.6.1
-   hdf5/1.14.0
-   ip/4.3.0
+   gftl-shared/1.9.0
+   hdf5/1.14.3
+   ip/5.1.0
    jasper/2.0.32
    libpng/1.6.37
-   mapl/2.40.3-esmf-8.6.0
+   mapl/2.53.4-esmf-8.8.0
    netcdf-c/4.9.2
    netcdf-fortran/4.6.1
-   parallelio/2.5.10
+   parallelio/2.6.2
    scotch/7.0.4
    sp/2.5.0
    w3emc/2.10.0
-   zlib/1.2.13
 
 The most updated list of common modules can be viewed in ``ufs_common.lua`` 
 :wm-repo:`here <blob/develop/modulefiles/ufs_common.lua>`.
@@ -91,8 +90,8 @@ the data required to run the WM RTs are already available at the following ``DIS
      - /glade/derecho/scratch/epicufsrt/ufs-weather-model/RT/
    * - Gaea-C6
      - /gpfs/f6/bil-fire8/world-shared/role.epic/UFS-WM_RT
-   * - Hera
-     - /scratch2/NAGAPE/epic/UFS-WM_RT
+   * - Ursa
+     - /scratch4/NAGAPE/epic/role-epic/UFS-WM_RT
    * - Hercules
      - /work/noaa/epic/hercules/UFS-WM_RT
    * - NOAA Cloud (Level 2)
@@ -106,8 +105,8 @@ the data required to run the WM RTs are already available at the following ``DIS
 
 Within ``DISKNM``, input data for the UFS WM is located at the following locations: 
 
-  * **INPUTDATA_ROOT**: ``${DISKNM}/NEMSfv3gfs/input-data-20240501``
-  * **INPUTDATA_ROOT_WW3** ``${INPUTDATA_ROOT}/WW3_input_data_20250212``
+  * **INPUTDATA_ROOT**: ``${DISKNM}/NEMSfv3gfs/input-data-20251015``
+  * **INPUTDATA_ROOT_WW3** ``${INPUTDATA_ROOT}/WW3_input_data_20250807``
   * **INPUTDATA_ROOT_BMIC**: ``${DISKNM}/NEMSfv3gfs/BM_IC-20220207``
   * **INPUTDATA_LM4**: ``${INPUTDATA_ROOT}/LM4_input_data``
 
@@ -118,10 +117,10 @@ The regression testing script (``rt.sh``) has certain default data directories (
 The corresponding data is publicly available in the data bucket. To view the data, users can visit https://noaa-ufs-regtests-pds.s3.amazonaws.com/index.html. 
 Users can download the data and update the ``rt.sh`` script to point to the appropriate locations in order to run RTs on their own system: 
   
-* ``INPUTDATA_ROOT``: https://noaa-ufs-regtests-pds.s3.amazonaws.com/index.html#input-data-20240501/
-* ``INPUTDATA_ROOT_WW3`` https://noaa-ufs-regtests-pds.s3.amazonaws.com/index.html#input-data-20240501/WW3_input_data_20240214/
+* ``INPUTDATA_ROOT``: https://noaa-ufs-regtests-pds.s3.amazonaws.com/index.html#input-data-20251015
+* ``INPUTDATA_ROOT_WW3``: https://noaa-ufs-regtests-pds.s3.amazonaws.com/index.html#input-data-20251015/WW3_input_data_20250807/
 * ``INPUTDATA_ROOT_BMIC``: https://noaa-ufs-regtests-pds.s3.amazonaws.com/index.html#BM_IC-20220207/
-* ``INPUTDATA_LM4``: https://noaa-ufs-regtests-pds.s3.amazonaws.com/index.html#LM4_input_data
+* ``INPUTDATA_LM4``: https://noaa-ufs-regtests-pds.s3.amazonaws.com/index.html#input-data-20251015/LM4_input_data/
 
 To download data, users must select the files they want from the bucket and download them either in their browser, via a ``wget`` command, or through the AWS CLI. 
 
@@ -165,12 +164,12 @@ On NOAA Level 1 & 2 Systems
 
 Modulefiles for :ref:`preconfigured platforms <SupportedPlatforms>` are located in 
 ``modulefiles/ufs_<platform>.<compiler>``. For example, to load the modules from the 
-``ufs-weather-model`` directory on Hera:
+``ufs-weather-model`` directory on Ursa:
 
 .. code-block:: console
 
     module use modulefiles
-    module load ufs_hera.intel
+    module load ufs_ursa.intel
 
 Note that loading this module file will also set the CMake environment variables shown in
 :numref:`Table %s <CMakeEnv>`.
@@ -180,15 +179,15 @@ Note that loading this module file will also set the CMake environment variables
 .. table:: *CMake environment variables required to configure the build for the Weather Model*
 
    +-------------------------+----------------------------------------------+----------------------+
-   | **EnvironmentVariable** | **Description**                              | **Hera Intel Value** |
+   | **EnvironmentVariable** | **Description**                              | **Ursa Intel Value** |
    +=========================+==============================================+======================+
-   |  CMAKE_C_COMPILER       | Name of C compiler                           | mpiicc               |
+   |  CMAKE_C_COMPILER       | Name of C compiler                           | mpiicx               |
    +-------------------------+----------------------------------------------+----------------------+
-   |  CMAKE_CXX_COMPILER     | Name of C++ compiler                         | mpiicpc              |
+   |  CMAKE_CXX_COMPILER     | Name of C++ compiler                         | mpiicpx              |
    +-------------------------+----------------------------------------------+----------------------+
    |  CMAKE_Fortran_COMPILER | Name of Fortran compiler                     | mpiifort             |
    +-------------------------+----------------------------------------------+----------------------+
-   |  CMAKE_Platform         | String containing platform and compiler name | hera.intel           |
+   |  CMAKE_Platform         | String containing platform and compiler name | ursa.intel           |
    +-------------------------+----------------------------------------------+----------------------+
 
 On Other Systems
@@ -209,238 +208,23 @@ The UFS Weather Model can be built in one of several configurations (see :numref
 The ``CMAKE_FLAGS`` environment variable specifies which configuration to build using the ``-DAPP`` and ``-DCCPP_SUITES`` variables.
 Users set which components to build using ``-DAPP``. Users select the :term:`CCPP` suite(s) by setting the 
 ``CCPP_SUITES`` environment variable at build time in order to have one or more CCPP physics suites available at runtime. 
-Multiple suites can be set. Additional variables, such as ``-D32BIT=ON``, 
-can be set if the user chooses. These options are documented in :numref:`Section %s <other-build-options>`. 
-The following examples assume a bash shell.
+Multiple suites can be set. Additional variables, such as ``-D32BIT=ON``, can be set if the user chooses. 
 
-ATM Configurations
----------------------
-
-.. _atm:
-
-**Standalone ATM**
-
-For the ``ufs-weather-model ATM`` configuration (standalone :term:`ATM`):
+For example, the ``ufs-weather-model ATMW`` configuration (standalone ATM coupled to :term:`WW3`) would look like:
 
 .. code-block:: console
 
-    export CMAKE_FLAGS="-DAPP=ATM -DCCPP_SUITES=FV3_GFS_v16"
+    export CMAKE_FLAGS="-DAPP=ATMW -DCCPP_SUITES=FV3_GFS_v17_p8"
 
-.. _atmw:
-
-**ATMW**
-
-For the ``ufs-weather-model ATMW`` configuration (standalone ATM coupled to :term:`WW3`):
+Other common examples include:
 
 .. code-block:: console
 
-    export CMAKE_FLAGS="-DAPP=ATMW -DCCPP_SUITES=FV3_GFS_v16"
+    export CMAKE_FLAGS="-DAPP=S2S -DCCPP_SUITES=FV3_GFS_v17_coupled_p8_ugwpv1"
 
-.. _atmaero:
+    export CMAKE_FLAGS="-DAPP=S2SW -DCCPP_SUITES=FV3_GFS_v17_coupled_p8_ugwpv1"
 
-**ATMAERO**
-
-For the ``ufs-weather-model ATMAERO`` configuration (standalone ATM coupled to :term:`GOCART`):
-
-.. code-block:: console
-
-    export CMAKE_FLAGS="-DAPP=ATMAERO -DCCPP_SUITES=FV3_GFS_v17_p8"
-
-.. _atmaq:
-
-**ATMAQ**
-
-For the ``ufs-weather-model ATMAQ`` configuration (standalone ATM coupled to :term:`CMAQ`):
-
-.. code-block:: console
-
-    export CMAKE_FLAGS="-DAPP=ATMAQ -DCCPP_SUITES=FV3_GFS_v15p2"
-
-.. _atml:
-
-**ATML**
-
-For the ``ufs-weather-model ATML`` configuration (standalone ATM coupled to :term:`LND`):
-
-.. code-block:: console
-
-    export CMAKE_FLAGS="-DAPP=ATML -DCCPP_SUITES=FV3_GFS_v17_p8"
-
-.. _atmf:
-
-**ATMF**
-
-For the ``ufs-weather-model ATMF`` configuration (standalone ATM coupled to :term:`UFS Fire`):
-
-.. code-block:: console
-
-    export CMAKE_FLAGS="-DAPP=ATMF -DCCPP_SUITES=FV3_HRRR -D32BIT=ON"
-
-.. _atm_ds2s:
-
-**ATM_DS2S**
-
-For the ``ufs-weather-model ATM_DS2S`` configuration (:term:`ATM`/:term:`DOCN`/:term:`DICE`):
-
-.. code-block:: console
-
-    export CMAKE_FLAGS="-DAPP=ATM_DS2S  -DCCPP_SUITES=FV3_GFS_v17_coupled_p8_ugwpv1"
-
-
-.. _atm_ds2s-pcice:
-
-**ATM_DS2S-PCICE**
-
-For the ``ufs-weather-model ATM_DS2S-PCICE`` configuration (:term:`ATM`/:term:`DOCN`/:term:`CICE6` [prescribed ice mode]):
-
-.. code-block:: console
-
-    export CMAKE_FLAGS="-DAPP=ATM_DS2S-PCICE -DCCPP_SUITES=FV3_GFS_v17_coupled_p8"
-
-
-S2S Configurations 
-----------------------
-
-.. _s2s:
-
-**S2S**
-
-For the ``ufs-weather-model S2S`` configuration (coupled atm/ice/ocean):
-
-.. code-block:: console
-
-    export CMAKE_FLAGS="-DAPP=S2S -DCCPP_SUITES=FV3_GFS_v17_coupled_p8"
-
-To turn on debugging flags, add ``-DDEBUG=ON`` flag after ``-DAPP=S2S``. Users can allow verbose build messages by running: 
-
-.. code-block:: console
-
-    export BUILD_VERBOSE=1
-
-To receive atmosphere-ocean fluxes from the CMEPS :term:`mediator`, add the argument ``-DCMEPS_AOFLUX=ON``.
-For example:
-
-.. code-block:: console
-
-    export CMAKE_FLAGS="-DAPP=S2S -DCCPP_SUITES=FV3_GFS_v17_coupled_p8_sfcocn -DCMEPS_AOFLUX=ON"
-
-.. _s2sa:
-
-**S2SA**
-
-For the ``ufs-weather-model S2SA`` configuration (atm/ice/ocean/aerosols):
-
-.. code-block:: console
-
-    export CMAKE_FLAGS="-DAPP=S2SA -DCCPP_SUITES=FV3_GFS_2017_coupled,FV3_GFS_v15p2_coupled,FV3_GFS_v16_coupled,FV3_GFS_v16_coupled_noahmp"
-
-.. _s2sw:
-
-**S2SW**
-
-For the ``ufs-weather-model S2SW`` configuration (atm/ice/ocean/wave):
-
-.. code-block:: console
-
-    export CMAKE_FLAGS="-DAPP=S2SW -DCCPP_SUITES=FV3_GFS_v17_coupled_p8"
-
-.. _s2swa:
-
-**S2SWA**
-
-For the ``ufs-weather-model S2SWA`` configuration (atm/ice/ocean/wave/aerosols):
-
-.. code-block:: console
-
-    export CMAKE_FLAGS="-DAPP=S2SWA -DCCPP_SUITES=FV3_GFS_v17_coupled_p8,FV3_GFS_cpld_rasmgshocnsstnoahmp_ugwp"
-
-.. _s2swal:
-
-**S2SWAL**
-
-For the ``ufs-weather-model S2SWAL`` configuration (atm/ice/ocean/wave/aerosols/land):
-
-.. code-block:: console
-
-    export CMAKE_FLAGS="-DAPP=S2SWAL -DCCPP_SUITES=FV3_GFS_v17_coupled_p8,FV3_GFS_v17_coupled_p8_ugwpv1"
-
-
-.. _ng-godas:
-
-NG-GODAS Configuration
-------------------------
-
-For the ``ufs-weather-model NG-GODAS`` configuration (atm/ocean/ice/data assimilation): 
-
-.. code-block:: console
-
-    export CMAKE_FLAGS="-DAPP=NG-GODAS"
-
-HAFS Configurations
-----------------------
-
-.. _hafs:
-
-**HAFS**
-
-For the ``ufs-weather-model HAFS`` configuration (atm/ocean) in 32 bit:
-
-.. code-block:: console
-
-    export CMAKE_FLAGS="-DAPP=HAFS -D32BIT=ON -DCCPP_SUITES=FV3_HAFS_v0_gfdlmp_tedmf_nonsst,FV3_HAFS_v0_gfdlmp_tedmf"
-
-.. _hafsw:
-
-**HAFSW**
-
-For the ``ufs-weather-model HAFSW`` configuration (atm/:term:`HYCOM`/wave) in 32-bit with moving nest:
-
-.. code-block:: console
-
-    export CMAKE_FLAGS="-DAPP=HAFSW -D32BIT=ON -DMOVING_NEST=ON -DCCPP_SUITES=FV3_HAFS_v0_gfdlmp_tedmf,FV3_HAFS_v0_gfdlmp_tedmf_nonsst,FV3_HAFS_v0_thompson_tedmf_gfdlsf"
-
-.. _hafs-mom6w:
-
-**HAFS-MOM6W**
-
-For the ``ufs-weather-model HAFS-MOM6`` configuration (atm/:term:`MOM6`/wave) in 32-bit with moving nest:
-
-.. code-block:: console
-
-    export CMAKE_FLAGS="-DAPP=HAFS-MOM6W -DREGIONAL_MOM6=ON -DCDEPS_INLINE=ON -DMOVING_NEST=ON -DCCPP_SUITES=FV3_HAFS_v1_gfdlmp_tedmf,FV3_HAFS_v1_gfdlmp_tedmf_nonsst,FV3_HAFS_v1_thompson,FV3_HAFS_v1_thompson_nonsst -D32BIT=ON"
-
-.. _hafs-all:
-
-**HAFS-ALL**
-
-For the ``ufs-weather-model HAFS-ALL`` configuration (data/atm/ocean/wave) in 32 bit:
-
-.. code-block:: console
-
-    export CMAKE_FLAGS="-DAPP=HAFS-ALL -D32BIT=ON -DCCPP_SUITES=FV3_HAFS_v0_gfdlmp_tedmf,FV3_HAFS_v0_gfdlmp_tedmf_nonsst"
-
-Land Configurations
-----------------------
-
-.. _lnd:
-
-**LND**
-
-For the ``ufs-weather-model LND`` configuration (:term:`DATM`/land [:term:`NOAHMP`]):
-
-.. code-block:: console
-
-    export CMAKE_FLAGS="-DAPP=LND"
-
-.. _lnd-lm4:
-
-**LM4**
-
-For the ``ufs-weather-model LND-LM4`` configuration (:term:`DATM`/land [:term:`LM4`]):
-
-.. code-block:: console
-
-    export CMAKE_FLAGS="-DAPP=LND-LM4"
+For the complete and most up-to-date list of ``-DAPP`` and ``DCCPP_SUITES`` options, see :ref:`Chapter 7 <ConfigParams>` or the :wm-repo:`CMakeLists.txt <blob/develop/CMakeLists.txt>` file. 
 
 ------------------
 Building the Model
@@ -454,7 +238,7 @@ If any of the environment variables have not been set, the ``build.sh`` script w
 
 .. code-block:: console
 
-   ./build.sh: line 11: CMAKE_Platform: Please set the CMAKE_Platform environment variable, e.g. [macosx.gnu|linux.gnu|linux.intel|hera.intel|...]
+   ./build.sh: line 11: CMAKE_Platform: Please set the CMAKE_Platform environment variable, e.g., [ufs_hercules.intel|ufs_hercules.gnu|ufs_ursa.intel|ufs_ursa.intelllvm|...]
 
 The WM can be built by running the following command from the ``ufs-weather-model`` directory:
 
@@ -503,7 +287,11 @@ the defaults.
    * - Function Name
      - Description
    * - export_fv3_v16
-     - Set variables to the FV3 default values for GFS v16 cases. This section will be removed once support for GFSv16 is officially depricated.
+     - Set variables to the FV3 default values for GFS v16 cases. This section will be removed once support for GFSv16 is officially deprecated.
+   * - export_mpas
+     - Set variables to the MPAS default values. 
+   * - export_gfs_physics
+     - Set default values for GFS physics suite configurations.
    * - export_fv3
      - Set variables to the FV3 default values.
    * - export_tiled
@@ -643,7 +431,7 @@ The ``rt.conf`` file is a pipe-separated values (PSV) file grouped into sections
    #. **CMAKE Options** -- Provides all CMAKE options for the build. This typically includes the ``-DAPP`` and ``-DCCPP_SUITES`` flags; these flags set which components to build and which physics suites will be available at runtime. Additional options are documented in :numref:`Section %s <other-build-options>`, but users can examine the :wm-repo:`CMakeLists.txt <blob/develop/CMakeLists.txt>` file for the most up-to-date list of options. 
    #. **Machines** to run on (``-`` is used to ignore specified machines, ``+`` is used to run only on specified machines). For example: 
       
-      * ``+ hera orion gaea``: Compile will only run on Hera, Orion, and Gaea machines
+      * ``+ ursa orion gaeac6``: Compile will only run on Ursa, Orion, and Gaea-C6 machines
       * ``- wcoss2 acorn``: Compile will NOT be run on WCOSS2 or Acorn
 
    #. ``fv3``: Set as fv3. Previously, this was used to run a test without compiling code (e.g., if FV3 was already present). 
@@ -667,12 +455,14 @@ in 32-bit mode and then runs the ``control`` test:
    RUN | cpld_control_gfsv17                               | - noaacloud                          | baseline |
    RUN | cpld_control_gfsv17_iau                           | - noaacloud                          | baseline | cpld_control_gfsv17
    RUN | cpld_restart_gfsv17                               | - noaacloud                          |          | cpld_control_gfsv17
+   RUN | cpld_restart_gfsv17_iau                           | - noaacloud                          |          | cpld_control_gfsv17_iau
    RUN | cpld_mpi_gfsv17                                   | - noaacloud                          |          |
 
 The ``rt.conf`` file includes a large number of tests. If the user wants to run
 only specific tests, s/he can either (1) comment out the tests to be skipped (using the ``#`` prefix)
-or (2) create a new file (e.g., ``my_rt.conf``), add the tests, and execute ``./rt.sh -l my_rt.conf``.
+or (2) create a new file (e.g., ``my_rt.conf``), add the tests, and execute ``./rt.sh -a  <account> -l my_rt.conf``.
 
+For the most up-to-date list of supported tests see the :wm-repo:`rt.conf <blob/develop/tests/rt.conf>` file. 
 
 .. _run-wm:
 
@@ -694,7 +484,7 @@ Users can run a number of preconfigured regression test cases from the ``rt.conf
 using the regression test script ``rt.sh`` in the ``tests`` directory. 
 ``rt.sh`` is the top-level script that calls lower-level scripts to build specified 
 WM configurations, set up environments, and run tests. 
-Users should edit the ``rt.conf`` file to indicate which tests/configurations to run or create their own configuration file (e.g., ``my_tests.conf``) with the subset of tests they want to run. 
+Users should edit the ``rt.conf`` file to indicate which tests/configurations to run or create their own configuration file (e.g., ``my_tests.conf``) with the subset of tests from :wm-repo:`rt.conf <blob/develop/tests/rt.conf>`. 
 
 On NOAA RDHPCS
 ------------------
@@ -706,7 +496,7 @@ regression tests by editing the ``rt.conf`` file and executing:
 
     ./rt.sh -a <account> -l rt.conf
 
-where ``<account>`` is to the account/project number where users submit their batch jobs. 
+where ``<account>`` is the account/project number where users submit their batch jobs. 
 Users may need to add additional command line arguments or change information in the ``rt.sh`` file as well. 
 This information is provided in :numref:`Section %s <rt.sh>` below. 
 
@@ -739,7 +529,7 @@ This section contains additional information on command line options and trouble
 Optional Arguments
 ^^^^^^^^^^^^^^^^^^^^^
 
-To display detailed information on how to use ``rt.sh``, users can simply run ``./rt.sh``, which will output the following options: 
+To display detailed information on how to use ``rt.sh``, users can simply run ``./rt.sh -h``, which will output the following options: 
 
 .. code-block:: console
 
@@ -774,7 +564,7 @@ create the configuration file (e.g. ``my_rt.conf``) based on the desired tests i
 
 .. code-block:: console
 
-   ./rt.sh -r -l my_rt.conf
+   ./rt.sh -a <account> -r -l my_rt.conf
 
 adding additional arguments as desired. 
 
@@ -782,7 +572,7 @@ To run a single test, users can try the following command instead of creating a 
 
 .. code-block:: console
 
-   ./rt.sh -r -k -n "control_p8 <compiler>"
+   ./rt.sh -a <account> -r -k -n "control_p8 <compiler>"
 
 where ``<compiler>`` is ``gnu`` or ``intel``. 
 
@@ -796,8 +586,8 @@ correctly. If there is a problem with these or other variables (e.g., file paths
 .. code-block:: console
    :emphasize-lines: 5,6
 
-   + echo 'Machine: ' hera.intel '    Account: ' nems
-   Machine:  hera.intel     Account:  nems
+   + echo 'Machine: ' ursa.intel '    Account: ' nems
+   Machine:  ursa.intel     Account:  nems
    + mkdir -p /scratch1/NCEPDEV/stmp4/First.Last
    mkdir: cannot create directory ‘/scratch1/NCEPDEV/stmp4/First.Last’: Permission denied
    ++ echo 'rt.sh error on line 370'
@@ -811,67 +601,78 @@ Log Files
 ------------
 
 The regression test generates a number of log files. The summary log file
-``RegressionTests_<machine>.<compiler>.log`` in the ``tests`` directory compares
-the results of the test against the baseline for a given platform and
-reports the outcome: 
+``RegressionTests_<machine>.log`` in the ``tests`` directory provides a summary
+of the regression test outcomes, which will look similar to this excerpt:
+
+.. code-block:: console
+
+  PASS -- COMPILE 's2sw_pdlib_intel' [14:10, 12:22] ( 1 warnings 1036 remarks )
+  PASS -- TEST 'cpld_control_pdlib_p8_intel' [12:41, 11:00](2171 MB)
+  PASS -- TEST 'cpld_restart_pdlib_p8_intel' [07:49, 05:23](1636 MB)
+  PASS -- TEST 'cpld_mpi_pdlib_p8_intel' [17:40, 15:30](2120 MB)
+  PASS -- TEST 'cpld_control_c48_5deg_intel' [13:30, 11:22](3029 MB)
+  FAILED: TEST TIMED OUT -- TEST 'cpld_warmstart_c48_5deg_intel' [, ]( MB)
+  FAILED: UNABLE TO START TEST -- TEST 'cpld_restart_c48_5deg_intel' [, ]( MB)
+
+More detailed log files for each test are located in the ``tests/logs/log_<machine>`` directory:
 
    * ``'Missing file'`` results when the expected files from the simulation are not found and typically occurs when the simulation did not run to completion; 
    * ``'OK'`` means that the simulation results are bit-for-bit identical to those of the baseline; 
    * ``'NOT OK'`` when the results are **not** bit-for-bit identical; and 
-   * ``'Missing baseline'`` when there is no baseline data to compare against.
+   * ``'Missing baseline'`` when there is no baseline data to compare against
 
-More detailed log files are located in the ``tests/log_<machine>.<compiler>/`` directory.
-The run directory path, which corresponds to the value of ``RUNDIR`` in the ``run_<test-name>`` file, 
-is particularly useful. ``$RUNDIR`` is a self-contained (i.e., sandboxed) 
-directory with the executable file, initial conditions, model configuration files, 
-environment setup scripts and a batch job submission script. The user can run the test 
-by navigating into ``$RUNDIR`` and invoking the command:
+The run directory also contains useful information. It is symlinked from the ``tests`` directory as ``run_dir``, 
+and the actual path is set in ``rt.sh`` via the ``$RUNDIR_ROOT`` variable. The run directory contains subdirectories 
+named ``run_<test-name>`` for each test that is run via ``rt.sh``. These are self-contained 
+(i.e., sandboxed) directories with the executable file, initial conditions, model configuration files 
+(e.g., ``input.nml``, ``model_configure``, ``ufs.configure``), 
+environment setup scripts and a batch job submission script. 
+``err`` and ``out`` files in each ``run_<test_name>`` directory contain information sent to standard error and standard out, 
+respectively. 
+Additionally, application-dependent files (e.g., ``ice_in`` for the Subseasonal-to-Seasonal Application) are included.
+The user can rerun the test by navigating into the ``run_<test_name>`` directory and invoking the command:
 
 .. code-block:: console
 
     sbatch job_card
 
 This can be particularly useful for debugging and testing code changes. Note that
-``$RUNDIR`` is automatically deleted at the end of a successful regression test;
-specifying the ``-k`` option retains the ``$RUNDIR``, e.g. ``./rt.sh -l rt.conf -k``.
+the run directory is automatically deleted at the end of a successful regression test;
+specifying the ``-k`` option retains the run directory, e.g., ``./rt.sh -a <account> -l rt.conf -k``.
 
-Inside the ``$RUNDIR`` directory are a number of model configuration files (``input.nml``, 
-``model_configure``, ``ufs.configure``) and other application
-dependent files (e.g., ``ice_in`` for the Subseasonal-to-Seasonal Application).
-These model configuration files are
-generated by ``rt.sh`` from the template files in the ``tests/parm`` directory.
+Model configuration files are generated by ``rt.sh`` from the template files in the ``tests/parm`` directory.
 Specific values used to fill in the template files are test-dependent and
 are set in two stages. First, default values are specified in ``tests/default_vars.sh``, and
 the default values are overriden if necessary by values specified in a test file
 ``tests/tests/<test-name>``. For example, the variable ``DT_ATMOS`` is initially assigned 1800 
 in the function ``export_fv3`` of the script ``default_vars.sh``, but the test file 
-``tests/tests/control`` overrides this setting by reassigning 720 to the variable.
+(e.g., ``tests/tests/control_p8_faster``) overrides this setting by reassigning 720 to the variable.
 
-The files ``fv3_run`` and ``job_card`` also reside in the ``$RUNDIR`` directory. 
+The files ``fv3_run`` and ``job_card`` also reside in the run directory. 
 These files are generated from the template files in the ``tests/fv3_conf``
 directory. ``job_card`` is a platform-specific batch job submission script, while 
 ``fv3_run`` prepares the initial conditions for the test by copying relevant data from the
-input data directory of a given platform to the ``$RUNDIR`` directory.
+input data directory of a given platform to the run directory.
 :numref:`Table %s <RTSubDirs>` summarizes the subdirectories discussed above.
 
 .. _RTSubDirs:
 
-.. table:: *Regression Test Subdirectories*
+.. list-table:: Regression Test Subdirectories
+   :widths: 25 75
+   :header-rows: 1
 
-   +-----------------+--------------------------------------------------------------------------------------+
-   | **Name**        | **Description**                                                                      |
-   +=================+======================================================================================+
-   | tests/          | Regression test root directory. Contains rt-related scripts and the summary log file |
-   +-----------------+--------------------------------------------------------------------------------------+
-   | tests/tests/    | Contains specific test files                                                         |
-   +-----------------+--------------------------------------------------------------------------------------+
-   | tests/parm/     | Contains templates for model configuration files                                     |
-   +-----------------+--------------------------------------------------------------------------------------+
-   | tests/fv3_conf/ | Contains templates for setting up initial conditions and a batch job                 |
-   +-----------------+--------------------------------------------------------------------------------------+
-   | tests/log_*/    | Contains fine-grained log files                                                      |
-   +-----------------+--------------------------------------------------------------------------------------+
-
+   * - Name
+     - Description
+   * - ``tests/``
+     - Regression test root directory. Contains rt-related scripts and the summary log file.
+   * - ``tests/tests/``
+     - Contains specific test files.
+   * - ``tests/parm/``
+     - Contains templates for model configuration files.
+   * - ``tests/fv3_conf/``
+     - Contains templates for setting up initial conditions and a batch job.
+   * - ``tests/logs/log_<platform>/``
+     - Contains fine-grained log files.
 
 .. _UsingOpnReqTest:
 
@@ -883,9 +684,9 @@ tests in place of ``rt.sh``. Given the name of a test, ``opnReqTest`` carries ou
 Each test case addresses an aspect of the requirements that new operational implementations
 must satisfy. These requirements are shown in :numref:`Table %s <OperationalRequirement>`.
 For the following discussions on opnReqTest, the user should note the distinction between
-``'test name'`` and ``'test case'``. Examples of test names are ``control``, ``cpld_control``
+``'test name'`` and ``'test case'``. Examples of test names are ``control_p8``, ``cpld_control_p8``
 and ``regional_control`` which are all found in the ``tests/tests`` directory, whereas
-test case refers to any one of the operational requirements: ``thr``, ``mpi``, ``dcp``, ``rst``, ``bit`` and ``dbg``.
+test case refers to any one of the operational requirements: ``thr``, ``fhz``, ``mpi``, ``dcp``, ``rst``, ``bit`` and ``dbg``.
 
 .. _OperationalRequirement:
 
@@ -905,6 +706,8 @@ test case refers to any one of the operational requirements: ``thr``, ``mpi``, `
   | bit      | Model can be compiled in double/single precision and run to completion        |
   +----------+-------------------------------------------------------------------------------+
   | dbg      | Model can be compiled and run to completion in debug mode                     |
+  +----------+-------------------------------------------------------------------------------+
+  | fhz      | Early forecast output produces consistent results                             |
   +----------+-------------------------------------------------------------------------------+
 
 The operational requirement testing uses the same testing framework as the regression
@@ -960,12 +763,12 @@ executing ``./opnReqTest -h``, which produces the following results:
 
 
 Frequently used options are ``-e`` to use the ecFlow
-workflow manager, and ``-k`` to keep the ``$RUNDIR``. The Rocoto workflow manager 
+workflow manager, and ``-k`` to keep the run directory. The Rocoto workflow manager 
 is not used operationally and therefore is not an option. 
 
 As discussed in :numref:`Section %s <log-files>`, the variables and
 values used to configure model parameters and to set up initial conditions in the
-``$RUNDIR`` directory are set up in two stages. First, ``tests/default_vars.sh``
+run directory are set up in two stages. First, ``tests/default_vars.sh``
 define default values; then a specific test file in the ``tests/tests`` subdirectory
 either overrides the default values or creates new variables if required by the test.
 The regression test treats the different test cases shown in

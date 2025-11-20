@@ -23,9 +23,6 @@ export atm_omp_num_threads=2
 export QUILTING_RESTART=.false.
 export USE_MERRA2=.true.
 
-ESMF_THREADING=false
-THRD=$atm_omp_num_threads
-
-if [[ " hera orion hercules jet " =~ " ${MACHINE_ID} " ]] ; then
-  ZSTANDARD_LEVEL=5
-fi
+export ESMF_THREADING=false
+export THRD=$atm_omp_num_threads
+export ZSTANDARD_LEVEL=5

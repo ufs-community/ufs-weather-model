@@ -105,11 +105,9 @@ export FIELD_TABLE=field_table_wam_noaer
 export DIAG_TABLE=diag_table_wam
 
 export INPUT_NML=wam_v17.nml.IN
+export ZSTANDARD_LEVEL=5
 
-if [[ " hera orion hercules gaeac5 gaeac6 jet " =~ " ${MACHINE_ID} " ]] ; then
-  ZSTANDARD_LEVEL=5
-fi
 
 if [[ $MACHINE_ID = hera ]]; then
-  WLCLK=45
+  export WLCLK=45
 fi

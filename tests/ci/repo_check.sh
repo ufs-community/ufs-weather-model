@@ -15,7 +15,7 @@ get_shas () {
     git fetch -q upstream $branch
     common=$(git merge-base $base_sha @)
     echo $common $base_sha $workspace
-    if [[ $common != $base_sha ]]; then
+    if [[ "$common" != "$base_sha" ]]; then
         printf "%s\n\n" "** $workspace **NOT** up to date"
         flag_sync=false
     fi
@@ -101,12 +101,14 @@ for submodule in $submodules; do
     workspace=${GITHUB_WORKSPACE}'/'${pathes[$submodule]}
     gitapi=$(echo "$url" | sed 's/github.com/api.github.com\/repos/g')'/branches/'$branch
     get_shas $url $gitapi $branch $workspace
+
+    if [[ "$flag_sync" == "false" ]]; then
+       echo "** ${GITHUB_WORKSPACE} **NOT** up to date"
+       exit 1
+    fi
 done
 
-if [[ ! $flag_sync ]]; then
-    echo "** ${GITHUB_WORKSPACE} **NOT** up to date"
-    exit 1
-else
-    echo "** ${GITHUB_WORKSPACE} up to date **"
-    exit 0
-fi
+
+echo "** ${GITHUB_WORKSPACE} up to date **"
+
+exit 0
