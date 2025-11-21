@@ -1965,6 +1965,7 @@ export_datm_cdeps ()
   export SMONTH=10
   export SDAY=01
   export SHOUR=00
+  export CHOUR=00
   export FHMAX=24
   export DT_ATMOS=900
   export FHROT=0
