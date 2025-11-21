@@ -6,7 +6,7 @@ Introduction
 
 The Unified Forecast System (:term:`UFS`) Weather Model (:term:`WM`) is a prognostic model that can be
 used for short- and medium-range research and operational forecasts, as exemplified by
-its use in the operational Global Forecast System (GFS) of the National Oceanic and
+its use in the operational Global Forecast System (GFS) and the Hurricane Analysis and Forecast System (HAFS) of the National Oceanic and
 Atmospheric Administration (NOAA). In addition to its use in NOAA's operational forecast systems, the UFS WM is the atmospheric model used in public UFS application releases, such as the most recent Short-Range Weather (SRW) Application releases. These releases represent a snapshot of a continuously evolving system undergoing open
 development. More information about the UFS can be found on the UFS Community Portal at https://ufs.epic.noaa.gov/ and on the Earth Prediction Innovation Center (EPIC) website at https://epic.noaa.gov/get-code/ufs-weather-model/.
 
@@ -31,13 +31,13 @@ for those elements, are listed below:
 
    * The regression tests used to maintain software integrity as innovations are added.
 
-The UFS Weather Model is currently included in two UFS Application releases: The UFS Short-Range Weather (:term:`SRW`) Application v3.0.0 release (April 2025) and the UFS Medium Range Weather Application (:term:`MRW`) v1.1.0 release (October 2020). These UFS Apps also contain pre- and post-processing components, a comprehensive build system, and workflows for configuration and execution of the application. The SRW App v3.0.0 documentation and details can be found `here <https://ufs-srweather-app.readthedocs.io/en/release-public-v3.0.0/>`__. The MRW App v1.1.0 documentation and details can be found `here <https://ufs-mrweather-app.readthedocs.io/en/ufs-v1.1.0>`__.
+The UFS Weather Model is currently included in two UFS Application releases: The UFS Short-Range Weather (:term:`SRW`) Application v3.0.0 release (April 2025) and the Land Data Assimilation (DA) System v2.0.0 release (November 2024). These UFS apps also contain pre- and post-processing components, a comprehensive build system, and workflows for configuration and execution of the application. The SRW App v3.0.0 documentation and details can be found `here <https://ufs-srweather-app.readthedocs.io/en/release-public-v3.0.0/>`__. The Land DA v2.0.0 documentation and details can be found `here <https://land-da-workflow.readthedocs.io/en/release-public-v2.0.0/>`__.
 
-The UFS WM code is portable and can be used with Linux or Mac operating systems and with Intel or GNU compilers. It has been tested on a variety of platforms widely used by atmospheric scientists, such as the NOAA Research Hera system, the National Center for Atmospheric Research (:term:`NCAR`) Derecho system, the Mississippi State University (MSU) Hercules system, and Mac laptops.
+The UFS WM code is portable and can be used with Linux or Mac operating systems and with Intel or GNU compilers. It has been tested on a variety of platforms widely used by atmospheric scientists, such as the NOAA Research Ursa system, the National Center for Atmospheric Research (:term:`NCAR`) Derecho system, and the Mississippi State University (MSU) Hercules system. 
 
 .. note::
 
-   At this time, the following aspects are unsupported: configurations in which a mediator is used to couple the atmospheric model to models of other earth domains (such as ocean, ice, and waves), horizontal resolutions other than the supported ones, different number or placement of vertical levels, the *cellular automata* stochastic scheme, and the use of different file formats for input and output.  It is expected that the UFS WM supported capabilities will be expanded in future releases.
+   At this time, the following aspects are unsupported: horizontal resolutions other than the supported ones, different number or placement of vertical levels, the *cellular automata* stochastic scheme, and the use of different file formats for input and output.  It is expected that the UFS WM supported capabilities will be expanded in future releases.
 
 .. COMMENT: Are coupled versions of the WM now supported? With 12 configurations it would seem that perhaps some are? 
 .. COMMENT: Is the cellular automata stochastic scheme now supported?
@@ -60,8 +60,6 @@ This WM User's Guide is organized as follows:
    * :numref:`Chapter %s <hsd-tech-doc>` (HSD Technical Documentation) provides detailed technical documentation for the HSD code.
    
    * :numref:`Chapter %s <ConfigParams>` (Configuration Parameters) lists the purpose and valid values for various configuration parameters.
-
-   * :numref:`Chapter %s <AutomatedTesting>` (Automated Testing) describes UFS WM automated testing options.
    
    * :numref:`Chapter %s <FAQ>` (FAQ) lists frequently asked questions and answers.
 
