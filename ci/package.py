@@ -214,6 +214,8 @@ class UfsWeatherModel(CMakePackage):
             args.append(self.define_from_variant("CCPP", "ccpp"))
             args.append(self.define_from_variant("QUAD_PRECISION", "quad_precision"))
 
+        args.append(self.define("CMAKE_MODULE_PATH", self.spec["esmf"].prefix.cmake))
+
         return args
 
     # This patch can be removed once https://github.com/NOAA-EMC/WW3/issues/1021
