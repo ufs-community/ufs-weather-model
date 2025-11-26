@@ -880,6 +880,7 @@ case ${MACHINE_ID} in
     DISKNM="/work2/noaa/epic/hercules/UFS-WM_RT"
     STMP="${dprefix}/stmp"
     PTMP="${dprefix}/stmp"
+    GLOPARA_DIR="/work/noaa/global/glopara"
 
     SCHEDULER="slurm"
     cp fv3_conf/fv3_slurm.IN_hercules fv3_conf/fv3_slurm.IN
