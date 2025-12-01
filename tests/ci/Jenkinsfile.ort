@@ -17,8 +17,11 @@ pipeline {
             else if ((label.matches("hercules"))) { 
                 env.CHOICE_NODE='hercules'
             }  
-            else if ((label.matches("jet"))) {
-                env.CHOICE_NODE='jet'
+            else if ((label.matches("gaeac6"))) {
+                env.CHOICE_NODE='gaeac6'
+            } 
+            else if ((label.matches("ursa"))) {
+                env.CHOICE_NODE='ursa'
             } 
             else { 
                 env.CHOICE_NODE='none'
@@ -30,11 +33,14 @@ pipeline {
                 echo "Starting up orion ${CHOICE_NODE}...this might take 5-10 minutes...please be patient."
                
             } 
-             else if (CHOICE_NODE == 'jet') {
-                echo "Starting up jet ${CHOICE_NODE}...this might take 5-10 minutes...please be patient."
+             else if (CHOICE_NODE == 'ursa') {
+                echo "Starting up ursa ${CHOICE_NODE}...this might take 5-10 minutes...please be patient."
+            }
+             else if (CHOICE_NODE == 'gaeac6') {
+                echo "Starting up gaeac6 ${CHOICE_NODE}...this might take 5-10 minutes...please be patient."
             }
              else if (CHOICE_NODE == 'hercules') {
-                 echo "Starting up hera ${CHOICE_NODE}...this might take 5-10 minutes...please be patient."
+                 echo "Starting up hercules ${CHOICE_NODE}...this might take 5-10 minutes...please be patient."
             }
              else if (CHOICE_NODE == 'hera') {
                  echo "Starting up hera ${CHOICE_NODE}...this might take 5-10 minutes...please be patient."
@@ -52,6 +58,7 @@ pipeline {
         environment {
         ACCNR = 'epic'
         NODE_PATH = '/scratch3/NAGAPE/epic/role.epic/'
+        GITHUB_TOKEN = credentials('GithubJenkinsNew')
       }
       steps {
           
@@ -70,6 +77,8 @@ pipeline {
 	pwd
         sed "s|intel|gnu|g" -i opnReqTest
         export ACCNR=epic
+        export GIT_OWNER=$(echo $GIT_URL | cut -d '/' -f4)
+        export GIT_REPO_NAME=$(echo $GIT_URL | cut -d '/' -f5 | cut -d '.' -f1)
         ./opnReqTest -n regional_control -a ${ACCNR} -c bit,dcp,thr
         cd logs/
         cp OpnReqTests_regional_control_hera.log /scratch3/NAGAPE/epic/role.epic/jenkins/workspace
@@ -91,8 +100,6 @@ pipeline {
         cd $WORKSPACE/tests/
         git config user.email "ecc.platform@noaa.gov"
         git config user.name "epic-cicd-jenkins"
-        echo "Testing concluded...removing labels for $machine from $GIT_URL"
-
         export machine_name_logs=$(echo $machine | awk '{ print tolower($1) }')
         git remote -v | grep -w sshorigin > /dev/null 2>&1 && git remote remove sshorigin > /dev/null 2>&1
         git remote add sshorigin $SSH_ORIGIN > /dev/null 2>&1
@@ -102,6 +109,33 @@ pipeline {
         git push sshorigin HEAD:$FORK_BRANCH
         '''
         }
-      }	      
+        post {
+        always {
+         sh '''
+           export GIT_OWNER=$(echo $GIT_URL | cut -d '/' -f4)
+           export GIT_REPO_NAME=$(echo $GIT_URL | cut -d '/' -f5 | cut -d '.' -f1)
+           echo "Testing concluded...removing labels for $machine from $GIT_URL"
+           echo "https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/jenkins-ort"
+           curl --silent -X DELETE -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/jenkins-ort
+         '''
+        }
+        success {
+          slackSend (
+                channel: '#jenkins-notifications',
+                color: 'good',
+                message: "*SUCCESS: Build ${env.JOB_NAME} #${env.BUILD_NUMBER}* <${env.BUILD_URL}|Open Build>"
+            )
+        
+        }
+
+        failure {
+          slackSend (
+                channel: '#jenkins-notifications',
+                color: 'danger',
+                message: "*FAILURE: Build ${env.JOB_NAME} #${env.BUILD_NUMBER}*  <${env.BUILD_URL}|Open Build>"
+            )
+        }
+      }
+    }	      
   }
 }

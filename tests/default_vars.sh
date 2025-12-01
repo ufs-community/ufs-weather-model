@@ -1628,6 +1628,9 @@ export_cice6() {
   export stream_files_dice=none
   export CICE_PRESCRIBED=false
   export DICE_CDEPS=false
+
+  #To modify aice on restart, "adjust_aice"
+  export CICE_RESTART_MOD='none'
 }
 
 # Defaults for the MOM6 model namelist, mx100

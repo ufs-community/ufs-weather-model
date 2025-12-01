@@ -85,7 +85,7 @@ target_include_directories(hycom_nuopc_obj PRIVATE $<BUILD_INTERFACE:${CMAKE_CUR
                                                    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/HYCOM/NUOPC>)
 target_compile_definitions(hycom_nuopc_obj PRIVATE "${_hycom_defs}")
 target_link_libraries(hycom_nuopc_obj PRIVATE hycom_obj
-                                              esmf
+                                              ESMF::ESMF
                                               NetCDF::NetCDF_Fortran)
 
 ### Create target library and set PUBLIC interfaces on the library
@@ -96,7 +96,7 @@ target_include_directories(hycom PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY
 target_include_directories(hycom PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/HYCOM>
                                         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/HYCOM/NUOPC>)
 target_compile_definitions(hycom PRIVATE "${_hycom_defs}")
-target_link_libraries(hycom PUBLIC esmf
+target_link_libraries(hycom PUBLIC ESMF::ESMF
                                    NetCDF::NetCDF_Fortran)
 
 ### Create HYCOM offline executable
