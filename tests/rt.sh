@@ -842,7 +842,7 @@ case ${MACHINE_ID} in
     COMPILE_QUEUE="batch"
     PARTITION="orion"
     dprefix=${dprefix:-"/work/noaa/stmp/${USER}"}
-    DISKNM="/work/noaa/epic/UFS-WM_RT"
+    DISKNM="/work2/noaa/epic/UFS-WM_RT"
     STMP="${dprefix}/stmp"
     PTMP="${dprefix}/stmp"
 
@@ -870,7 +870,7 @@ case ${MACHINE_ID} in
     COMPILE_QUEUE="batch"
     PARTITION="hercules"
     dprefix=${dprefix:-"/work2/noaa/stmp/${USER}"}
-    DISKNM="/work/noaa/epic/hercules/UFS-WM_RT"
+    DISKNM="/work2/noaa/epic/hercules/UFS-WM_RT"
     STMP="${dprefix}/stmp"
     PTMP="${dprefix}/stmp"
 
@@ -1057,7 +1057,7 @@ if [[ "${CREATE_BASELINE}" == false ]] ; then
   fi
 fi
 
-INPUTDATA_ROOT=${INPUTDATA_ROOT:-${DISKNM}/NEMSfv3gfs/input-data-20250507}
+INPUTDATA_ROOT=${INPUTDATA_ROOT:-${DISKNM}/NEMSfv3gfs/input-data-20251015}
 INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT}/WW3_input_data_20250807
 INPUTDATA_LM4=${INPUTDATA_LM4:-${INPUTDATA_ROOT}/LM4_input_data}
 

@@ -40,6 +40,7 @@ case $(hostname -f) in
   ufe02) MACHINE_ID=ursa ;; ### ursa
   ufe03) MACHINE_ID=ursa ;; ### ursa
   ufe04) MACHINE_ID=ursa ;; ### ursa
+  uecflow01) MACHINE_ID=ursa ;; ### ursaecflow01
 
   s4-submit.ssec.wisc.edu) MACHINE_ID=s4 ;; ### s4
 

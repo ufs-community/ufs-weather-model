@@ -36,7 +36,10 @@ Glossary
 
    CESM
       The `Community Earth System Model <https://www.cesm.ucar.edu/>`_ (CESM) is a fully-coupled global climate model developed at the National Center for Atmospheric Research (:term:`NCAR`) in collaboration with colleagues in the research community. 
-
+   
+   CFSR
+      The `Climate Forecast System Reanlysis <https://climatedataguide.ucar.edu/climate-data/climate-forecast-system-reanalysis-cfsr>`_ (CFSR) is a third generation reanalysis product. 
+   
    chgres_cube
       The preprocessing software used to create initial and boundary condition files to "coldstart" the forecast model. It is part of :term:`UFS_UTILS`. 
 
@@ -113,6 +116,9 @@ Glossary
    
    ICs
       Initial conditions
+   
+   IMS
+      The `Interactive Multisensor Snow and Ice Mapping System <https://usicecenter.gov/Products/ImsHome>`_.
 
    LM4
       NUOPC NOAA-GFDL Land Model version 4
@@ -131,6 +137,9 @@ Glossary
 
    NCAR
       The `National Center for Atmospheric Research <https://ncar.ucar.edu/>`_. 
+   
+   NCEI
+      The `National Center for Environmental Information <https://www.ncei.noaa.gov/>`_.
 
    NCEP
       National Centers for Environmental Prediction (NCEP) is a branch of the :term:`National Weather Service <NWS>` and consists of nine centers, including the :term:`Environmental Modeling Center <EMC>`. More information can be found at https://www.weather.gov/ncep/.
@@ -152,7 +161,10 @@ Glossary
 
    NG-GODAS
       Next Generation-Global Ocean Data Assimilation System. NG-GODAS is a UFS Weather Model configuration that couples ocean (:term:`MOM6`), sea ice (:term:`CICE6`), and Data Assimilation (DA) capabilities with the :term:`DATM` component of :term:`CDEPS`.
-
+   
+   NIC
+      U.S. `National Ice Center <https://usicecenter.gov/>`_.
+   
    NOAHMP
    Noah-MP
       The Noah Multi-Physics (Noah-MP) land surface model (LSM) is an open-source, community-developed LSM that has been incorporated into the UFS Weather Model (WM). It is a UFS WM land component. 
