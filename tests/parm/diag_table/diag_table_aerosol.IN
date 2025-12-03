@@ -1,13 +1,21 @@
-20161003.00Z.C96.64bit.non-mono
-2016 10 03 00 0 0
+@[SYEAR]@[SMONTH]@[SDAY].@[SHOUR]Z.@[ATMRES].64bit.non-mono
+@[SYEAR] @[SMONTH] @[SDAY] @[SHOUR] 0 0
 
 "fv3_history",    0,  "hours",  1,  "hours",  "time"
 "fv3_history2d",  0,  "hours",  1,  "hours",  "time"
-
 #
 ###
 # FV3 variabls needed for NGGPS evaluation
 ###
+# Aerosols (CCN, IN) from Thompson microphysics
+"gfs_phys",    "nwfa",         "nwfa",          "fv3_history",    "all",  .false.,  "none",  2
+"gfs_phys",    "nifa",         "nifa",          "fv3_history",    "all",  .false.,  "none",  2
+"gfs_sfc",     "nwfa2d",       "nwfa2d",        "fv3_history2d",  "all",  .false.,  "none",  2
+"gfs_sfc",     "nifa2d",       "nifa2d",        "fv3_history2d",  "all",  .false.,  "none",  2
+# Cloud effective radii from Thompson and WSM6 microphysics
+"gfs_phys",    "cleffr",       "cleffr",        "fv3_history",    "all",  .false.,  "none",  2
+"gfs_phys",    "cieffr",       "cieffr",        "fv3_history",    "all",  .false.,  "none",  2
+"gfs_phys",    "cseffr",       "cseffr",        "fv3_history",    "all",  .false.,  "none",  2
 "gfs_dyn",     "ucomp",       "ugrd",      "fv3_history",    "all",  .false.,  "none",  2
 "gfs_dyn",     "vcomp",       "vgrd",      "fv3_history",    "all",  .false.,  "none",  2
 "gfs_dyn",     "sphum",       "spfh",      "fv3_history",    "all",  .false.,  "none",  2
@@ -17,6 +25,7 @@
 "gfs_dyn",     "delp",        "dpres",     "fv3_history",    "all",  .false.,  "none",  2
 "gfs_dyn",     "delz",        "delz",      "fv3_history",    "all",  .false.,  "none",  2
 "gfs_dyn",     "w",           "dzdt",      "fv3_history",    "all",  .false.,  "none",  2
+"gfs_dyn",     "omga",        "omga",      "fv3_history",    "all",  .false.,  "none",  2
 "gfs_dyn",     "ice_wat",     "icmr",      "fv3_history",    "all",  .false.,  "none",  2
 "gfs_dyn",     "rainwat",     "rwmr",      "fv3_history",    "all",  .false.,  "none",  2
 "gfs_dyn",     "snowwat",     "snmr",      "fv3_history",    "all",  .false.,  "none",  2
@@ -26,6 +35,40 @@
 #"gfs_dyn",     "ice_nc",      "nicp",      "fv3_history",  "all",  .false.,  "none",  2
 #"gfs_dyn",     "rain_nc",     "ntrnc",     "fv3_history",  "all",  .false.,  "none",  2
 
+# chemical tracers advected by FV3
+"gfs_dyn",     "so2",         "so2",       "fv3_history",    "all",  .false.,  "none",  2
+"gfs_dyn",     "so4",         "so4",       "fv3_history",    "all",  .false.,  "none",  2
+"gfs_dyn",     "dms",         "dms",       "fv3_history",    "all",  .false.,  "none",  2
+"gfs_dyn",     "msa",         "msa",       "fv3_history",    "all",  .false.,  "none",  2
+"gfs_dyn",     "bc1",         "bc1",       "fv3_history",    "all",  .false.,  "none",  2
+"gfs_dyn",     "bc2",         "bc2",       "fv3_history",    "all",  .false.,  "none",  2
+"gfs_dyn",     "oc1",         "oc1",       "fv3_history",    "all",  .false.,  "none",  2
+"gfs_dyn",     "oc2",         "oc2",       "fv3_history",    "all",  .false.,  "none",  2
+"gfs_dyn",     "dust1",       "dust1",     "fv3_history",    "all",  .false.,  "none",  2
+"gfs_dyn",     "dust2",       "dust2",     "fv3_history",    "all",  .false.,  "none",  2
+"gfs_dyn",     "dust3",       "dust3",     "fv3_history",    "all",  .false.,  "none",  2
+"gfs_dyn",     "dust4",       "dust4",     "fv3_history",    "all",  .false.,  "none",  2
+"gfs_dyn",     "dust5",       "dust5",     "fv3_history",    "all",  .false.,  "none",  2
+"gfs_dyn",     "seas1",       "seas1",     "fv3_history",    "all",  .false.,  "none",  2
+"gfs_dyn",     "seas2",       "seas2",     "fv3_history",    "all",  .false.,  "none",  2
+"gfs_dyn",     "seas3",       "seas3",     "fv3_history",    "all",  .false.,  "none",  2
+"gfs_dyn",     "seas4",       "seas4",     "fv3_history",    "all",  .false.,  "none",  2
+"gfs_dyn",     "seas5",       "seas5",     "fv3_history",    "all",  .false.,  "none",  2
+"gfs_dyn",     "nh3",         "nh3",       "fv3_history",    "all",  .false.,  "none",  2
+"gfs_dyn",     "nh4a",        "nh4a",      "fv3_history",    "all",  .false.,  "none",  2
+"gfs_dyn",     "no3an1",      "no3an1",    "fv3_history",    "all",  .false.,  "none",  2
+"gfs_dyn",     "no3an2",      "no3an2",    "fv3_history",    "all",  .false.,  "none",  2
+"gfs_dyn",     "no3an3",      "no3an3",    "fv3_history",    "all",  .false.,  "none",  2
+"gfs_dyn",     "pm25",        "pm25",      "fv3_history",    "all",  .false.,  "none",  2
+"gfs_dyn",     "pm10",        "pm10",      "fv3_history",    "all",  .false.,  "none",  2
+
+"gfs_phys",  "frzr",          "frzr",        "fv3_history2d",         "all",  .false.,  "none",  2
+"gfs_phys",  "frzrb",         "frzrb",       "fv3_history2d",         "all",  .false.,  "none",  2
+"gfs_phys",  "frozr",         "frozr",       "fv3_history2d",         "all",  .false.,  "none",  2
+"gfs_phys",  "frozrb",        "frozrb",      "fv3_history2d",         "all",  .false.,  "none",  2
+"gfs_phys",  "tsnowp",        "tsnowp",      "fv3_history2d",         "all",  .false.,  "none",  2
+"gfs_phys",  "tsnowpb",       "tsnowpb",     "fv3_history2d",         "all",  .false.,  "none",  2
+"gfs_phys",  "rhonewsn",      "rhonewsn",    "fv3_history2d",         "all",  .false.,  "none",  2
 "gfs_phys",  "ALBDO_ave",     "albdo_ave",   "fv3_history2d",         "all",  .false.,  "none",  2
 "gfs_phys",  "cnvprcp_ave",   "cprat_ave",   "fv3_history2d",         "all",  .false.,  "none",  2
 "gfs_phys",  "cnvprcpb_ave",  "cpratb_ave",  "fv3_history2d",         "all",  .false.,  "none",  2
@@ -71,18 +114,10 @@
 "gfs_phys",  "dvsfc",         "vflx_ave",    "fv3_history2d",         "all",  .false.,  "none",  2
 #"gfs_phys",  "cnvw",          "cnvcldwat",   "fv3_history2d",         "all",  .false.,  "none",  2
 
-"gfs_phys",  "frzr",          "frzr",        "fv3_history2d",         "all",  .false.,  "none",  2
-"gfs_phys",  "frzrb",         "frzrb",       "fv3_history2d",         "all",  .false.,  "none",  2
-"gfs_phys",  "frozr",         "frozr",       "fv3_history2d",         "all",  .false.,  "none",  2
-"gfs_phys",  "frozrb",        "frozrb",      "fv3_history2d",         "all",  .false.,  "none",  2
-"gfs_phys",  "tsnowp",        "tsnowp",      "fv3_history2d",         "all",  .false.,  "none",  2
-"gfs_phys",  "tsnowpb",       "tsnowpb",     "fv3_history2d",         "all",  .false.,  "none",  2
-"gfs_phys",  "rhonewsn",      "rhonewsn",    "fv3_history2d",         "all",  .false.,  "none",  2
 "gfs_phys",    "psurf",       "pressfc",   "fv3_history2d",  "all",  .false.,  "none",  2
 "gfs_phys",    "u10m",        "ugrd10m",   "fv3_history2d",  "all",  .false.,  "none",  2
 "gfs_phys",    "v10m",        "vgrd10m",   "fv3_history2d",  "all",  .false.,  "none",  2
-"gfs_phys",    "nwfa",          "nwfa",          "fv3_history",  "all",  .false.,  "none",  2
-"gfs_phys",    "nifa",          "nifa",          "fv3_history",  "all",  .false.,  "none",  2
+"gfs_phys",    "cldfra",      "cldfra",    "fv3_history2d",  "all",  .false.,  "none",  2
 "gfs_sfc",     "crain",       "crain",     "fv3_history2d",  "all",  .false.,  "none",  2
 "gfs_sfc",     "tprcp",       "tprcp",     "fv3_history2d",  "all",  .false.,  "none",  2
 "gfs_sfc",     "hgtsfc",      "orog",      "fv3_history2d",  "all",  .false.,  "none",  2
