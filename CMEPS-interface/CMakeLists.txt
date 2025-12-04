@@ -20,7 +20,7 @@ elseif(CMAKE_Fortran_COMPILER_ID MATCHES "Intel")
   else()
     set(CMAKE_Fortran_FLAGS_RELEASE "-O2 -fp-model precise")
   endif()
-  set(CMAKE_Fortran_FLAGS_DEBUG "-O0 -check -check noarg_temp_created -check nopointer -fpe0 -ftrapuv -init=snan,arrays")
+  set(CMAKE_Fortran_FLAGS_DEBUG "-O0 -check all -check noarg_temp_created -check nopointer -fpe0 -ftrapuv -init=snan,arrays")
   set(CMAKE_Fortran_LINK_FLAGS "")
   #Set CPP defintions for the ufs/cdeps_share source component of the cmeps target library
   list(APPEND CDEPS_SHARE_DEFS "CPRINTEL")
