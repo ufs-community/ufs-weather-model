@@ -218,6 +218,9 @@ endif()
 ### AQM
 ###############################################################################
 if(AQM)
+	#add_subdirectory(AQM)
+  # Enable NUOPC cap when building CATChem as part of UFS
+	set(BUILD_NUOPC ON CACHE BOOL "Enable NUOPC cap for UFS integration" FORCE)
 	add_subdirectory(CATChem)
 endif()
 
@@ -314,10 +317,16 @@ if(JEDI_DRIVER)
   list(APPEND _ufs_defs_private JEDI_DRIVER=ON)
 endif()
 
+# if(AQM)
+#   add_dependencies(ufs aqm)
+#   list(APPEND _ufs_defs_private FRONT_AQM=aqm)
+#   list(APPEND _ufs_libs_public aqm)
+# endif()
+
 if(AQM)
-  add_dependencies(ufs aqm)
-  list(APPEND _ufs_defs_private FRONT_AQM=aqm)
-  list(APPEND _ufs_libs_public aqm)
+  add_dependencies(ufs cc_nuopc)
+  list(APPEND _ufs_defs_private FRONT_AQM=cc_nuopc)
+  list(APPEND _ufs_libs_public cc_nuopc)
 endif()
 
 if(UFS_GOCART)
