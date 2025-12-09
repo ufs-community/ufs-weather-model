@@ -70,8 +70,8 @@ pipeline {
 	export machine=${NODE_NAME}
         export PATH=$PATH:~/bin
         echo $CHANGE_ID
-        export SSH_ORIGIN=$(curl --silent https://api.github.com/repos/ufs-community/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.repo.ssh_url')
-        export FORK_BRANCH=$(curl --silent https://api.github.com/repos/ufs-community/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.ref')
+        export SSH_ORIGIN=$(curl --silent https://api.github.com/repos/arbetter/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.repo.ssh_url')
+        export FORK_BRANCH=$(curl --silent https://api.github.com/repos/arbetter/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.ref')
 	pwd
         sed "s|intel|gnu|g" -i opnReqTest
         export ACCNR=epic
@@ -79,15 +79,15 @@ pipeline {
         export GIT_REPO_NAME=$(echo $GIT_URL | cut -d '/' -f5 | cut -d '.' -f1)
         ./opnReqTest -n regional_control -a ${ACCNR} -c bit,dcp,thr
         cd logs/
-        cp OpnReqTests_regional_control_hera.log /scratch3/NAGAPE/epic/role.epic/jenkins/workspace
+        cp OpnReqTests_regional_control_hera.log /scratch3/NAGAPE/epic/role.epic/jenkins/workspace/sandbox/Todd-testing
         cd ..
         ./opnReqTest -n cpld_control_nowave_noaero_p8 -a ${ACCNR} -c dbg,rst
         cd logs/
-        cp OpnReqTests_cpld_control_nowave_noaero_p8_hera.log /scratch3/NAGAPE/epic/role.epic/jenkins/workspace
+        cp OpnReqTests_cpld_control_nowave_noaero_p8_hera.log /scratch3/NAGAPE/epic/role.epic/jenkins/workspace/sandbox/Todd-testing
         cd ..
         ./opnReqTest -n control_p8 -a ${ACCNR} -c std,dbg,bit,mpi,rst,thr,dcp
 	cd logs/
-        cp OpnReqTests_control_p8_hera.log /scratch3/NAGAPE/epic/role.epic/jenkins/workspace
+        cp OpnReqTests_control_p8_hera.log /scratch3/NAGAPE/epic/role.epic/jenkins/workspace/sandbox/Todd-testing
         git remote -v
         git fetch --no-recurse-submodules origin
         git reset FETCH_HEAD --hard
