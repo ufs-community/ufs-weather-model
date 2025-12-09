@@ -30,8 +30,7 @@ pipeline {
 // Why do I need another if..block, because it just works this way.
 
             if (CHOICE_NODE == 'orion') {
-                echo "Starting up orion ${CHOICE_NODE}...this might take 5-10 minutes...please be patient."
-               
+                echo "Starting up orion ${CHOICE_NODE}...this might take 5-10 minutes...please be patient."    
             } 
              else if (CHOICE_NODE == 'ursa') {
                 echo "Starting up ursa ${CHOICE_NODE}...this might take 5-10 minutes...please be patient."
@@ -60,8 +59,7 @@ pipeline {
         NODE_PATH = '/scratch3/NAGAPE/epic/role.epic/'
         GITHUB_TOKEN = credentials('GithubJenkinsNew')
       }
-      steps {
-          
+      steps {   
         cleanWs()
         checkout scm
         sh '''
@@ -127,7 +125,6 @@ pipeline {
             )
         
         }
-
         failure {
           slackSend (
                 channel: '#jenkins-notifications',
