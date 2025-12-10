@@ -253,6 +253,9 @@ EOF
         if [[ ! -f "${LOG_DIR}/compile_${COMPILE_ID}.log" ]]; then
           COMPILE_RESULT="FAILED: COMPILE DID NOT START"
           FAIL_LOG="N/A"
+        elif grep -q "quota" "${LOG_DIR}/compile_${COMPILE_ID}.log"; then
+          COMPILE_RESULT="FAILED: DISK QUOTA ISSUE"
+          FAIL_LOG="${LOG_DIR}/compile_${COMPILE_ID}.log"
         elif [[ -f fail_compile_${COMPILE_ID} ]]; then
           COMPILE_RESULT="FAILED: COMPILE FAILURE"
           FAIL_LOG="${LOG_DIR}/compile_${COMPILE_ID}.log"
@@ -474,6 +477,7 @@ export ECFLOW=${ECFLOW}
 export REGRESSIONTEST_LOG=${REGRESSIONTEST_LOG}
 export LOG_DIR=${LOG_DIR}
 export RTVERBOSE=${RTVERBOSE}
+export test_results=${test_results[@]}
 EOF
 
   if [[ ${ROCOTO} == true ]]; then
@@ -621,6 +625,10 @@ while getopts ":a:b:cl:mn:dwkreovh" opt; do
       if [[ "${SRT_COMPILER}" != "intel" ]] && [[ "${SRT_COMPILER}" != "intelllvm" ]] && [[ "${SRT_COMPILER}" != "gnu" ]]; then
         die "COMPILER MUST BE 'intel' OR 'intelllvm' OR 'gnu'"
       fi
+      ;;
+    p)
+      RUN_PR=true
+      NEW_BL_DATE=${OPTARG}
       ;;
     d)
       export delete_rundir=true
@@ -1008,8 +1016,6 @@ esac
 
 mkdir -p "${STMP}/${USER}"
 
-NEW_BASELINE=${STMP}/${USER}/FV3_RT/REGRESSION_TEST
-
 # Overwrite default RUNDIR_ROOT if environment variable RUNDIR_ROOT is set
 RUNDIR_ROOT=${RUNDIR_ROOT:-${PTMP}/${USER}/FV3_RT}/rt_$$
 mkdir -p "${RUNDIR_ROOT}"
@@ -1031,6 +1037,8 @@ fi
 
 source bl_date.conf
 
+NEW_BASELINE=${STMP}/${USER}/FV3_RT/REGRESSION_TEST
+
 if [[ "${RTPWD_NEW_BASELINE}" == true ]] ; then
   RTPWD=${NEW_BASELINE}
 else
@@ -1038,18 +1046,18 @@ else
   RTPWD=${RTPWD:-${DISKNM}/NEMSfv3gfs}
 fi
 
-# if [[ "${CREATE_BASELINE}" == false ]] ; then
-#   EMPTY_CHECK=$(find "${RTPWD}/" -type d -prune -empty)
-#   if [[ ! -d "${RTPWD}" ]] ; then
-#     echo "Baseline directory does not exist:"
-#     echo "   ${RTPWD}"
-#     exit 1
-#   elif [[ -n ${EMPTY_CHECK} ]] ; then
-#     echo "Baseline directory is empty:"
-#     echo "   ${RTPWD}"
-#     exit 1
-#   fi
-# fi
+if [[ "${CREATE_BASELINE}" == false ]] ; then
+  EMPTY_CHECK=$(find "${RTPWD}/" -type d -prune -empty)
+  if [[ ! -d "${RTPWD}" ]] ; then
+    echo "Baseline directory does not exist:"
+    echo "   ${RTPWD}"
+    exit 1
+  elif [[ -n ${EMPTY_CHECK} ]] ; then
+    echo "Baseline directory is empty:"
+    echo "   ${RTPWD}"
+    exit 1
+  fi
+fi
 
 INPUTDATA_ROOT=${INPUTDATA_ROOT:-${DISKNM}/NEMSfv3gfs/input-data-20250507}
 INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT}/WW3_input_data_20250807
@@ -1192,6 +1200,8 @@ in_metatask=false
 [[ -f ${TESTS_FILE} ]] || die "${TESTS_FILE} does not exist"
 
 declare -A compiles
+declare -A test_results
+export test_results[@]
 
 while read -r line || [[ -n "${line}" ]]; do
 
@@ -1342,6 +1352,7 @@ export skip_check_results=${skip_check_results}
 export RTVERBOSE=${RTVERBOSE}
 export delete_rundir=${delete_rundir}
 export WLCLK=${WLCLK}
+export test_results=${test_results[@]}
 EOF
       if [[ ${MACHINE_ID} = jet ]]; then
         cat << EOF >> "${RUNDIR_ROOT}/run_test_${TEST_ID}.env"

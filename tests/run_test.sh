@@ -9,6 +9,19 @@ trap '[ "$?" -eq 0 ] || write_fail_test' EXIT
 trap 'echo "run_test.sh interrupted PID=$$"; cleanup' INT
 trap 'echo "run_test.sh terminated PID=$$";  cleanup' TERM
 
+usage() {
+  set +x #No reason to print out a bunch of echo statements here
+  echo
+  echo "Usage: $0 -a <account> | -b <file> | -c | -d | -e | -h | -k | -l <file> | -m | -n <name> | -o | -r | -v | -w"
+  echo
+  echo "  -b  name of build (compile) to use"
+  echo "  -c  name of compiler to use (INTEL or GNU)"
+  echo "  -n  name of test to run"
+  echo "  -p  path to rt.sh directory"
+  echo "  -r  run directory root"
+  echo
+}
+
 cleanup() {
   [[ ${ROCOTO} = 'false' ]] && interrupt_job
   trap 0
@@ -16,7 +29,7 @@ cleanup() {
 }
 
 write_fail_test() {
-  echo "${TEST_ID} failed in run_test" >> "${PATHRT}/fail_test_${TEST_ID}"
+  echo "${TEST_NAME}_${COMPILER} failed in run_test" >> "${PATHRT}/fail_test_${TEST_NAME}_${COMPILER}"
   if [[ ${ROCOTO:-false} == true ]] || [[ ${ECFLOW:-false} == true ]]; then
     # if this script has been submitted by a workflow return non-zero exit status
     # so that workflow can resubmit it
@@ -29,32 +42,70 @@ write_fail_test() {
   fi
 }
 
-if [[ $# != 5 ]]; then
-  echo "Usage: $0 PATHRT RUNDIR_ROOT TEST_NAME TEST_ID COMPILE_ID"
-  exit 1
+while getopts ":n:p:r:b:" opt; do
+  case ${opt} in
+    n)
+      TEST_NAME=${OPTARG}
+      ;;
+    p)
+      PATHRT=${OPTARG}
+      ;;
+    r)
+      RUNDIR_ROOT=${OPTARG}
+      ;;
+    b)
+      BUILD_NAME=${OPTARG}
+      ;;
+    c)
+      COMPILER=${OPTARG}
+      ;;
+    *)
+      usage
+      exit 1
+      ;;
+  esac
+done
+
+if [[ -z "${TEST_NAME:-}" ]] || [[ -z "${PATHRT:-}" ]]\
+   || [[ -z "${RUNDIR_ROOT:-}" ]] || [[ -z "${COMPILER:-}" ]]\
+   || [[ -z "${BUILD_NAME:-}" ]]; then
+  echo "-n -p -r -b -c are all required"
 fi
 
-export PATHRT=$1
-export RUNDIR_ROOT=$2
-export TEST_NAME=$3
-export TEST_ID=$4
-export COMPILE_ID=$5
+if [[ ${COMPILER^^} != "INTEL" ]] || [[ ${COMPILER^^} != "GNU" ]]; then
+  echo "Unsupported compiler: ${COMPILER}"
+  echo "Supported compilers are INTEL and GNU"
+  exit 1
+fi 
 
-echo "PATHRT: ${PATHRT}"
-echo "RUNDIR_ROOT: ${RUNDIR_ROOT}"
-echo "TEST_NAME: ${TEST_NAME}"
-echo "TEST_ID: ${TEST_ID}"
-echo "COMPILE_ID: ${COMPILE_ID}"
+#COMPILE_ID="${BUILD_NAME}_${COMPILER}"
+#TEST_ID="${TEST_NAME}_${COMPILER}"
+
+# if [[ $# != 5 ]]; then
+#   echo "Usage: $0 PATHRT RUNDIR_ROOT TEST_NAME TEST_ID COMPILE_ID"
+#   exit 1
+# fi
+
+# export PATHRT=$1
+# export RUNDIR_ROOT=$2
+# export TEST_NAME=$3
+# export TEST_ID=$4
+# export COMPILE_ID=$5
+
+# echo "PATHRT: ${PATHRT}"
+# echo "RUNDIR_ROOT: ${RUNDIR_ROOT}"
+# echo "TEST_NAME: ${TEST_NAME}"
+# echo "TEST_ID: ${TEST_ID}"
+# echo "COMPILE_ID: ${COMPILE_ID}"
 
 cd "${PATHRT}"
-
 
 unset MODEL_CONFIGURE
 unset UFS_CONFIGURE
 
-[[ -e ${RUNDIR_ROOT}/run_test_${TEST_ID}.env ]] && source "${RUNDIR_ROOT}/run_test_${TEST_ID}.env"
+[[ -e ${RUNDIR_ROOT}/run_test_${TEST_NAME}_${COMPILER}.env ]] && source "${RUNDIR_ROOT}/run_test_${TEST_NAME}_${COMPILER}.env"
 source default_vars.sh
-[[ -e ${RUNDIR_ROOT}/run_test_${TEST_ID}.env ]] && source "${RUNDIR_ROOT}/run_test_${TEST_ID}.env"
+[[ -e ${RUNDIR_ROOT}/run_test_${TEST_NAME}_${COMPILER}.env ]] && source "${RUNDIR_ROOT}/run_test_${TEST_NAME}_${COMPILER}.env"
 source "tests/${TEST_NAME}"
 
 if [[ "${RTPWD_NEW_BASELINE}" == false ]] ; then
@@ -62,19 +113,14 @@ if [[ "${RTPWD_NEW_BASELINE}" == false ]] ; then
 fi
 
 if [[ "${CREATE_BASELINE}" == false ]] ; then
-  EMPTY_CHECK=$(find "${RTPWD}/" -type d -prune -empty)
   if [[ ! -d "${RTPWD}" ]] ; then
     echo "Baseline directory does not exist:"
-    echo "   ${RTPWD}"
-    exit 1
-  elif [[ -n ${EMPTY_CHECK} ]] ; then
-    echo "Baseline directory is empty:"
     echo "   ${RTPWD}"
     exit 1
   fi
 fi
 
-rm -f "${PATHRT}/fail_test_${TEST_ID}"
+rm -f "${PATHRT}/fail_test_${TEST_NAME}_${COMPILER}"
 
 # Save original CNTL_DIR name as INPUT_DIR for regression
 # tests that try to copy input data from CNTL_DIR
@@ -82,42 +128,20 @@ rm -f "${PATHRT}/fail_test_${TEST_ID}"
 export INPUT_DIR=${CNTL_DIR}
 
 # Append RT_SUFFIX to RUNDIR, and BL_SUFFIX to CNTL_DIR
-export RUNDIR=${RUNDIR_ROOT}/${TEST_ID}${RT_SUFFIX}
+export RUNDIR=${RUNDIR_ROOT}/${TEST_NAME}_${COMPILER}${RT_SUFFIX}
 export CNTL_DIR=${CNTL_DIR}${BL_SUFFIX}
 
-JBNME="run_${TEST_ID}"
+JBNME="run_${TEST_NAME}_${COMPILER}"
 export JBNME
 date_s=$( date +%s )
-echo -n "${TEST_ID}, ${date_s}," > "${LOG_DIR}/${JBNME}_timestamp.txt"
+echo -n "${TEST_NAME}_${COMPILER}, ${date_s}," > "${LOG_DIR}/${JBNME}_timestamp.txt"
 
-export RT_LOG=${LOG_DIR}/rt_${TEST_ID}${RT_SUFFIX}.log
-echo "Test ${TEST_ID} ${TEST_DESCR}"
+export RT_LOG=${LOG_DIR}/rt_${TEST_NAME}_${COMPILER}${RT_SUFFIX}.log
+echo "Test ${TEST_NAME}_${COMPILER} ${TEST_DESCR}"
 
 source rt_utils.sh
 source atparse.bash
 
-rm -rf "${RUNDIR}"
-mkdir -p "${RUNDIR}"
-cd "${RUNDIR}"
-
-###############################################################################
-# Make configure and run files
-###############################################################################
-
-# FV3 executable:
-cp "${PATHRT}/fv3_${COMPILE_ID}.exe" "fv3.exe"
-
-# modulefile for FV3 prerequisites:
-mkdir -p modulefiles
-if [[ ${MACHINE_ID} == linux ]]; then
-  cp "${PATHRT}/modules.fv3_${COMPILE_ID}" "./modulefiles/modules.fv3"
-else
-  cp "${PATHRT}/modules.fv3_${COMPILE_ID}.lua" "./modulefiles/modules.fv3.lua"
-fi
-cp "${PATHTR}/modulefiles/ufs_common.lua" "./modulefiles/."
-
-# Get the shell file that loads the "module" command and purges modules:
-cp "${PATHRT}/module-setup.sh" "module-setup.sh"
 
 case ${MACHINE_ID} in
   wcoss2|acorn)
@@ -158,6 +182,27 @@ case ${MACHINE_ID} in
     module load modules.fv3
     ;;
 esac
+
+####### SETUP RUN DIR
+
+rm -rf "${RUNDIR}"
+mkdir -p "${RUNDIR}"
+cd "${RUNDIR}"
+
+# FV3 executable:
+cp "${PATHRT}/fv3_${BUILD_NAME}_${COMPILER}.exe" "fv3.exe"
+
+# modulefile for FV3 prerequisites:
+mkdir -p modulefiles
+if [[ ${MACHINE_ID} == linux ]]; then
+  cp "${PATHRT}/modules.fv3_${BUILD_NAME}_${COMPILER}" "./modulefiles/modules.fv3"
+else
+  cp "${PATHRT}/modules.fv3_${BUILD_NAME}_${COMPILER}.lua" "./modulefiles/modules.fv3.lua"
+fi
+cp "${PATHTR}/modulefiles/ufs_common.lua" "./modulefiles/."
+
+# Get the shell file that loads the "module" command and purges modules:
+cp "${PATHRT}/module-setup.sh" "module-setup.sh"
 
 # FV3_RUN could have multiple entry seperated by space
 if [[ -n "${FV3_RUN}" ]]; then
@@ -214,65 +259,21 @@ else
   exit 1
 fi
 
-if [[ "Q${INPUT_NEST02_NML:-}" != Q ]]; then
-    export INPES_NEST=${INPES_NEST02:-}
-    export JNPES_NEST=${JNPES_NEST02:-}
-    export NPX_NEST=${NPX_NEST02:-}
-    export NPY_NEST=${NPY_NEST02:-}
-    export K_SPLIT_NEST=${K_SPLIT_NEST02:-}
-    export N_SPLIT_NEST=${N_SPLIT_NEST02:-}
-    atparse < "${PATHRT}/parm/${INPUT_NEST02_NML}" > input_nest02.nml
-else
-    sed -i -e "/<output_grid_02>/,/<\/output_grid_02>/d" model_configure
-fi
-
-if [[ "Q${INPUT_NEST03_NML:-}" != Q ]]; then
-    export INPES_NEST=${INPES_NEST03:-}
-    export JNPES_NEST=${JNPES_NEST03:-}
-    export NPX_NEST=${NPX_NEST03:-}
-    export NPY_NEST=${NPY_NEST03:-}
-    export K_SPLIT_NEST=${K_SPLIT_NEST03:-}
-    export N_SPLIT_NEST=${N_SPLIT_NEST03:-}
-    atparse < "${PATHRT}/parm/${INPUT_NEST03_NML}" > input_nest03.nml
-else
-    sed -i -e "/<output_grid_03>/,/<\/output_grid_03>/d" model_configure
-fi
-
-if [[ "Q${INPUT_NEST04_NML:-}" != Q ]]; then
-    export INPES_NEST=${INPES_NEST04:-}
-    export JNPES_NEST=${JNPES_NEST04:-}
-    export NPX_NEST=${NPX_NEST04:-}
-    export NPY_NEST=${NPY_NEST04:-}
-    export K_SPLIT_NEST=${K_SPLIT_NEST04:-}
-    export N_SPLIT_NEST=${N_SPLIT_NEST04:-}
-    atparse < "${PATHRT}/parm/${INPUT_NEST04_NML}" > input_nest04.nml
-else
-    sed -i -e "/<output_grid_04>/,/<\/output_grid_04>/d" model_configure
-fi
-
-if [[ "Q${INPUT_NEST05_NML:-}" != Q ]]; then
-    export INPES_NEST=${INPES_NEST05:-}
-    export JNPES_NEST=${JNPES_NEST05:-}
-    export NPX_NEST=${NPX_NEST05:-}
-    export NPY_NEST=${NPY_NEST05:-}
-    export K_SPLIT_NEST=${K_SPLIT_NEST05:-}
-    export N_SPLIT_NEST=${N_SPLIT_NEST05:-}
-    atparse < "${PATHRT}/parm/${INPUT_NEST05_NML}" > input_nest05.nml
-else
-    sed -i -e "/<output_grid_05>/,/<\/output_grid_05>/d" model_configure
-fi
-
-if [[ "Q${INPUT_NEST06_NML:-}" != Q ]]; then
-    export INPES_NEST=${INPES_NEST06:-}
-    export JNPES_NEST=${JNPES_NEST06:-}
-    export NPX_NEST=${NPX_NEST06:-}
-    export NPY_NEST=${NPY_NEST06:-}
-    export K_SPLIT_NEST=${K_SPLIT_NEST06:-}
-    export N_SPLIT_NEST=${N_SPLIT_NEST06:-}
-    atparse < "${PATHRT}/parm/${INPUT_NEST06_NML}" > input_nest06.nml
-else
-    sed -i -e "/<output_grid_06>/,/<\/output_grid_06>/d" model_configure
-fi
+# Process nested domains from 02 to 06
+for nest_num in {02..06}; do
+    padded_num=$(printf "%02d" "${nest_num}")
+    if [[ "Q${INPUT_NEST${!padded_num}_NML:-}" != Q ]]; then
+        export INPES_NEST=${INPES_NEST${!padded_num}:-}
+        export JNPES_NEST=${JNPES_NEST${!padded_num}:-}
+        export NPX_NEST=${NPX_NEST${!padded_num}:-}
+        export NPY_NEST=${NPY_NEST${!padded_num}:-}
+        export K_SPLIT_NEST=${K_SPLIT_NEST${!padded_num}:-}
+        export N_SPLIT_NEST=${N_SPLIT_NEST${!padded_num}:-}
+        atparse < "${PATHRT}/parm/${INPUT_NEST${!padded_num}_NML}" > "input_nest${padded_num}.nml"
+    else
+        sed -i -e "/<output_grid_${padded_num}>/,/<\/output_grid_${padded_num}>/d" model_configure
+    fi
+done
 
 # diag table
 if [[ "Q${DIAG_TABLE:-}" != Q ]]; then
@@ -384,6 +385,7 @@ fi
 if [[ ${FIRE_BEHAVIOR} = 'true' ]]; then
   atparse < "${PATHRT}/parm/${FIRE_NML:-namelist.fire.IN}" > namelist.fire
 fi
+###### END SETUP RUN DIR
 
 #Namelists generated and variable definitions are finalized
 #Sanity check for timesteps on ATM/OCN/ICE
@@ -401,6 +403,7 @@ if [[ -n "${coupling_interval_slow_sec+x}" && -n "${coupling_interval_fast_sec+x
   fi
 fi
 
+####### SETUP RESOURCES FOR JOB SUBMISSION
 TPN=$(( TPN / THRD ))
 if (( TASKS < TPN )); then
   TPN=${TASKS}
@@ -429,6 +432,7 @@ if [[ ${ESMF_THREADING} != true ]]; then
 fi
 
 export NCPUS=$(( TPN * THRD ))
+####### END SETUP RESOURCES FOR JOB SUBMISSION
 
 if [[ ${SCHEDULER} = 'pbs' ]]; then
   if [[ -e ${PATHRT}/fv3_conf/fv3_qsub.IN_${MACHINE_ID} ]]; then
@@ -485,12 +489,12 @@ if [[ ${skip_check_results} == false ]]; then
   echo
   echo "baseline dir = ${RTPWD}/${CNTL_DIR}_${RT_COMPILER}"
   echo "working dir  = ${RUNDIR}"
-  echo "Checking test ${TEST_ID} results ...."
+  echo "Checking test ${TEST_NAME}_${COMPILER} results ...."
   } > "${RT_LOG}"
   echo
   echo "baseline dir = ${RTPWD}/${CNTL_DIR}_${RT_COMPILER}"
   echo "working dir  = ${RUNDIR}"
-  echo "Checking test ${TEST_ID} results ...."
+  echo "Checking test ${TEST_NAME}_${COMPILER} results ...."
 
   if [[ ${CREATE_BASELINE} = false ]]; then
     #
@@ -557,8 +561,8 @@ if [[ ${skip_check_results} == false ]]; then
     #
     # --- create baselines
     #
-    echo;echo "Moving baseline ${TEST_ID} files ...."
-    echo;echo "Moving baseline ${TEST_ID} files ...." >> "${RT_LOG}"
+    echo;echo "Moving baseline ${TEST_NAME}_${COMPILER} files ...."
+    echo;echo "Moving baseline ${TEST_NAME}_${COMPILER} files ...." >> "${RT_LOG}"
 
     for i in ${LIST_FILES} ; do
       printf %s " Moving ${i} ....."
@@ -582,15 +586,15 @@ if [[ ${skip_check_results} == false ]]; then
   grep "The total amount of wall time" "${RUNDIR}/out"
   grep "The maximum resident set size" "${RUNDIR}/out"
   echo
-  echo "Test ${TEST_ID} ${test_status}"
+  echo "Test ${TEST_NAME}_${COMPILER} ${test_status}"
   echo
   } >> "${RT_LOG}"
 
-  echo "Test ${TEST_ID} ${test_status}"
+  echo "Test ${TEST_NAME}_${COMPILER} ${test_status}"
   echo
 
   if [[ ${test_status} = 'FAIL' ]]; then
-    echo "${TEST_ID} failed in check_result" >> "${PATHRT}/fail_test_${TEST_ID}"
+    echo "${TEST_NAME}_${COMPILER} failed in check_result" >> "${PATHRT}/fail_test_${TEST_NAME}_${COMPILER}"
     write_fail_test
   fi
 
@@ -600,7 +604,7 @@ else
   grep "The total amount of wall time" "${RUNDIR}/out"
   grep "The maximum resident set size" "${RUNDIR}/out"
   echo
-  echo "Test ${TEST_ID} RUN_SUCCESS"
+  echo "Test ${TEST_NAME}_${COMPILER} RUN_SUCCESS"
   echo;echo;echo
   } >> "${RT_LOG}"
 fi
@@ -635,5 +639,5 @@ if [[ ${delete_rundir} = true ]]; then
 fi
 
 elapsed=${SECONDS}
-echo "run_test.sh: Test ${TEST_ID} Completed."
-echo "run_test.sh: Test ${TEST_ID} Elapsed time ${elapsed} seconds."
+echo "run_test.sh: Test ${TEST_NAME}_${COMPILER} Completed."
+echo "run_test.sh: Test ${TEST_NAME}_${COMPILER} Elapsed time ${elapsed} seconds."
