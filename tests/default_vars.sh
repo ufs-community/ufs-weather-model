@@ -471,7 +471,7 @@ export_fv3
 export USE_MERRA2=.false.
 export WRITE_NSFLIP=.false.
 
-export DIAG_TABLE=diag_table_gfsv16
+export DIAG_TABLE=diag_table_gfsv16.IN
 export FIELD_TABLE=field_table_gfsv16
 export FV3_RUN=control_run.IN
 export INPUT_NML=control.nml.IN
@@ -1968,6 +1968,7 @@ export_datm_cdeps ()
   export SMONTH=10
   export SDAY=01
   export SHOUR=00
+  export CHOUR=00
   export FHMAX=24
   export DT_ATMOS=900
   export FHROT=0
@@ -2017,7 +2018,7 @@ export_datm_cdeps ()
 
   # datm defaults
   export INPUT_NML=input.mom6.nml.IN
-  export DIAG_TABLE=diag_table_template
+  export DIAG_TABLE=diag_table_cpld.IN
   export DATM_SRC=CFSR
   export FILEBASE_DATM=cfsr
   export MESH_ATM=mesh.datm.1760x880.nc
