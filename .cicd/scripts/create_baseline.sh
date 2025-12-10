@@ -183,6 +183,33 @@ function create_baseline() {
 		    pwd
 		    cp "$(dirname "${WORKSPACE}")/RegressionTests_${machine_id}.log" "${WORKSPACE}/tests/logs/"
 		    cd ${WORKSPACE}/tests/
+		elif [[ ${machine} =~ "Ursa" ]]
+		then
+		    echo "Creating baselines on ${machine}"
+		    export ACCNR=epic
+		    sed "s|QUEUE=batch|QUEUE=windfall|g" -i rt.sh
+		    local workflow="-r"
+		    ./rt.sh -a "${ACCNR}" -c "${workflow}" "${opt}" "${suite}" | tee "${WORKSPACE}/tests/logs/RT-run-${machine}.log"
+		    status=${PIPESTATUS[0]}
+		    export DISKNM=/scratch3/NAGAPE/epic/role.epic/UFS-WM_RT
+		    cd ${DISKNM}/NEMSfv3gfs/
+		    mkdir -p develop-${BL_DATE}
+		    #cd  /scratch1/NCEPDEV/stmp4/role.epic/FV3_RT
+			cd /scratch3/NCEPDEV/stmp/role.epic/RT_RUNDIRS/role.epic/FV3_RT
+		    ls -l REGRESSION_TEST/.
+		    rsync -a --no-t REGRESSION_TEST/ "${DISKNM}/NEMSfv3gfs/develop-${BL_DATE}" || echo "#### Warning! rsync $(pwd)/REGRESSION_TEST/ incomplete."
+		    cd ${WORKSPACE}/tests
+		    ./rt.sh -a "${ACCNR}" "${workflow}" "${opt}" "${suite}" | tee "${WORKSPACE}/tests/logs/RT-run-${machine}.log"
+		    status=${PIPESTATUS[0]}
+		    cd logs/
+		    cp "RegressionTests_${machine_id}.log" "$(dirname "${WORKSPACE}")" #/scratch2/NAGAPE/epic/role.epic/jenkins/workspace
+		    git remote -v
+		    git fetch --no-recurse-submodules origin
+		    git reset FETCH_HEAD --hard
+		    cd .. && cd .. && cd ..
+		    pwd
+		    cp "$(dirname "${WORKSPACE}")/RegressionTests_${machine_id}.log" "${WORKSPACE}/tests/logs/"
+		    cd ${WORKSPACE}/tests/		
 		elif [[ ${machine} =~ "Derecho" ]]
 		then
 		    echo "Creating baselines on ${machine}"

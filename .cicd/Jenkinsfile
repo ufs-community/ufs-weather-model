@@ -187,20 +187,18 @@ pipeline {
     }
     post {
         success {
-            node('built-in') {
-                echo 'This will run only if successful.'
-                sh '''
-                  aws sns publish --topic-arn "arn:aws:sns:us-east-1:${AWS_PROD_ACCOUNT_ID}:${AWS_PROD_SNS_TOPIC}" --region us-east-1 --message '{"version":"1.0","source":"custom","content":{"description":":sunny: Jenkins build *'"$JOB_NAME"' '"$BUILD_NUMBER"'* with *PR-'"$CHANGE_ID"'*  *succeeded*"}}'
-               '''
-            }
+            slackSend (
+                channel: '#jenkins-notifications',
+                color: 'good',
+                message: "*SUCCESS: Build ${env.JOB_NAME} #${env.BUILD_NUMBER}* <${env.BUILD_URL}|Open Build>"
+            )
         }
         failure {
-            node('built-in') {
-                echo 'This will run only if the run was marked as unstable.'
-                sh '''
-                  aws sns publish --topic-arn "arn:aws:sns:us-east-1:${AWS_PROD_ACCOUNT_ID}:${AWS_PROD_SNS_TOPIC}" --region us-east-1 --message '{"version":"1.0","source":"custom","content":{"description":":warning: Jenkins build *'"$JOB_NAME"' '"$BUILD_NUMBER"'* with *PR-'"$CHANGE_ID"'*  *failed!*"}}'
-               '''
-            }
+            slackSend (
+                channel: '#jenkins-notifications',
+                color: 'danger',
+                message: "*FAILURE: Build ${env.JOB_NAME} #${env.BUILD_NUMBER}*  <${env.BUILD_URL}|Open Build>"
+            )
         }
 	always {
             script {

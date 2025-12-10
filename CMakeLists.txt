@@ -8,7 +8,10 @@ if (CMAKE_Fortran_COMPILER_ID MATCHES "GNU" AND CMAKE_Fortran_COMPILER_VERSION V
   message(FATAL_ERROR "GNU Compiler >= 9 is required")
 endif()
 
-list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
+set(CMAKE_Platform $ENV{CMAKE_Platform})
+
+list(APPEND CMAKE_MODULE_PATH $ENV{ESMF_ROOT}/cmake)
+list(APPEND CMAKE_MODULE_PATH $ENV{esmf_ROOT}/cmake)
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMakeModules/Modules)
 
 ###############################################################################
@@ -65,6 +68,7 @@ message("FIRE_BEHAVIOR .... ${FIRE_BEHAVIOR}")
 set(32BIT           OFF CACHE BOOL "Enable 32BIT (single precision arithmetic in dycore and fast physics)")
 set(CCPP_32BIT      OFF CACHE BOOL "Enable CCPP_32BIT (single precision arithmetic in slow physics)")
 set(RRTMGP_32BIT    OFF CACHE BOOL "Enable 32BIT (single precision arithmetic in rte-rrtmgp radiation)")
+set(FASTER          ON  CACHE BOOL "Enable faster optimization compiler flags")
 set(AVX2            ON  CACHE BOOL "Enable AVX2 instruction set")
 set(AVX             OFF CACHE BOOL "Enable AVX-I instruction set")
 set(SIMDMULTIARCH   OFF CACHE BOOL "Enable multi-target SIMD instruction sets")
@@ -83,7 +87,6 @@ set(PDLIB_BT4       OFF CACHE BOOL "Enable Domain Decomposition in WW3 via PDLIB
 set(CDEPS_INLINE    OFF CACHE BOOL "Enable CDEPS inline capability")
 set(HYDRO           OFF CACHE BOOL "Enable hydrostatic set")
 
-set(CMAKE_Platform $ENV{CMAKE_Platform})
 if(CMAKE_Platform)
   message("")
   if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/cmake/configure_${CMAKE_Platform}.cmake)
@@ -159,8 +162,8 @@ if(OPENMP)
 endif()
 
 find_package(NetCDF 4.7.4 REQUIRED C Fortran)
+set(USE_ESMF_STATIC_LIBS ON)
 find_package(ESMF 8.8.0 MODULE REQUIRED)
-#add_library(ESMF::ESMF ALIAS esmf)
 if(FMS)
   find_package(FMS 2022.04 REQUIRED COMPONENTS R4 R8)
   if(APP MATCHES "^(HAFSW)$")
@@ -329,7 +332,7 @@ if(WW3)
   target_link_libraries(ufs PUBLIC WW3::WW3)
 endif()
 
-list(APPEND _ufs_libs_public esmf)
+list(APPEND _ufs_libs_public ESMF::ESMF)
 
 if(STOCH_PHYS)
   list(APPEND _ufs_libs_public stochastic_physics)
@@ -405,7 +408,7 @@ target_link_libraries(ufs PUBLIC "${_ufs_libs_public}")
 ###############################################################################
 add_executable(ufs_model driver/UFS.F90)
 add_dependencies(ufs_model ufs)
-target_link_libraries(ufs_model ufs esmf w3emc::w3emc_d)
+target_link_libraries(ufs_model ufs ESMF::ESMF w3emc::w3emc_d)
 set_target_properties(ufs_model PROPERTIES LINKER_LANGUAGE Fortran)
 
 ###############################################################################

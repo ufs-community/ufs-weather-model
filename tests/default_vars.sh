@@ -93,6 +93,13 @@ export ICE_tasks_cdeps_025=48
 export INPES_aqm=33
 export JNPES_aqm=8
 
+export INPES_sfs=4
+export JNPES_sfs=6
+export THRD_sfs=1
+export WPG_sfs=24
+export OCN_tasks_sfs=168
+export ICE_tasks_sfs=48
+
 export THRD_cpl_unstr=1
 export INPES_cpl_unstr=3
 export JNPES_cpl_unstr=8
@@ -121,6 +128,7 @@ export fbh_omp_num_threads=1
 
 export histaux_enabled=.false.
 export BMIC=.false.
+export SFS=.false.
 
 if [[ ${MACHINE_ID} = wcoss2 || ${MACHINE_ID} = acorn ]]; then
 
@@ -1046,6 +1054,7 @@ export RRFS_RESTART=NO
 export SEAS_OPT=2
 
 # GWD
+export DO_NGW_EC=.false.
 export LDIAG_UGWP=.false.
 export DO_UGWP=.false.
 export DO_TOFD=.false.
@@ -1113,7 +1122,8 @@ export DO_MYNNEDMF=.false.
 export HURR_PBL=.false.
 export MONINQ_FAC=1.0
 export SFCLAY_COMPUTE_FLUX=.false.
-
+export TTE_EDMF=.false.
+export CSCALE=1.0
 # Shallow/deep convection
 export DO_DEEP=.true.
 export SHAL_CNV=.true.
@@ -1250,6 +1260,7 @@ export PERT_MP=.false.
 export PERT_RADTEND=.false.
 export PERT_CLDS=.false.
 
+export NEW_LSCALE=.false.
 export STOCHINI=.false.
 export DO_SPPT=.false.
 export DO_SHUM=.false.
@@ -1407,8 +1418,9 @@ export LSOIL_INCR=3
 export LAND_IAU_FILTER_INC=.false.
 export LAND_IAU_UPD_STC=.true.
 export LAND_IAU_UPD_SLC=.true.
-export LAND_IAU_DP_STCSMC_ADJ=.true.
+export LAND_IAU_DO_STCSMC_ADJ=.true.
 export LAND_IAU_MIN_T_INC=0.0001
+export LAND_IAU_MIN_SLC_INC=0.000001
 }
 
 # Add section for tiled grid namelist
@@ -1616,6 +1628,9 @@ export_cice6() {
   export stream_files_dice=none
   export CICE_PRESCRIBED=false
   export DICE_CDEPS=false
+
+  #To modify aice on restart, "adjust_aice"
+  export CICE_RESTART_MOD='none'
 }
 
 # Defaults for the MOM6 model namelist, mx100
