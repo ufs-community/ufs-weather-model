@@ -1,9 +1,67 @@
-20161003.00Z.C96.64bit.non-mono
-2016 10 03 00 0 0
+@[SYEAR]@[SMONTH]@[SDAY].@[SHOUR]Z.@[ATMRES].64bit.non-mono
+@[SYEAR] @[SMONTH] @[SDAY] @[SHOUR] 0 0
 
 "fv3_history",    0,  "hours",  1,  "hours",  "time"
 "fv3_history2d",  0,  "hours",  1,  "hours",  "time"
+######################
+"@[MOM6_OUTPUT_DIR]/ocn%4yr%2mo%2dy%2hr%2mi",      @[MOM6_OUTPUT_FH],  "hours", 1, "hours", "time", @[MOM6_OUTPUT_FH], "hours", "@[SYEAR] @[SMONTH] @[SDAY] @[CHOUR] 0 0"
+"@[MOM6_OUTPUT_DIR]/SST%4yr%2mo%2dy%2hr%2mi",      1,  "days",  1, "days",  "time", 1, "days",  "@[SYEAR] @[SMONTH] @[SDAY] @[CHOUR] 0 0"
+##############################################
+# static fields
+ "ocean_model", "geolon",      "geolon",      "@[MOM6_OUTPUT_DIR]/ocn%4yr%2mo%2dy%2hr%2mi", "all", .false., "none", 2
+ "ocean_model", "geolat",      "geolat",      "@[MOM6_OUTPUT_DIR]/ocn%4yr%2mo%2dy%2hr%2mi", "all", .false., "none", 2
+ "ocean_model", "geolon_c",    "geolon_c",    "@[MOM6_OUTPUT_DIR]/ocn%4yr%2mo%2dy%2hr%2mi", "all", .false., "none", 2
+ "ocean_model", "geolat_c",    "geolat_c",    "@[MOM6_OUTPUT_DIR]/ocn%4yr%2mo%2dy%2hr%2mi", "all", .false., "none", 2
+ "ocean_model", "geolon_u",    "geolon_u",    "@[MOM6_OUTPUT_DIR]/ocn%4yr%2mo%2dy%2hr%2mi", "all", .false., "none", 2
+ "ocean_model", "geolat_u",    "geolat_u",    "@[MOM6_OUTPUT_DIR]/ocn%4yr%2mo%2dy%2hr%2mi", "all", .false., "none", 2
+ "ocean_model", "geolon_v",    "geolon_v",    "@[MOM6_OUTPUT_DIR]/ocn%4yr%2mo%2dy%2hr%2mi", "all", .false., "none", 2
+ "ocean_model", "geolat_v",    "geolat_v",    "@[MOM6_OUTPUT_DIR]/ocn%4yr%2mo%2dy%2hr%2mi", "all", .false., "none", 2
+# "ocean_model", "depth_ocean", "depth_ocean", "@[MOM6_OUTPUT_DIR]/ocn%4yr%2mo%2dy%2hr%2mi", "all", .false., "none", 2
+# "ocean_model", "wet",         "wet",         "@[MOM6_OUTPUT_DIR]/ocn%4yr%2mo%2dy%2hr%2mi", "all", .false., "none", 2
+ "ocean_model", "wet_c",       "wet_c",       "@[MOM6_OUTPUT_DIR]/ocn%4yr%2mo%2dy%2hr%2mi", "all", .false., "none", 2
+ "ocean_model", "wet_u",       "wet_u",       "@[MOM6_OUTPUT_DIR]/ocn%4yr%2mo%2dy%2hr%2mi", "all", .false., "none", 2
+ "ocean_model", "wet_v",       "wet_v",       "@[MOM6_OUTPUT_DIR]/ocn%4yr%2mo%2dy%2hr%2mi", "all", .false., "none", 2
+ "ocean_model", "sin_rot",     "sin_rot",     "@[MOM6_OUTPUT_DIR]/ocn%4yr%2mo%2dy%2hr%2mi", "all", .false., "none", 2
+ "ocean_model", "cos_rot",     "cos_rot",     "@[MOM6_OUTPUT_DIR]/ocn%4yr%2mo%2dy%2hr%2mi", "all", .false., "none", 2
 
+# ocean output TSUV and others
+ "ocean_model", "SSH",       "SSH",      "@[MOM6_OUTPUT_DIR]/ocn%4yr%2mo%2dy%2hr%2mi","all",.true.,"none",2
+ "ocean_model", "SST",       "SST",      "@[MOM6_OUTPUT_DIR]/ocn%4yr%2mo%2dy%2hr%2mi","all",.true.,"none",2
+ "ocean_model", "SSS",       "SSS",      "@[MOM6_OUTPUT_DIR]/ocn%4yr%2mo%2dy%2hr%2mi","all",.true.,"none",2
+ "ocean_model", "speed",     "speed",    "@[MOM6_OUTPUT_DIR]/ocn%4yr%2mo%2dy%2hr%2mi","all",.true.,"none",2
+ "ocean_model", "SSU",       "SSU",      "@[MOM6_OUTPUT_DIR]/ocn%4yr%2mo%2dy%2hr%2mi","all",.true.,"none",2
+ "ocean_model", "SSV",       "SSV",      "@[MOM6_OUTPUT_DIR]/ocn%4yr%2mo%2dy%2hr%2mi","all",.true.,"none",2
+ "ocean_model", "frazil",    "frazil",   "@[MOM6_OUTPUT_DIR]/ocn%4yr%2mo%2dy%2hr%2mi","all",.true.,"none",2
+ "ocean_model", "ePBL_h_ML", "ePBL",     "@[MOM6_OUTPUT_DIR]/ocn%4yr%2mo%2dy%2hr%2mi","all",.true.,"none",2
+ "ocean_model", "MLD_003",   "MLD_003",  "@[MOM6_OUTPUT_DIR]/ocn%4yr%2mo%2dy%2hr%2mi","all",.true.,"none",2
+ "ocean_model", "MLD_0125",  "MLD_0125", "@[MOM6_OUTPUT_DIR]/ocn%4yr%2mo%2dy%2hr%2mi","all",.true.,"none",2
+
+# save daily SST
+ "ocean_model", "geolon",      "geolon",      "@[MOM6_OUTPUT_DIR]/SST%4yr%2mo%2dy%2hr%2mi", "all", .false., "none", 2
+ "ocean_model", "geolat",      "geolat",      "@[MOM6_OUTPUT_DIR]/SST%4yr%2mo%2dy%2hr%2mi", "all", .false., "none", 2
+ "ocean_model", "SST",         "sst",         "@[MOM6_OUTPUT_DIR]/SST%4yr%2mo%2dy%2hr%2mi", "all", .true.,  "none", 2
+
+# Z-Space Fields Provided for CMIP6 (CMOR Names):
+#===============================================
+ "ocean_model_z","uo","uo"      ,"@[MOM6_OUTPUT_DIR]/ocn%4yr%2mo%2dy%2hr%2mi","all",.true.,"none",2
+ "ocean_model_z","vo","vo"      ,"@[MOM6_OUTPUT_DIR]/ocn%4yr%2mo%2dy%2hr%2mi","all",.true.,"none",2
+ "ocean_model_z","so","so"      ,"@[MOM6_OUTPUT_DIR]/ocn%4yr%2mo%2dy%2hr%2mi","all",.true.,"none",2
+ "ocean_model_z","temp","temp"  ,"@[MOM6_OUTPUT_DIR]/ocn%4yr%2mo%2dy%2hr%2mi","all",.true.,"none",2
+
+# forcing
+ "ocean_model", "taux",      "taux",                     "@[MOM6_OUTPUT_DIR]/ocn%4yr%2mo%2dy%2hr%2mi","all",.true.,"none",2
+ "ocean_model", "tauy",      "tauy",                     "@[MOM6_OUTPUT_DIR]/ocn%4yr%2mo%2dy%2hr%2mi","all",.true.,"none",2
+ "ocean_model", "latent",    "latent",                   "@[MOM6_OUTPUT_DIR]/ocn%4yr%2mo%2dy%2hr%2mi","all",.true.,"none",2
+ "ocean_model", "sensible",  "sensible",                 "@[MOM6_OUTPUT_DIR]/ocn%4yr%2mo%2dy%2hr%2mi","all",.true.,"none",2
+ "ocean_model", "SW",        "SW",                       "@[MOM6_OUTPUT_DIR]/ocn%4yr%2mo%2dy%2hr%2mi","all",.true.,"none",2
+ "ocean_model", "LW",        "LW",                       "@[MOM6_OUTPUT_DIR]/ocn%4yr%2mo%2dy%2hr%2mi","all",.true.,"none",2
+ "ocean_model", "evap",      "evap",                     "@[MOM6_OUTPUT_DIR]/ocn%4yr%2mo%2dy%2hr%2mi","all",.true.,"none",2
+ "ocean_model", "lprec",     "lprec",                    "@[MOM6_OUTPUT_DIR]/ocn%4yr%2mo%2dy%2hr%2mi","all",.true.,"none",2
+ "ocean_model", "lrunoff",   "lrunoff",                  "@[MOM6_OUTPUT_DIR]/ocn%4yr%2mo%2dy%2hr%2mi","all",.true.,"none",2
+# "ocean_model", "frunoff",   "frunoff",                  "@[MOM6_OUTPUT_DIR]/ocn%4yr%2mo%2dy%2hr%2mi","all",.true.,"none",2
+ "ocean_model", "fprec",     "fprec",                    "@[MOM6_OUTPUT_DIR]/ocn%4yr%2mo%2dy%2hr%2mi","all",.true.,"none",2
+ "ocean_model", "LwLatSens", "LwLatSens",                "@[MOM6_OUTPUT_DIR]/ocn%4yr%2mo%2dy%2hr%2mi","all",.true.,"none",2
+ "ocean_model", "Heat_PmE",  "Heat_PmE",                 "@[MOM6_OUTPUT_DIR]/ocn%4yr%2mo%2dy%2hr%2mi","all",.true.,"none",2
 #
 ###
 # FV3 variabls needed for NGGPS evaluation
@@ -17,6 +75,7 @@
 "gfs_dyn",     "delp",        "dpres",     "fv3_history",    "all",  .false.,  "none",  2
 "gfs_dyn",     "delz",        "delz",      "fv3_history",    "all",  .false.,  "none",  2
 "gfs_dyn",     "w",           "dzdt",      "fv3_history",    "all",  .false.,  "none",  2
+"gfs_dyn",     "omga",        "omga",      "fv3_history",    "all",  .false.,  "none",  2
 "gfs_dyn",     "ice_wat",     "icmr",      "fv3_history",    "all",  .false.,  "none",  2
 "gfs_dyn",     "rainwat",     "rwmr",      "fv3_history",    "all",  .false.,  "none",  2
 "gfs_dyn",     "snowwat",     "snmr",      "fv3_history",    "all",  .false.,  "none",  2
@@ -26,6 +85,13 @@
 #"gfs_dyn",     "ice_nc",      "nicp",      "fv3_history",  "all",  .false.,  "none",  2
 #"gfs_dyn",     "rain_nc",     "ntrnc",     "fv3_history",  "all",  .false.,  "none",  2
 
+"gfs_phys",  "frzr",          "frzr",        "fv3_history2d",         "all",  .false.,  "none",  2
+"gfs_phys",  "frzrb",         "frzrb",       "fv3_history2d",         "all",  .false.,  "none",  2
+"gfs_phys",  "frozr",         "frozr",       "fv3_history2d",         "all",  .false.,  "none",  2
+"gfs_phys",  "frozrb",        "frozrb",      "fv3_history2d",         "all",  .false.,  "none",  2
+"gfs_phys",  "tsnowp",        "tsnowp",      "fv3_history2d",         "all",  .false.,  "none",  2
+"gfs_phys",  "tsnowpb",       "tsnowpb",     "fv3_history2d",         "all",  .false.,  "none",  2
+"gfs_phys",  "rhonewsn",      "rhonewsn",    "fv3_history2d",         "all",  .false.,  "none",  2
 "gfs_phys",  "ALBDO_ave",     "albdo_ave",   "fv3_history2d",         "all",  .false.,  "none",  2
 "gfs_phys",  "cnvprcp_ave",   "cprat_ave",   "fv3_history2d",         "all",  .false.,  "none",  2
 "gfs_phys",  "cnvprcpb_ave",  "cpratb_ave",  "fv3_history2d",         "all",  .false.,  "none",  2
@@ -71,13 +137,6 @@
 "gfs_phys",  "dvsfc",         "vflx_ave",    "fv3_history2d",         "all",  .false.,  "none",  2
 #"gfs_phys",  "cnvw",          "cnvcldwat",   "fv3_history2d",         "all",  .false.,  "none",  2
 
-"gfs_phys",  "frzr",          "frzr",        "fv3_history2d",         "all",  .false.,  "none",  2
-"gfs_phys",  "frzrb",         "frzrb",       "fv3_history2d",         "all",  .false.,  "none",  2
-"gfs_phys",  "frozr",         "frozr",       "fv3_history2d",         "all",  .false.,  "none",  2
-"gfs_phys",  "frozrb",        "frozrb",      "fv3_history2d",         "all",  .false.,  "none",  2
-"gfs_phys",  "tsnowp",        "tsnowp",      "fv3_history2d",         "all",  .false.,  "none",  2
-"gfs_phys",  "tsnowpb",       "tsnowpb",     "fv3_history2d",         "all",  .false.,  "none",  2
-"gfs_phys",  "rhonewsn",      "rhonewsn",    "fv3_history2d",         "all",  .false.,  "none",  2
 "gfs_phys",    "psurf",       "pressfc",   "fv3_history2d",  "all",  .false.,  "none",  2
 "gfs_phys",    "u10m",        "ugrd10m",   "fv3_history2d",  "all",  .false.,  "none",  2
 "gfs_phys",    "v10m",        "vgrd10m",   "fv3_history2d",  "all",  .false.,  "none",  2
@@ -184,53 +243,12 @@
 "gfs_phys",    "nddsf_ave",    "nddsf_ave",     "fv3_history2d",  "all",  .false.,  "none",  2
 "gfs_phys",    "trans_ave",    "trans_ave",     "fv3_history2d",  "all",  .false.,  "none",  2
 
-# Thompson extended diagnostics
-"gfs_phys",    "thompson_diag3d_01", "thompson_diag3d_01", "fv3_history",  "all",  .false.,  "none",  2
-"gfs_phys",    "thompson_diag3d_02", "thompson_diag3d_02", "fv3_history",  "all",  .false.,  "none",  2
-"gfs_phys",    "thompson_diag3d_03", "thompson_diag3d_03", "fv3_history",  "all",  .false.,  "none",  2
-"gfs_phys",    "thompson_diag3d_04", "thompson_diag3d_04", "fv3_history",  "all",  .false.,  "none",  2
-"gfs_phys",    "thompson_diag3d_05", "thompson_diag3d_05", "fv3_history",  "all",  .false.,  "none",  2
-"gfs_phys",    "thompson_diag3d_06", "thompson_diag3d_06", "fv3_history",  "all",  .false.,  "none",  2
-"gfs_phys",    "thompson_diag3d_07", "thompson_diag3d_07", "fv3_history",  "all",  .false.,  "none",  2
-"gfs_phys",    "thompson_diag3d_08", "thompson_diag3d_08", "fv3_history",  "all",  .false.,  "none",  2
-"gfs_phys",    "thompson_diag3d_09", "thompson_diag3d_09", "fv3_history",  "all",  .false.,  "none",  2
-"gfs_phys",    "thompson_diag3d_10", "thompson_diag3d_10", "fv3_history",  "all",  .false.,  "none",  2
-"gfs_phys",    "thompson_diag3d_11", "thompson_diag3d_11", "fv3_history",  "all",  .false.,  "none",  2
-"gfs_phys",    "thompson_diag3d_12", "thompson_diag3d_12", "fv3_history",  "all",  .false.,  "none",  2
-"gfs_phys",    "thompson_diag3d_13", "thompson_diag3d_13", "fv3_history",  "all",  .false.,  "none",  2
-"gfs_phys",    "thompson_diag3d_14", "thompson_diag3d_14", "fv3_history",  "all",  .false.,  "none",  2
-"gfs_phys",    "thompson_diag3d_15", "thompson_diag3d_15", "fv3_history",  "all",  .false.,  "none",  2
-"gfs_phys",    "thompson_diag3d_16", "thompson_diag3d_16", "fv3_history",  "all",  .false.,  "none",  2
-"gfs_phys",    "thompson_diag3d_17", "thompson_diag3d_17", "fv3_history",  "all",  .false.,  "none",  2
-"gfs_phys",    "thompson_diag3d_18", "thompson_diag3d_18", "fv3_history",  "all",  .false.,  "none",  2
-"gfs_phys",    "thompson_diag3d_19", "thompson_diag3d_19", "fv3_history",  "all",  .false.,  "none",  2
-"gfs_phys",    "thompson_diag3d_20", "thompson_diag3d_20", "fv3_history",  "all",  .false.,  "none",  2
-"gfs_phys",    "thompson_diag3d_21", "thompson_diag3d_21", "fv3_history",  "all",  .false.,  "none",  2
-"gfs_phys",    "thompson_diag3d_22", "thompson_diag3d_22", "fv3_history",  "all",  .false.,  "none",  2
-"gfs_phys",    "thompson_diag3d_23", "thompson_diag3d_23", "fv3_history",  "all",  .false.,  "none",  2
-"gfs_phys",    "thompson_diag3d_24", "thompson_diag3d_24", "fv3_history",  "all",  .false.,  "none",  2
-"gfs_phys",    "thompson_diag3d_25", "thompson_diag3d_25", "fv3_history",  "all",  .false.,  "none",  2
-"gfs_phys",    "thompson_diag3d_26", "thompson_diag3d_26", "fv3_history",  "all",  .false.,  "none",  2
-"gfs_phys",    "thompson_diag3d_27", "thompson_diag3d_27", "fv3_history",  "all",  .false.,  "none",  2
-"gfs_phys",    "thompson_diag3d_28", "thompson_diag3d_28", "fv3_history",  "all",  .false.,  "none",  2
-"gfs_phys",    "thompson_diag3d_29", "thompson_diag3d_29", "fv3_history",  "all",  .false.,  "none",  2
-"gfs_phys",    "thompson_diag3d_30", "thompson_diag3d_30", "fv3_history",  "all",  .false.,  "none",  2
-"gfs_phys",    "thompson_diag3d_31", "thompson_diag3d_31", "fv3_history",  "all",  .false.,  "none",  2
-"gfs_phys",    "thompson_diag3d_32", "thompson_diag3d_32", "fv3_history",  "all",  .false.,  "none",  2
-"gfs_phys",    "thompson_diag3d_33", "thompson_diag3d_33", "fv3_history",  "all",  .false.,  "none",  2
-"gfs_phys",    "thompson_diag3d_34", "thompson_diag3d_34", "fv3_history",  "all",  .false.,  "none",  2
-"gfs_phys",    "thompson_diag3d_35", "thompson_diag3d_35", "fv3_history",  "all",  .false.,  "none",  2
-"gfs_phys",    "thompson_diag3d_36", "thompson_diag3d_36", "fv3_history",  "all",  .false.,  "none",  2
-"gfs_phys",    "thompson_diag3d_37", "thompson_diag3d_37", "fv3_history",  "all",  .false.,  "none",  2
-"gfs_phys",    "thompson_diag3d_38", "thompson_diag3d_38", "fv3_history",  "all",  .false.,  "none",  2
-"gfs_phys",    "thompson_diag3d_39", "thompson_diag3d_39", "fv3_history",  "all",  .false.,  "none",  2
-"gfs_phys",    "thompson_diag3d_40", "thompson_diag3d_40", "fv3_history",  "all",  .false.,  "none",  2
-"gfs_phys",    "thompson_diag3d_41", "thompson_diag3d_41", "fv3_history",  "all",  .false.,  "none",  2
-"gfs_phys",    "thompson_diag3d_42", "thompson_diag3d_42", "fv3_history",  "all",  .false.,  "none",  2
-"gfs_phys",    "thompson_diag3d_43", "thompson_diag3d_43", "fv3_history",  "all",  .false.,  "none",  2
-"gfs_phys",    "thompson_diag3d_44", "thompson_diag3d_44", "fv3_history",  "all",  .false.,  "none",  2
-"gfs_phys",    "thompson_diag3d_45", "thompson_diag3d_45", "fv3_history",  "all",  .false.,  "none",  2
-
+"gfs_phys",    "AOD_550",      "aod550",        "fv3_history2d",  "all",  .false.,  "none",  2
+"gfs_phys",    "DU_AOD_550",   "du_aod550",     "fv3_history2d",  "all",  .false.,  "none",  2
+"gfs_phys",    "SU_AOD_550",   "su_aod550",     "fv3_history2d",  "all",  .false.,  "none",  2
+"gfs_phys",    "BC_AOD_550",   "bc_aod550",     "fv3_history2d",  "all",  .false.,  "none",  2
+"gfs_phys",    "OC_AOD_550",   "oc_aod550",     "fv3_history2d",  "all",  .false.,  "none",  2
+"gfs_phys",    "SS_AOD_550",   "ss_aod550",     "fv3_history2d",  "all",  .false.,  "none",  2
 #=============================================================================================
 #
 #====> This file can be used with diag_manager/v2.0a (or higher) <====
