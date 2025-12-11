@@ -5,6 +5,7 @@ pipeline {
        agent {
         label 'built-in'   
        }
+
       steps {
         script {
           for (label in pullRequest.labels) {
@@ -26,7 +27,7 @@ pipeline {
             else { 
                 env.CHOICE_NODE='none'
             }
-         }
+         } 
 // Why do I need another if..block, because it just works this way.
 
             if (CHOICE_NODE == 'orion') {
@@ -47,6 +48,7 @@ pipeline {
              else {
                 echo "${CHOICE_NODE} is NOT a platform, moving on..."
             }
+
        }    
     }
   } 
@@ -108,6 +110,7 @@ steps {
         git push sshorigin HEAD:$FORK_BRANCH
         '''
         }
+
         post {
         always {
          sh '''
@@ -118,6 +121,7 @@ steps {
            curl --silent -X DELETE -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/jenkins-ort
          '''
         }
+
         success {
           slackSend (
                 channel: '#jenkins-notifications',
@@ -126,6 +130,7 @@ steps {
             )
         
         }
+
         failure {
           slackSend (
                 channel: '#jenkins-notifications',
@@ -133,6 +138,7 @@ steps {
                 message: "*FAILURE: Build ${env.JOB_NAME} #${env.BUILD_NUMBER}*  <${env.BUILD_URL}|Open Build>"
             )
         }
+
       }
     }	      
   }
