@@ -344,6 +344,24 @@ if [[ $MACHINE_ID = hera ]]; then
   PTMP="${dprefix}/ORT-ptmp"
   SCHEDULER=slurm
 
+elif [[ $MACHINE_ID = ursa ]]; then
+
+  #PYTHONHOME=/scratch1/NCEPDEV/nems/emc.nemspara/soft/miniconda3_new_20210629
+  #export PATH=$PYTHONHOME/bin:$PATH
+  #export PYTHONPATH=$PYTHONHOME/lib/python3.7/site-packages
+
+  module load ecflow
+  ECFLOW_START=ecflow_start.sh
+
+  PARTITION=
+  QUEUE=batch
+  COMPILE_QUEUE=batch
+  dprefix="/scratch3/NCEPDEV/stmp/${USER}"
+  DISKNM="/scratch3/NAGAPE/epic/role.epic/UFS-WM_RT"
+  STMP="${dprefix}/ORT-stmp"
+  PTMP="${dprefix}/ORT-ptmp"
+  SCHEDULER=slurm
+
 elif [[ $MACHINE_ID = orion ]]; then
 
   module load gcc/8.3.0
@@ -561,6 +579,8 @@ if [[ $ECFLOW == true ]]; then
 		limit max_jobs 30
 		EOF
   if [[ $MACHINE_ID == hera ]]; then
+    QUEUE=batch
+  elif [[ $MACHINE_ID == ursa ]]; then
     QUEUE=batch
   elif [[ $MACHINE_ID == hercules ]]; then
     QUEUE=windfall
