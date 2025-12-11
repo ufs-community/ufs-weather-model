@@ -58,22 +58,22 @@ pipeline {
         ACCNR = 'epic'
         NODE_PATH = '/scratch3/NAGAPE/epic/role.epic/'
         GITHUB_TOKEN = credentials('GithubJenkinsNew')
-      //GITHUB_TOKEN = credentials('todd-token')
-      }
-      steps {   
+        }
+      
+steps {   
         cleanWs()
         checkout scm
         sh '''
-	git submodule update --init --recursive
+	    git submodule update --init --recursive
         cd tests/fv3_conf
-	sed 's/#SBATCH --time=.*/#SBATCH --time=02:00:00/g' -i fv3_slurm.IN_hera
+	    sed 's/#SBATCH --time=.*/#SBATCH --time=02:00:00/g' -i fv3_slurm.IN_hera
         cd ..
-	export machine=${NODE_NAME}
+	    export machine=${NODE_NAME}
         export PATH=$PATH:~/bin
         echo $CHANGE_ID
         export SSH_ORIGIN=$(curl --silent https://api.github.com/repos/arbetter/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.repo.ssh_url')
         export FORK_BRANCH=$(curl --silent https://api.github.com/repos/arbetter/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.ref')
-	pwd
+	    pwd
         sed "s|intel|gnu|g" -i opnReqTest
         export ACCNR=epic
         export GIT_OWNER=$(echo $GIT_URL | cut -d '/' -f4)
@@ -87,13 +87,13 @@ pipeline {
         cp OpnReqTests_cpld_control_nowave_noaero_p8_hera.log /scratch3/NAGAPE/epic/role.epic/jenkins/workspace/sandbox/Todd-testing
         cd ..
         ./opnReqTest -n control_p8 -a ${ACCNR} -c std,dbg,bit,mpi,rst,thr,dcp
-	cd logs/
+	    cd logs/
         cp OpnReqTests_control_p8_hera.log /scratch3/NAGAPE/epic/role.epic/jenkins/workspace/sandbox/Todd-testing
         git remote -v
         git fetch --no-recurse-submodules origin
         git reset FETCH_HEAD --hard
         cd .. && cd .. && cd ..
-	cp OpnReqTests_control_p8_hera.log $WORKSPACE/tests/logs/
+	    cp OpnReqTests_control_p8_hera.log $WORKSPACE/tests/logs/
         cp OpnReqTests_regional_control_hera.log $WORKSPACE/tests/logs/
         cp OpnReqTests_cpld_control_nowave_noaero_p8_hera.log $WORKSPACE/tests/logs/
         cd $WORKSPACE/tests/
