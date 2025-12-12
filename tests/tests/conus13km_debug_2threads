@@ -22,5 +22,9 @@ export FHMAX=1
 export atm_omp_num_threads=2
 export QUILTING_RESTART=.false.
 
-ESMF_THREADING=false
-THRD=$atm_omp_num_threads
+export ESMF_THREADING=false
+export THRD=$atm_omp_num_threads
+
+if [[ ${MACHINE_ID} = ursa ]]; then
+   export EXCLUSIVE_NODES=.true.
+fi 
