@@ -10,7 +10,7 @@
 #SBATCH --cpus-per-task=@[THRD]
 #SBATCH --time=@[WLCLK]
 #SBATCH --job-name="@[JBNME]"
-### #SBATCH --exclusive
+@[EXCLUSIVE_NODES_OPT]
 
 set -eux
 date_s_start=$(date +%s)
@@ -47,7 +47,7 @@ if [ "${JOB_SHOULD_FAIL:-NO}" = WHEN_RUNNING ] ; then
     false
 fi
 
-srun --label -n @[TASKS] ./fv3.exe
+srun --label --distribution=block:block -n @[TASKS] ./fv3.exe
 
 date_end=$(date)
 echo "Model ended: ${date_end}"
