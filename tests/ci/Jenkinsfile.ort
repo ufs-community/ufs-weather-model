@@ -76,6 +76,10 @@ steps {
         export SSH_ORIGIN=$(curl --silent https://api.github.com/repos/arbetter/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.repo.ssh_url')
         export FORK_BRANCH=$(curl --silent https://api.github.com/repos/arbetter/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.ref')
 	    pwd
+
+        echo "pwd $PWD"
+        echo "pre-OpnReqTest"
+
         sed "s|intel|gnu|g" -i opnReqTest
         export ACCNR=epic
         export GIT_OWNER=$(echo $GIT_URL | cut -d '/' -f4)
@@ -95,6 +99,11 @@ steps {
         git fetch --no-recurse-submodules origin
         git reset FETCH_HEAD --hard
         cd .. && cd .. && cd ..
+
+        echo "pwd $PWD"
+        echo "WORKSPACE $WORKSPACE"
+        echo "post-OpnReqTest"
+
 	    cp OpnReqTests_control_p8_ursa.log $WORKSPACE/tests/logs/
         cp OpnReqTests_regional_control_ursa.log $WORKSPACE/tests/logs/
         cp OpnReqTests_cpld_control_nowave_noaero_p8_ursa.log $WORKSPACE/tests/logs/
