@@ -52,38 +52,8 @@ pipeline {
        }  //script  
     } //steps
   } //stage
-
-  stage('Run ORT on Ursa') {
-        agent {
-          label "ursa"
-        }
-        environment {
-        ACCNR = 'epic'
-        NODE_PATH = '/scratch4/NAGAPE/epic/role-epic/'
-        GITHUB_TOKEN = credentials('GithubJenkinsNew')
-        }
-      
-     steps {   
-
-        sh '''
-
-        cd tests/fv3_conf
-	    sed 's/#SBATCH --time=.*/#SBATCH --time=02:00:00/g' -i fv3_slurm.IN_ursa
-        cd ..
-
-        echo $CHANGE_ID
-
-        echo "pwd $PWD"
-        echo "pre-OpnReqTest"
-
-        sed "s|intel|gnu|g" -i opnReqTest
-
-        echo 'end of serial stage'
-        '''
-         }  
-       }  
-
-    stage('Parallel Ursa stage'){
+  
+    stage('Run ORT on Ursa parallel'){
         parallel{
         stage('regional_control'){        
           agent{ label 'ursa' }
@@ -93,6 +63,14 @@ pipeline {
         GITHUB_TOKEN = credentials('GithubJenkinsNew')
         }
           steps{
+        sh '''
+        pwd
+        df -h
+        cd tests/fv3_conf
+	    sed 's/#SBATCH --time=.*/#SBATCH --time=02:00:00/g' -i fv3_slurm.IN_ursa
+        cd ..
+        sed "s|intel|gnu|g" -i opnReqTest
+        '''
         cleanWs()
         checkout scm
           sh '''
@@ -122,6 +100,14 @@ pipeline {
         GITHUB_TOKEN = credentials('GithubJenkinsNew')
         }
            steps{
+        sh '''
+        pwd
+        df -h
+        cd tests/fv3_conf
+	    sed 's/#SBATCH --time=.*/#SBATCH --time=02:00:00/g' -i fv3_slurm.IN_ursa
+        cd ..
+        sed "s|intel|gnu|g" -i opnReqTest
+        '''
         cleanWs()
         checkout scm
            sh '''
@@ -151,6 +137,14 @@ pipeline {
         GITHUB_TOKEN = credentials('GithubJenkinsNew')
         }
            steps{
+        sh '''
+        pwd
+        df -h
+        cd tests/fv3_conf
+	    sed 's/#SBATCH --time=.*/#SBATCH --time=02:00:00/g' -i fv3_slurm.IN_ursa
+        cd ..
+        sed "s|intel|gnu|g" -i opnReqTest
+        '''
         cleanWs()
         checkout scm
            sh '''	
@@ -177,9 +171,14 @@ pipeline {
 
         stage('Quality Gate'){
             agent{ label 'ursa' }
+        environment {
+        ACCNR = 'epic'
+        NODE_PATH = '/scratch4/NAGAPE/epic/role-epic/'
+        GITHUB_TOKEN = credentials('GithubJenkinsNew')
+        }
             steps {
                 script{
-                    timeout(time: 6, unit: 'HOURS') {
+                    timeout(time: 2, unit: 'HOURS') {
                         def qualitygate = waitForQualityGate()
                           if (qualitygate.status == "OK"){
                             echo "Quality gate succeeded! Code met all SonarQube quality requirements."
@@ -210,15 +209,12 @@ pipeline {
         export GIT_REPO_NAME=$(echo $GIT_URL | cut -d '/' -f5 | cut -d '.' -f1)
 
         pwd
+        ls -l
         cd tests
         git remote -v
         git fetch --no-recurse-submodules origin
         git reset FETCH_HEAD --hard
         cd .. && cd .. && cd ..
-
-        echo "pwd $PWD"
-        echo "WORKSPACE $WORKSPACE"
-        echo "post-OpnReqTest"
 
 	    cp OpnReqTests_control_p8_ursa.log $WORKSPACE/tests/logs/
         cp OpnReqTests_regional_control_ursa.log $WORKSPACE/tests/logs/
