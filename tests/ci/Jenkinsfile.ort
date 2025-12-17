@@ -89,7 +89,7 @@ pipeline {
        }  //stage
 
     stage('Parallel Ursa stage'){
-        when{branch 'master'}
+        when{ branch 'master' }
         parallel{
         stage('regional_control'){        
           agent{ label 'ursa' }
