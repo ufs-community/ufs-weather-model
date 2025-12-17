@@ -66,7 +66,7 @@ pipeline {
      steps {   
 
         sh '''
-	    git submodule update --init --recursive
+
         cd tests/fv3_conf
 	    sed 's/#SBATCH --time=.*/#SBATCH --time=02:00:00/g' -i fv3_slurm.IN_ursa
         cd ..
@@ -96,6 +96,7 @@ pipeline {
         cleanWs()
         checkout scm
           sh '''
+	    git submodule update --init --recursive
 	    export machine=${NODE_NAME}
         export PATH=$PATH:~/bin
         export SSH_ORIGIN=$(curl --silent https://api.github.com/repos/arbetter/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.repo.ssh_url')
@@ -124,6 +125,7 @@ pipeline {
         cleanWs()
         checkout scm
            sh '''
+	    git submodule update --init --recursive
 	    export machine=${NODE_NAME}
         export PATH=$PATH:~/bin
         export SSH_ORIGIN=$(curl --silent https://api.github.com/repos/arbetter/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.repo.ssh_url')
@@ -151,7 +153,8 @@ pipeline {
            steps{
         cleanWs()
         checkout scm
-           sh '''	    
+           sh '''	
+	    git submodule update --init --recursive
         export machine=${NODE_NAME}
         export PATH=$PATH:~/bin
         export SSH_ORIGIN=$(curl --silent https://api.github.com/repos/arbetter/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.repo.ssh_url')
