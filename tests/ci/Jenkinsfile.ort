@@ -64,8 +64,7 @@ pipeline {
         }
       
      steps {   
-        cleanWs()
-        checkout scm
+
         sh '''
 	    git submodule update --init --recursive
         cd tests/fv3_conf
@@ -94,6 +93,8 @@ pipeline {
         GITHUB_TOKEN = credentials('GithubJenkinsNew')
         }
           steps{
+        cleanWs()
+        checkout scm
           sh '''
 	    export machine=${NODE_NAME}
         export PATH=$PATH:~/bin
@@ -120,6 +121,8 @@ pipeline {
         GITHUB_TOKEN = credentials('GithubJenkinsNew')
         }
            steps{
+        cleanWs()
+        checkout scm
            sh '''
 	    export machine=${NODE_NAME}
         export PATH=$PATH:~/bin
@@ -146,6 +149,8 @@ pipeline {
         GITHUB_TOKEN = credentials('GithubJenkinsNew')
         }
            steps{
+        cleanWs()
+        checkout scm
            sh '''	    
         export machine=${NODE_NAME}
         export PATH=$PATH:~/bin
