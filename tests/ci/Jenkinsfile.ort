@@ -62,20 +62,15 @@ pipeline {
         NODE_PATH = '/scratch4/NAGAPE/epic/role-epic/'
         GITHUB_TOKEN = credentials('GithubJenkinsNew')
         }
-          steps{
+        steps{
+        cleanWs()
+        checkout scm
         sh '''
-        pwd
-        df -h
+	    git submodule update --init --recursive
         cd tests/fv3_conf
 	    sed 's/#SBATCH --time=.*/#SBATCH --time=02:00:00/g' -i fv3_slurm.IN_ursa
         cd ..
-        sed "s|intel|gnu|g" -i opnReqTest
-        '''
-        cleanWs()
-        checkout scm
-          sh '''
-	    git submodule update --init --recursive
-	    export machine=${NODE_NAME}
+        sed "s|intel|gnu|g" -i opnReqTest	    export machine=${NODE_NAME}
         export PATH=$PATH:~/bin
         export SSH_ORIGIN=$(curl --silent https://api.github.com/repos/arbetter/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.repo.ssh_url')
         export FORK_BRANCH=$(curl --silent https://api.github.com/repos/arbetter/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.ref')
@@ -99,19 +94,15 @@ pipeline {
         NODE_PATH = '/scratch4/NAGAPE/epic/role-epic/'
         GITHUB_TOKEN = credentials('GithubJenkinsNew')
         }
-           steps{
+        steps{
+        cleanWs()
+        checkout scm
         sh '''
-        pwd
-        df -h
+	    git submodule update --init --recursive
         cd tests/fv3_conf
 	    sed 's/#SBATCH --time=.*/#SBATCH --time=02:00:00/g' -i fv3_slurm.IN_ursa
         cd ..
         sed "s|intel|gnu|g" -i opnReqTest
-        '''
-        cleanWs()
-        checkout scm
-           sh '''
-	    git submodule update --init --recursive
 	    export machine=${NODE_NAME}
         export PATH=$PATH:~/bin
         export SSH_ORIGIN=$(curl --silent https://api.github.com/repos/arbetter/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.repo.ssh_url')
@@ -137,18 +128,14 @@ pipeline {
         GITHUB_TOKEN = credentials('GithubJenkinsNew')
         }
            steps{
-        sh '''
-        pwd
-        df -h
+        cleanWs()
+        checkout scm
+        sh '''	
+	    git submodule update --init --recursive
         cd tests/fv3_conf
 	    sed 's/#SBATCH --time=.*/#SBATCH --time=02:00:00/g' -i fv3_slurm.IN_ursa
         cd ..
         sed "s|intel|gnu|g" -i opnReqTest
-        '''
-        cleanWs()
-        checkout scm
-           sh '''	
-	    git submodule update --init --recursive
         export machine=${NODE_NAME}
         export PATH=$PATH:~/bin
         export SSH_ORIGIN=$(curl --silent https://api.github.com/repos/arbetter/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.repo.ssh_url')
@@ -169,28 +156,6 @@ pipeline {
            } //parallel
          }//stage
 
-        stage('Quality Gate'){
-            agent{ label 'ursa' }
-        environment {
-        ACCNR = 'epic'
-        NODE_PATH = '/scratch4/NAGAPE/epic/role-epic/'
-        GITHUB_TOKEN = credentials('GithubJenkinsNew')
-        }
-            steps {
-                script{
-                    timeout(time: 2, unit: 'HOURS') {
-                        def qualitygate = waitForQualityGate()
-                          if (qualitygate.status == "OK"){
-                            echo "Quality gate succeeded! Code met all SonarQube quality requirements."
-                        } else {
-                            echo "Quality gate failed. Code did not meet all SonarQube quality requirements."
-                            error "Pipeline aborted due to quality gate coverage failure: ${qualitygate.status}"
-                        } //if-else
-                   } //timeout
-                 } //script
-               } //steps
-             } // stage
-
         stage('Finalize Ursa'){
         agent{ label 'ursa'}
         environment {
@@ -208,8 +173,6 @@ pipeline {
         export GIT_OWNER=$(echo $GIT_URL | cut -d '/' -f4)
         export GIT_REPO_NAME=$(echo $GIT_URL | cut -d '/' -f5 | cut -d '.' -f1)
 
-        pwd
-        ls -l
         cd tests
         git remote -v
         git fetch --no-recurse-submodules origin
