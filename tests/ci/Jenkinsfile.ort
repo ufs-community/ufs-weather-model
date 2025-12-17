@@ -71,20 +71,14 @@ pipeline {
         cd tests/fv3_conf
 	    sed 's/#SBATCH --time=.*/#SBATCH --time=02:00:00/g' -i fv3_slurm.IN_ursa
         cd ..
-	    export machine=${NODE_NAME}
-        export PATH=$PATH:~/bin
+
         echo $CHANGE_ID
-        export SSH_ORIGIN=$(curl --silent https://api.github.com/repos/arbetter/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.repo.ssh_url')
-        export FORK_BRANCH=$(curl --silent https://api.github.com/repos/arbetter/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.ref')
-	    pwd
 
         echo "pwd $PWD"
         echo "pre-OpnReqTest"
 
         sed "s|intel|gnu|g" -i opnReqTest
-        export ACCNR=epic
-        export GIT_OWNER=$(echo $GIT_URL | cut -d '/' -f4)
-        export GIT_REPO_NAME=$(echo $GIT_URL | cut -d '/' -f5 | cut -d '.' -f1)
+
         echo 'end of serial stage'
         '''
          }  
@@ -94,7 +88,19 @@ pipeline {
         parallel{
         stage('regional_control'){        
           agent{ label 'ursa' }
+        environment {
+        ACCNR = 'epic'
+        NODE_PATH = '/scratch4/NAGAPE/epic/role-epic/'
+        GITHUB_TOKEN = credentials('GithubJenkinsNew')
+        }
           steps{
+	    export machine=${NODE_NAME}
+        export PATH=$PATH:~/bin
+        export SSH_ORIGIN=$(curl --silent https://api.github.com/repos/arbetter/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.repo.ssh_url')
+        export FORK_BRANCH=$(curl --silent https://api.github.com/repos/arbetter/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.ref')
+        export ACCNR=epic
+        export GIT_OWNER=$(echo $GIT_URL | cut -d '/' -f4)
+        export GIT_REPO_NAME=$(echo $GIT_URL | cut -d '/' -f5 | cut -d '.' -f1)
           sh '''
           pwd
           ls
@@ -108,7 +114,19 @@ pipeline {
           } //stage
          stage('cpid_control_nowave_noaero_p8'){
            agent{ label 'ursa'}
+        environment {
+        ACCNR = 'epic'
+        NODE_PATH = '/scratch4/NAGAPE/epic/role-epic/'
+        GITHUB_TOKEN = credentials('GithubJenkinsNew')
+        }
            steps{
+	    export machine=${NODE_NAME}
+        export PATH=$PATH:~/bin
+        export SSH_ORIGIN=$(curl --silent https://api.github.com/repos/arbetter/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.repo.ssh_url')
+        export FORK_BRANCH=$(curl --silent https://api.github.com/repos/arbetter/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.ref')
+        export ACCNR=epic
+        export GIT_OWNER=$(echo $GIT_URL | cut -d '/' -f4)
+        export GIT_REPO_NAME=$(echo $GIT_URL | cut -d '/' -f5 | cut -d '.' -f1)
            sh '''
            pwd
            ls
@@ -122,7 +140,19 @@ pipeline {
            } //stage
          stage('control_p8'){
            agent{ label 'ursa' }
+        environment {
+        ACCNR = 'epic'
+        NODE_PATH = '/scratch4/NAGAPE/epic/role-epic/'
+        GITHUB_TOKEN = credentials('GithubJenkinsNew')
+        }
            steps{
+	    export machine=${NODE_NAME}
+        export PATH=$PATH:~/bin
+        export SSH_ORIGIN=$(curl --silent https://api.github.com/repos/arbetter/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.repo.ssh_url')
+        export FORK_BRANCH=$(curl --silent https://api.github.com/repos/arbetter/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.ref')
+        export ACCNR=epic
+        export GIT_OWNER=$(echo $GIT_URL | cut -d '/' -f4)
+        export GIT_REPO_NAME=$(echo $GIT_URL | cut -d '/' -f5 | cut -d '.' -f1)
            sh '''
            pwd
            ls
@@ -156,7 +186,19 @@ pipeline {
 
         stage('Finalize Ursa'){
         agent{ label 'ursa'}
+        environment {
+        ACCNR = 'epic'
+        NODE_PATH = '/scratch4/NAGAPE/epic/role-epic/'
+        GITHUB_TOKEN = credentials('GithubJenkinsNew')
+        }
         steps{
+	    export machine=${NODE_NAME}
+        export PATH=$PATH:~/bin
+        export SSH_ORIGIN=$(curl --silent https://api.github.com/repos/arbetter/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.repo.ssh_url')
+        export FORK_BRANCH=$(curl --silent https://api.github.com/repos/arbetter/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.ref')
+        export ACCNR=epic
+        export GIT_OWNER=$(echo $GIT_URL | cut -d '/' -f4)
+        export GIT_REPO_NAME=$(echo $GIT_URL | cut -d '/' -f5 | cut -d '.' -f1)
         sh '''
         pwd
         ls
