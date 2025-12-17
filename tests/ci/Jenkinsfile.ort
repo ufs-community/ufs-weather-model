@@ -27,7 +27,7 @@ pipeline {
             else { 
                 env.CHOICE_NODE='none'
             }
-         } 
+         } //for
 // Why do I need another if..block, because it just works this way.
 
             if (CHOICE_NODE == 'orion') {
@@ -49,9 +49,10 @@ pipeline {
                 echo "${CHOICE_NODE} is NOT a platform, moving on..."
             }
 
-       }    
-    }
-  } 
+       }  //script  
+    } //steps
+  } //stage
+
   stage('Run ORT on Ursa') {
         agent {
           label "ursa"
@@ -62,7 +63,7 @@ pipeline {
         GITHUB_TOKEN = credentials('GithubJenkinsNew')
         }
       
-steps {   
+     steps {   
         cleanWs()
         checkout scm
         sh '''
@@ -84,21 +85,66 @@ steps {
         export ACCNR=epic
         export GIT_OWNER=$(echo $GIT_URL | cut -d '/' -f4)
         export GIT_REPO_NAME=$(echo $GIT_URL | cut -d '/' -f5 | cut -d '.' -f1)
-        ./opnReqTest -n regional_control -a ${ACCNR} -c bit,dcp,thr
-        cd logs/
-        cp OpnReqTests_regional_control_ursa.log /scratch4/NAGAPE/epic/role-epic/jenkins/workspace/
-        cd ..
-        ./opnReqTest -n cpld_control_nowave_noaero_p8 -a ${ACCNR} -c dbg,rst
-        cd logs/
-        cp OpnReqTests_cpld_control_nowave_noaero_p8_ursa.log /scratch4/NAGAPE/epic/role-epic/jenkins/workspace/
-        cd ..
-        ./opnReqTest -n control_p8 -a ${ACCNR} -c std,dbg,bit,mpi,rst,thr,dcp
-	    cd logs/
-        cp OpnReqTests_control_p8_ursa.log /scratch4/NAGAPE/epic/role-epic/jenkins/workspace/
+       }  //steps
+       }  //stage
+
+    stage('Parallel Ursa stage'){
+        when{branch 'master}
+        parallel{
+        stage('regional_control'){        
+          agent{ label 'ursa' }
+          steps{
+          ./opnReqTest -n regional_control -a ${ACCNR} -c bit,dcp,thr
+          cd logs/
+          cp OpnReqTests_regional_control_ursa.log /scratch4/NAGAPE/epic/role-epic/jenkins/workspace/
+          cd ..
+          } //steps
+          } //stage
+         stage('cpid_control_nowave_noaero_p8'){
+           agent{ label 'ursa'}
+           steps{
+           ./opnReqTest -n cpld_control_nowave_noaero_p8 -a ${ACCNR} -c dbg,rst
+           cd logs/
+           cp OpnReqTests_cpld_control_nowave_noaero_p8_ursa.log /scratch4/NAGAPE/epic/role-epic/jenkins/workspace/
+           cd ..
+           } //steps
+           } //stage
+         stage('control_p8'){
+           agent{ label 'ursa' }
+           steps{
+           ./opnReqTest -n control_p8 -a ${ACCNR} -c std,dbg,bit,mpi,rst,thr,dcp
+	       cd logs/
+           cp OpnReqTests_control_p8_ursa.log /scratch4/NAGAPE/epic/role-epic/jenkins/workspace/
+           cd ..
+           } //steps
+           } //stage
+           } //parallel
+         }//stage
+
+        stage('Quality Gate'){
+            agent{ label 'ursa' }
+            steps {
+                script{
+                    timeout(time: 6, unit: 'HOURS') {
+                        def qualitygate = waitForQualityGate()
+                          if (qualitygate.status == "OK"){
+                            echo "Quality gate succeeded! Code met all SonarQube quality requirements."
+                        } else {
+                            echo "Quality gate failed. Code did not meet all SonarQube quality requirements."
+                            error "Pipeline aborted due to quality gate coverage failure: ${qualitygate.status}"
+                        } //if-else
+                   } //timeout
+                 } //script
+               } //steps
+             } // stage
+
+        stage('Finalize Ursa'){
+        agent{ label 'ursa'}
+        steps{
         git remote -v
         git fetch --no-recurse-submodules origin
         git reset FETCH_HEAD --hard
-        cd .. && cd .. && cd ..
+        cd .. && cd ..
 
         echo "pwd $PWD"
         echo "WORKSPACE $WORKSPACE"
@@ -118,7 +164,8 @@ steps {
         git pull sshorigin $FORK_BRANCH
         git push sshorigin HEAD:$FORK_BRANCH
         '''
-        }
+        } //steps
+        } //stage
 
         post {
         always {
@@ -129,7 +176,7 @@ steps {
            echo "https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/jenkins-ort"
            curl --silent -X DELETE -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/jenkins-ort
          '''
-        }
+        } //always
 
         success {
           slackSend (
@@ -138,7 +185,7 @@ steps {
                 message: "*SUCCESS: Build ${env.JOB_NAME} #${env.BUILD_NUMBER}* <${env.BUILD_URL}|Open Build>"
             )
         
-        }
+        } //success
 
         failure {
           slackSend (
@@ -146,9 +193,9 @@ steps {
                 color: 'danger',
                 message: "*FAILURE: Build ${env.JOB_NAME} #${env.BUILD_NUMBER}*  <${env.BUILD_URL}|Open Build>"
             )
-        }
+        } //failure
 
-      }
+      } //post
     }	      
   }
 }
