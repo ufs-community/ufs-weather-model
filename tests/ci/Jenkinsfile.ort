@@ -208,6 +208,7 @@ pipeline {
         } //stages
 
         post {
+        agent{ label 'ursa' }
         always {
          sh '''
            export GIT_OWNER=$(echo $GIT_URL | cut -d '/' -f4)
