@@ -943,7 +943,7 @@ case ${MACHINE_ID} in
     echo "rt.sh: Setting up derecho..."
     if [[ "${ROCOTO:-false}" == true ]] ; then
       module use /glade/work/epicufsrt/contrib/derecho/modulefiles
-      module load rocoto/1.3.7-fix
+      module load rocoto/1.3.7
     fi
     module use /glade/work/epicufsrt/contrib/spack-stack/derecho/modulefiles
     if [[ "${ECFLOW:-false}" == true ]] ; then
