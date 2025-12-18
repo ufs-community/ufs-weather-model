@@ -1,0 +1,77 @@
+name: Regression Resource Check
+
+on:
+  pull_request:
+    branches: [develop]
+  push:
+    branches: ['**']
+  workflow_dispatch:
+
+defaults:
+  run:
+    shell: bash -leo pipefail {0}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env: 
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  MACHINES: "acorn derecho gaeac6 hera hercules orion ursa wcoss2"
+  BASE_URL: https://api.github.com/repos/ufs-community/ufs-weather-model
+  PR_NUM: ${{ github.event.number }}
+
+jobs:
+  get-data:  
+    runs-on: ubuntu-latest
+    steps: 
+      - name: Checkout feature branch
+        uses: actions/checkout@v4
+      - name: Install dependencies
+        run: |
+          pip install requests numpy
+          mkdir -p data
+      - name: Cache machine stats
+        id: cache-stats
+        uses: actions/cache@v4
+        with:
+          path: ${{ github.workspace }}/data/stats.json
+          key: hist-stats-${{ github.event.pull_request.base.sha }} # If develop gets updated, stats.json should, too
+      - name: Set stats.json env var (if cache hit) and compare w/HEAD of develop 
+        if: steps.cache-stats.outputs.cache-hit == 'true'
+        run: |
+          echo "TEST_STATS=${{ github.workspace }}/data/stats.json" >> $GITHUB_ENV
+          python .github/scripts/get_data.py 
+        env: 
+          TEST_STATS: ${{ github.workspace }}/data/stats.json
+      - name: Get historical data and compare w/HEAD of develop
+        if: steps.cache-stats.outputs.cache-hit != 'true'
+        run: |
+          mkdir -p data
+          python .github/scripts/get_data.py
+          ls -R ${{ github.workspace }}/data
+      - name: Upload json
+        uses: actions/upload-artifact@v4
+        with: 
+          name: data
+          path: ${{ github.workspace }}/data
+  write-results:  
+    runs-on: ubuntu-latest
+    needs: get-data
+    steps:
+      - name: Checkout feature branch
+        uses: actions/checkout@v4
+      - name: Install dependencies
+        run: |
+          pip install pandas mdutils
+      - name: Download test results
+        uses: actions/download-artifact@v5
+        with: 
+          name: data
+          path: ${{ github.workspace }}/data
+      - name: Write results summary
+        run: |
+          python ${{ github.workspace }}/.github/scripts/write_test_summary.py >> $GITHUB_STEP_SUMMARY
+        env: 
+          RUNTIME_RESULTS: ${{ github.workspace }}/data/runtime_results.json
+          MEMORY_RESULTS: ${{ github.workspace }}/data/memory_results.json

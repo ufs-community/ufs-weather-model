@@ -126,8 +126,8 @@ case ${MACHINE_ID} in
     module load nccmp/1.9.0.1
     ;;
   gaeac6)
-    module use /ncrc/proj/epic/spack-stack/c6/spack-stack-1.6.0/envs/fms-2024.01/install/modulefiles/Core
-    module load stack-intel/2023.2.0 stack-cray-mpich/8.1.29
+    module use /ncrc/proj/epic/spack-stack/c6/spack-stack-1.9.2/envs/ue-intel-2023.2.0/install/modulefiles/Core
+    module load stack-intel/2023.2.0 stack-cray-mpich/8.1.30
     module load nccmp/1.9.0.1
     #module use modulefiles
     #module load modules.fv3
@@ -316,13 +316,13 @@ if [[ ${DATM_CDEPS} = 'true' ]] || [[ ${S2S} = 'true' ]]; then
   if [[ ${HAFS} = 'false' ]]; then
     atparse < "${PATHRT}/parm/ice_in.IN" > ice_in
     atparse < "${PATHRT}/parm/${MOM6_INPUT:-MOM_input_${OCNRES}.IN}" > INPUT/MOM_input
-    atparse < "${PATHRT}/parm/diag_table/${DIAG_TABLE:-diag_table_template}" > diag_table
+    atparse < "${PATHRT}/parm/diag_table/${DIAG_TABLE:-diag_table_template.IN}" > diag_table
     atparse < "${PATHRT}/parm/MOM6_data_table.IN" > data_table
   fi
 fi
 
 if [[ ${HAFS} = 'true' ]] && [[ ${DATM_CDEPS} = 'false' ]]; then
-  atparse < "${PATHRT}/parm/diag_table/${DIAG_TABLE:-diag_table_template}" > diag_table
+  atparse < "${PATHRT}/parm/diag_table/${DIAG_TABLE:-diag_table_template.IN}" > diag_table
 fi
 
 if [[ "${DIAG_TABLE_ADDITIONAL:-}Q" != Q ]]; then
@@ -338,7 +338,7 @@ fi
 
 # ATMAERO
 if [[ ${CPLCHM} == .true. ]] && [[ ${S2S} = 'false' ]]; then
-  atparse < "${PATHRT}/parm/diag_table/${DIAG_TABLE:-diag_table_template}" > diag_table
+  atparse < "${PATHRT}/parm/diag_table/${DIAG_TABLE:-diag_table_template.IN}" > diag_table
 fi
 
 if [[ ${DATM_CDEPS} = 'true' ]]; then
@@ -413,7 +413,13 @@ fi
 
 export NCPUS=$(( TPN * THRD ))
 
+export EXCLUSIVE_NODES_OPT=""
+
 if [[ ${SCHEDULER} = 'pbs' ]]; then
+  if [[ ${EXCLUSIVE_NODES} == .true. ]]; then
+    export EXCLUSIVE_NODES_OPT="#PBS -l place=excl"
+  fi
+    	  
   if [[ -e ${PATHRT}/fv3_conf/fv3_qsub.IN_${MACHINE_ID} ]]; then
     atparse < "${PATHRT}/fv3_conf/fv3_qsub.IN_${MACHINE_ID}" > job_card
   else
@@ -421,6 +427,10 @@ if [[ ${SCHEDULER} = 'pbs' ]]; then
     exit 1
   fi
 elif [[ ${SCHEDULER} = 'slurm' ]]; then
+  if [[ ${EXCLUSIVE_NODES} == .true. ]]; then 
+    export EXCLUSIVE_NODES_OPT="#SBATCH --exclusive"
+  fi
+
   if [[ -e ${PATHRT}/fv3_conf/fv3_slurm.IN_${MACHINE_ID} ]]; then
     atparse < "${PATHRT}/fv3_conf/fv3_slurm.IN_${MACHINE_ID}" > job_card
   else

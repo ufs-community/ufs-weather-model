@@ -93,6 +93,13 @@ export ICE_tasks_cdeps_025=48
 export INPES_aqm=33
 export JNPES_aqm=8
 
+export INPES_sfs=4
+export JNPES_sfs=6
+export THRD_sfs=1
+export WPG_sfs=24
+export OCN_tasks_sfs=168
+export ICE_tasks_sfs=48
+
 export THRD_cpl_unstr=1
 export INPES_cpl_unstr=3
 export JNPES_cpl_unstr=8
@@ -121,11 +128,15 @@ export fbh_omp_num_threads=1
 
 export histaux_enabled=.false.
 export BMIC=.false.
+export SFS=.false.
+
+export EXCLUSIVE_NODES=.false.
 
 if [[ ${MACHINE_ID} = wcoss2 || ${MACHINE_ID} = acorn ]]; then
 
   export TPN=128
-
+  export EXCLUSIVE_NODES=.true.
+  
   export INPES_dflt=3
   export JNPES_dflt=8
   export INPES_thrd=3
@@ -146,6 +157,7 @@ if [[ ${MACHINE_ID} = wcoss2 || ${MACHINE_ID} = acorn ]]; then
 elif [[ ${MACHINE_ID} = orion ]]; then
 
   export TPN=40
+  export EXCLUSIVE_NODES=.true.
 
   export INPES_dflt=3
   export JNPES_dflt=8
@@ -167,7 +179,7 @@ elif [[ ${MACHINE_ID} = orion ]]; then
 elif [[ ${MACHINE_ID} = hercules ]]; then
 
   export TPN=80
-
+  export EXCLUSIVE_NODES=.true.
   export INPES_dflt=3
   export JNPES_dflt=8
   export INPES_thrd=3
@@ -397,6 +409,7 @@ elif [[ ${MACHINE_ID} = noaacloud ]] ; then
       export TPN=30
     fi
 
+    export EXCLUSIVE_NODES=.true.
     export INPES_dflt=3
     export JNPES_dflt=8
     export INPES_thrd=3
@@ -428,6 +441,7 @@ elif [[ ${MACHINE_ID} = noaacloud ]] ; then
 elif [[ ${MACHINE_ID} = frontera ]]; then
 
   TPN=56
+  export EXCLUSIVE_NODES=.true.
 
 else
 
@@ -463,13 +477,12 @@ export_fv3
 export USE_MERRA2=.false.
 export WRITE_NSFLIP=.false.
 
-export DIAG_TABLE=diag_table_gfsv16
+export DIAG_TABLE=diag_table_gfsv16.IN
 export FIELD_TABLE=field_table_gfsv16
 export FV3_RUN=control_run.IN
 export INPUT_NML=control.nml.IN
 export CCPP_SUITE=FV3_GFS_v16
 
-export DOGP_CLDOPTICS_LUT=.false.
 export DOGP_LWSCAT=.false.
 export IAER=111
 export ICLIQ_SW=1
@@ -548,7 +561,7 @@ export_mpas ()
     export MPAS_RESOLUTION=120
 
     export ATM_compute_tasks=4
-    
+
     #DJS2025 START: We don't need this for MPAS, but to setup the tests we do. CLEAN THIS UP!!!
     #Set defaults if ATMRES and DT_ATMOS are not set
     export ATMRES=${ATMRES:-"C96"}
@@ -647,7 +660,6 @@ export_gfs_physics ()
     export HYBEDMF=.false.
     # RRTMGP
     export DO_RRTMGP=.false.
-    export DOGP_CLDOPTICS_LUT=.true.
     export DOGP_LWSCAT=.true.
     export DOGP_SGS_CNV=.true.
     export USE_LW_JACOBIAN=.false.
@@ -664,7 +676,7 @@ export_gfs_physics ()
     export RRTMGP_NGPTSLW=128
     export RRTMGP_NBANDSLW=16
     export RRTMGP_NBANDSSW=14
-    
+
     # Microphysics
     export IMP_PHYSICS=8
     export NWAT=6
@@ -731,7 +743,7 @@ export_gfs_physics ()
     export KNOB_UGWP_TAUAMP=3.0e-3
     export KNOB_UGWP_LHMET=200.0e3
     export KNOB_UGWP_OROSOLV="'pss-1986'"
-    
+
     export KNOB_UGWP_TAUAMP=3.0e-3
     export DO_UGWP_V0_NST_ONLY=.false.
 
@@ -885,6 +897,7 @@ export NTILES=6
 export INPES=${INPES_dflt}
 export JNPES=${JNPES_dflt}
 export RESTART_INTERVAL=0
+export USE_FV3_ROUTEHANDLES=.false.
 export QUILTING=.true.
 export QUILTING_RESTART=.true.
 export WRITE_GROUP=1
@@ -986,9 +999,8 @@ export TTENDLIM=-999
 
 # Radiation
 export DO_RRTMGP=.false.
-export DOGP_CLDOPTICS_LUT=.true.
 export DOGP_LWSCAT=.true.
-export DOGP_SGS_CNV=.true.
+export DOGP_SGS_CNV=.false.
 export USE_LW_JACOBIAN=.false.
 export DAMP_LW_FLUXADJ=.false.
 export RRTMGP_LW_PHYS_BLKSZ=2
@@ -1048,6 +1060,7 @@ export RRFS_RESTART=NO
 export SEAS_OPT=2
 
 # GWD
+export DO_NGW_EC=.false.
 export LDIAG_UGWP=.false.
 export DO_UGWP=.false.
 export DO_TOFD=.false.
@@ -1115,7 +1128,8 @@ export DO_MYNNEDMF=.false.
 export HURR_PBL=.false.
 export MONINQ_FAC=1.0
 export SFCLAY_COMPUTE_FLUX=.false.
-
+export TTE_EDMF=.false.
+export CSCALE=1.0
 # Shallow/deep convection
 export DO_DEEP=.true.
 export SHAL_CNV=.true.
@@ -1252,6 +1266,7 @@ export PERT_MP=.false.
 export PERT_RADTEND=.false.
 export PERT_CLDS=.false.
 
+export NEW_LSCALE=.false.
 export STOCHINI=.false.
 export DO_SPPT=.false.
 export DO_SHUM=.false.
@@ -1269,31 +1284,31 @@ export LNDP_LSCALE=500000,
 export ISEED_LNDP=2010,
 export ISEED_SKEB=0
 export SKEB_TAU=21600,
-export SKEB_LSCALE=500000,
-export SKEBNORM=1,
+export SKEB_LSCALE=250000,
+export SKEBNORM=0,
 export SKEB_NPASS=30,
 export SKEB_VDOF=5,
 export ISEED_SHUM=1,
 export SHUM_TAU=21600,
 export SHUM_LSCALE=500000,
-export ISEED_SPPT=20210325000103,20210325000104,20210325000105,20210325000106,20210325000107
-export SPPT_TAU=2.16E4,2.592E5,2.592E6,7.776E6,3.1536E7
-export SPPT_LSCALE=500.E3,1000.E3,2000.E3,2000.E3,2000.E3
+export ISEED_SPPT=20210325000103
+export SPPT_TAU=2.16E4
+export SPPT_LSCALE=500.E3
 export SPPT_LOGIT=.true.,
 export SPPT_SFCLIMIT=.true.,
 export USE_ZMTNBLCK=.true.
 export PBL_TAPER=0,0,0,0.125,0.25,0.5,0.75
-export OCNSPPT=0.8,0.4,0.2,0.08,0.04
-export OCNSPPT_LSCALE=500.E3,1000.E3,2000.E3,2000.E3,2000.E3
-export OCNSPPT_TAU=2.16E4,2.592E5,2.592E6,7.776E6,3.1536E7
-export ISEED_OCNSPPT=20210325000108,20210325000109,20210325000110,20210325000111,20210325000112
-export EPBL=0.8,0.4,0.2,0.08,0.04
-export EPBL_LSCALE=500.E3,1000.E3,2000.E3,2000.E3,2000.E3
-export EPBL_TAU=2.16E4,2.592E5,2.592E6,7.776E6,3.1536E7
-export ISEED_EPBL=20210325000113,20210325000114,20210325000115,20210325000116,20210325000117
-export SKEBINT=1800
-export SHUMINT=3600
-export SPPTINT=1800
+export OCNSPPT=-999.
+export OCNSPPT_LSCALE=500.E3
+export OCNSPPT_TAU=2.16E4
+export ISEED_OCNSPPT=20210325000108
+export EPBL=-999.
+export EPBL_LSCALE=500.E3
+export EPBL_TAU=2.16E4
+export ISEED_EPBL=20210325000113
+export SKEBINT=0
+export SHUMINT=0
+export SPPTINT=0
 
 #IAU
 export IAU_INC_FILES="''"
@@ -1383,6 +1398,7 @@ export CHOUR=06
 export MOM6_OUTPUT_DIR=./MOM6_OUTPUT
 export MOM6_RESTART_DIR=./RESTART/
 export MOM6_RESTART_SETTING=n
+export MOM6_OUTPUT_FH=6
 
 # Following not used for standalone
 export USE_CICE_ALB=.false.
@@ -1409,8 +1425,9 @@ export LSOIL_INCR=3
 export LAND_IAU_FILTER_INC=.false.
 export LAND_IAU_UPD_STC=.true.
 export LAND_IAU_UPD_SLC=.true.
-export LAND_IAU_DP_STCSMC_ADJ=.true.
+export LAND_IAU_DO_STCSMC_ADJ=.true.
 export LAND_IAU_MIN_T_INC=0.0001
+export LAND_IAU_MIN_SLC_INC=0.000001
 }
 
 # Add section for tiled grid namelist
@@ -1618,6 +1635,9 @@ export_cice6() {
   export stream_files_dice=none
   export CICE_PRESCRIBED=false
   export DICE_CDEPS=false
+
+  #To modify aice on restart, "adjust_aice"
+  export CICE_RESTART_MOD='none'
 }
 
 # Defaults for the MOM6 model namelist, mx100
@@ -1634,6 +1654,7 @@ export_mom6() {
   export MOM6_CHLCLIM=seawifs_1998-2006_smoothed_2X.nc
   export MOM6_USE_LI2016=True
   export MOM6_TOPOEDITS=''
+  export MOM6_HFREEZE=20.0
   # since CPL_SLOW is set to DT_THERM, this should be always be false
   export MOM6_THERMO_SPAN=False
   export MOM6_USE_WAVES=True
@@ -1875,9 +1896,8 @@ export LSEASPRAY=.true.
 
 # RRTMGP
 export DO_RRTMGP=.false.
-export DOGP_CLDOPTICS_LUT=.true.
 export DOGP_LWSCAT=.true.
-export DOGP_SGS_CNV=.true.
+export DOGP_SGS_CNV=.false.
 
 # CA
 export DO_CA=.true.
@@ -1955,6 +1975,7 @@ export_datm_cdeps ()
   export SMONTH=10
   export SDAY=01
   export SHOUR=00
+  export CHOUR=00
   export FHMAX=24
   export DT_ATMOS=900
   export FHROT=0
@@ -2004,7 +2025,7 @@ export_datm_cdeps ()
 
   # datm defaults
   export INPUT_NML=input.mom6.nml.IN
-  export DIAG_TABLE=diag_table_template
+  export DIAG_TABLE=diag_table_cpld.IN
   export DATM_SRC=CFSR
   export FILEBASE_DATM=cfsr
   export MESH_ATM=mesh.datm.1760x880.nc
@@ -2098,6 +2119,7 @@ export_hafs_regional ()
   export FILENAME_BASE="'atm' 'sfc'"
   export OUTPUT_GRID="'regional_latlon'"
   export OUTPUT_FILE="'netcdf'"
+  export ZSTANDARD_LEVEL=0
   export IDEFLATE=0
   export QUANTIZE_NSD=0
   export CEN_LON=-62.0
