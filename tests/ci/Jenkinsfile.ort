@@ -177,13 +177,13 @@ pipeline {
         export GIT_OWNER=$(echo $GIT_URL | cut -d '/' -f4)
         export GIT_REPO_NAME=$(echo $GIT_URL | cut -d '/' -f5 | cut -d '.' -f1)
 
-        cd tests
+      # cd tests # already there
         git remote -v
         git fetch --no-recurse-submodules origin
         git reset FETCH_HEAD --hard
-        cd .. && cd .. && cd ..
+        cd .. && cd .. # or cd $WORKSPACE
 
-        echo '3 cds'
+        echo '2 cds'
         pwd
         ls -l
 
