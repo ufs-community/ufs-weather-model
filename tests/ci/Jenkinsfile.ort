@@ -178,12 +178,14 @@ pipeline {
         export GIT_REPO_NAME=$(echo $GIT_URL | cut -d '/' -f5 | cut -d '.' -f1)
 
       # cd tests # already there
+        echo 'cd tests'
+        pwd 
         git remote -v
         git fetch --no-recurse-submodules origin
         git reset FETCH_HEAD --hard
-        cd .. && cd .. # or cd $WORKSPACE
+        cd .. # cd to /scratch4/NAGAPE/epic/role-epic/jenkins/workspace
 
-        echo '2 cds'
+        echo '3 cds'
         pwd
         ls -l
 
