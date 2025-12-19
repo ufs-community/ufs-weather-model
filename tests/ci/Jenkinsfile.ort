@@ -204,12 +204,10 @@ pipeline {
         git push sshorigin HEAD:$FORK_BRANCH
         '''
         } //steps
-        } //stage
-        } //stages
+
 
         post {
         always {
-        agent{ label 'ursa' }
          sh '''
            export GIT_OWNER=$(echo $GIT_URL | cut -d '/' -f4)
            export GIT_REPO_NAME=$(echo $GIT_URL | cut -d '/' -f5 | cut -d '.' -f1)
@@ -235,6 +233,9 @@ pipeline {
                 message: "*FAILURE: Build ${env.JOB_NAME} #${env.BUILD_NUMBER}*  <${env.BUILD_URL}|Open Build>"
             )
         } //failure
+
+        } //stage
+        } //stages
 
       } //post      
   } //pipeline
