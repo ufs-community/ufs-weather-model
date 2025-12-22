@@ -11,12 +11,12 @@ if(CMAKE_Fortran_COMPILER_ID MATCHES "GNU")
 elseif(CMAKE_Fortran_COMPILER_ID MATCHES "^(Intel)$")
   set(CMAKE_Fortran_FLAGS "-g -traceback -mcmodel=small -r8 ${HYCOM_Extra_FORTRAN_FLAGS}")
   set(CMAKE_Fortran_FLAGS_RELEASE "-O3 -fp-model source -warn nogeneral")
-  set(CMAKE_Fortran_FLAGS_DEBUG "-O0 -check all -fpe0 -ftrapuv -link_mpi=dbg -init=snan,arrays")
+  set(CMAKE_Fortran_FLAGS_DEBUG "-O0 -check all -check noarg_temp_created -fpe0 -ftrapuv -link_mpi=dbg -init=snan,arrays")
   set(CMAKE_Fortran_LINK_FLAGS "-V ${CMAKE_Fortran_FLAGS} -static-intel")
 elseif(CMAKE_Fortran_COMPILER_ID MATCHES "^(IntelLLVM)$")
   set(CMAKE_Fortran_FLAGS "-g -traceback -mcmodel=small -r8 ${HYCOM_Extra_FORTRAN_FLAGS}")
   set(CMAKE_Fortran_FLAGS_RELEASE "-O3 -fp-model source -warn nogeneral")
-  set(CMAKE_Fortran_FLAGS_DEBUG "-O0 -check all -fpe0 -ftrapuv -link_mpi=dbg -init=snan,arrays")
+  set(CMAKE_Fortran_FLAGS_DEBUG "-O0 -check all -check noarg_temp_created -fpe0 -ftrapuv -link_mpi=dbg -init=snan,arrays")
   set(CMAKE_Fortran_LINK_FLAGS "-V ${CMAKE_Fortran_FLAGS} -static-intel")
 else()
   message(WARNING "Fortran compiler with ID ${CMAKE_Fortran_COMPILER_ID} will be used with CMake default options")
@@ -85,7 +85,7 @@ target_include_directories(hycom_nuopc_obj PRIVATE $<BUILD_INTERFACE:${CMAKE_CUR
                                                    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/HYCOM/NUOPC>)
 target_compile_definitions(hycom_nuopc_obj PRIVATE "${_hycom_defs}")
 target_link_libraries(hycom_nuopc_obj PRIVATE hycom_obj
-                                              esmf
+                                              ESMF::ESMF
                                               NetCDF::NetCDF_Fortran)
 
 ### Create target library and set PUBLIC interfaces on the library
@@ -96,7 +96,7 @@ target_include_directories(hycom PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY
 target_include_directories(hycom PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/HYCOM>
                                         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/HYCOM/NUOPC>)
 target_compile_definitions(hycom PRIVATE "${_hycom_defs}")
-target_link_libraries(hycom PUBLIC esmf
+target_link_libraries(hycom PUBLIC ESMF::ESMF
                                    NetCDF::NetCDF_Fortran)
 
 ### Create HYCOM offline executable

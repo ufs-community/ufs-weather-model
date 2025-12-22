@@ -15,7 +15,7 @@ elseif(CMAKE_Fortran_COMPILER_ID MATCHES "^(Intel)$")
   else()
     set(CMAKE_Fortran_FLAGS_RELEASE "-O2 -debug minimal -fp-model source")
   endif()
-  set(CMAKE_Fortran_FLAGS_DEBUG "-O0 -check -check noarg_temp_created -check nopointer -fpe0 -ftrapuv -init=snan,arrays")
+  set(CMAKE_Fortran_FLAGS_DEBUG "-O0 -check all -check noarg_temp_created -check nopointer -fpe0 -ftrapuv -init=snan,arrays")
   set(CMAKE_Fortran_LINK_FLAGS "")
 elseif(CMAKE_Fortran_COMPILER_ID MATCHES "^(IntelLLVM)$")
   set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -g -traceback")
@@ -26,7 +26,7 @@ elseif(CMAKE_Fortran_COMPILER_ID MATCHES "^(IntelLLVM)$")
   else()
     set(CMAKE_Fortran_FLAGS_RELEASE "-O2 -debug minimal -fp-model precise")
   endif()
-  set(CMAKE_Fortran_FLAGS_DEBUG "-O0 -check -check noarg_temp_created -check nopointer -fpe0 -ftrapuv -init=snan,arrays")
+  set(CMAKE_Fortran_FLAGS_DEBUG "-O0 -check all -check noarg_temp_created -check nopointer -fpe0 -ftrapuv -init=snan,arrays")
   set(CMAKE_Fortran_LINK_FLAGS "")
 else()
   message(WARNING "Fortran compiler with ID ${CMAKE_Fortran_COMPILER_ID} will be used with CMake default options")
@@ -52,7 +52,7 @@ else()
                                               $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/MOM6/src/framework>)
 endif()
 target_link_libraries(mom6_obj PRIVATE fms
-                                       esmf
+                                       ESMF::ESMF
                                        stochastic_physics
                                        NetCDF::NetCDF_Fortran)
 # OpenMP is disabled in MOM6
@@ -73,7 +73,7 @@ endif()
 target_link_libraries(mom6_nuopc_obj PRIVATE mom6_obj
                                              fms
                                              stochastic_physics
-                                             esmf)
+                                             ESMF::ESMF)
 # OpenMP is disabled in MOM6
 #if(OpenMP_Fortran_FOUND)
 # target_link_libraries(mom6_nuopc_obj PRIVATE OpenMP::OpenMP_Fortran)
@@ -88,7 +88,7 @@ target_include_directories(mom6 PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_
                                        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/MOM6/src/framework>)
 target_link_libraries(mom6 PUBLIC fms
                                   stochastic_physics
-                                  esmf
+                                  ESMF::ESMF
                                   NetCDF::NetCDF_Fortran)
 # OpenMP is disabled in MOM6
 #if(OpenMP_Fortran_FOUND)
@@ -108,7 +108,7 @@ if(MOM6SOLO)
   target_link_libraries(mom6solo PRIVATE mom6_obj
                                          fms
                                          stochastic_physics
-                                         esmf
+                                         ESMF::ESMF
                                          NetCDF::NetCDF_Fortran)
   # OpenMP is disabled in MOM6
   #if(OpenMP_Fortran_FOUND)

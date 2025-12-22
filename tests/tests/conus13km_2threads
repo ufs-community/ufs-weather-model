@@ -26,3 +26,7 @@ export USE_MERRA2=.true.
 export ESMF_THREADING=false
 export THRD=$atm_omp_num_threads
 export ZSTANDARD_LEVEL=5
+
+if [[ ${MACHINE_ID} = ursa ]]; then
+   export EXCLUSIVE_NODES=.true.
+fi 
