@@ -5,8 +5,8 @@
 #PBS -N @[JBNME]
 #PBS -A @[ACCNR]
 #PBS -q @[QUEUE]
-#PBS -l place=vscatter,select=@[NODES]:ncpus=@[NCPUS]:mpiprocs=@[TPN]:ompthreads=@[THRD]:mem=500G
-@[EXCLUSIVE_NODES_OPT]
+#PBS -l select=@[NODES]:ncpus=@[NCPUS]:mpiprocs=@[TPN]:ompthreads=@[THRD]
+#PBS -l place=vscatter:exclhost
 #PBS -l walltime=00:@[WLCLK]:00
 
 set -eux

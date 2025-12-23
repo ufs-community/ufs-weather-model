@@ -1,12 +1,13 @@
 ###############################################################################
 #
-#  global control test: Coupled test at c1152 using GFSv17 configuration
+#  global control test: Coupled test at c1152 using operational GFSv17 configuration
 #
 ###############################################################################
 
 export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS-WW3 system - C1152MX025 - unst WW3"
 
 export CNTL_DIR=cpld_control_c1152
+export LIST_FILES=""
 
 export ATMRES=C1152
 export DT_ATMOS=150
@@ -36,12 +37,14 @@ export CMEPS_RESTART_DIR='./CMEPS_RESTART/'
 export FV3ATM_OUTPUT_DIR='./'
 
 #Simulation length and output
-export DAYS=0.25
-export FHMAX=6
+export DAYS=1.25
+export FHMAX=30
 export RESTART_N=3
 export RESTART_INTERVAL="${RESTART_N} -1"
 export FHZERO=6
-export OUTPUT_FH="0 3 6"
+export OUTPUT_FH="6 -1"
+export WLCLK=90
+export EXCLUSIVE_NODES=.false.
 
 export ocn_omp_num_threads=1
 export ice_omp_num_threads=1
@@ -68,22 +71,22 @@ if [[ ${MACHINE_ID} = wcoss2 ]]; then
     78 79 80 81 82 83 84 85 86 87 88 89 90 91 92 93 94 95 96 97 98 99 100 101 102 103 104 105 106 107 108 109 110 111 112\
     113 114 115 116 117 118 119 120 123 126 129 132 135 138 141 144 147 150 153 156 159 162 165 168 171 174 177 180 183\
     186 189 192 195 198 201 204 207 210 213 216 219 222 225 228 231 234 237 240 243 246 249 252 255 258 261 264 267 270\
-    273 276 279 282 285 288 291 294 297 300 303 306 309 312 315 3 18 321 324 327 330 333 336 339 342 345 348 351 354 357\
+    273 276 279 282 285 288 291 294 297 300 303 306 309 312 315 318 321 324 327 330 333 336 339 342 345 348 351 354 357\
     360 363 366 369 372 375 378 381 384"
     RESTART_INTERVAL="45 78 114 150 186 222 258 294 330 366"
     RESTART_FH="42 75 111 147 183 219 255 291 327 363"
 else
     INPES=24
-    JNPES=24
+    JNPES=12
     BLOCKSIZE=36
     OCN_tasks=120
     ICE_tasks=80
-    WAV_tasks=1200
-    atm_omp_num_threads=1
+    WAV_tasks=2008
+    atm_omp_num_threads=4
     med_omp_num_threads=$atm_omp_num_threads
-    WRITE_GROUP=1
-    WRTTASK_PER_GROUP=180
-    WRITE_DOPOST=.false.
+    WRITE_GROUP=4
+    WRTTASK_PER_GROUP=192
+    WRITE_DOPOST=.true.
 fi
 
 # atm/ocn/ice resolution
