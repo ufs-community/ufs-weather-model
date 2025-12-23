@@ -3,9 +3,9 @@
 
 .. _idealized-tc:
 
-**************************************
+*******************************************
 Idealized, Regional Tropical Cyclone Case
-**************************************
+*******************************************
 
 The idealized, regional tropical cyclone case is derived from the I-HAFS configuration (:cite:t:`Wang2024`) and is designed to support controlled studies of tropical cyclone dynamics and forecast development. It uses the ``FV3_HAFS_v1_thompson_nonsst`` physics suite, which is documented in the `DTC UFS HAFS v1 Scientific Documentation <https://dtcenter.ucar.edu/GMTB/UFS_SRW_HSD_TC/scidoc/_h_a_f_sv1_page.html>`_. The configuration used in this case removes real-world data assimilation and ocean coupling, focusing solely on atmospheric forecasts using idealized inputs.
 
@@ -89,7 +89,7 @@ Change to something like:
 
 .. code-block:: console
 
-   WLCLK=08:00
+   WLCLK=480
 
 This allows enough time (6–8 hours recommended) for the full 120-hour simulation to run, depending on system performance.
 

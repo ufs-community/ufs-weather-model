@@ -14,9 +14,13 @@ if(CMAKE_Fortran_COMPILER_ID MATCHES "GNU")
   set(CMAKE_Fortran_LINK_FLAGS "")
 elseif(CMAKE_Fortran_COMPILER_ID MATCHES "Intel")
   set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -g -traceback")
-  set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -O -assume realloc_lhs")
-  set(CMAKE_Fortran_FLAGS_RELEASE "-O2 -fp-model precise")
-  set(CMAKE_Fortran_FLAGS_DEBUG "-O0 -check -check noarg_temp_created -check nopointer -fpe0 -ftrapuv -init=snan,arrays")
+  set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -assume realloc_lhs")
+  if(FASTER)
+    set(CMAKE_Fortran_FLAGS_RELEASE "-O3 -fp-model precise -assume buffered_stdout -fno-alias -align all -debug minimal -qoverride-limits -ftz -no-ip")
+  else()
+    set(CMAKE_Fortran_FLAGS_RELEASE "-O2 -fp-model precise")
+  endif()
+  set(CMAKE_Fortran_FLAGS_DEBUG "-O0 -check all -check noarg_temp_created -check nopointer -fpe0 -ftrapuv -init=snan,arrays")
   set(CMAKE_Fortran_LINK_FLAGS "")
   #Set CPP defintions for the ufs/cdeps_share source component of the cmeps target library
   list(APPEND CDEPS_SHARE_DEFS "CPRINTEL")
@@ -184,7 +188,7 @@ set_target_properties(cmeps PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_
 target_include_directories(cmeps PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>
                                         $<INSTALL_INTERFACE:mod>)
 target_compile_definitions(cmeps PRIVATE ${CDEPS_SHARE_DEFS})
-target_link_libraries(cmeps PUBLIC esmf
+target_link_libraries(cmeps PUBLIC ESMF::ESMF
                                    PIO::PIO_Fortran)
 if(OpenMP_Fortran_FOUND)
   target_link_libraries(cmeps PRIVATE OpenMP::OpenMP_Fortran)
