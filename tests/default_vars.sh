@@ -136,7 +136,7 @@ if [[ ${MACHINE_ID} = wcoss2 || ${MACHINE_ID} = acorn ]]; then
 
   export TPN=128
   export EXCLUSIVE_NODES=.true.
-  
+
   export INPES_dflt=3
   export JNPES_dflt=8
   export INPES_thrd=3
@@ -2021,7 +2021,7 @@ export_datm_cdeps ()
   # default configure
   export UFS_CONFIGURE=ufs.configure.datm_cdeps.IN
   export atm_model=datm
-  export CPLMODE=ufs.nfrac.aoflux
+  export CPLMODE=ufs.frac.aoflux
 
   # datm defaults
   export INPUT_NML=input.mom6.nml.IN
