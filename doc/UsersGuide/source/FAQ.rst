@@ -78,7 +78,7 @@ For all systems, users will need to:
 
       .. code-block:: console 
 
-         Job 7430255 finished for user Joe.Schmoe in partition hera with exit code 0:0
+         Job 7430255 finished for user Joe.Schmoe in partition ursa with exit code 0:0
 
       There is also a RESOURCE STATISTICS summary at the end of the test's ``out`` file. Errors will appear in the ``err`` file. Users can find log files with more detailed information in ``ufs-weather-model/tests/logs/log_<platform>`` (where platform is the name of the machine the user is running on, e.g., ``log_hercules``).
    
@@ -224,10 +224,10 @@ tasks, as long as those components do not overlap (i.e., share the
 same PETs). An example of a global five-component coupled configuration
 ``ufs.configure`` appears at the end of this section.
 
-FV3atm
+UFSATM
 ^^^^^^
 
-The FV3atm component consists of one or more forecast grid components
+The UFSATM component consists of one or more forecast grid components
 and write grid components.
 
 The MPI tasks for the forecast grid components are specified in the
@@ -250,7 +250,7 @@ not support an ``8,8`` layout for a blocksize of 32. If ``layout =
 a ``blocksize=32``. A layout of ``4,6`` is supported for C96 with a
 blocksize of 32.
 
-The FV3atm will utilize the write grid component if ``quilting`` is
+The UFSATM will utilize the write grid component if ``quilting`` is
 set to .true. In this case, the required MPI tasks for the
 write grid component are the product of the ``write_groups`` and the
 ``write_tasks_per_group`` in the ``model_configure`` file.
@@ -264,7 +264,7 @@ write grid component are the product of the ``write_groups`` and the
 
 In the above case, the write grid component requires 60 tasks.
 
-The total number of MPI ranks for FV3atm is the sum of the forecast tasks and any
+The total number of MPI ranks for UFSATM is the sum of the forecast tasks and any
 write grid component tasks.
 
 ::
@@ -275,7 +275,7 @@ If ESMF-managed threading is used, the total number of PETs for the
 atmosphere component is given by the product of the number of threads
 requested and the total number of MPI ranks (both forecast and write
 grid component). If ``num_threads_atm`` is the number of threads
-specified for the FV3atm component, in ``ufs.configure`` the ATM PET
+specified for the UFSATM component, in ``ufs.configure`` the ATM PET
 bounds are given by:
 
 ::
@@ -289,12 +289,12 @@ Note that in UFS WM, the ATM component is normally listed first in
 GOCART
 ^^^^^^
 
-GOCART shares the same grid and forecast tasks as FV3atm, but it does
+GOCART shares the same grid and forecast tasks as UFSATM, but it does
 not have a separate write grid component in its NUOPC CAP. Also, while
 GOCART does not have threading capability, it shares the same data
-structure as FV3atm and so it has to use the same number of threads
-used by FV3atm. Therefore, the total number of MPI ranks and threads
-in GOCART is the same as the those for the FV3atm forecast component
+structure as UFSATM and so it has to use the same number of threads
+used by UFSATM. Therefore, the total number of MPI ranks and threads
+in GOCART is the same as the those for the UFSATM forecast component
 (i.e., excluding any write grid component). Currently, GOCART only runs
 on the global forecast grid component, for which only one namelist is
 needed.
@@ -310,7 +310,7 @@ CMEPS
 ^^^^^
 
 The mediator MPI tasks can overlap with other components and in UFS
-the tasks are normally shared on the FV3atm forecast tasks. However, a
+the tasks are normally shared on the UFSATM forecast tasks. However, a
 large number of tasks for the mediator is generally not recommended
 since it may cause slow performance. This means that the number of
 MPI tasks for CMEPS is given by
@@ -620,7 +620,7 @@ Where can I find up-to-date documentation for the ``diag_table`` variables used 
 ===========================================================================================================
 
 Information on ``diag_table`` variables has been added to the :ref:`diag_table section <diag-table-options>` of the UFS Weather Model documentation. 
-Currently, only variables coming from fv3atm and MOM6 are included, but ``diag_table`` variables from other components will be added as time permits. 
+Currently, only variables coming from UFSATM and MOM6 are included, but ``diag_table`` variables from other components will be added as time permits. 
 
 * :ref:`FV3ATM diag_table variables <fv3diagtable>`
 * `MOM6 diag_table variables <https://ncar.github.io/MOM6/APIs/namespacemom__diagnostics.html>`_

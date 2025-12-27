@@ -1,55 +1,175 @@
 #
-#  cpld_control GFSv17 with UGWPv1 test, i.e., GSL orographic drag +
-#  version 1 non-stationary GWD, hydrostatic
+#  cpld_control_sfs test
 #
-
-export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS-WW3 system hydrostatic version - C96MX100 - unst WW3"
+export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS system - C192 MX025 - SFS test"
 
 export CNTL_DIR=cpld_control_sfs
 
-export LIST_FILES="sfcf021.nc \
-                   sfcf024.nc \
-                   atmf021.nc \
+export LIST_FILES="sfcf024.nc \
                    atmf024.nc \
-                   GFSFLX.GrbF21 \
                    GFSFLX.GrbF24 \
-                   GFSPRS.GrbF21 \
                    GFSPRS.GrbF24 \
-                   RESTART/20210323.060000.MOM.res.nc"
+                   RESTART/19940502.000000.coupler.res \
+                   RESTART/19940502.000000.fv_core.res.nc \
+                   RESTART/19940502.000000.fv_core.res.tile1.nc \
+                   RESTART/19940502.000000.fv_core.res.tile2.nc \
+                   RESTART/19940502.000000.fv_core.res.tile3.nc \
+                   RESTART/19940502.000000.fv_core.res.tile4.nc \
+                   RESTART/19940502.000000.fv_core.res.tile5.nc \
+                   RESTART/19940502.000000.fv_core.res.tile6.nc \
+                   RESTART/19940502.000000.fv_srf_wnd.res.tile1.nc \
+                   RESTART/19940502.000000.fv_srf_wnd.res.tile2.nc \
+                   RESTART/19940502.000000.fv_srf_wnd.res.tile3.nc \
+                   RESTART/19940502.000000.fv_srf_wnd.res.tile4.nc \
+                   RESTART/19940502.000000.fv_srf_wnd.res.tile5.nc \
+                   RESTART/19940502.000000.fv_srf_wnd.res.tile6.nc \
+                   RESTART/19940502.000000.fv_tracer.res.tile1.nc \
+                   RESTART/19940502.000000.fv_tracer.res.tile2.nc \
+                   RESTART/19940502.000000.fv_tracer.res.tile3.nc \
+                   RESTART/19940502.000000.fv_tracer.res.tile4.nc \
+                   RESTART/19940502.000000.fv_tracer.res.tile5.nc \
+                   RESTART/19940502.000000.fv_tracer.res.tile6.nc \
+                   RESTART/19940502.000000.phy_data.tile1.nc \
+                   RESTART/19940502.000000.phy_data.tile2.nc \
+                   RESTART/19940502.000000.phy_data.tile3.nc \
+                   RESTART/19940502.000000.phy_data.tile4.nc \
+                   RESTART/19940502.000000.phy_data.tile5.nc \
+                   RESTART/19940502.000000.phy_data.tile6.nc \
+                   RESTART/19940502.000000.sfc_data.tile1.nc \
+                   RESTART/19940502.000000.sfc_data.tile2.nc \
+                   RESTART/19940502.000000.sfc_data.tile3.nc \
+                   RESTART/19940502.000000.sfc_data.tile4.nc \
+                   RESTART/19940502.000000.sfc_data.tile5.nc \
+                   RESTART/19940502.000000.sfc_data.tile6.nc \
+                   RESTART/19940502.000000.ca_data.tile1.nc \
+                   RESTART/19940502.000000.ca_data.tile2.nc \
+                   RESTART/19940502.000000.ca_data.tile3.nc \
+                   RESTART/19940502.000000.ca_data.tile4.nc \
+                   RESTART/19940502.000000.ca_data.tile5.nc \
+                   RESTART/19940502.000000.ca_data.tile6.nc \
+                   RESTART/19940502.000000.atm_stoch.res.nc \
+                   RESTART/19940502.000000.ocn_stoch.res.nc \
+                   RESTART/19940502.000000.MOM.res.nc \
+                   RESTART/19940502.000000.MOM.res_1.nc \
+                   RESTART/19940502.000000.MOM.res_2.nc \
+                   RESTART/19940502.000000.MOM.res_3.nc \
+                   RESTART/iced.1994-05-02-00000.nc \
+                   RESTART/ufs.cpld.cpl.r.1994-05-02-00000.nc "
 
+export ATMRES=C192
 export_fv3
 export_ugwpv1
 export_cpl
 
-export CPLCHM=.false.
-export DNATS=0
-export MAKE_NH=.false.
-export DDDMP=0
-export DO_VORT_DAMP=.false.
-export HYDROSTATIC=.true.
-export HORD_DP=10
-export KORD_TM=-12
-export KORD_MT=12
-export KORD_WZ=12
-export KORD_TR=12
-export HORD_MT=10
-export HORD_VT=10
-export HORD_TM=10
-export D_CON=0
+export CCPP_SUITE=FV3_GFS_v17_coupled_p8_ugwpv1
 
-export RESTART_N=3
+export DAYS=1.
+export FHMAX=24
+export RESTART_N=12
 export RESTART_INTERVAL="${RESTART_N} -1"
-export OUTPUT_FH='0 21 24'
-export OUTPUT_GRID="'gaussian_grid'"
+export FHROT=0
+
+export OUTPUT_FH="24 -1"
+export FHZERO=24
+export OUTPUT_GRID=gaussian_grid
 export WRITE_DOPOST=.true.
+export QUILTING_RESTART=.true.
+export OUTPUT_FILE="'netcdf' 'netcdf'"
+export ICHUNK2D=768
+export JCHUNK2D=384
+export ICHUNK3D=768
+export JCHUNK3D=384
+export KCHUNK3D=1
 
-export INPES=$INPES_cpl_unstr
-export JNPES=$JNPES_cpl_unstr
-export WRTTASK_PER_GROUP=$(( WPG_cpl_unstr * THRD_cpl_unstr ))
+export SFS=.true.
+export SYEAR=1994
+export SMONTH=05
+export SDAY=01
+export SHOUR=00
+export CHOUR=00
+export SECS=`expr $SHOUR \* 3600`
 
-OCN_tasks=$OCN_tasks_cpl_unstr
-ICE_tasks=$ICE_tasks_cpl_unstr
-WAV_tasks=$WAV_tasks_cpl_unstr
+export DOMAINS_STACK_SIZE=16000000
+
+export INPES=$INPES_sfs
+export JNPES=$JNPES_sfs
+export WRTTASK_PER_GROUP=$(( WPG_sfs * THRD_sfs ))
+export OCN_tasks=$OCN_tasks_sfs
+export ICE_tasks=$ICE_tasks_sfs
+export WAV_tasks=0
+export CHM_tasks=0
+
+export atm_omp_num_threads=1
+export chm_omp_num_threads=$atm_omp_num_threads
+export med_omp_num_threads=$atm_omp_num_threads
+
+# atm/ocn/ice resolution
+export NPX=193
+export NPY=193
+export IMO=768
+export JMO=384
+
+export OCNRES=025
+export ICERES=0.25
+export NX_GLB=1440
+export NY_GLB=1080
+export CICE_NPROC=$ICE_tasks
+export np2=`expr $CICE_NPROC / 2`
+export CICE_BLCKX=`expr $NX_GLB / $np2`
+export CICE_BLCKY=`expr $NY_GLB / 2`
+
+# set component and coupling timesteps
+export DT_ATMOS=600
+export DT_INNER=${DT_ATMOS}
+export DT_CICE=${DT_ATMOS}
+export DT_DYNAM_MOM6=900
+export DT_THERM_MOM6=1800
+export CICE_DIAGFREQ=`expr $((FHMAX-$FHROT)) \* 3600 / $DT_CICE`
+
+# ufs.configure
+export coupling_interval_slow_sec=${DT_THERM_MOM6}
+export coupling_interval_fast_sec=${DT_ATMOS}
+
+# resolution dependent files
+export MOM6_INPUT=MOM_input_${OCNRES}.IN
+export MESH_ICE=mesh.mx${OCNRES}.nc
+export MESH_OCN=mesh.mx${OCNRES}.nc
+export CICE_GRID=grid_cice_NEMS_mx${OCNRES}.nc
+export CICE_MASK=kmtu_cice_NEMS_mx${OCNRES}.nc
+export MOM6_CHLCLIM=seawifs-clim-1997-2010.${NX_GLB}x${NY_GLB}.v20180328.nc
+export MOM6_FRUNOFF=runoff.daitren.clim.${NX_GLB}x${NY_GLB}.v20180328.nc
+export MOM6_RIVER_RUNOFF=True
+export MOM6_USE_WAVES=False
+export MOM6_DIAG_COORD_DEF_Z_FILE=interpolate_zgrid_32L.nc
+
+# ATM IAU
+export IAUFHRS=0
+export DO_LAND_IAU=.false.
+export READ_INCREMENT=.true.
+export RES_LATLON_DYNAMICS="'atminc.nc'"
+export IAU_INC_FILES="''"
+
+# MOM6 IAU
+export ODA_INCUPD=True
+export ODA_INCUPD_NHOURS=0.0
+export ODA_TEMPINC_VAR="t_pert"
+export ODA_SALTINC_VAR="s_pert"
+export ODA_THK_VAR="h_anl"
+export ODA_INCUPD_UV=True
+export ODA_UINC_VAR="u_pert"
+export ODA_VINC_VAR="v_pert"
+
+# MOM6 frequency
+export MOM6_OUTPUT_FH=24
+
+# CICE frequency
+export CICE_HISTFREQ_N="0, 0, 24, 0, 1"
+export CICE_HIST_AVG=".true., .true., .true., .true., .true"
+
+# MOM6 stochastics
+export DO_OCN_SPPT=True
+export DO_SPPT=True
+export PERT_EPBL=True
 
 # use downscaled warmstarts for ocean and ice
 export OCNICE_WARMSTART=.true.
@@ -58,42 +178,114 @@ export MOM6_INIT_UV=file
 export MOM6_WARMSTART_FILE=mom6.warmstart.nc
 export CICE_ICE_IC=cice.warmstart.nc
 
-export atm_omp_num_threads=$THRD_cpl_unstr
-export med_omp_num_threads=$atm_omp_num_threads
+export FNALBC="'C192.snowfree_albedo.tileX.nc'"
+export FNALBC2="'C192.facsf.tileX.nc'"
+export FNTG3C="'C192.substrate_temperature.tileX.nc'"
+export FNVEGC="'C192.vegetation_greenness.tileX.nc'"
+export FNVETC="'C192.vegetation_type.tileX.nc'"
+export FNSOTC="'C192.soil_type.tileX.nc'"
+export FNSOCC="'C192.soil_color.tileX.nc'"
+export FNVMNC="'C192.vegetation_greenness.tileX.nc'"
+export FNVMXC="'C192.vegetation_greenness.tileX.nc'"
+export FNSLPC="'C192.slope_type.tileX.nc'"
+export FNABSC="'C192.maximum_snow_albedo.tileX.nc'"
 
-export MOM6_TOPOEDITS=ufs.topo_edits_011818.nc
-export MOM6_ALLOW_LANDMASK_CHANGES=True
-export eps_imesh=2.5e-1
+# Match input.nml settings to SFS sandbox
+export DT_INNER=${DT_INNER_c192}
+export MAX_OUTPUT_FIELDS=300
+export UPDATE_FULL_OMEGA=.false.
+export DDDMP=0.
+export CPLCHM=.false.
+export CPLWAV=.false.
+export CPLWAV2ATM=.false.
 
-export WW3_DOMAIN=global_270k
-export MESH_WAV=mesh.${WW3_DOMAIN}.nc
-export WW3_MODDEF=mod_def.exp.${WW3_DOMAIN}
+# damping coefficients
+export N_SPLIT=4
+export TAU=6.0
+export RF_CUTOFF=100.0
 
-export FV3_RUN=cpld_control_run.IN
-export CCPP_SUITE=FV3_GFS_v17_coupled_p8_ugwpv1
-export FIELD_TABLE=field_table_thompson_noaero_tke_progsigma
-export DIAG_TABLE=diag_table_cpld_sfs.IN
-export INPUT_NML=global_control.nml.IN
-export UFS_CONFIGURE=ufs.configure.s2sw.IN
-# slow loop
-export WW3_RSTFLDS="ice"
-# ocean uv->atm
-export USE_OCEANUV=.true.
-
-#GFSv17	settings
-export PROGSIGMA=.true.
-export IOPT_DIAG=2
-
-if [[ $MACHINE_ID = hera ]] && [[ $RT_COMPILER = gnu ]]; then
-  WLCLK=40
-fi
-
-export K_SPLIT=2
-export N_SPLIT=5
-
-export NUDGE_QV=.false.
-export VTDM4=0.05
-
-# HR4 GFSv17 GWD update
-export DO_GWD_OPT_PSL=.true.
+# GWD
+export DO_NGW_EC=.true.
+export GWD_OPT=2
+export DO_UGWP_V1=.true.
+export DO_GSL_DRAG_LS_BL=.true.
 export DO_GSL_DRAG_SS=.false.
+export DO_GWD_OPT_PSL=.true.
+export DO_GSL_DRAG_TOFD=.true.
+export DO_GSL_DRAG_TOFD=.true.
+export CDMBGWD="10.0,3.5,1.0,1.0"
+
+# Coldstart/warmstart
+export MAKE_NH=.false.
+export DO_VORT_DAMP=.false.
+export NUDGE_QV=.false.
+export HYDROSTATIC=.true.
+export KORD_MT=12
+export KORD_WZ=12
+export KORD_TR=12
+export KORD_TM=-12
+export VTDM4=0.05
+export D_CON=0.
+export HORD_MT=10
+export HORD_VT=10
+export HORD_TM=10
+export HORD_DP=10
+export HORD_TR=8
+
+# Shallow/deep convection
+export PROGSIGMA=.true.
+
+export TTE_EDMF=.true.
+export CSCALE=0.5
+
+# GFDL MP
+export DNATS=0
+# Thompson MP
+export LRADAR=.true.
+
+# Merra2 Aerosols & NSST
+export NSTF_NAME=2,1,0,0,0
+
+# RRTMGP
+export DOGP_CLDOPTICS_LUT=.false.
+export DOGP_LWSCAT=.false.
+
+# Stochastic physics
+export NEW_LSCALE=.true.
+export SPPTINT=0
+export DO_SPPT=.true.
+export PERT_CLDS=.true.
+export ISEED_CA=1115337723
+export SKEBINT=0
+export SKEB_TAU=2.16E4,2.592E5,2.592E6,7.776E6,3.1536E7
+export SKEB_LSCALE=500.E3,1000.E3,2000.E3,2000.E3,2000.E3
+export SKEBNORM=1
+export SKEB_NPASS=30
+export SKEB_VDOF=5
+export ISEED_SHUM=0
+export SHUMINT=0
+export SHUM_TAU=-999.
+export SHUM_LSCALE=-999.
+export SPPT=0.56,0.28,0.14,0.056,0.028
+export SPPT_TAU=2.16E4,2.592E5,2.592E6,7.776E6,3.1536E7
+export SPPT_LSCALE=500.E3,1000.E3,2000.E3,2000.E3,2000.E3
+export ISEED_SPPT=19940501000103,19940501000104,19940501000105,19940501000106,19940501000107
+export SPPT_LOGIT=.true.
+export SPPT_SFCLIMIT=.true.
+export OCNSPPT=0.8,0.4,0.2,0.08,0.04
+export OCNSPPT_LSCALE=500.E3,1000.E3,2000.E3,2000.E3,2000.E3
+export OCNSPPT_TAU=2.16E4,2.592E5,2.592E6,7.776E6,3.1536E7
+export ISEED_OCNSPPT=19940501000108,19940501000109,19940501000110,19940501000111,19940501000112
+export PBL_TAPER=0,0,0,0.125,0.25,0.5,0.75
+export EPBL=0.8,0.4,0.2,0.08,0.04
+export EPBL_LSCALE=500.E3,1000.E3,2000.E3,2000.E3,2000.E3
+export EPBL_TAU=2.16E4,2.592E5,2.592E6,7.776E6,3.1536E7
+export ISEED_EPBL=19940501000113,19940501000114,19940501000115,19940501000116,19940501000117
+export ISEED_LNDP=0
+
+export UFS_CONFIGURE=ufs.configure.s2s.IN
+export FV3_RUN=cpld_control_run.IN
+
+export FIELD_TABLE=field_table_thompson_noaero_tke_progsigma
+export DIAG_TABLE=diag_table_sfs.IN
+export INPUT_NML=global_control.nml.IN
