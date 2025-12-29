@@ -2,6 +2,8 @@
 #
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
+from spack_repo.builtin.build_systems.cmake import CMakePackage
+
 from spack.package import *
 
 
@@ -19,21 +21,6 @@ class UfsWeatherModel(CMakePackage):
     maintainers("AlexanderRichert-NOAA")
 
     version("develop", branch="develop", submodules=True)
-    version(
-        "2.0.0",
-        tag="ufs-v2.0.0",
-        commit="e3cb92f1cd8941c019ee5ef7da5c9aef67d55cf8",
-        submodules=True,
-    )
-    version(
-        "1.1.0",
-        tag="ufs-v1.1.0",
-        commit="5bea16b6d41d810dc2e45cba0fa3841f45ea7c7a",
-        submodules=True,
-    )
-
-    depends_on("c", type="build")  # generated
-    depends_on("fortran", type="build")  # generated
 
     variant("mpi", default=True, description="Enable MPI")
     variant(
@@ -110,6 +97,9 @@ class UfsWeatherModel(CMakePackage):
 
     variant("app", default="ATM", description="UFS application", when="@develop")
 
+    depends_on("c", type="build")  # generated
+    depends_on("fortran", type="build")  # generated
+
     depends_on("bacio@:2.4.1")
     depends_on("mpi", when="+mpi")
     depends_on("netcdf-c")
@@ -142,7 +132,7 @@ class UfsWeatherModel(CMakePackage):
         "HAFS-ALL",
         "LND",
     ]:
-        depends_on("parallelio@2.5.3: +fortran", when="@develop app=%s" % app)
+        depends_on("parallelio@2.5.3: +fortran~pnetcdf~shared", when="@develop app=%s" % app)
     depends_on("python@3.6:", type="build", when="@develop")
     depends_on("sp@2.3.3:", when="@develop")
     depends_on("w3emc@2.9.2:", when="@develop")
@@ -163,7 +153,7 @@ class UfsWeatherModel(CMakePackage):
 
     conflicts("%gcc@:8", when="@develop")
 
-    def setup_build_environment(self, env):
+    def setup_build_environment(self, env: EnvironmentModifications) -> None:
         spec = self.spec
         env.set("CC", spec["mpi"].mpicc)
         env.set("CXX", spec["mpi"].mpicxx)
