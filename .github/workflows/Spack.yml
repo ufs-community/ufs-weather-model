@@ -20,13 +20,13 @@ jobs:
             os: "ubuntu-24.04",
             app: "S2SWA",
             ccpp_suites: "FV3_GFS_v17_coupled_p8,FV3_GFS_v17_coupled_p8_ugwpv1",
-            other-variants: ' ^mapl@2.53.4 ^esmf@8.8.0 ^[virtuals=mpi] mpich',
+            other-variants: ' ^esmf@8.8.0 ',
           }
         - {
             os: "ubuntu-24.04",
             app: "ATM",
             ccpp_suites: "FV3_GFS_v16,FV3_GFS_v16_flake,FV3_GFS_v16_ras,FV3_GFS_v17_p8,FV3_GFS_v17_p8_ugwpv1",
-            other-variants: ' ^esmf@8.8.0 ^[virtuals=mpi] mpich',
+            other-variants: ' ^esmf@8.8.0 ',
           }
 
     runs-on: ${{ matrix.config.os }}
@@ -43,7 +43,7 @@ jobs:
         sudo apt install libopenmpi-dev openmpi-bin cmake
 
     - name: "Build Spack package"
-      uses: NOAA-EMC/ci-test-spack-package@develop
+      uses: NOAA-EMC/ci-test-spack-package@386c09d0e613bf0c5ea3e45dbdf0e9001c13a3b6
       with:
         package-name: ufs-weather-model
         # ufs-weather-model Spack recipe variants, plus additional package constraints:
@@ -52,7 +52,7 @@ jobs:
         spack-compiler: gcc@13
         spack-test-flag: '' # disable 'make test' for Spack
         use-common-build-cache: true
-        repo-cache-key-suffix: ${{ matrix.config.os }}-2 # Update to create and use a fresh cache
+        repo-cache-key-suffix: ${{ matrix.config.os }}-1 # Update to create and use a fresh cache
         save-repo-cache: ${{ matrix.config.app == 'S2SWA' }} # Only need to save cache from one job
         # Set to save to a different cache key than the restored one (in order to add new packages etc.).
         #  Be sure to unset it after a new cache is generated or a new one will be created each time!
