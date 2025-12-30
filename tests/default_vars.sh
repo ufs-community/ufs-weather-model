@@ -1398,6 +1398,7 @@ export CHOUR=06
 export MOM6_OUTPUT_DIR=./MOM6_OUTPUT
 export MOM6_RESTART_DIR=./RESTART/
 export MOM6_RESTART_SETTING=n
+export MOM6_OUTPUT_FH=6
 
 # Following not used for standalone
 export USE_CICE_ALB=.false.
