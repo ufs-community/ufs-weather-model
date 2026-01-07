@@ -81,7 +81,7 @@
 #endif
 #ifdef FRONT_LM4
       use FRONT_LM4,        only: LM4_SS  => SetServices
-#endif      
+#endif
 #ifdef FRONT_NOAHMP
       use FRONT_NOAHMP,     only: NOAHMP_SS  => SetServices
 #endif
@@ -477,7 +477,7 @@
             if (ChkErr(rc,__LINE__,u_FILE_u)) return
             found_comp = .true.
           end if
-#endif 
+#endif
 #ifdef FRONT_NOAHMP
           if (trim(model) == "noahmp") then
             call NUOPC_DriverAddComp(driver, trim(prefix), NOAHMP_SS, &
@@ -811,7 +811,7 @@
 
        !TODO: this is hard-wired to CIME start/continue types in terms of gcomp
        IsRestart = .false.
-       if (trim(start_type) == trim(start_type_cont) .or. trim(start_type) == trim(start_type_brnch)) then
+       if (trim(start_type) == trim(start_type_cont)) then
           IsRestart = .true.
        end if
     else

@@ -335,6 +335,7 @@ list(APPEND mom6_nuopc_src_files
   MOM6/config_src/drivers/nuopc_cap/mom_cap_time.F90
   MOM6/config_src/drivers/nuopc_cap/mom_ocean_model_nuopc.F90
   MOM6/config_src/drivers/nuopc_cap/mom_surface_forcing_nuopc.F90
+  MOM6/config_src/drivers/nuopc_cap/mom_cap_outputlog.F90
   MOM6/config_src/drivers/unit_tests/test_MOM_file_parser.F90
   MOM6/config_src/drivers/unit_tests/test_MOM_mixedlayer_restrat.F90
   MOM6/config_src/drivers/unit_tests/test_MOM_string_functions.F90
