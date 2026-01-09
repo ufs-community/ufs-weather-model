@@ -349,34 +349,6 @@ list(APPEND mom6_nuopc_src_files
   MOM6/config_src/drivers/timing_tests/time_reproducing_sum.F90
 )
 
-# CDEPS files are now compiled separately via CDEPS-interface and linked via target_link_libraries
-# This allows CDEPS to use its own compiler flags while MOM6 uses its own flags
-# list(APPEND mom6_cdeps_share_files
-# ${PROJECT_SOURCE_DIR}/CDEPS-interface/ufs/cdeps_share/shr_assert_mod.F90
-# ${PROJECT_SOURCE_DIR}/CDEPS-interface/ufs/cdeps_share/shr_frz_mod.F90
-# ${PROJECT_SOURCE_DIR}/CDEPS-interface/ufs/cdeps_share/shr_infnan_mod.F90
-# ${PROJECT_SOURCE_DIR}/CDEPS-interface/ufs/cdeps_share/shr_is_restart_fh_mod.F90
-# ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/share/shr_kind_mod.F90
-# ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/share/shr_log_mod.F90
-# ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/share/shr_strconvert_mod.F90
-# ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/share/shr_const_mod.F90
-# ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/share/shr_string_mod.F90
-# ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/share/shr_sys_mod.F90
-# ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/share/shr_abort_mod.F90
-# ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/share/shr_timer_mod.F90
-# ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/share/shr_cal_mod.F90
-# ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/share/shr_file_mod.F90
-# ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/share/shr_orb_mod.F90
-# ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/share/nuopc_shr_methods.F90
-# ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/dshr/dshr_dfield_mod.F90
-# ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/dshr/dshr_fldlist_mod.F90
-# ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/dshr/dshr_mod.F90
-# ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/streams/dshr_tinterp_mod.F90
-# ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/streams/dshr_strdata_mod.F90
-# ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/streams/dshr_stream_mod.F90
-# ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/streams/dshr_methods_mod.F90
-# )
-
 list(APPEND mom6_solo_src_files
   MOM6/config_src/drivers/solo_driver/MESO_surface_forcing.F90
   MOM6/config_src/drivers/solo_driver/MOM_driver.F90
