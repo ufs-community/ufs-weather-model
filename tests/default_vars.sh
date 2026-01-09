@@ -1398,7 +1398,7 @@ export CHOUR=06
 export MOM6_OUTPUT_DIR=./MOM6_OUTPUT
 export MOM6_RESTART_DIR=./RESTART/
 export MOM6_RESTART_SETTING=n
-export MOM6_OUTPUT_FH=6
+export MOM6_HISTFREQ_N=6
 
 # Following not used for standalone
 export USE_CICE_ALB=.false.
@@ -1646,7 +1646,7 @@ export_mom6() {
   export DT_THERM_MOM6=3600
   export MOM6_INPUT=MOM_input_100.IN
   export MOM6_OUTPUT_DIR=./MOM6_OUTPUT
-  export MOM6_OUTPUT_FH=6
+  export MOM6_HISTFREQ_N=6
   export MOM6_RESTART_DIR=./RESTART/
   export MOM6_RESTART_SETTING=n
   export MOM6_RIVER_RUNOFF=False
