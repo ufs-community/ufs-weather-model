@@ -53,7 +53,7 @@ pipeline {
   } //stage
   
     stage('Run ORT on Ursa parallel'){
-        when{CHOICE_NODE == 'ursa"}
+        when{CHOICE_NODE == 'ursa'}
         parallel{
         stage('regional_control'){        
           agent{ label 'ursa' }
