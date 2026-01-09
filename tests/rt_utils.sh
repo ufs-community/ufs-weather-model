@@ -318,6 +318,7 @@ submit_and_wait() {
         else
           job_running=false
           status='COMPLETED'
+	  sleep 60
           set +e
           exit_status=$( qstat "${jobid}" -x -f | grep Exit_status | awk '{print $3}')
           set -e
@@ -435,6 +436,9 @@ rocoto_create_compile_task() {
     BUILD_WALLTIME="01:00:00"
   fi
   if [[ ${MACHINE_ID} == gaeac6 ]]; then
+    BUILD_WALLTIME="01:00:00"
+  fi
+  if [[ ${MACHINE_ID} == derecho ]]; then
     BUILD_WALLTIME="01:00:00"
   fi
 
