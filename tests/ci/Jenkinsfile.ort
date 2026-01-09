@@ -54,6 +54,7 @@ pipeline {
 
   stage('Ursa') {
     agent{ label 'built-in' }
+    steps{
     if (CHOICE_NODE == 'ursa') {
     stage('Run ORT on Ursa parallel'){
         parallel{
@@ -237,6 +238,7 @@ pipeline {
         } //failure
 
         } //stage
+        } //steps
         } // endif
         } // stage Ursa
 
