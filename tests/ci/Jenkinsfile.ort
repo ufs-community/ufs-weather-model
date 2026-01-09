@@ -56,7 +56,7 @@ pipeline {
     agent{ label 'built-in' }
     steps{
     script{
-    if (CHOICE_NODE == 'ursa') {
+    if (env.CHOICE_NODE == 'ursa') {
 
     stage('Run ORT on Ursa parallel'){
         parallel{
@@ -243,7 +243,7 @@ pipeline {
         } //stage
 
      }
-     else if (CHOICE_NODE == 'hercules') {
+     else if (env.CHOICE_NODE == 'hercules') {
 
     stage('Run ORT on Hercules parallel'){
         parallel{
@@ -434,7 +434,7 @@ pipeline {
         } //stage
 
     }
-    else if (CHOICE_NODE == 'orion') {
+    else if (env.CHOICE_NODE == 'orion') {
 
     stage('Run ORT on Orion parallel'){
         parallel{
