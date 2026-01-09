@@ -943,13 +943,12 @@ case ${MACHINE_ID} in
     echo "rt.sh: Setting up derecho..."
     if [[ "${ROCOTO:-false}" == true ]] ; then
       module use /glade/work/epicufsrt/contrib/derecho/modulefiles
-      module load rocoto/1.3.7-fix
-    fi
-    module use /glade/work/epicufsrt/contrib/spack-stack/derecho/modulefiles
-    if [[ "${ECFLOW:-false}" == true ]] ; then
-      module load ecflow/5.8.4
+      module load rocoto/1.3.7
     fi
     if [[ "${ECFLOW:-false}" == true ]] ; then
+      module use /glade/work/epicufsrt/contrib/spack-stack/derecho/spack-stack-1.9.2/envs/ue-oneapi-2024.2.1/install/modulefiles/oneapi/2024.2.1
+      module load stack-python/3.11.7
+      module load ecflow/5.11.4
       ECF_HOST=$(hostname)
       ECF_PORT=$(( $(id -u) + 1500 ))
       export ECF_PORT ECF_HOST
