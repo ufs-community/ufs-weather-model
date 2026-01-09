@@ -51,9 +51,11 @@ pipeline {
        }  //script  
     } //steps
   } //stage
-  
+
+  stage('Ursa')
+    agent{ label 'built-in' }
+    if (CHOICE_NODE == 'ursa {
     stage('Run ORT on Ursa parallel'){
-        when{CHOICE_NODE:'ursa'}
         parallel{
         stage('regional_control'){        
           agent{ label 'ursa' }
@@ -235,6 +237,7 @@ pipeline {
         } //failure
 
         } //stage
+        } // endif
 
         } //stages
 
