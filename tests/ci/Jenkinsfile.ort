@@ -52,7 +52,7 @@ pipeline {
     } //steps
   } //stage
 
-  stage('Ursa')
+  stage('Ursa') {
     agent{ label 'built-in' }
     if (CHOICE_NODE == 'ursa') {
     stage('Run ORT on Ursa parallel'){
@@ -238,6 +238,7 @@ pipeline {
 
         } //stage
         } // endif
+        } // stage Ursa
 
         } //stages
 
