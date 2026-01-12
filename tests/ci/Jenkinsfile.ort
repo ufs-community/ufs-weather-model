@@ -64,11 +64,11 @@ pipeline {
         stage('regional_control'){        
           agent{ label 'ursa' }
         steps{
-        environment {
-        ACCNR = 'epic'
-        NODE_PATH = '/scratch4/NAGAPE/epic/role-epic/'
-        GITHUB_TOKEN = credentials('GithubJenkinsNew')
-        }
+   //     environment {
+        env.ACCNR = 'epic'
+        env.NODE_PATH = '/scratch4/NAGAPE/epic/role-epic/'
+        env.GITHUB_TOKEN = credentials('GithubJenkinsNew')
+  //      }
 
         cleanWs()
         checkout scm
