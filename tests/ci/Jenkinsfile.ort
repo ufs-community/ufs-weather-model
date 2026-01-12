@@ -440,7 +440,7 @@ pipeline {
 
     stage('Orion'){
     agent{ label 'built-in'}
-    when{ expression { return env.CHOICE_NODE == 'orion }}
+    when{ expression { return env.CHOICE_NODE == 'orion' }}
 
     stage('Run ORT on Orion parallel'){
         parallel{
