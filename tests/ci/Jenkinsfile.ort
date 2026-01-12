@@ -246,7 +246,7 @@ pipeline {
 
 
     stage('Run ORT on Hercules parallel'){
-        when{ expression { return { env.CHOICE_NODE == "hercules" } } }
+
 
         parallel{
 
@@ -257,6 +257,7 @@ pipeline {
         NODE_PATH = '/work2/noaa/epic/role-epic/'
         GITHUB_TOKEN = credentials('GithubJenkinsNew')
         }
+        when{ expression { return { env.CHOICE_NODE == "hercules" } } }
         steps{
         cleanWs()
         checkout scm
@@ -292,6 +293,7 @@ pipeline {
         NODE_PATH = '/work2/noaa/epic/role-epic/'
         GITHUB_TOKEN = credentials('GithubJenkinsNew')
         }
+        when{ expression { return { env.CHOICE_NODE == "hercules" } } }
         steps{
         cleanWs()
         checkout scm
@@ -327,6 +329,7 @@ pipeline {
         NODE_PATH = '/work2/noaa/epic/role-epic/'
         GITHUB_TOKEN = credentials('GithubJenkinsNew')
         }
+        when{ expression { return { env.CHOICE_NODE == "hercules" } } }
            steps{
         cleanWs()
         checkout scm
@@ -359,13 +362,14 @@ pipeline {
          }//stage
 
         stage('Finalize Hercules'){
-        when{ expression { return { env.CHOICE_NODE == "hercules" } } }
+
         agent{ label 'hercules'}
         environment {
         ACCNR = 'epic'
         NODE_PATH = '/work2/noaa/epic/role-epic/'
         GITHUB_TOKEN = credentials('GithubJenkinsNew')
         }
+        when{ expression { return { env.CHOICE_NODE == "hercules" } } }
         steps{
         sh '''
 	    export machine=${NODE_NAME}
@@ -438,7 +442,7 @@ pipeline {
         } //stages
 
     stage('Run ORT on Orion parallel'){
-        when{ expression { return { env.CHOICE_NODE == "orion" } } }
+
 
         parallel{
 
@@ -449,6 +453,7 @@ pipeline {
         NODE_PATH = '/work/noaa/epic/role-epic/'
         GITHUB_TOKEN = credentials('GithubJenkinsNew')
         }
+        when{ expression { return { env.CHOICE_NODE == "orion" } } }
         steps{
         cleanWs()
         checkout scm
@@ -484,6 +489,7 @@ pipeline {
         NODE_PATH = '/work/noaa/epic/role-epic/'
         GITHUB_TOKEN = credentials('GithubJenkinsNew')
         }
+        when{ expression { return { env.CHOICE_NODE == "orion" } } }
         steps{
         cleanWs()
         checkout scm
@@ -519,6 +525,7 @@ pipeline {
         NODE_PATH = '/work/noaa/epic/role-epic/'
         GITHUB_TOKEN = credentials('GithubJenkinsNew')
         }
+        when{ expression { return { env.CHOICE_NODE == "orion" } } }
            steps{
         cleanWs()
         checkout scm
@@ -551,13 +558,14 @@ pipeline {
          }//stage
 
         stage('Finalize Orion'){
-        when{ expression { return { env.CHOICE_NODE == "orion" } } }
+
         agent{ label 'orion'}
         environment {
         ACCNR = 'epic'
         NODE_PATH = '/work2/noaa/epic/role-epic/'
         GITHUB_TOKEN = credentials('GithubJenkinsNew')
         }
+        when{ expression { return { env.CHOICE_NODE == "orion" } } }
         steps{
         sh '''
 	    export machine=${NODE_NAME}
