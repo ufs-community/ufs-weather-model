@@ -53,7 +53,7 @@ pipeline {
   } //stage
   
     stage('Run ORT on Ursa parallel'){
-        when{ expression { return { env.CHOICE_NODE = 'ursa' } } }
+        when{ expression { return { env.CHOICE_NODE == 'ursa' } } }
         parallel{
         stage('regional_control'){        
           agent{ label 'ursa' }
@@ -161,7 +161,7 @@ pipeline {
          }//stage
 
         stage('Finalize Ursa'){
-        when{ expression { return { env.CHOICE_NODE = 'ursa' } } }
+        when{ expression { return { env.CHOICE_NODE == 'ursa' } } }
         agent{ label 'ursa'}
         environment {
         ACCNR = 'epic'
@@ -240,7 +240,7 @@ pipeline {
 
 
     stage('Run ORT on Hercules parallel'){
-        when{ expression { return { env.CHOICE_NODE = 'hercules' } } }
+        when{ expression { return { env.CHOICE_NODE == 'hercules' } } }
         parallel{
 
         stage('regional_control'){        
@@ -351,7 +351,7 @@ pipeline {
          }//stage
 
         stage('Finalize Hercules'){
-        when{ expression { return { env.CHOICE_NODE = 'hercules' } } }
+        when{ expression { return { env.CHOICE_NODE == 'hercules' } } }
         agent{ label 'hercules'}
         environment {
         ACCNR = 'epic'
@@ -430,7 +430,7 @@ pipeline {
         } //stages
 
     stage('Run ORT on Orion parallel'){
-        when{ expression { return { env.CHOICE_NODE = 'orion' } } }
+        when{ expression { return { env.CHOICE_NODE == 'orion' } } }
         parallel{
 
         stage('regional_control'){        
@@ -542,7 +542,7 @@ pipeline {
          }//stage
 
         stage('Finalize Orion'){
-        when{ expression { return { env.CHOICE_NODE = 'orion' } } }
+        when{ expression { return { env.CHOICE_NODE == 'orion' } } }
         agent{ label 'orion'}
         environment {
         ACCNR = 'epic'
