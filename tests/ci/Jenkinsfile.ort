@@ -55,12 +55,14 @@ pipeline {
     stage('Expressions'){
       agent{ label 'built-in'}
       steps{
+      script{
        echo 'env.CHOICE_NODE == ursa'
-       echo return{env.CHOICE_NODE == 'ursa'}
+       echo env.CHOICE_NODE == 'ursa'
        echo 'env.CHIOCE_NODE == hercules'
-       echo return{env.CHIOCE_NODE == 'hercules'}
+       echo env.CHIOCE_NODE == 'hercules'
        echo 'env.CHOICE_NODE == orion'
-       echo {env.CHOICE_NODE == 'orion'}
+       echo {env.CHOICE_NODE == 'orion'
+        }
        }
       }
   
