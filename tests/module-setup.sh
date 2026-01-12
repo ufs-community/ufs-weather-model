@@ -54,7 +54,7 @@ elif [[ ${MACHINE_ID} = wcoss2 || ${MACHINE_ID} = acorn ]] ; then
 elif [[ ${MACHINE_ID} = derecho ]] ; then
     # We are on NCAR Derecho
     if ( ! eval module help > /dev/null 2>&1 ) ; then
-        source /glade/u/apps/derecho/23.09/spack/opt/spack/lmod/8.7.24/gcc/7.5.0/c645/lmod/lmod/init/bash
+        source /glade/u/apps/derecho/24.12/spack/opt/spack/lmod/8.7.37/gcc/12.4.0/nr3e/lmod/lmod/init/bash
     fi
     module purge
     
