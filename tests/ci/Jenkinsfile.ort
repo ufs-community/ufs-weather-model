@@ -64,11 +64,12 @@ pipeline {
         stage('regional_control'){        
           agent{ label 'ursa' }
         steps{
-   //     environment {
-        env.ACCNR = 'epic'
-        env.NODE_PATH = '/scratch4/NAGAPE/epic/role-epic/'
-        env.GITHUB_TOKEN = credentials('GithubJenkinsNew')
-  //      }
+        script{
+        environment {
+        ACCNR = 'epic'
+        NODE_PATH = '/scratch4/NAGAPE/epic/role-epic/'
+        GITHUB_TOKEN = credentials('GithubJenkinsNew')
+        }
 
         cleanWs()
         checkout scm
@@ -94,16 +95,19 @@ pipeline {
           cd ..
           pwd
           '''
+          } //script
           } //steps
           } //stage
          stage('cpid_control_nowave_noaero_p8'){
            agent{ label 'ursa'}
+        steps{
+        script{
         environment {
         ACCNR = 'epic'
         NODE_PATH = '/scratch4/NAGAPE/epic/role-epic/'
         GITHUB_TOKEN = credentials('GithubJenkinsNew')
         }
-        steps{
+
         cleanWs()
         checkout scm
         sh '''
@@ -128,16 +132,19 @@ pipeline {
            cd ..
            pwd
            '''
+           } /script
            } //steps
            } //stage
          stage('control_p8'){
            agent{ label 'ursa' }
+        steps{
+        script{
         environment {
         ACCNR = 'epic'
         NODE_PATH = '/scratch4/NAGAPE/epic/role-epic/'
         GITHUB_TOKEN = credentials('GithubJenkinsNew')
         }
-           steps{
+
         cleanWs()
         checkout scm
         sh '''	
@@ -162,6 +169,7 @@ pipeline {
            cd ..
            pwd
            '''
+           } //script
            } //steps
            } //stage
            } //parallel
@@ -169,12 +177,14 @@ pipeline {
 
         stage('Finalize Ursa'){
         agent{ label 'ursa'}
+        steps{
+        script{
         environment {
         ACCNR = 'epic'
         NODE_PATH = '/scratch4/NAGAPE/epic/role-epic/'
         GITHUB_TOKEN = credentials('GithubJenkinsNew')
         }
-        steps{
+
         sh '''
 	    export machine=${NODE_NAME}
         export PATH=$PATH:~/bin
@@ -210,6 +220,7 @@ pipeline {
         git pull sshorigin $FORK_BRANCH
         git push sshorigin HEAD:$FORK_BRANCH
         '''
+        } //script
         } //steps
 
         post {
@@ -254,6 +265,7 @@ pipeline {
         stage('regional_control'){        
           agent{ label 'hercules' }
         steps{
+        script{
         environment {
         ACCNR = 'epic'
         NODE_PATH = '/work2/noaa/epic/role-epic/'
@@ -284,17 +296,19 @@ pipeline {
           cd ..
           pwd
           '''
+          } //script
           } //steps
           } //stage
 
         stage('cpid_control_nowave_noaero_p8'){
            agent{ label 'hercules'}
+        steps{
+        script{
         environment {
         ACCNR = 'epic'
         NODE_PATH = '/work2/noaa/epic/role-epic/'
         GITHUB_TOKEN = credentials('GithubJenkinsNew')
         }
-        steps{
         cleanWs()
         checkout scm
         sh '''
@@ -319,17 +333,20 @@ pipeline {
            cd ..
            pwd
            '''
+           } //script
            } //steps
            } //stage
 
         stage('control_p8'){
            agent{ label 'hercules' }
+        steps{
+        script{
         environment {
         ACCNR = 'epic'
         NODE_PATH = '/work2/noaa/epic/role-epic/'
         GITHUB_TOKEN = credentials('GithubJenkinsNew')
         }
-           steps{
+
         cleanWs()
         checkout scm
         sh '''	
@@ -354,6 +371,7 @@ pipeline {
            cd ..
            pwd
            '''
+           } //script
            } //steps
            } //stage
            } //parallel
@@ -362,6 +380,7 @@ pipeline {
         stage('Finalize Hercules'){
         agent{ label 'hercules'}
         steps{
+        script{
         environment {
         ACCNR = 'epic'
         NODE_PATH = '/work2/noaa/epic/role-epic/'
@@ -404,6 +423,7 @@ pipeline {
         git pull sshorigin $FORK_BRANCH
         git push sshorigin HEAD:$FORK_BRANCH
         '''
+        } //script
         } //steps
 
         post {
@@ -448,6 +468,7 @@ pipeline {
         stage('regional_control'){        
           agent{ label 'orion' }
         steps{
+        script{
         environment {
         ACCNR = 'epic'
         NODE_PATH = '/work/noaa/epic/role-epic/'
@@ -478,17 +499,20 @@ pipeline {
           cd ..
           pwd
           '''
+          } //script
           } //steps
           } //stage
 
         stage('cpid_control_nowave_noaero_p8'){
            agent{ label 'orion'}
+        steps{
+        script{
         environment {
         ACCNR = 'epic'
         NODE_PATH = '/work/noaa/epic/role-epic/'
         GITHUB_TOKEN = credentials('GithubJenkinsNew')
         }
-        steps{
+
         cleanWs()
         checkout scm
         sh '''
@@ -513,17 +537,20 @@ pipeline {
            cd ..
            pwd
            '''
+           } //script
            } //steps
            } //stage
 
         stage('control_p8'){
            agent{ label 'orion' }
+        steps{
+        script{
         environment {
         ACCNR = 'epic'
         NODE_PATH = '/work/noaa/epic/role-epic/'
         GITHUB_TOKEN = credentials('GithubJenkinsNew')
         }
-           steps{
+
         cleanWs()
         checkout scm
         sh '''	
@@ -548,6 +575,7 @@ pipeline {
            cd ..
            pwd
            '''
+           } //script
            } //steps
            } //stage
            } //parallel
@@ -555,12 +583,14 @@ pipeline {
 
         stage('Finalize Orion'){
         agent{ label 'orion'}
+        steps{
+        script{
         environment {
         ACCNR = 'epic'
         NODE_PATH = '/work2/noaa/epic/role-epic/'
         GITHUB_TOKEN = credentials('GithubJenkinsNew')
         }
-        steps{
+
         sh '''
 	    export machine=${NODE_NAME}
         export PATH=$PATH:~/bin
@@ -597,6 +627,7 @@ pipeline {
         git pull sshorigin $FORK_BRANCH
         git push sshorigin HEAD:$FORK_BRANCH
         '''
+        } //script
         } //steps
 
         post {
