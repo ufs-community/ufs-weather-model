@@ -54,6 +54,7 @@ pipeline {
 
   stage('Chooser'){
     agent{ label 'built-in' }
+    steps{
 
     stage('Ursa'){
     when{ expression { return env.CHOICE_NODE == 'ursa'} }
@@ -667,6 +668,7 @@ pipeline {
 
       } // stage orion
 
+      } // steps Chooser
       } // stage Chooser
 
       } //stages    
