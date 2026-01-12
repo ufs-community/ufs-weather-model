@@ -57,7 +57,6 @@ pipeline {
     steps{
 
     stage('Ursa'){
-    agent{ label 'built-in'}
     when{ expression { return env.CHOICE_NODE == 'ursa'} }
 
     stage('Run ORT on Ursa parallel'){
@@ -246,7 +245,6 @@ pipeline {
         } //stage 'Ursa'
 
     stage('Hercules'){
-    agent{label 'built-in'}
     when{ expression{ return env.CHOICE_NODE == 'hercules'}}
 
     stage('Run ORT on Hercules parallel'){
@@ -439,7 +437,6 @@ pipeline {
         } // stage 'Hercules'
 
     stage('Orion'){
-    agent{ label 'built-in'}
     when{ expression { return env.CHOICE_NODE == 'orion' }}
 
     stage('Run ORT on Orion parallel'){
