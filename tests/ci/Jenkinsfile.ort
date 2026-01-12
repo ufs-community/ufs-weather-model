@@ -54,6 +54,7 @@ pipeline {
   
     stage('Run ORT on Ursa parallel'){
         when{ expression { return { env.CHOICE_NODE == "ursa" } } }
+        steps('Executing parallel runs on ursa'){
         parallel{
         stage('regional_control'){        
           agent{ label 'ursa' }
@@ -157,6 +158,7 @@ pipeline {
            '''
            } //steps
            } //stage
+           } //steps
            } //parallel
          }//stage
 
@@ -241,6 +243,7 @@ pipeline {
 
     stage('Run ORT on Hercules parallel'){
         when{ expression { return { env.CHOICE_NODE == "hercules" } } }
+        steps('Parallelizing Hercules'){
         parallel{
 
         stage('regional_control'){        
@@ -347,6 +350,7 @@ pipeline {
            '''
            } //steps
            } //stage
+           } //steps
            } //parallel
          }//stage
 
@@ -431,6 +435,7 @@ pipeline {
 
     stage('Run ORT on Orion parallel'){
         when{ expression { return { env.CHOICE_NODE == "orion" } } }
+        steps('Parallelizing Orion'){
         parallel{
 
         stage('regional_control'){        
@@ -537,6 +542,7 @@ pipeline {
            '''
            } //steps
            } //stage
+           } //steps
            } //parallel
          }//stage
 
