@@ -55,8 +55,10 @@ pipeline {
   stage('Chooser'){
     agent{ label 'built-in' }
     steps{
-    script{
-    if (env.CHOICE_NODE == 'ursa') {
+
+    stage('Ursa'){
+    agent{ label 'built-in'}
+    when{ expression { return env.CHOICE_NODE == 'ursa'} }
 
     stage('Run ORT on Ursa parallel'){
         parallel{
@@ -241,8 +243,11 @@ pipeline {
         } //post
         } //stage
 
-     }
-     else if (env.CHOICE_NODE == 'hercules') {
+        } //stage 'Ursa'
+
+    stage('Hercules'){
+    agent{label 'built-in'}
+    when{ expression{ return env.CHOICE_NODE == 'hercules'}}
 
     stage('Run ORT on Hercules parallel'){
         parallel{
@@ -431,8 +436,11 @@ pipeline {
         } //post
         } //stage
 
-    }
-    else if (env.CHOICE_NODE == 'orion') {
+        } // stage 'Hercules'
+
+    stage('Orion'){
+    agent{ label 'built-in'}
+    when{ expression { return env.CHOICE_NODE == 'orion }}
 
     stage('Run ORT on Orion parallel'){
         parallel{
@@ -621,10 +629,14 @@ pipeline {
         } //post
         } //stage
 
-      } //if
-      } //script
+
       } //steps
       } //stage
+
+      } // stage orion
+
+      } // steps Chooser
+      } // stage Chooser
 
       } //stages    
   } //pipeline
