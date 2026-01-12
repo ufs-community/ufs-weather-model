@@ -9,19 +9,19 @@ pipeline {
       steps {
         script {
           for (label in pullRequest.labels) {
-            if ((label.matches("orion"))) {
+            if ((label.contains("orion"))) {
                  env.CHOICE_NODE='orion'
             }  
-            else if ((label.matches("hera"))) { 
+            else if ((label.contains("hera"))) { 
                 env.CHOICE_NODE='hera'
             }  
-            else if ((label.matches("hercules"))) { 
+            else if ((label.contains("hercules"))) { 
                 env.CHOICE_NODE='hercules'
             }  
-            else if ((label.matches("gaeac6"))) {
+            else if ((label.contains("gaeac6"))) {
                 env.CHOICE_NODE='gaeac6'
             } 
-            else if ((label.matches("ursa"))) {
+            else if ((label.contains("ursa"))) {
                 env.CHOICE_NODE='ursa'
             } 
             else { 
