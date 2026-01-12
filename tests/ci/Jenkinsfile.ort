@@ -57,11 +57,14 @@ pipeline {
       steps{
       script{
        echo 'env.CHOICE_NODE == ursa'
-       echo string(env.CHOICE_NODE == 'ursa')
+       result = env.CHOICE_NODE == 'ursa'
+       echo result
        echo 'env.CHIOCE_NODE == hercules'
-       echo string(env.CHIOCE_NODE == 'hercules')
+       result = env.CHIOCE_NODE == 'hercules'
+       echo result
        echo 'env.CHOICE_NODE == orion'
-       echo string(env.CHOICE_NODE == 'orion')
+       result = env.CHOICE_NODE == 'orion'
+       echo result
         }
        }
       }
