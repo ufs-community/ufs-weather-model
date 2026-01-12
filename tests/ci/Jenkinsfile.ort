@@ -63,12 +63,13 @@ pipeline {
         parallel{
         stage('regional_control'){        
           agent{ label 'ursa' }
+        steps{
         environment {
         ACCNR = 'epic'
         NODE_PATH = '/scratch4/NAGAPE/epic/role-epic/'
         GITHUB_TOKEN = credentials('GithubJenkinsNew')
         }
-        steps{
+
         cleanWs()
         checkout scm
         sh '''
@@ -252,12 +253,13 @@ pipeline {
 
         stage('regional_control'){        
           agent{ label 'hercules' }
+        steps{
         environment {
         ACCNR = 'epic'
         NODE_PATH = '/work2/noaa/epic/role-epic/'
         GITHUB_TOKEN = credentials('GithubJenkinsNew')
         }
-        steps{
+
         cleanWs()
         checkout scm
         sh '''
@@ -359,12 +361,13 @@ pipeline {
 
         stage('Finalize Hercules'){
         agent{ label 'hercules'}
+        steps{
         environment {
         ACCNR = 'epic'
         NODE_PATH = '/work2/noaa/epic/role-epic/'
         GITHUB_TOKEN = credentials('GithubJenkinsNew')
         }
-        steps{
+
         sh '''
 	    export machine=${NODE_NAME}
         export PATH=$PATH:~/bin
@@ -444,12 +447,13 @@ pipeline {
 
         stage('regional_control'){        
           agent{ label 'orion' }
+        steps{
         environment {
         ACCNR = 'epic'
         NODE_PATH = '/work/noaa/epic/role-epic/'
         GITHUB_TOKEN = credentials('GithubJenkinsNew')
         }
-        steps{
+
         cleanWs()
         checkout scm
         sh '''
