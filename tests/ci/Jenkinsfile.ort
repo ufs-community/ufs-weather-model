@@ -53,7 +53,7 @@ pipeline {
   } //stage
   
     stage('Run ORT on Ursa parallel'){
-        when{ expression { return { env.CHOICE_NODE == "ursa" } } }
+
 
         parallel{
         stage('regional_control'){        
@@ -63,6 +63,7 @@ pipeline {
         NODE_PATH = '/scratch4/NAGAPE/epic/role-epic/'
         GITHUB_TOKEN = credentials('GithubJenkinsNew')
         }
+        when{ expression { return { env.CHOICE_NODE == "ursa" } } }
         steps{
         cleanWs()
         checkout scm
@@ -97,6 +98,7 @@ pipeline {
         NODE_PATH = '/scratch4/NAGAPE/epic/role-epic/'
         GITHUB_TOKEN = credentials('GithubJenkinsNew')
         }
+        when{ expression { return { env.CHOICE_NODE == "ursa" } } }
         steps{
         cleanWs()
         checkout scm
@@ -131,7 +133,8 @@ pipeline {
         NODE_PATH = '/scratch4/NAGAPE/epic/role-epic/'
         GITHUB_TOKEN = credentials('GithubJenkinsNew')
         }
-           steps{
+        when{ expression { return { env.CHOICE_NODE == "ursa" } } }
+        steps{
         cleanWs()
         checkout scm
         sh '''	
@@ -163,13 +166,14 @@ pipeline {
          }//stage
 
         stage('Finalize Ursa'){
-        when{ expression { return { env.CHOICE_NODE == "ursa" } } }
+
         agent{ label 'ursa'}
         environment {
         ACCNR = 'epic'
         NODE_PATH = '/scratch4/NAGAPE/epic/role-epic/'
         GITHUB_TOKEN = credentials('GithubJenkinsNew')
         }
+        when{ expression { return { env.CHOICE_NODE == "ursa" } } }
         steps{
         sh '''
 	    export machine=${NODE_NAME}
