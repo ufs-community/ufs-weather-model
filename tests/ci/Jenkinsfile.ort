@@ -143,7 +143,7 @@ pipeline {
         }
         when{ 
            beforeAgent true
-             {  env.CHOICE_NODE == "ursa" ? true : null  } 
+            expression {  env.CHOICE_NODE == "ursa" ? true : null  } 
             }
         steps{
         cleanWs()
@@ -186,7 +186,7 @@ pipeline {
         }
         when{ 
            beforeAgent true
-             {expression {  env.CHOICE_NODE == "ursa" ? true : null  } }
+             expression {  env.CHOICE_NODE == "ursa" ? true : null  } 
             }
         steps{
         sh '''
