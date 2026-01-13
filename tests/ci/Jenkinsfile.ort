@@ -65,7 +65,10 @@ pipeline {
         NODE_PATH = '/scratch4/NAGAPE/epic/role-epic/'
         GITHUB_TOKEN = credentials('GithubJenkinsNew')
         }
-        when{ expression { return { env.CHOICE_NODE == "ursa" || null } } }
+        when{ 
+           beforeAgent true
+            expression { return { env.CHOICE_NODE == "ursa" ? true : null } } 
+            }
         steps{
         cleanWs()
         checkout scm
@@ -100,7 +103,10 @@ pipeline {
         NODE_PATH = '/scratch4/NAGAPE/epic/role-epic/'
         GITHUB_TOKEN = credentials('GithubJenkinsNew')
         }
-        when{ expression { return { env.CHOICE_NODE == "ursa" || null } } }
+        when{ 
+           beforeAgent true
+            expression { return { env.CHOICE_NODE == "ursa" ? true : null } } 
+            }
         steps{
         cleanWs()
         checkout scm
@@ -135,7 +141,10 @@ pipeline {
         NODE_PATH = '/scratch4/NAGAPE/epic/role-epic/'
         GITHUB_TOKEN = credentials('GithubJenkinsNew')
         }
-        when{ expression { return { env.CHOICE_NODE == "ursa" || null } } }
+        when{ 
+           beforeAgent true
+            expression { return { env.CHOICE_NODE == "ursa" ? true : null } } 
+            }
         steps{
         cleanWs()
         checkout scm
@@ -175,7 +184,10 @@ pipeline {
         NODE_PATH = '/scratch4/NAGAPE/epic/role-epic/'
         GITHUB_TOKEN = credentials('GithubJenkinsNew')
         }
-        when{ expression { return { env.CHOICE_NODE == "ursa" || null } } }
+        when{ 
+           beforeAgent true
+            expression { return { env.CHOICE_NODE == "ursa" ? true : null } } 
+            }
         steps{
         sh '''
 	    export machine=${NODE_NAME}
@@ -259,7 +271,10 @@ pipeline {
         NODE_PATH = '/work2/noaa/epic/role-epic/'
         GITHUB_TOKEN = credentials('GithubJenkinsNew')
         }
-        when{ expression { return { env.CHOICE_NODE == "hercules" || null } } }
+        when{ 
+           beforeAgent true
+            expression { return { env.CHOICE_NODE == "hercules" ? true : null } } 
+            }
         steps{
         cleanWs()
         checkout scm
@@ -295,7 +310,10 @@ pipeline {
         NODE_PATH = '/work2/noaa/epic/role-epic/'
         GITHUB_TOKEN = credentials('GithubJenkinsNew')
         }
-        when{ expression { return { env.CHOICE_NODE == "hercules" || null } } }
+        when{ 
+           beforeAgent true
+            expression { return { env.CHOICE_NODE == "hercules" ? true : null } } 
+            }
         steps{
         cleanWs()
         checkout scm
@@ -331,7 +349,10 @@ pipeline {
         NODE_PATH = '/work2/noaa/epic/role-epic/'
         GITHUB_TOKEN = credentials('GithubJenkinsNew')
         }
-        when{ expression { return { env.CHOICE_NODE == "hercules" || null } } }
+        when{ 
+           beforeAgent true
+            expression { return { env.CHOICE_NODE == "hercules" ? true : null } } 
+            }
            steps{
         cleanWs()
         checkout scm
@@ -371,7 +392,10 @@ pipeline {
         NODE_PATH = '/work2/noaa/epic/role-epic/'
         GITHUB_TOKEN = credentials('GithubJenkinsNew')
         }
-        when{ expression { return { env.CHOICE_NODE == "hercules" || null } } }
+        when{ 
+           beforeAgent true
+            expression { return { env.CHOICE_NODE == "hercules" ? true : null } } 
+            }
         steps{
         sh '''
 	    export machine=${NODE_NAME}
@@ -455,7 +479,10 @@ pipeline {
         NODE_PATH = '/work/noaa/epic/role-epic/'
         GITHUB_TOKEN = credentials('GithubJenkinsNew')
         }
-        when{ expression { return { env.CHOICE_NODE == "orion" || null } } }
+        when{ 
+           beforeAgent true
+            expression { return { env.CHOICE_NODE == "orion" ? true : null } } 
+            }
         steps{
         cleanWs()
         checkout scm
@@ -491,7 +518,10 @@ pipeline {
         NODE_PATH = '/work/noaa/epic/role-epic/'
         GITHUB_TOKEN = credentials('GithubJenkinsNew')
         }
-        when{ expression { return { env.CHOICE_NODE == "orion" || null } } }
+        when{ 
+           beforeAgent true
+            expression { return { env.CHOICE_NODE == "orion" ? true : null } } 
+            }
         steps{
         cleanWs()
         checkout scm
@@ -527,7 +557,10 @@ pipeline {
         NODE_PATH = '/work/noaa/epic/role-epic/'
         GITHUB_TOKEN = credentials('GithubJenkinsNew')
         }
-        when{ expression { return { env.CHOICE_NODE == "orion" || null } } }
+        when{ 
+           beforeAgent true
+            expression { return { env.CHOICE_NODE == "orion" ? true : null } } 
+            }
            steps{
         cleanWs()
         checkout scm
@@ -567,7 +600,10 @@ pipeline {
         NODE_PATH = '/work2/noaa/epic/role-epic/'
         GITHUB_TOKEN = credentials('GithubJenkinsNew')
         }
-        when{ expression { return { env.CHOICE_NODE == "orion" || null } } }
+        when{ 
+           beforeAgent true
+            expression { return { env.CHOICE_NODE == "orion" ? true : null } } 
+            }
         steps{
         sh '''
 	    export machine=${NODE_NAME}
