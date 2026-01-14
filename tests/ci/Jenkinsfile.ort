@@ -169,10 +169,12 @@ pipeline {
            '''
            } //steps
            } //stage
+
            } //parallel
          }//stage
 
         stage('Finalize Ursa'){
+
         agent{ label 'ursa'}
         environment {
         ACCNR = 'epic'
@@ -239,7 +241,8 @@ pipeline {
                 channel: '#jenkins-notifications',
                 color: 'good',
                 message: "*SUCCESS: Build ${env.JOB_NAME} #${env.BUILD_NUMBER}* <${env.BUILD_URL}|Open Build>"
-            )   
+            )
+        
         } //success
 
         failure {
@@ -256,6 +259,7 @@ pipeline {
 
     stage('Run ORT on Hercules parallel'){
         parallel{
+
         stage('regional_control'){        
           agent{ label 'hercules' }
         environment {
@@ -372,10 +376,12 @@ pipeline {
            '''
            } //steps
            } //stage
+
            } //parallel
          }//stage
 
         stage('Finalize Hercules'){
+
         agent{ label 'hercules'}
         environment {
         ACCNR = 'epic'
@@ -443,7 +449,8 @@ pipeline {
                 channel: '#jenkins-notifications',
                 color: 'good',
                 message: "*SUCCESS: Build ${env.JOB_NAME} #${env.BUILD_NUMBER}* <${env.BUILD_URL}|Open Build>"
-            )        
+            )
+        
         } //success
 
         failure {
@@ -459,7 +466,8 @@ pipeline {
 
 
     stage('Run ORT on Orion parallel'){
-        parallel
+        parallel{
+
         stage('regional_control'){        
           agent{ label 'orion' }
         environment {
@@ -576,10 +584,12 @@ pipeline {
            '''
            } //steps
            } //stage
+
            } //parallel
          }//stage
 
         stage('Finalize Orion'){
+
         agent{ label 'orion'}
         environment {
         ACCNR = 'epic'
@@ -647,7 +657,8 @@ pipeline {
                 channel: '#jenkins-notifications',
                 color: 'good',
                 message: "*SUCCESS: Build ${env.JOB_NAME} #${env.BUILD_NUMBER}* <${env.BUILD_URL}|Open Build>"
-            )    
+            )
+        
         } //success
 
         failure {
