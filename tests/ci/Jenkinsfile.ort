@@ -2,11 +2,8 @@ pipeline {
   agent none
   stages {
     stage('Run ORTs') {
-       agent {
-        label 'built-in'   
-       }
-
-      steps {
+       agent { label 'built-in' }
+        steps {
         script {
           for (label in pullRequest.labels) {
             if ((label.contains("orion"))) {
