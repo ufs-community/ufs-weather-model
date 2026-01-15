@@ -1,6 +1,7 @@
 ### MOM6 Fortran compiler flags
 if(CMAKE_Fortran_COMPILER_ID MATCHES "GNU")
   set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -g -fbacktrace")
+  list(APPEND CDEPS_SHARE_DEFS "CPRGNU")
   set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -fdefault-real-8 -fdefault-double-8")
   set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -Waliasing -fcray-pointer -fconvert=big-endian -ffree-line-length-none -fno-range-check -fbacktrace")
   set(CMAKE_Fortran_FLAGS_RELEASE "-O2")
@@ -16,6 +17,7 @@ elseif(CMAKE_Fortran_COMPILER_ID MATCHES "^(Intel)$")
     set(CMAKE_Fortran_FLAGS_RELEASE "-O2 -debug minimal -fp-model source")
   endif()
   set(CMAKE_Fortran_FLAGS_DEBUG "-O0 -check all -check noarg_temp_created -check nopointer -fpe0 -ftrapuv -init=snan,arrays")
+  list(APPEND CDEPS_SHARE_DEFS "CPRINTEL")
   set(CMAKE_Fortran_LINK_FLAGS "")
 elseif(CMAKE_Fortran_COMPILER_ID MATCHES "^(IntelLLVM)$")
   set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -g -traceback")
@@ -28,6 +30,7 @@ elseif(CMAKE_Fortran_COMPILER_ID MATCHES "^(IntelLLVM)$")
   endif()
   set(CMAKE_Fortran_FLAGS_DEBUG "-O0 -check all -check noarg_temp_created -check nopointer -fpe0 -ftrapuv -init=snan,arrays")
   set(CMAKE_Fortran_LINK_FLAGS "")
+  list(APPEND CDEPS_SHARE_DEFS "CPRINTEL")
 else()
   message(WARNING "Fortran compiler with ID ${CMAKE_Fortran_COMPILER_ID} will be used with CMake default options")
 endif()
@@ -43,6 +46,9 @@ include("mom6_files.cmake")
 add_library(mom6_obj OBJECT ${mom6_src_files})
 set_target_properties(mom6_obj PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod)
 target_include_directories(mom6_obj PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>)
+target_compile_definitions(mom6_obj PRIVATE ${CDEPS_SHARE_DEFS} "DISABLE_FoX")
+target_include_directories(mom6_obj PRIVATE $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/CDEPS-interface/mod>)
+add_dependencies(mom6_obj cdeps)
 
 if(REGIONAL_MOM6)
   target_include_directories(mom6_obj PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/MOM6/config_src/memory/dynamic_symmetric>
@@ -54,7 +60,8 @@ endif()
 target_link_libraries(mom6_obj PRIVATE fms
                                        ESMF::ESMF
                                        stochastic_physics
-                                       NetCDF::NetCDF_Fortran)
+                                       NetCDF::NetCDF_Fortran
+                                       cdeps::cdeps)
 # OpenMP is disabled in MOM6
 #if(OpenMP_Fortran_FOUND)
 # target_link_libraries(mom6_obj PRIVATE OpenMP::OpenMP_Fortran)
@@ -63,6 +70,8 @@ target_link_libraries(mom6_obj PRIVATE fms
 add_library(mom6_nuopc_obj OBJECT ${mom6_nuopc_src_files})
 set_target_properties(mom6_nuopc_obj PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod)
 target_include_directories(mom6_nuopc_obj PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>)
+target_include_directories(mom6_nuopc_obj PRIVATE $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/CDEPS-interface/mod>)
+add_dependencies(mom6_nuopc_obj cdeps)
 if(REGIONAL_MOM6)
   target_include_directories(mom6_nuopc_obj PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/MOM6/config_src/memory/dynamic_symmetric>
                                                     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/MOM6/src/framework>)
@@ -92,7 +101,8 @@ target_include_directories(mom6 PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_
 target_link_libraries(mom6 PUBLIC fms
                                   stochastic_physics
                                   ESMF::ESMF
-                                  NetCDF::NetCDF_Fortran)
+                                  NetCDF::NetCDF_Fortran
+                                  cdeps::cdeps)
 if(UFS_TRACING)
   target_link_libraries(mom6 PRIVATE ufs_tracing)
 endif()

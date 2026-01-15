@@ -336,6 +336,7 @@ list(APPEND mom6_nuopc_src_files
   MOM6/config_src/drivers/nuopc_cap/mom_ocean_model_nuopc.F90
   MOM6/config_src/drivers/nuopc_cap/mom_surface_forcing_nuopc.F90
   MOM6/config_src/drivers/nuopc_cap/mom_ufs_trace_wrapper.F90
+  MOM6/config_src/drivers/nuopc_cap/mom_inline_mod.F90
   MOM6/config_src/drivers/nuopc_cap/mom_cap_outputlog.F90
   MOM6/config_src/drivers/unit_tests/test_MOM_file_parser.F90
   MOM6/config_src/drivers/unit_tests/test_MOM_mixedlayer_restrat.F90
@@ -347,10 +348,6 @@ list(APPEND mom6_nuopc_src_files
   MOM6/config_src/drivers/timing_tests/time_MOM_EOS.F90
   MOM6/config_src/drivers/timing_tests/time_MOM_remapping.F90
   MOM6/config_src/drivers/timing_tests/time_reproducing_sum.F90
-)
-
-list(APPEND mom6_nuopc_src_files
-  ${PROJECT_SOURCE_DIR}/CDEPS-interface/ufs/cdeps_share/shr_is_restart_fh_mod.F90
 )
 
 list(APPEND mom6_solo_src_files
