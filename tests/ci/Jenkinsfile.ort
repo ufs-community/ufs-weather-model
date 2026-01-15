@@ -66,24 +66,24 @@ pipeline {
         export GIT_OWNER=$(echo $GIT_URL | cut -d '/' -f4)
         export GIT_REPO_NAME=$(echo $GIT_URL | cut -d '/' -f5 | cut -d '.' -f1)  
         echo "...removing labels for $machine from $GIT_URL"
-        '''
-        if ( ${CHOICE_NODE} == 'ursa' ){
+
+        if [ ${CHOICE_NODE} -eq 'ursa' ] 
+        then
            echo "https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/ursa-RT"
            curl --silent -X DELETE -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/ursa-RT
-           }
-        else if ( ${CHOICE_NODE} == 'hercules' ){
+        elif [ ${CHOICE_NODE} -eq 'hercules' ]
+        then
            echo "https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/hercules-RT"
            curl --silent -X DELETE -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/hercules-RT
-           }
-        else if ( ${CHOICE_NODE} == 'orion' ){
+        elif [ ${CHOICE_NODE} -eq 'orion' ]
+        then
            echo "https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/orion-RT"
            curl --silent -X DELETE -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/orion-RT
-           }
-        else {
+        else 
            echo "https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/jenkins-ort"
            curl --silent -X DELETE -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/jenkins-ort
-           }
-//        '''
+        fi
+        '''
       } //steps
     }  //stage
 
