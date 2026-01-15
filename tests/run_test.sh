@@ -133,9 +133,6 @@ case ${MACHINE_ID} in
     #module load modules.fv3
     #module load gcc-native/12.3
     ;;
-  derecho)
-    module load nccmp
-    ;;
   *)
     module use modulefiles
     module load modules.fv3
