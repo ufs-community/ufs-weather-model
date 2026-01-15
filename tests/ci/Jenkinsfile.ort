@@ -67,15 +67,15 @@ pipeline {
         export GIT_REPO_NAME=$(echo $GIT_URL | cut -d '/' -f5 | cut -d '.' -f1)  
         echo "...removing labels for $machine from $GIT_URL"
 
-        if [ ${CHOICE_NODE} -eq 'ursa' ] 
+        if [ "${CHOICE_NODE}" = "ursa" ] 
         then
            echo "https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/ursa-RT"
            curl --silent -X DELETE -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/ursa-RT
-        elif [ ${CHOICE_NODE} -eq 'hercules' ]
+        elif [ "${CHOICE_NODE}" = "hercules" ]
         then
            echo "https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/hercules-RT"
            curl --silent -X DELETE -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/hercules-RT
-        elif [ ${CHOICE_NODE} -eq 'orion' ]
+        elif [ "${CHOICE_NODE}" = "orion" ]
         then
            echo "https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/orion-RT"
            curl --silent -X DELETE -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/orion-RT
