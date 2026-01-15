@@ -49,8 +49,45 @@ pipeline {
     } //steps
   } //stage
 
-  
-    stage('Run ORT on Ursa parallel'){
+    stage('Remove label'){
+     agent{ label 'built-in' }
+        environment {
+        ACCNR = 'epic'
+        NODE_PATH = '/scratch4/NAGAPE/epic/role-epic/'
+        GITHUB_TOKEN = credentials('GithubJenkinsNew')
+        }
+        steps{
+        sh '''
+	    export machine=${NODE_NAME}
+        export PATH=$PATH:~/bin
+        export SSH_ORIGIN=$(curl --silent https://api.github.com/repos/arbetter/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.repo.ssh_url')
+        export FORK_BRANCH=$(curl --silent https://api.github.com/repos/arbetter/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.ref')
+        export ACCNR=epic
+        export GIT_OWNER=$(echo $GIT_URL | cut -d '/' -f4)
+        export GIT_REPO_NAME=$(echo $GIT_URL | cut -d '/' -f5 | cut -d '.' -f1)  
+        echo "...removing labels for $machine from $GIT_URL"
+        if ( ${CHOICE_NODE} == 'ursa' ){
+           echo "https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/ursa-RT"
+           curl --silent -X DELETE -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/ursa-RT
+           }
+        else if ( ${CHOICE_NODE} == 'hercules' ){
+           echo "https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/hercules-RT"
+           curl --silent -X DELETE -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/hercules-RT
+           }
+        else if ( ${CHOICE_NODE} == 'orion' ){
+           echo "https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/orion-RT"
+           curl --silent -X DELETE -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/orion-RT
+           }
+        else {
+           echo "https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/jenkins-ort"
+           curl --silent -X DELETE -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/jenkins-ort
+           }
+        '''
+      } //steps
+    }  //stage
+
+
+stage('Run ORT on Ursa parallel'){
         parallel{
         stage('regional_control'){        
           agent{ label 'ursa' }
@@ -221,17 +258,17 @@ pipeline {
         } //steps
 
         post {
-        always {
-         sh '''
-           export GIT_OWNER=$(echo $GIT_URL | cut -d '/' -f4)
-           export GIT_REPO_NAME=$(echo $GIT_URL | cut -d '/' -f5 | cut -d '.' -f1)
-           echo "Testing concluded...removing labels for $machine from $GIT_URL"
-           echo "https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/jenkins-ort"
-           curl --silent -X DELETE -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/jenkins-ort
-           echo "https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/ursa-RT"
-           curl --silent -X DELETE -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/ursa-RT
-           '''
-        } //always
+//        always {
+//          sh '''
+//           export GIT_OWNER=$(echo $GIT_URL | cut -d '/' -f4)
+//          export GIT_REPO_NAME=$(echo $GIT_URL | cut -d '/' -f5 | cut -d '.' -f1)
+//           echo "Testing concluded...removing labels for $machine from $GIT_URL"
+//           echo "https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/jenkins-ort"
+//           curl --silent -X DELETE -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/jenkins-ort
+//           echo "https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/ursa-RT"
+//           curl --silent -X DELETE -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/ursa-RT
+//           '''
+//        } //always
 
         success {
           slackSend (
@@ -429,17 +466,17 @@ pipeline {
         } //steps
 
         post {
-        always {
-         sh '''
-           export GIT_OWNER=$(echo $GIT_URL | cut -d '/' -f4)
-           export GIT_REPO_NAME=$(echo $GIT_URL | cut -d '/' -f5 | cut -d '.' -f1)
-           echo "Testing concluded...removing labels for $machine from $GIT_URL"
-           echo "https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/jenkins-ort"
-           curl --silent -X DELETE -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/jenkins-ort
-           echo "https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/hercules-RT"
-           curl --silent -X DELETE -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/hercules-RT
-           '''
-        } //always
+//       always {
+//         sh '''
+//           export GIT_OWNER=$(echo $GIT_URL | cut -d '/' -f4)
+//           export GIT_REPO_NAME=$(echo $GIT_URL | cut -d '/' -f5 | cut -d '.' -f1)
+//           echo "Testing concluded...removing labels for $machine from $GIT_URL"
+//           echo "https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/jenkins-ort"
+//           curl --silent -X DELETE -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/jenkins-ort
+//           echo "https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/hercules-RT"
+//           curl --silent -X DELETE -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/hercules-RT
+//           '''
+//        } //always
 
         success {
           slackSend (
@@ -637,17 +674,17 @@ pipeline {
         } //steps
 
         post {
-        always {
-         sh '''
-           export GIT_OWNER=$(echo $GIT_URL | cut -d '/' -f4)
-           export GIT_REPO_NAME=$(echo $GIT_URL | cut -d '/' -f5 | cut -d '.' -f1)
-           echo "Testing concluded...removing labels for $machine from $GIT_URL"
-           echo "https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/jenkins-ort"
-           curl --silent -X DELETE -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/jenkins-ort
-           echo "https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/orion-RT"
-           curl --silent -X DELETE -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/orion-RT
-         '''
-        } //always
+//        always {
+//         sh '''
+//          export GIT_OWNER=$(echo $GIT_URL | cut -d '/' -f4)
+//           export GIT_REPO_NAME=$(echo $GIT_URL | cut -d '/' -f5 | cut -d '.' -f1)
+//           echo "Testing concluded...removing labels for $machine from $GIT_URL"
+//           echo "https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/jenkins-ort"
+//           curl --silent -X DELETE -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/jenkins-ort
+//           echo "https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/orion-RT"
+//           curl --silent -X DELETE -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/orion-RT
+//         '''
+//        } //always
 
         success {
           slackSend (
