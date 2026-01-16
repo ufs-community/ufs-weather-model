@@ -1,0 +1,39 @@
+###############################################################################
+#
+#  HRRR physics on 13km domain, cdeps inline, great lakes 
+#
+###############################################################################
+
+export TEST_DESCR="HRRR physics on 13km domain, cdeps inline, great lakes"
+
+export CNTL_DIR=conus13km_gl_inline
+
+export LIST_FILES="sfcf000.nc \
+                   sfcf001.nc \
+                   sfcf002.nc \
+                   sfcf003.nc \
+                   atmf000.nc \
+                   atmf001.nc \
+                   atmf002.nc \
+                   atmf003.nc \
+                   RESTART/20221222.190000.coupler.res \
+                   RESTART/20221222.190000.fv_core.res.nc \
+                   RESTART/20221222.190000.fv_core.res.tile1.nc \
+                   RESTART/20221222.190000.fv_srf_wnd.res.tile1.nc \
+                   RESTART/20221222.190000.fv_tracer.res.tile1.nc \
+                   RESTART/20221222.190000.phy_data.nc \
+                   RESTART/20221222.190000.sfc_data.nc"
+
+export_hrrr_conus13km
+export SYEAR=2022
+export SMONTH=12
+export SDAY=22
+export SHOUR=18
+export FHMAX=3
+export INPUT_NML=rrfs_conus13km_gl.nml.IN
+export FV3_RUN="rrfs_cdeps_inline_run.IN"
+export WLCLK=50
+
+if [[ " hera orion hercules jet " =~ " ${MACHINE_ID} " ]] ; then
+  ZSTANDARD_LEVEL=5
+fi
