@@ -2486,6 +2486,7 @@ export DIAG_TABLE=diag_table_hrrr
 export MODEL_CONFIGURE=model_configure_rrfs_conus13km.IN
 export DIAG_TABLE_ADDITIONAL=diag_additional_rrfs_smoke
 export FRAC_ICE=.true.
+export USE_CDEPS_INLINE=.false.
 }
 
 export_rap_common()
