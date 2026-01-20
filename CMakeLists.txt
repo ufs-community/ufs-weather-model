@@ -180,7 +180,7 @@ if(FMS)
   endif()
 endif()
 
-if(CMEPS)
+if(CMEPS OR CDEPS)
   find_package(PIO 2.5.3 REQUIRED COMPONENTS C Fortran)
 endif()
 
