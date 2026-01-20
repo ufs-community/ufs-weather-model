@@ -312,6 +312,8 @@ fi
 export PPN
 export UFS_TASKS
 
+export NCPUS=$(( TPN * THRD ))
+
 if [[ $SCHEDULER = 'pbs' ]]; then
   if [[ -e $PATHRT/fv3_conf/fv3_qsub.IN_${MACHINE_ID} ]]; then
     atparse < $PATHRT/fv3_conf/fv3_qsub.IN_${MACHINE_ID} > job_card

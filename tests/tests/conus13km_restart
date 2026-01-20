@@ -19,3 +19,8 @@ export FHROT=1
 export RESTART_FILE_PREFIX="${SYEAR}${SMONTH}${SDAY}.$(printf "%02d" $(( ${SHOUR} + ${FHROT}  )))0000"
 export RRFS_RESTART=YES
 export QUILTING_RESTART=.false.
+export USE_MERRA2=.true.
+
+if [[ " hera orion hercules jet " =~ " ${MACHINE_ID} " ]] ; then
+  ZSTANDARD_LEVEL=5
+fi
