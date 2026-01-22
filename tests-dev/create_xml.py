@@ -60,8 +60,6 @@ def rocoto_create_compile_task(MACHINE_ID,COMPILE_ID,ROCOTO_COMPILE_MAXTRIES,MAK
     NATIVE=""
     BUILD_CORES="8"
     BUILD_WALLTIME="00:30:00"
-    if ( MACHINE_ID == 'jet' ):  BUILD_WALLTIME="02:00:00"
-    if ( MACHINE_ID == 'hera'):  BUILD_WALLTIME="01:00:00"
     if ( MACHINE_ID == 'ursa'):  BUILD_WALLTIME="01:00:00"
     if ( MACHINE_ID == 'orion'): BUILD_WALLTIME="01:00:00"
     if ( MACHINE_ID == 'hercules'): BUILD_WALLTIME="01:00:00"
@@ -79,7 +77,7 @@ command>
     <partition>eslogin_c6</partition>
 """
         PARTITION= ""
-    if ( PARTITION != "" and MACHINE_ID != "hera" ):
+    if ( PARTITION != "" ):
             compile_task+=f"""    <partition>{PARTITION}</partition>
 """
     compile_task+=f"""    <nodes>1:ppn={BUILD_CORES}</nodes>
@@ -218,9 +216,6 @@ export delete_rundir={delete_rundir}
 export WLCLK={WLCLK}
 export RTVERBOSE=false
 """
-    if ( MACHINE_ID == 'jet' ):
-        runtest_envs += f"export PATH=/lfs4/HFIP/hfv3gfs/software/miniconda3/4.8.3/envs/ufs-weather-model/bin:/lfs4/HFIP/hfv3gfs/software/miniconda3/4.8.3/bin:$PATH\n"
-        runtest_envs += f"export PYTHONPATH=/lfs4/HFIP/hfv3gfs/software/miniconda3/4.8.3/envs/ufs-weather-model/lib/python3.8/site-packages:/lfs4/HFIP/hfv3gfs/software/miniconda3/4.8.3/lib/python3.8/site-packages\n"
      
     with open(filename,"w+") as f:
         f.writelines(runtest_envs)

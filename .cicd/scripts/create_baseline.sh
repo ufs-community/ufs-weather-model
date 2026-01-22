@@ -7,8 +7,6 @@ export ACCNR=epic
 
 export account="-a ${ACCNR}"
 export workflow="-e"
-	#[[ ${UFS_PLATFORM} =  jet         ]] && workflow="-r"
-	#[[ ${UFS_PLATFORM} =  hera        ]] && workflow="-r"
 	#[[ ${UFS_PLATFORM} =~ clusternoaa ]] && workflow=""
 
 export opt="-l"
