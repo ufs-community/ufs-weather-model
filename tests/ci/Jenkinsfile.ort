@@ -52,7 +52,7 @@ pipeline {
     } //steps
   } //stage
 
-// change "cp" to "mv" to be tighter on logfiles existence (prevents using logfiles from a previous run)
+
 
 stage('Run ORT on Ursa parallel'){
         parallel{
@@ -88,6 +88,7 @@ stage('Run ORT on Ursa parallel'){
     #    cd tests
           ./opnReqTest -n regional_control -a ${ACCNR} -c bit,dcp,thr
           cd logs/
+// change "cp" to "mv" to be tighter on logfiles existence (prevents using logfiles from a previous run)
           mv OpnReqTests_regional_control_ursa.log /scratch4/NAGAPE/epic/role-epic/jenkins/workspace/
           cd ..
           pwd
@@ -126,6 +127,7 @@ stage('Run ORT on Ursa parallel'){
         # cd tests
            ./opnReqTest -n cpld_control_nowave_noaero_p8 -a ${ACCNR} -c dbg,rst
            cd logs/
+// change "cp" to "mv" to be tighter on logfiles existence (prevents using logfiles from a previous run)
            mv OpnReqTests_cpld_control_nowave_noaero_p8_ursa.log /scratch4/NAGAPE/epic/role-epic/jenkins/workspace/
            cd ..
            pwd
@@ -164,6 +166,7 @@ stage('Run ORT on Ursa parallel'){
         # cd tests
            ./opnReqTest -n control_p8 -a ${ACCNR} -c std,dbg,bit,mpi,rst,thr,dcp
 	       cd logs/
+// change "cp" to "mv" to be tighter on logfiles existence (prevents using logfiles from a previous run)
            mv OpnReqTests_control_p8_ursa.log /scratch4/NAGAPE/epic/role-epic/jenkins/workspace/
            cd ..
            pwd
@@ -208,6 +211,7 @@ stage('Run ORT on Ursa parallel'){
         pwd
         ls -l
 
+// change "cp" to "mv" to be tighter on logfiles existence (prevents using logfiles from a previous run)
 	    mv OpnReqTests_control_p8_ursa.log $WORKSPACE/tests/logs/
         mv OpnReqTests_regional_control_ursa.log $WORKSPACE/tests/logs/
         mv OpnReqTests_cpld_control_nowave_noaero_p8_ursa.log $WORKSPACE/tests/logs/
@@ -291,6 +295,7 @@ stage('Run ORT on Ursa parallel'){
     #    cd tests
           ./opnReqTest -n regional_control -a ${ACCNR} -c bit,dcp,thr
           cd logs/
+// change "cp" to "mv" to be tighter on logfiles existence (prevents using logfiles from a previous run)
           mv OpnReqTests_regional_control_hercules.log /work2/noaa/epic/role-epic/jenkins/workspace
           cd ..
           pwd
@@ -330,6 +335,7 @@ stage('Run ORT on Ursa parallel'){
         # cd tests
            ./opnReqTest -n cpld_control_nowave_noaero_p8 -a ${ACCNR} -c dbg,rst
            cd logs/
+// change "cp" to "mv" to be tighter on logfiles existence (prevents using logfiles from a previous run)
            mv OpnReqTests_cpld_control_nowave_noaero_p8_hercules.log /work2/noaa/epic/role-epic/jenkins/workspace/
            cd ..
            pwd
@@ -369,6 +375,7 @@ stage('Run ORT on Ursa parallel'){
         # cd tests
            ./opnReqTest -n control_p8 -a ${ACCNR} -c std,dbg,bit,mpi,rst,thr,dcp
            cd logs/
+// change "cp" to "mv" to be tighter on logfiles existence (prevents using logfiles from a previous run)
            mv OpnReqTests_control_p8_hercules.log /work2/noaa/epic/role-epic/jenkins/workspace/
            cd ..
            pwd
@@ -414,7 +421,8 @@ stage('Run ORT on Ursa parallel'){
         pwd
         ls -l
 
-	    mv OpnReqTests_control_p8_hercules.log $WORKSPACE/tests/logs/
+// change "cp" to "mv" to be tighter on logfiles existence (prevents using logfiles from a previous run)
+        mv OpnReqTests_control_p8_hercules.log $WORKSPACE/tests/logs/
         mv OpnReqTests_regional_control_hercules.log $WORKSPACE/tests/logs/
         mv OpnReqTests_cpld_control_nowave_noaero_p8_hercules.log $WORKSPACE/tests/logs/
         cd $WORKSPACE/tests/
@@ -497,6 +505,7 @@ stage('Run ORT on Ursa parallel'){
     #    cd tests
           ./opnReqTest -n regional_control -a ${ACCNR} -c bit,dcp,thr
           cd logs/
+// change "cp" to "mv" to be tighter on logfiles existence (prevents using logfiles from a previous run)
           mv OpnReqTests_regional_control_orion.log /work/noaa/epic/role-epic/jenkins/workspace
           cd ..
           pwd
@@ -536,6 +545,7 @@ stage('Run ORT on Ursa parallel'){
         # cd tests
            ./opnReqTest -n cpld_control_nowave_noaero_p8 -a ${ACCNR} -c dbg,rst
            cd logs/
+// change "cp" to "mv" to be tighter on logfiles existence (prevents using logfiles from a previous run)
            mv OpnReqTests_cpld_control_nowave_noaero_p8_orion.log /work/noaa/epic/role-epic/jenkins/workspace/
            cd ..
            pwd
@@ -575,6 +585,7 @@ stage('Run ORT on Ursa parallel'){
         # cd tests
            ./opnReqTest -n control_p8 -a ${ACCNR} -c std,dbg,bit,mpi,rst,thr,dcp
            cd logs/
+// change "cp" to "mv" to be tighter on logfiles existence (prevents using logfiles from a previous run)
            mv OpnReqTests_control_p8_orion.log /work/noaa/epic/role-epic/jenkins/workspace/
            cd ..
            pwd
@@ -620,6 +631,7 @@ stage('Run ORT on Ursa parallel'){
         pwd
         ls -l
 
+// change "cp" to "mv" to be tighter on logfiles existence (prevents using logfiles from a previous run)
 	    mv OpnReqTests_control_p8_orion.log $WORKSPACE/tests/logs/
         mv OpnReqTests_regional_control_orion.log $WORKSPACE/tests/logs/
         mv OpnReqTests_cpld_control_nowave_noaero_p8_orion.log $WORKSPACE/tests/logs/
