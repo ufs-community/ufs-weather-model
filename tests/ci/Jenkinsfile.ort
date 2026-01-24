@@ -2,7 +2,7 @@ pipeline {
   agent none
   options{
     disableConcurrentBuilds()
-    timeout(time:6, unit:'HOURS')
+    timeout(time:8, unit:'HOURS')
          }
   stages {
     stage('Run ORTs') {
@@ -58,6 +58,9 @@ stage('Run ORT on Ursa parallel'){
         parallel{
         stage('regional_control'){        
           agent{ label 'ursa' }
+          options{
+             timeout(time:6, unit:'HOURS')
+                 }
         environment {
         ACCNR = 'epic'
         NODE_PATH = '/scratch4/NAGAPE/epic/role-epic/'
@@ -97,6 +100,9 @@ stage('Run ORT on Ursa parallel'){
           } //stage
          stage('cpid_control_nowave_noaero_p8'){
            agent{ label 'ursa'}
+          options{
+             timeout(time:6, unit:'HOURS')
+                 }
         environment {
         ACCNR = 'epic'
         NODE_PATH = '/scratch4/NAGAPE/epic/role-epic/'
@@ -136,6 +142,9 @@ stage('Run ORT on Ursa parallel'){
            } //stage
          stage('control_p8'){
            agent{ label 'ursa' }
+          options{
+             timeout(time:6, unit:'HOURS')
+                 }
         environment {
         ACCNR = 'epic'
         NODE_PATH = '/scratch4/NAGAPE/epic/role-epic/'
@@ -265,6 +274,9 @@ stage('Run ORT on Ursa parallel'){
 
         stage('regional_control'){        
           agent{ label 'hercules' }
+          options{
+             timeout(time:6, unit:'HOURS')
+                 }
         environment {
         ACCNR = 'epic'
         NODE_PATH = '/work2/noaa/epic/role-epic/'
@@ -305,6 +317,9 @@ stage('Run ORT on Ursa parallel'){
 
         stage('cpid_control_nowave_noaero_p8'){
            agent{ label 'hercules'}
+          options{
+             timeout(time:6, unit:'HOURS')
+                 }
         environment {
         ACCNR = 'epic'
         NODE_PATH = '/work2/noaa/epic/role-epic/'
@@ -345,6 +360,9 @@ stage('Run ORT on Ursa parallel'){
 
         stage('control_p8'){
            agent{ label 'hercules' }
+          options{
+             timeout(time:6, unit:'HOURS')
+                 }
         environment {
         ACCNR = 'epic'
         NODE_PATH = '/work2/noaa/epic/role-epic/'
@@ -475,6 +493,9 @@ stage('Run ORT on Ursa parallel'){
 
         stage('regional_control'){        
           agent{ label 'orion' }
+          options{
+             timeout(time:6, unit:'HOURS')
+                 }
         environment {
         ACCNR = 'epic'
         NODE_PATH = '/work/noaa/epic/role-epic/'
@@ -515,6 +536,9 @@ stage('Run ORT on Ursa parallel'){
 
         stage('cpid_control_nowave_noaero_p8'){
            agent{ label 'orion'}
+          options{
+             timeout(time:6, unit:'HOURS')
+                 }
         environment {
         ACCNR = 'epic'
         NODE_PATH = '/work/noaa/epic/role-epic/'
@@ -555,6 +579,9 @@ stage('Run ORT on Ursa parallel'){
 
         stage('control_p8'){
         agent{ label 'orion' }
+          options{
+             timeout(time:6, unit:'HOURS')
+                 }
         environment {
         ACCNR = 'epic'
         NODE_PATH = '/work/noaa/epic/role-epic/'
