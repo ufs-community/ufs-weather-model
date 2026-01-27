@@ -130,9 +130,12 @@ export histaux_enabled=.false.
 export BMIC=.false.
 export SFS=.false.
 
+export EXCLUSIVE_NODES=.false.
+
 if [[ ${MACHINE_ID} = wcoss2 || ${MACHINE_ID} = acorn ]]; then
 
   export TPN=128
+  export EXCLUSIVE_NODES=.true.
 
   export INPES_dflt=3
   export JNPES_dflt=8
@@ -154,6 +157,7 @@ if [[ ${MACHINE_ID} = wcoss2 || ${MACHINE_ID} = acorn ]]; then
 elif [[ ${MACHINE_ID} = orion ]]; then
 
   export TPN=40
+  export EXCLUSIVE_NODES=.true.
 
   export INPES_dflt=3
   export JNPES_dflt=8
@@ -175,7 +179,7 @@ elif [[ ${MACHINE_ID} = orion ]]; then
 elif [[ ${MACHINE_ID} = hercules ]]; then
 
   export TPN=80
-
+  export EXCLUSIVE_NODES=.true.
   export INPES_dflt=3
   export JNPES_dflt=8
   export INPES_thrd=3
@@ -405,6 +409,7 @@ elif [[ ${MACHINE_ID} = noaacloud ]] ; then
       export TPN=30
     fi
 
+    export EXCLUSIVE_NODES=.true.
     export INPES_dflt=3
     export JNPES_dflt=8
     export INPES_thrd=3
@@ -436,6 +441,7 @@ elif [[ ${MACHINE_ID} = noaacloud ]] ; then
 elif [[ ${MACHINE_ID} = frontera ]]; then
 
   TPN=56
+  export EXCLUSIVE_NODES=.true.
 
 else
 
@@ -471,7 +477,7 @@ export_fv3
 export USE_MERRA2=.false.
 export WRITE_NSFLIP=.false.
 
-export DIAG_TABLE=diag_table_gfsv16
+export DIAG_TABLE=diag_table_gfsv16.IN
 export FIELD_TABLE=field_table_gfsv16
 export FV3_RUN=control_run.IN
 export INPUT_NML=control.nml.IN
@@ -1392,6 +1398,7 @@ export CHOUR=06
 export MOM6_OUTPUT_DIR=./MOM6_OUTPUT
 export MOM6_RESTART_DIR=./RESTART/
 export MOM6_RESTART_SETTING=n
+export MOM6_HISTFREQ_N=6
 
 # Following not used for standalone
 export USE_CICE_ALB=.false.
@@ -1639,7 +1646,7 @@ export_mom6() {
   export DT_THERM_MOM6=3600
   export MOM6_INPUT=MOM_input_100.IN
   export MOM6_OUTPUT_DIR=./MOM6_OUTPUT
-  export MOM6_OUTPUT_FH=6
+  export MOM6_HISTFREQ_N=6
   export MOM6_RESTART_DIR=./RESTART/
   export MOM6_RESTART_SETTING=n
   export MOM6_RIVER_RUNOFF=False
@@ -1968,6 +1975,7 @@ export_datm_cdeps ()
   export SMONTH=10
   export SDAY=01
   export SHOUR=00
+  export CHOUR=00
   export FHMAX=24
   export DT_ATMOS=900
   export FHROT=0
@@ -2013,11 +2021,11 @@ export_datm_cdeps ()
   # default configure
   export UFS_CONFIGURE=ufs.configure.datm_cdeps.IN
   export atm_model=datm
-  export CPLMODE=ufs.nfrac.aoflux
+  export CPLMODE=ufs.frac.aoflux
 
   # datm defaults
   export INPUT_NML=input.mom6.nml.IN
-  export DIAG_TABLE=diag_table_template
+  export DIAG_TABLE=diag_table_cpld.IN
   export DATM_SRC=CFSR
   export FILEBASE_DATM=cfsr
   export MESH_ATM=mesh.datm.1760x880.nc
@@ -2478,6 +2486,7 @@ export DIAG_TABLE=diag_table_hrrr
 export MODEL_CONFIGURE=model_configure_rrfs_conus13km.IN
 export DIAG_TABLE_ADDITIONAL=diag_additional_rrfs_smoke
 export FRAC_ICE=.true.
+export USE_CDEPS_INLINE=.false.
 }
 
 export_rap_common()
