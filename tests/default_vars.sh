@@ -136,7 +136,7 @@ if [[ ${MACHINE_ID} = wcoss2 || ${MACHINE_ID} = acorn ]]; then
 
   export TPN=128
   export EXCLUSIVE_NODES=.true.
-  
+
   export INPES_dflt=3
   export JNPES_dflt=8
   export INPES_thrd=3
@@ -1398,7 +1398,7 @@ export CHOUR=06
 export MOM6_OUTPUT_DIR=./MOM6_OUTPUT
 export MOM6_RESTART_DIR=./RESTART/
 export MOM6_RESTART_SETTING=n
-export MOM6_OUTPUT_FH=6
+export MOM6_HISTFREQ_N=6
 
 # Following not used for standalone
 export USE_CICE_ALB=.false.
@@ -1646,7 +1646,7 @@ export_mom6() {
   export DT_THERM_MOM6=3600
   export MOM6_INPUT=MOM_input_100.IN
   export MOM6_OUTPUT_DIR=./MOM6_OUTPUT
-  export MOM6_OUTPUT_FH=6
+  export MOM6_HISTFREQ_N=6
   export MOM6_RESTART_DIR=./RESTART/
   export MOM6_RESTART_SETTING=n
   export MOM6_RIVER_RUNOFF=False
@@ -2021,7 +2021,7 @@ export_datm_cdeps ()
   # default configure
   export UFS_CONFIGURE=ufs.configure.datm_cdeps.IN
   export atm_model=datm
-  export CPLMODE=ufs.nfrac.aoflux
+  export CPLMODE=ufs.frac.aoflux
 
   # datm defaults
   export INPUT_NML=input.mom6.nml.IN
@@ -2486,6 +2486,7 @@ export DIAG_TABLE=diag_table_hrrr
 export MODEL_CONFIGURE=model_configure_rrfs_conus13km.IN
 export DIAG_TABLE_ADDITIONAL=diag_additional_rrfs_smoke
 export FRAC_ICE=.true.
+export USE_CDEPS_INLINE=.false.
 }
 
 export_rap_common()

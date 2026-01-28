@@ -945,11 +945,10 @@ case ${MACHINE_ID} in
       module use /glade/work/epicufsrt/contrib/derecho/modulefiles
       module load rocoto/1.3.7
     fi
-    module use /glade/work/epicufsrt/contrib/spack-stack/derecho/modulefiles
     if [[ "${ECFLOW:-false}" == true ]] ; then
-      module load ecflow/5.8.4
-    fi
-    if [[ "${ECFLOW:-false}" == true ]] ; then
+      module use /glade/work/epicufsrt/contrib/spack-stack/derecho/spack-stack-1.9.2/envs/ue-oneapi-2024.2.1/install/modulefiles/oneapi/2024.2.1
+      module load stack-python/3.11.7
+      module load ecflow/5.11.4
       ECF_HOST=$(hostname)
       ECF_PORT=$(( $(id -u) + 1500 ))
       export ECF_PORT ECF_HOST
