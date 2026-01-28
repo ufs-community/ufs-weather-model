@@ -76,7 +76,6 @@ stage('Run ORT on Ursa parallel'){
         cd tests/fv3_conf
 	    sed 's/#SBATCH --time=.*/#SBATCH --time=02:00:00/g' -i fv3_slurm.IN_ursa
         cd ..
-     #  sed "s|intel|gnu|g" -i opnReqTest	     
         export machine=${NODE_NAME}
         export PATH=$PATH:~/bin
         export SSH_ORIGIN=$(curl --silent https://api.github.com/repos/ufs-community/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.repo.ssh_url')
@@ -86,7 +85,6 @@ stage('Run ORT on Ursa parallel'){
         export GIT_REPO_NAME=$(echo $GIT_URL | cut -d '/' -f5 | cut -d '.' -f1)
 
           pwd
-    #    cd tests
           ./opnReqTest -n regional_control -a ${ACCNR} -c bit,dcp,thr
           cd logs/
 # change "cp" to "mv" to be tighter on logfiles existence (prevents using logfiles from a previous run)
@@ -118,7 +116,6 @@ stage('Run ORT on Ursa parallel'){
         cd tests/fv3_conf
 	    sed 's/#SBATCH --time=.*/#SBATCH --time=02:00:00/g' -i fv3_slurm.IN_ursa
         cd ..
-     #  sed "s|intel|gnu|g" -i opnReqTest
 	    export machine=${NODE_NAME}
         export PATH=$PATH:~/bin
         export SSH_ORIGIN=$(curl --silent https://api.github.com/repos/ufs-community/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.repo.ssh_url')
@@ -128,7 +125,6 @@ stage('Run ORT on Ursa parallel'){
         export GIT_REPO_NAME=$(echo $GIT_URL | cut -d '/' -f5 | cut -d '.' -f1)
 
            pwd
-        # cd tests
            ./opnReqTest -n cpld_control_nowave_noaero_p8 -a ${ACCNR} -c dbg,rst
            cd logs/
 # change "cp" to "mv" to be tighter on logfiles existence (prevents using logfiles from a previous run)
@@ -160,7 +156,6 @@ stage('Run ORT on Ursa parallel'){
         cd tests/fv3_conf
 	    sed 's/#SBATCH --time=.*/#SBATCH --time=02:00:00/g' -i fv3_slurm.IN_ursa
         cd ..
-     #  sed "s|intel|gnu|g" -i opnReqTest
         export machine=${NODE_NAME}
         export PATH=$PATH:~/bin
         export SSH_ORIGIN=$(curl --silent https://api.github.com/repos/ufs-community/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.repo.ssh_url')
@@ -170,7 +165,6 @@ stage('Run ORT on Ursa parallel'){
         export GIT_REPO_NAME=$(echo $GIT_URL | cut -d '/' -f5 | cut -d '.' -f1)
 
            pwd
-        # cd tests
            ./opnReqTest -n control_p8 -a ${ACCNR} -c std,dbg,bit,mpi,rst,thr,dcp
 	       cd logs/
 # change "cp" to "mv" to be tighter on logfiles existence (prevents using logfiles from a previous run)
@@ -206,7 +200,6 @@ stage('Run ORT on Ursa parallel'){
         export GIT_OWNER=$(echo $GIT_URL | cut -d '/' -f4)
         export GIT_REPO_NAME=$(echo $GIT_URL | cut -d '/' -f5 | cut -d '.' -f1)
 
-      # cd tests # already there
         echo 'cd tests'
         pwd 
         git remote -v
@@ -292,7 +285,6 @@ stage('Run ORT on Ursa parallel'){
         cd tests/fv3_conf
 	    sed 's/#SBATCH --time=.*/#SBATCH --time=02:00:00/g' -i fv3_slurm.IN_hercules
         cd ..
-     #  sed "s|intel|gnu|g" -i opnReqTest	     
         export machine=${NODE_NAME}
         export PATH=$PATH:~/bin
         export SSH_ORIGIN=$(curl --silent https://api.github.com/repos/ufs-community/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.repo.ssh_url')
@@ -302,7 +294,6 @@ stage('Run ORT on Ursa parallel'){
         export GIT_REPO_NAME=$(echo $GIT_URL | cut -d '/' -f5 | cut -d '.' -f1)
 
           pwd
-    #    cd tests
           ./opnReqTest -n regional_control -a ${ACCNR} -c bit,dcp,thr
           cd logs/
  # change "cp" to "mv" to be tighter on logfiles existence (prevents using logfiles from a previous run)
@@ -335,7 +326,6 @@ stage('Run ORT on Ursa parallel'){
         cd tests/fv3_conf
 	    sed 's/#SBATCH --time=.*/#SBATCH --time=02:00:00/g' -i fv3_slurm.IN_hercules
         cd ..
-     #  sed "s|intel|gnu|g" -i opnReqTest
 	    export machine=${NODE_NAME}
         export PATH=$PATH:~/bin
         export SSH_ORIGIN=$(curl --silent https://api.github.com/repos/ufs-community/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.repo.ssh_url')
@@ -345,7 +335,6 @@ stage('Run ORT on Ursa parallel'){
         export GIT_REPO_NAME=$(echo $GIT_URL | cut -d '/' -f5 | cut -d '.' -f1)
 
            pwd
-        # cd tests
            ./opnReqTest -n cpld_control_nowave_noaero_p8 -a ${ACCNR} -c dbg,rst
            cd logs/
 # change "cp" to "mv" to be tighter on logfiles existence (prevents using logfiles from a previous run)
@@ -378,7 +367,6 @@ stage('Run ORT on Ursa parallel'){
         cd tests/fv3_conf
 	    sed 's/#SBATCH --time=.*/#SBATCH --time=02:00:00/g' -i fv3_slurm.IN_hercules
         cd ..
-     #  sed "s|intel|gnu|g" -i opnReqTest
         export machine=${NODE_NAME}
         export PATH=$PATH:~/bin
         export SSH_ORIGIN=$(curl --silent https://api.github.com/repos/ufs-community/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.repo.ssh_url')
@@ -388,7 +376,6 @@ stage('Run ORT on Ursa parallel'){
         export GIT_REPO_NAME=$(echo $GIT_URL | cut -d '/' -f5 | cut -d '.' -f1)
 
            pwd
-        # cd tests
            ./opnReqTest -n control_p8 -a ${ACCNR} -c std,dbg,bit,mpi,rst,thr,dcp
            cd logs/
 # change "cp" to "mv" to be tighter on logfiles existence (prevents using logfiles from a previous run)
@@ -423,9 +410,6 @@ stage('Run ORT on Ursa parallel'){
         export ACCNR=epic
         export GIT_OWNER=$(echo $GIT_URL | cut -d '/' -f4)
         export GIT_REPO_NAME=$(echo $GIT_URL | cut -d '/' -f5 | cut -d '.' -f1)
-
-      # cd tests # already there
-      # echo 'cd tests'
 
         pwd 
         git remote -v
@@ -511,7 +495,6 @@ stage('Run ORT on Ursa parallel'){
         cd tests/fv3_conf
 	    sed 's/#SBATCH --time=.*/#SBATCH --time=02:00:00/g' -i fv3_slurm.IN_orion
         cd ..
-     #  sed "s|intel|gnu|g" -i opnReqTest	     
         export machine=${NODE_NAME}
         export PATH=$PATH:~/bin
         export SSH_ORIGIN=$(curl --silent https://api.github.com/repos/ufs-community/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.repo.ssh_url')
@@ -521,7 +504,6 @@ stage('Run ORT on Ursa parallel'){
         export GIT_REPO_NAME=$(echo $GIT_URL | cut -d '/' -f5 | cut -d '.' -f1)
 
           pwd
-    #    cd tests
           ./opnReqTest -n regional_control -a ${ACCNR} -c bit,dcp,thr
           cd logs/
 # change "cp" to "mv" to be tighter on logfiles existence (prevents using logfiles from a previous run)
@@ -554,7 +536,6 @@ stage('Run ORT on Ursa parallel'){
         cd tests/fv3_conf
 	    sed 's/#SBATCH --time=.*/#SBATCH --time=02:00:00/g' -i fv3_slurm.IN_orion
         cd ..
-     #  sed "s|intel|gnu|g" -i opnReqTest
 	    export machine=${NODE_NAME}
         export PATH=$PATH:~/bin
         export SSH_ORIGIN=$(curl --silent https://api.github.com/repos/ufs-community/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.repo.ssh_url')
@@ -564,7 +545,6 @@ stage('Run ORT on Ursa parallel'){
         export GIT_REPO_NAME=$(echo $GIT_URL | cut -d '/' -f5 | cut -d '.' -f1)
 
            pwd
-        # cd tests
            ./opnReqTest -n cpld_control_nowave_noaero_p8 -a ${ACCNR} -c dbg,rst
            cd logs/
 # change "cp" to "mv" to be tighter on logfiles existence (prevents using logfiles from a previous run)
@@ -597,7 +577,6 @@ stage('Run ORT on Ursa parallel'){
         cd tests/fv3_conf
 	    sed 's/#SBATCH --time=.*/#SBATCH --time=02:00:00/g' -i fv3_slurm.IN_orion
         cd ..
-     #  sed "s|intel|gnu|g" -i opnReqTest
         export machine=${NODE_NAME}
         export PATH=$PATH:~/bin
         export SSH_ORIGIN=$(curl --silent https://api.github.com/repos/ufs-community/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.repo.ssh_url')
@@ -607,7 +586,6 @@ stage('Run ORT on Ursa parallel'){
         export GIT_REPO_NAME=$(echo $GIT_URL | cut -d '/' -f5 | cut -d '.' -f1)
 
            pwd
-        # cd tests
            ./opnReqTest -n control_p8 -a ${ACCNR} -c std,dbg,bit,mpi,rst,thr,dcp
            cd logs/
 # change "cp" to "mv" to be tighter on logfiles existence (prevents using logfiles from a previous run)
@@ -643,8 +621,6 @@ stage('Run ORT on Ursa parallel'){
         export GIT_OWNER=$(echo $GIT_URL | cut -d '/' -f4)
         export GIT_REPO_NAME=$(echo $GIT_URL | cut -d '/' -f5 | cut -d '.' -f1)
 
-      # cd tests # already there
-      # echo 'cd tests'
 
         pwd 
         git remote -v
