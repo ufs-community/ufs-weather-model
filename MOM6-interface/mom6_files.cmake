@@ -126,6 +126,7 @@ list(APPEND mom6_src_files
   MOM6/src/equation_of_state/TEOS10/gsw_t_freezing_poly.f90
   MOM6/src/equation_of_state/TEOS10/gsw_t_from_ct.f90
 
+  MOM6/src/framework/MOM_ANN.F90
   MOM6/src/framework/MOM_array_transform.F90
   MOM6/src/framework/MOM_checksums.F90
   MOM6/src/framework/MOM_coms.F90
@@ -338,6 +339,7 @@ list(APPEND mom6_nuopc_src_files
   MOM6/config_src/drivers/nuopc_cap/mom_ufs_trace_wrapper.F90
   MOM6/config_src/drivers/nuopc_cap/mom_inline_mod.F90
   MOM6/config_src/drivers/nuopc_cap/mom_cap_outputlog.F90
+  MOM6/config_src/drivers/unit_tests/test_MOM_ANN.F90
   MOM6/config_src/drivers/unit_tests/test_MOM_file_parser.F90
   MOM6/config_src/drivers/unit_tests/test_MOM_mixedlayer_restrat.F90
   MOM6/config_src/drivers/unit_tests/test_MOM_string_functions.F90
@@ -345,6 +347,7 @@ list(APPEND mom6_nuopc_src_files
   MOM6/config_src/drivers/unit_tests/test_MOM_remapping.F90
   MOM6/config_src/drivers/unit_tests/test_numerical_testing_type.F90
   MOM6/config_src/drivers/unit_tests/test_reproducing_sum.F90
+  MOM6/config_src/drivers/timing_tests/time_MOM_ANN.F90
   MOM6/config_src/drivers/timing_tests/time_MOM_EOS.F90
   MOM6/config_src/drivers/timing_tests/time_MOM_remapping.F90
   MOM6/config_src/drivers/timing_tests/time_reproducing_sum.F90
