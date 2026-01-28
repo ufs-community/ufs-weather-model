@@ -1110,21 +1110,21 @@ AQM inputs defined in ``aqm.rc`` are listed and described in :numref:`Table %s <
 
    * - Filename
      - Description
-   * - AE_cb6r3_ae6_aq.nml 
+   * - AE_cb6r5_ae7_aq.nml 
      - AE Matrix NML
-   * - GC_cb6r3_ae6_aq.nml 
+   * - GC_cb6r5_ae7_aq.nml 
      - GC Matrix NML
-   * - NR_cb6r3_ae6_aq.nml 
+   * - NR_cb6r5_ae7_aq.nml 
      - NR Matrix NML
    * - Species_Table_TR_0.nml 
      - TR Matrix NML
-   * - CSQY_DATA_cb6r3_ae6_aq
+   * - CSQY_DATA_cb6r5_ae7_aq
      - CSQY Data
    * - PHOT_OPTICS.dat
      - Optics Data
    * - omi_cmaq_2015_361X179.dat
      - OMI data
-   * - NEXUS/NEXUS_Expt.nc
+   * - INPUT/NEXUS_Expt.nc
      - Emissions File
    * - BEIS_RRFScmaq_C775.ncf
      - Biogenic File
@@ -1132,6 +1132,7 @@ AQM inputs defined in ``aqm.rc`` are listed and described in :numref:`Table %s <
      - Biogenic Speciation File
    * - Hourly_Emissions_regrid_rrfs_13km_20190801_t12z_h72.nc
      - File Emissions File 
+
 
 .. _lnd-in:
 
