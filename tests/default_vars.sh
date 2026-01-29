@@ -1655,7 +1655,8 @@ export_mom6() {
   export MOM6_USE_LI2016=True
   export MOM6_TOPOEDITS=''
   export MOM6_HFREEZE=20.0
-  export MOM6_GUST_CONST=0.02 
+  export MOM6_GUST_CONST=0.02
+  export MOM6_WRITE_GEOM=2
   # since CPL_SLOW is set to DT_THERM, this should be always be false
   export MOM6_THERMO_SPAN=False
   export MOM6_USE_WAVES=True
@@ -2211,6 +2212,7 @@ export MRAEROSOL=.false.
 export LHEATSTRG=.false.
 export LRADAR=.true.
 export USE_OCEANUV=.false.
+export MOM6_WRITE_GEOM=0
 
 export FV_CORE_TAU=5.
 export RF_CUTOFF=30.e2
