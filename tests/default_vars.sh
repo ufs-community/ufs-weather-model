@@ -2212,7 +2212,6 @@ export MRAEROSOL=.false.
 export LHEATSTRG=.false.
 export LRADAR=.true.
 export USE_OCEANUV=.false.
-export MOM6_WRITE_GEOM=0
 
 export FV_CORE_TAU=5.
 export RF_CUTOFF=30.e2
