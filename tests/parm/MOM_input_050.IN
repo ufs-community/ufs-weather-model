@@ -103,7 +103,7 @@ BAD_VAL_SST_MIN = -3.0          !   [deg C] default = -2.1
 DEFAULT_ANSWER_DATE = 20250818  ! default = 99991231
                                 ! This sets the default value for the various _ANSWER_DATE parameters.
 WAVE_INTERFACE_ANSWER_DATE = 20230101
-WRITE_GEOM = 2                  ! default = 1
+WRITE_GEOM = @[MOM6_WRITE_GEOM] ! default = 1
                                 ! If =0, never write the geometry and vertical grid files. If =1, write the
                                 ! geometry and vertical grid files only for a new simulation. If =2, always
                                 ! write the geometry and vertical grid files. Other values are invalid.
@@ -1008,7 +1008,7 @@ WIND_STAGGER = "A"              ! default = "C"
                                 ! values are 'A', 'B', or 'C'.
 CD_TIDES = 0.0018               !   [nondim] default = 1.0E-04
                                 ! The drag coefficient that applies to the tides.
-GUST_CONST = 0.0                !   [Pa] default = 0.02
+GUST_CONST = @[MOM6_GUST_CONST] !   [Pa] default = 0.02
                                 ! The background gustiness in the winds.
 USE_RIGID_SEA_ICE = True        !   [Boolean] default = False
                                 ! If true, sea-ice is rigid enough to exert a nonhydrostatic pressure that

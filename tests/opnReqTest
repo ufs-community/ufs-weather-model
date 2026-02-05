@@ -344,9 +344,23 @@ if [[ $MACHINE_ID = hera ]]; then
   PTMP="${dprefix}/ORT-ptmp"
   SCHEDULER=slurm
 
+elif [[ $MACHINE_ID = ursa ]]; then
+
+  module load ecflow
+  ECFLOW_START=ecflow_start.sh
+
+  PARTITION=u1-compute
+  QUEUE=batch
+  COMPILE_QUEUE=batch
+  dprefix="/scratch3/NCEPDEV/stmp/${USER}"
+  DISKNM="/scratch3/NAGAPE/epic/role.epic/UFS-WM_RT"
+  STMP="${dprefix}/ORT-stmp"
+  PTMP="${dprefix}/ORT-ptmp"
+  SCHEDULER=slurm
+
 elif [[ $MACHINE_ID = orion ]]; then
 
-  module load gcc/8.3.0
+  module load gcc/12.2.0
 
   export PATH=/work/noaa/nems/emc.nemspara/soft/miniconda3/bin:$PATH
   export PYTHONPATH=/work/noaa/nems/emc.nemspara/soft/miniconda3/lib/python3.8/site-packages
@@ -355,22 +369,23 @@ elif [[ $MACHINE_ID = orion ]]; then
   QUEUE=batch
   COMPILE_QUEUE=batch
   PARTITION=orion
-  dprefix=/work/noaa/stmp/${USER}
-  DISKNM=/work/noaa/nems/emc.nemspara/RT
+  dprefix=/work/noaa/epic/stmp/${USER}
+# DISKNM=/work/noaa/nems/emc.nemspara/RT
+  DISKNM=/work/noaa/epic/hercules/UFS-WM_RT  
   STMP=$dprefix/stmp
   PTMP=$dprefix/stmp
   SCHEDULER=slurm
 
 elif [[ $MACHINE_ID = hercules ]]; then
 
-  module load contrib rocoto/1.3.5
+  module load contrib rocoto/1.3.7
   ROCOTORUN=$(which rocotorun)
   ROCOTOSTAT=$(which rocotostat)
   ROCOTOCOMPLETE=$(which rocotocomplete)
 
   module use /work/noaa/epic/role-epic/spack-stack/modulefiles
-  module load ecflow/5.8.4-hercules
-  ECFLOW_START=/work/noaa/epic/role-epic/spack-stack/ecflow-5.8.4-hercules/bin/ecflow_start.sh
+# module load ecflow/5.8.4-hercules
+  ECFLOW_START=/work/noaa/epic/role-epic/spack-stack/hercules/ecflow-5.8.4/bin/ecflow_start.sh
   ECF_PORT=$(( $(id -u) + 1500 ))
 
   QUEUE=windfall
@@ -562,6 +577,8 @@ if [[ $ECFLOW == true ]]; then
 		EOF
   if [[ $MACHINE_ID == hera ]]; then
     QUEUE=batch
+  elif [[ $MACHINE_ID == ursa ]]; then
+    QUEUE=batch
   elif [[ $MACHINE_ID == hercules ]]; then
     QUEUE=windfall
   elif [[ $MACHINE_ID == orion ]]; then
@@ -569,7 +586,6 @@ if [[ $ECFLOW == true ]]; then
   else
     error "ecflow is not supported on this machine $MACHINE_ID"
   fi
-
 fi
 
 opnreqtest_log=${PATHRT}/logs/OpnReqTests_${TEST_NAME}_$MACHINE_ID.log
