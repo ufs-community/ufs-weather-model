@@ -61,7 +61,7 @@ stage('Run ORT on Ursa parallel'){
                  }
         environment {
         ACCNR = 'epic'
-        NODE_PATH = '/scratch3/NAGAPE/epic/role.epic/'
+        NODE_PATH = '/scratch3/NAGAPE/epic/role-epic/'
         GITHUB_TOKEN = credentials('GithubJenkinsNew')
         }
         when{ 
@@ -89,7 +89,7 @@ stage('Run ORT on Ursa parallel'){
           ./opnReqTest -n regional_control -a ${ACCNR} -c bit,dcp,thr
           cd logs/
 # change "cp" to "mv" to be tighter on logfiles existence (prevents using logfiles from a previous run)
-          mv OpnReqTests_regional_control_ursa.log /scratch3/NAGAPE/epic/role.epic/jenkins/workspace/
+          mv OpnReqTests_regional_control_ursa.log /scratch3/NAGAPE/epic/role-epic/jenkins/workspace/
           cd ..
           pwd
           '''
@@ -102,7 +102,7 @@ stage('Run ORT on Ursa parallel'){
                  }
         environment {
         ACCNR = 'epic'
-        NODE_PATH = '/scratch3/NAGAPE/epic/role.epic/'
+        NODE_PATH = '/scratch3/NAGAPE/epic/role-epic/'
         GITHUB_TOKEN = credentials('GithubJenkinsNew')
         }
         when{ 
@@ -130,7 +130,7 @@ stage('Run ORT on Ursa parallel'){
            ./opnReqTest -n cpld_control_nowave_noaero_p8 -a ${ACCNR} -c dbg,rst
            cd logs/
 # change "cp" to "mv" to be tighter on logfiles existence (prevents using logfiles from a previous run)
-           mv OpnReqTests_cpld_control_nowave_noaero_p8_ursa.log /scratch3/NAGAPE/epic/role.epic/jenkins/workspace/
+           mv OpnReqTests_cpld_control_nowave_noaero_p8_ursa.log /scratch3/NAGAPE/epic/role-epic/jenkins/workspace/
            cd ..
            pwd
            '''
@@ -143,7 +143,7 @@ stage('Run ORT on Ursa parallel'){
                  }
         environment {
         ACCNR = 'epic'
-        NODE_PATH = '/scratch3/NAGAPE/epic/role.epic/'
+        NODE_PATH = '/scratch3/NAGAPE/epic/role-epic/'
         GITHUB_TOKEN = credentials('GithubJenkinsNew')
         }
         when{ 
@@ -171,7 +171,7 @@ stage('Run ORT on Ursa parallel'){
            ./opnReqTest -n control_p8 -a ${ACCNR} -c std,dbg,bit,mpi,rst,thr,dcp
 	       cd logs/
 # change "cp" to "mv" to be tighter on logfiles existence (prevents using logfiles from a previous run)
-           mv OpnReqTests_control_p8_ursa.log /scratch3/NAGAPE/epic/role.epic/jenkins/workspace/
+           mv OpnReqTests_control_p8_ursa.log /scratch3/NAGAPE/epic/role-epic/jenkins/workspace/
            cd ..
            pwd
            '''
@@ -186,7 +186,7 @@ stage('Run ORT on Ursa parallel'){
         agent{ label 'ursa'}
         environment {
         ACCNR = 'epic'
-        NODE_PATH = '/scratch3/NAGAPE/epic/role.epic/'
+        NODE_PATH = '/scratch3/NAGAPE/epic/role-epic/'
         GITHUB_TOKEN = credentials('GithubJenkinsNew')
         }
         when{ 
@@ -208,7 +208,7 @@ stage('Run ORT on Ursa parallel'){
         git remote -v
         git fetch --no-recurse-submodules origin
         git reset FETCH_HEAD --hard
-        cd .. # cd to /scratch3/NAGAPE/epic/role.epic/jenkins/workspace
+        cd .. # cd to /scratch3/NAGAPE/epic/role-epic/jenkins/workspace
 
         echo '3 cds'
         pwd
