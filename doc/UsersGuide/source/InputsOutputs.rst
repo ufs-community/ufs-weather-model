@@ -28,7 +28,7 @@ mediator). Currently, supported configurations include:
    * - ATMAERO
      - :term:`ATM` coupled to :term:`GOCART`
    * - ATMAQ
-     - :term:`ATM` coupled to :term:`CMAQ`
+     - :term:`ATM` coupled to :term:`AQM`
    * - ATML
      - :term:`ATM` coupled to :term:`NOAHMP`
    * - ATMF
@@ -1078,7 +1078,7 @@ The aerosol initial input currently read by GOCART is the same format as the UFS
 .. _aqm-in:
 
 --------------
-AQM (CMAQ)
+UFS AQM
 --------------
 
 .. _aqm-fix-files:
