@@ -11,7 +11,10 @@ That is, to generate plots for a 2020 CAPE test, copy `plot_cape.sh` into your
 copy `plot_bcw.sh` into your baroclinic_wave_<compiler> run directory, or the plot_tc.sh
 script into your tropical_cyclone_<compiler> directory.
 
-To run the scripts, invoke from the command line via `./plot_<bcw/cape/tc>.sh`. 
+To run the scripts, invoke from the command line via `./plot_<bcw/cape/tc/aq>.sh`. 
+
+For aquaplanet case follow paragraph 21) in documentation:
+https://docs.google.com/document/d/1KbOfT5RgNQQAEIVC3TzVGvxV4v4-C3I3OY8UEde8C1s/edit?pli=1&tab=t.0
 
 Users can adjust the experiment name, standard pressure level, and forecast hour in the baroclinic wave script. 
 For the CAPE script, users can choose between global/regional(CONUS) domain, as well as which 
