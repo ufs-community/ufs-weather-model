@@ -8,21 +8,19 @@ winter_start=2184
 spring_start=3984
 summer_start=5784
 fall_start=7584
+
 #--- duration of season in days (usually 90):
 season_len=75
+
 #--- path to output (usually ./) if you copy this script to run directory
 #--- staged data on HPSS: /5year/NCEPDEV/emc-meso/Ratko.Vasic/AQUAPLANET/1yr-results.tar
 out_pth=/scratch3/NAGAPE/epic/Ratko.Vasic/GFS_v17/control_c48_intel/tmp-002
-#========================================================
-
+#out_pth=./
 
 
 #========================================================
 # initialize module
 . "${LMOD_ROOT}"/lmod/init/bash
-
-# update path with current directory
-export PATH=.:${PATH}
 
 # load grads module
 HOSTNAME=$(hostname)
