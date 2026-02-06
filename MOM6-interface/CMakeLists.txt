@@ -83,6 +83,9 @@ target_link_libraries(mom6_nuopc_obj PRIVATE mom6_obj
                                              fms
                                              stochastic_physics
                                              ESMF::ESMF)
+if(UFS_TRACING)
+  target_link_libraries(mom6_nuopc_obj PRIVATE ufs_tracing)
+endif()
 # OpenMP is disabled in MOM6
 #if(OpenMP_Fortran_FOUND)
 # target_link_libraries(mom6_nuopc_obj PRIVATE OpenMP::OpenMP_Fortran)
@@ -100,6 +103,9 @@ target_link_libraries(mom6 PUBLIC fms
                                   ESMF::ESMF
                                   NetCDF::NetCDF_Fortran
                                   cdeps::cdeps)
+if(UFS_TRACING)
+  target_link_libraries(mom6 PRIVATE ufs_tracing)
+endif()
 # OpenMP is disabled in MOM6
 #if(OpenMP_Fortran_FOUND)
 #  target_link_libraries(mom6 PRIVATE OpenMP::OpenMP_Fortran)

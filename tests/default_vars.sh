@@ -136,7 +136,7 @@ if [[ ${MACHINE_ID} = wcoss2 || ${MACHINE_ID} = acorn ]]; then
 
   export TPN=128
   export EXCLUSIVE_NODES=.true.
-  
+
   export INPES_dflt=3
   export JNPES_dflt=8
   export INPES_thrd=3
@@ -1655,6 +1655,8 @@ export_mom6() {
   export MOM6_USE_LI2016=True
   export MOM6_TOPOEDITS=''
   export MOM6_HFREEZE=20.0
+  export MOM6_GUST_CONST=0.02
+  export MOM6_WRITE_GEOM=2
   # since CPL_SLOW is set to DT_THERM, this should be always be false
   export MOM6_THERMO_SPAN=False
   export MOM6_USE_WAVES=True
@@ -2021,7 +2023,7 @@ export_datm_cdeps ()
   # default configure
   export UFS_CONFIGURE=ufs.configure.datm_cdeps.IN
   export atm_model=datm
-  export CPLMODE=ufs.nfrac.aoflux
+  export CPLMODE=ufs.frac.aoflux
 
   # datm defaults
   export INPUT_NML=input.mom6.nml.IN
@@ -2486,6 +2488,7 @@ export DIAG_TABLE=diag_table_hrrr
 export MODEL_CONFIGURE=model_configure_rrfs_conus13km.IN
 export DIAG_TABLE_ADDITIONAL=diag_additional_rrfs_smoke
 export FRAC_ICE=.true.
+export USE_CDEPS_INLINE=.false.
 }
 
 export_rap_common()
