@@ -1134,6 +1134,16 @@ AQM inputs defined in ``aqm.rc`` are listed and described in :numref:`Table %s <
      - File Emissions File 
 
 
+The most recent AQM input data files are in input-data-202XXXXX/AQM directory which can be found in the Weather Models S3 bucket (https://noaa-ufs-regtests-pds.s3.amazonaws.com/index.html). Below are the different data directories that exist in "AQM"
+
+   * - fix files
+     - Fix files are static, climatological, and topographical datasets required for model initialization and running. These files include terrain, land use, vegetation, and soil data.
+   * - NEXUS files
+     - "NEXUS" (NOAA Emission and eXchange Unified System) files are specialized input files used for air quality modeling within the SRW App to incorporate pollutant emissions data. 
+   * - INPUT files
+     - This directory contains pre-processing, initial conditions, grid-dependent, and namelist files.
+
+
 .. _lnd-in:
 
 --------------
