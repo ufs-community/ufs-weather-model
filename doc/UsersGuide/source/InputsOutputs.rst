@@ -1138,7 +1138,7 @@ The most recent AQM input data files can be found in the `Weather Model S3 bucke
 
    * - ``fix``
      - Fix files are static, climatological, and topographical datasets required for model initialization and running. These files include terrain, land use, vegetation, and soil data.
-   * - NEXUS files
+   * - ``NEXUS``
      - "NEXUS" (NOAA Emission and eXchange Unified System) files are specialized input files used for air quality modeling within the SRW App to incorporate pollutant emissions data. 
    * - INPUT files
      - This directory contains pre-processing, initial conditions, grid-dependent, and namelist files.
