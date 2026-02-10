@@ -1134,7 +1134,7 @@ AQM inputs defined in ``aqm.rc`` are listed and described in :numref:`Table %s <
      - File Emissions File 
 
 
-The most recent AQM input data files can be found in the `Weather Model S3 bucket <https://noaa-ufs-regtests-pds.s3.amazonaws.com/index.html>`_ in the input-data-202XXXXX/AQM directory for the most recent date. Below are the data subdirectories that exist in ``input-data-202XXXXX/AQM``.
+The most recent AQM input data files can be found in the `Weather Model S3 bucket <https://noaa-ufs-regtests-pds.s3.amazonaws.com/index.html>`_ in the input-data-202XXXXX/AQM directory for the most recent date. Below are the data subdirectories that exist in ``input-data-202XXXXX/AQM/v8``.
 
    * - ``fix``
      - Fix files are static, climatological, and topographical datasets required for model initialization and running. These files include terrain, land use, vegetation, and soil data.
