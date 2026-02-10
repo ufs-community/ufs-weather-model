@@ -1111,19 +1111,19 @@ AQM inputs defined in ``aqm.rc`` are listed and described in :numref:`Table %s <
    * - Filename
      - Description
    * - AE_cb6r5_ae7_aq.nml 
-     - AE Matrix NML
+     - AE Matrix NML - Specifies chemical species, emissions mapping, and related settings for CMAQ's CB6r5 (Revision 5 of the Carbon Bond 6 Mechanism) chemical mechanism.
    * - GC_cb6r5_ae7_aq.nml 
-     - GC Matrix NML
+     - GC Matrix NML - Configures CMAQ's gas-phase chemistry controls.
    * - NR_cb6r5_ae7_aq.nml 
-     - NR Matrix NML
+     - NR Matrix NML - Non-reactive, gas-phase chemical species configuration for CMAQ.
    * - Species_Table_TR_0.nml 
-     - TR Matrix NML
+     - TR Matrix NML - CMAQ species transport definitions. Empty in the UFS as CMAQ is used as a column model with tracer transport using FV3.
    * - CSQY_DATA_cb6r5_ae7_aq
-     - CSQY Data
+     - CSQY Data - CMAQ's chemical stoichiometric yield data table used by the solver for numerical calculations.
    * - PHOT_OPTICS.dat
      - Optics Data
    * - omi_cmaq_2015_361X179.dat
-     - OMI data
+     - OMI data - Ozone Monitoring Instrument (OMI) profile mappings used in establishing CAMQ boundary conditions.
    * - INPUT/NEXUS_Expt.nc
      - Emissions File
    * - BEIS_RRFScmaq_C775.ncf
@@ -1132,6 +1132,16 @@ AQM inputs defined in ``aqm.rc`` are listed and described in :numref:`Table %s <
      - Biogenic Speciation File
    * - Hourly_Emissions_regrid_rrfs_13km_20190801_t12z_h72.nc
      - File Emissions File 
+
+
+The most recent AQM input data files are in input-data-202XXXXX/AQM directory which can be found in the Weather Models S3 bucket (https://noaa-ufs-regtests-pds.s3.amazonaws.com/index.html). Below are the different data directories that exist in "AQM"
+
+   * - fix files
+     - Fix files are static, climatological, and topographical datasets required for model initialization and running. These files include terrain, land use, vegetation, and soil data.
+   * - NEXUS files
+     - "NEXUS" (NOAA Emission and eXchange Unified System) files are specialized input files used for air quality modeling within the SRW App to incorporate pollutant emissions data. 
+   * - INPUT files
+     - This directory contains pre-processing, initial conditions, grid-dependent, and namelist files.
 
 
 .. _lnd-in:
