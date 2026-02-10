@@ -247,11 +247,11 @@ shift $((OPTIND-1))
 if [[ ${SRT_NAME} == aquaplanet ]]; then
 
 #--- find radiation_astronomy.f file
-  RAD_FILE=`find ../ -name radiation_astronomy.f`
+  RAD_FILE=$(find ../ -name radiation_astronomy.f)
 #--- if we cannot find radiation_astronomy.f file, then exit:
-  [[ -z $RAD_FILE ]] && die "cannot find radiation_astronomy.f file"
+  [[ -z ${RAD_FILE} ]] && die "cannot find radiation_astronomy.f file"
 #--- find if file is original (grep text containing word AQUAPLANET)
-  RAD_FILE_EDITED=`grep "AQUAPLANET TEST CASE" $RAD_FILE | wc -l`
+  RAD_FILE_EDITED=$(grep "AQUAPLANET TEST CASE" "${RAD_FILE}" | wc -l)
 #--- if file is original, then add lines to appropriate place
   if [[ ${RAD_FILE_EDITED} == 0 ]]; then
 sed -i '/solcon = solc0/a\
@@ -259,22 +259,22 @@ sed -i '/solcon = solc0/a\
 ! AQUAPLANET TEST CASE\
       solcon=1370.\
       dlt=0.\
-! AQUAPLANET TEST CASE' $RAD_FILE
+! AQUAPLANET TEST CASE' "${RAD_FILE}"
   fi
 
 #--- find fv_diagnostics.F90 file
-  DIAG_FILE=`find ../ -name fv_diagnostics.F90`
+  DIAG_FILE=$(find ../ -name fv_diagnostics.F90)
 #--- if we cannot find find ../ -name fv_diagnostics.F90 file, then exit:
-  [[ -z $DIAG_FILE ]] && die "cannot find fv_diagnostics.F90 file"
+  [[ -z ${DIAG_FILE} ]] && die "cannot find fv_diagnostics.F90 file"
 #--- find if file is original (grep text containing word AQUAPLANET)
-  DIAG_FILE_EDITED=`grep "AQUAPLANET TEST CASE" $DIAG_FILE | wc -l`
+  DIAG_FILE_EDITED=$(grep "AQUAPLANET TEST CASE" "${DIAG_FILE}" | wc -l)
 #--- if file is original, then add lines to appropriate place
   if [[ ${DIAG_FILE_EDITED} == 0 ]]; then
 sed -i '/Print out where/a\
 \
 ! AQUAPLANET TEST CASE\
       return\
-! AQUAPLANET TEST CASE' $DIAG_FILE
+! AQUAPLANET TEST CASE' "${DIAG_FILE}"
   fi
 
 fi
