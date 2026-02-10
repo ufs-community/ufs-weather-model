@@ -1124,7 +1124,7 @@ AQM inputs defined in ``aqm.rc`` are listed and described in :numref:`Table %s <
      - Optics Data
    * - omi_cmaq_2015_361X179.dat
      - OMI data - Ozone Monitoring Instrument (OMI) profile mappings used in establishing CMAQ boundary conditions.
-   * - INPUT/NEXUS_Expt.nc
+   * - NEXUS/NEXUS_Expt.nc
      - Emissions File
    * - BEIS_RRFScmaq_C775.ncf
      - Biogenic File
