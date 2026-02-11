@@ -46,14 +46,16 @@ case ${season} in
   *)      echo "There must be at least one season" ; exit   ;;
 esac
 
-echo reinit                                      > plot.j
-echo set gxout shaded                           >> plot.j
-echo set display color white                    >> plot.j
-echo c                                          >> plot.j
-echo set grads off                              >> plot.j
+cat << EOF > plot.j
+reinit
+set gxout shaded
+set display color white
+c
+set grads off
+EOF
 
 i=1
- while (( i <= ${season_len} ))
+ while (( i <= season_len ))
 do
 
 echo sdfopen "${out_pth}"/atmf"${hour}".nc      >> plot.j
@@ -68,13 +70,15 @@ fi
 hour=$((hour + 24))
 done
 
-echo define ut=utot/"${season_len}"             >> plot.j
-echo set clevs -5 0 5 10 15 20 30 40            >> plot.j
-echo d ut                                       >> plot.j
-echo run cbar.gs                                >> plot.j
-echo draw title "${season}" Jet stream          >> plot.j
-echo printim "${season}"-jet.png x1200 y1000    >> plot.j
-echo c                                          >> plot.j
+cat << EOF >> plot.j
+define ut=utot/"${season_len}"
+set clevs -5 0 5 10 15 20 30 40
+d ut
+run cbar.gs
+draw title ${season} Jet stream
+printim ${season}-jet.png x1200 y1000
+c
+EOF
 
 echo \'exec plot.j\'       > plot.gs
 echo \'quit\'             >> plot.gs
@@ -100,14 +104,16 @@ case ${season} in
   *)      echo "There must be at least one season" ; exit   ;;
 esac
 
-echo reinit                                      > plot.j
-echo set gxout shaded                           >> plot.j
-echo set display color white                    >> plot.j
-echo c                                          >> plot.j
-echo set grads off                              >> plot.j
+cat << EOF > plot.j
+reinit
+set gxout shaded
+set display color white
+c
+set grads off
+EOF
 
 i=1
-while (( i <= ${season_len} ))
+while (( i <= season_len ))
 do
 
 echo sdfopen "${out_pth}"/atmf"${hour}".nc      >> plot.j
@@ -122,13 +128,15 @@ fi
 hour=$((hour + 24))
 done
 
-echo define tt=ttot/"${season_len}"             >> plot.j
-echo set clevs -24 -20 -16 -12 -8 -4 0          >> plot.j
-echo d tt-273.15                                >> plot.j
-echo run cbar.gs                                >> plot.j
-echo draw title "${season}" Temp 500hPa         >> plot.j
-echo printim "${season}"-t500.png x1200 y1000   >> plot.j
-echo c                                          >> plot.j
+cat << EOF >> plot.j
+define tt=ttot/"${season_len}"
+set clevs -24 -20 -16 -12 -8 -4 0
+d tt-273.15
+run cbar.gs
+draw title ${season} Temp 500hPa
+printim ${season}-t500.png x1200 y1000
+c
+EOF
 
 echo \'exec plot.j\'       > plot.gs
 echo \'quit\'             >> plot.gs
@@ -154,25 +162,27 @@ case ${season} in
   *)      echo "There must be at least one season" ; exit   ;;
 esac
 
-echo reinit                                      > plot.j
-echo set gxout shaded                           >> plot.j
-echo set display color white                    >> plot.j
-echo c                                          >> plot.j
-echo set grads off                              >> plot.j
-echo set rgb 40 128 0 160                       >> plot.j
-echo set rgb 42 128 0 208                       >> plot.j
-echo set rgb 44 128 0 255                       >> plot.j
-echo set rgb 46 96 0 224                        >> plot.j
-echo set rgb 48 0 0 192                         >> plot.j
-echo set rgb 50 0 88 208                        >> plot.j
-echo set rgb 52 0 144 224                       >> plot.j
-echo set rgb 54 0 200 240                       >> plot.j
-echo set rgb 56 0 255 255                       >> plot.j
-echo set rgb 58 128 255 64                      >> plot.j
-echo set rgb 60 192 255 0                       >> plot.j
+cat << EOF > plot.j
+reinit
+set gxout shaded
+set display color white
+c
+set grads off
+set rgb 40 128 0 160
+set rgb 42 128 0 208
+set rgb 44 128 0 255
+set rgb 46 96 0 224
+set rgb 48 0 0 192
+set rgb 50 0 88 208
+set rgb 52 0 144 224
+set rgb 54 0 200 240
+set rgb 56 0 255 255
+set rgb 58 128 255 64
+set rgb 60 192 255 0
+EOF
 
 i=1
-while (( i <= ${season_len} ))
+while (( i <= season_len ))
 do
 
 echo sdfopen "${out_pth}"/sfcf"${hour}".nc      >> plot.j
@@ -186,14 +196,16 @@ fi
 hour=$((hour + 24))
 done
 
-echo define pt=ptot/"${season_len}"             >> plot.j
-echo set clevs 0 1 2 3 4 5 6 7 8 9              >> plot.j
-echo set ccols 60 58 56 54 52 50 48 46 44 42 40 >> plot.j
-echo d pt*86400                                 >> plot.j
-echo run cbar.gs                                >> plot.j
-echo draw title "${season}" Precip mm/day       >> plot.j
-echo printim "${season}"-prec.png x1200 y1000   >> plot.j
-echo c                                          >> plot.j
+cat << EOF >> plot.j
+define pt=ptot/"${season_len}"
+set clevs 0 1 2 3 4 5 6 7 8 9
+set ccols 60 58 56 54 52 50 48 46 44 42 40
+d pt*86400
+run cbar.gs
+draw title ${season} Precip mm/day
+printim ${season}-prec.png x1200 y1000
+c
+EOF
 
 echo \'exec plot.j\'       > plot.gs
 echo \'quit\'             >> plot.gs
