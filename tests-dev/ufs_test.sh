@@ -251,9 +251,8 @@ if [[ ${SRT_NAME} == aquaplanet ]]; then
 #--- if we cannot find radiation_astronomy.f file, then exit:
   [[ -z ${RAD_FILE} ]] && die "cannot find radiation_astronomy.f file"
 #--- find if file is original (grep text containing word AQUAPLANET)
-  RAD_FILE_EDITED=$(grep -c "AQUAPLANET TEST CASE" "${RAD_FILE}")
 #--- if file is original, then add lines to appropriate place
-  if [[ ${RAD_FILE_EDITED} == 0 ]]; then
+  if ! grep -q "AQUAPLANET TEST CASE" "${RAD_FILE}"; then
 sed -i '/solcon = solc0/a\
 \
 ! AQUAPLANET TEST CASE\
@@ -267,9 +266,8 @@ sed -i '/solcon = solc0/a\
 #--- if we cannot find find ../ -name fv_diagnostics.F90 file, then exit:
   [[ -z ${DIAG_FILE} ]] && die "cannot find fv_diagnostics.F90 file"
 #--- find if file is original (grep text containing word AQUAPLANET)
-  DIAG_FILE_EDITED=$(grep -c "AQUAPLANET TEST CASE" "${DIAG_FILE}")
 #--- if file is original, then add lines to appropriate place
-  if [[ ${DIAG_FILE_EDITED} == 0 ]]; then
+  if ! grep -q "AQUAPLANET TEST CASE" "${DIAG_FILE}"; then
 sed -i '/Print out where/a\
 \
 ! AQUAPLANET TEST CASE\
