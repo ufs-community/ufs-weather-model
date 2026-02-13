@@ -154,3 +154,49 @@ To use the plotting script with user-generated data:
 
 3. Adjust the seasonal timing variables (``winter_start``, ``spring_start``, etc.), which are given in hours from the start of the 90-day spin-up run (hour 0).
 4. Modify ``season_len`` to set the length of each season in days (typically 90 days, but can be set to 365 for annual means).
+
+.. _setup-aquaplanet:
+
+==========================================================
+Advanced: Setting Up the AquaPlanet Experiment from Scratch
+==========================================================
+
+.. note::
+
+   This section is **optional**. Most users can run the AquaPlanet case using the ``ufs_test.sh`` method described above, which uses pre-staged initial conditions. The steps below are for advanced users who wish to create their own initial conditions from scratch.
+
+The from-scratch setup involves editing orography, SST, ice, and sea-land mask files to create an aquaplanet configuration, then running a 90-day spin-up to allow the model to reach a balanced state. This process produces the same initial conditions that are provided pre-staged for the standard test case.
+
+At a high level, the steps are:
+
+1. Build the UFS Weather Model and run a baseline ``control_c48`` test to generate a run directory.
+2. Build UFS_UTILS and use ``gdas_init`` to generate raw atmospheric initial conditions.
+3. Use the `Aquaplanet tools <https://github.com/RatkoVasic-NOAA/Aquaplanet>`_ to modify SST, ice, sea-land mask, orography, and atmospheric/surface profiles to represent an aquaplanet.
+4. Regenerate initial conditions with the modified files.
+5. Apply minor source code changes and recompile the model.
+6. Run a 90-day spin-up simulation (in three 30-day restart segments).
+
+Clone Required Repositories
+----------------------------
+
+Clone the UFS Weather Model:
+
+.. code-block:: console
+
+   git clone https://github.com/ufs-community/ufs-weather-model.git
+   cd ufs-weather-model/
+   git submodule update --init --recursive
+
+Clone UFS_UTILS:
+
+.. code-block:: console
+
+   git clone https://github.com/ufs-community/UFS_UTILS.git
+   cd UFS_UTILS/
+   git submodule update --init --recursive
+
+Clone the aquaplanet tools:
+
+.. code-block:: console
+
+   git clone https://github.com/RatkoVasic-NOAA/Aquaplanet
