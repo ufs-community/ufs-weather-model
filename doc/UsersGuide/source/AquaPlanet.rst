@@ -452,6 +452,44 @@ Copy the modified atmospheric file back to the extract directory:
 
    cp gfs.t06z.atmanl.nc $EXTRACT_DIR/gfs.20251015/06/atmos/gfs.t06z.atmanl.nc
 
+Setup Surface Profiles
+-----------------------
+
+Navigate to the surface profile tool directory:
+
+.. code-block:: console
+
+   cd ~/Aquaplanet/sfc-profile/
+
+Copy the surface analysis file from ``$EXTRACT_DIR``:
+
+.. code-block:: console
+
+   cp $EXTRACT_DIR/gfs.t06z.sfcanl.nc .
+
+Compile and load required modules:
+
+.. code-block:: console
+
+   ./compile.sh
+   module purge
+   module use /contrib/spack-stack/spack-stack-1.9.2/envs/ue-oneapi-2024.2.1/install/modulefiles/Core
+   module load stack-oneapi/2024.2.1
+   module load stack-intel-oneapi-mpi/2021.13
+   module load netcdf-fortran/4.6.1
+
+Run the tool:
+
+.. code-block:: console
+
+   ./profile.x
+
+Copy the modified surface file back to the extract directory:
+
+.. code-block:: console
+
+   cp gfs.t06z.sfcanl.nc $EXTRACT_DIR/gfs.20251015/06/atmos/gfs.t06z.sfcanl.nc
+
 Prepare Orography Fields
 -------------------------
 
@@ -478,7 +516,9 @@ This will modify the orography files in place to set land mask to ocean and heig
 Regenerate Initial Conditions
 ------------------------------
 
-Return to the ``gdas_init`` utility directory:
+Now that the correct fixed files are in place, return to UFS_UTILS and run ``chgres`` again.
+
+Navigate back to the ``gdas_init`` utility directory:
 
 .. code-block:: console
 
@@ -486,13 +526,28 @@ Return to the ``gdas_init`` utility directory:
 
 .. important::
 
-   Set ``EXTRACT_DATA=no`` in the ``config`` file since data is already extracted.
+   In the ``config`` file, make sure that ``EXTRACT_DATA`` is set to ``no`` since data is already extracted.
 
-Delete or rename the old output directory, then run the driver script:
+Delete or rename the output directory. For example:
 
 .. code-block:: console
 
-   mv $OUTDIR ${OUTDIR}.old
+   rm -rf $OUTDIR
+
+or:
+
+.. code-block:: console
+
+   mv $OUTDIR $OUTDIR.backup
+
+Run the driver script:
+
+.. code-block:: console
+
    ./driver.<platform>.sh
 
-Check the results in the output directory.
+Check the results in:
+
+.. code-block:: console
+
+   ../../output/gfs.20251015/06/model/atmos/input/
