@@ -58,3 +58,56 @@ Where:
 - ``-k``: keep run directory
 - ``-r``: use rocoto scheduler (``-e`` will use ecFlow)
 - ``-n "aquaplanet intel"``: use the aquaplanet test case with intel compiler
+
+Running Extended Experiments
+-----------------------------
+
+After running the base test case, users can extend the simulation by running multiple restart segments. For example, to run a 1-year experiment broken into four 3-month segments:
+
+Navigate to the run directory (linked as ``./tests-dev/run_dir``).
+
+Use the ``input.nml`` file configured for restart runs (with ``warm_start = .true.``).
+
+For each 3-month segment, update ``fhrot`` and ``nhours_fcst`` in ``model_configure``:
+
+**First segment (months 4-6):**
+
+.. code-block:: console
+
+   fhrot:                   2160
+   nhours_fcst:             4320
+
+**Second segment (months 7-9):**
+
+.. code-block:: console
+
+   fhrot:                   4320
+   nhours_fcst:             6480
+
+**Third segment (months 10-12):**
+
+.. code-block:: console
+
+   fhrot:                   6480
+   nhours_fcst:             8640
+
+After each segment completes, rename and move restart files to the ``INPUT`` directory:
+
+.. code-block:: console
+
+   cd RESTART/
+   for file in 20*.060000.*.nc; do mv "$file" "${file#20*.060000.}"; done
+   mv 20*.060000.coupler.res coupler.res
+   mv * ../INPUT/.
+
+Checking Results
+----------------
+
+.. include:: ./doc-snippets/hsd_check_results.rst
+
+For example, to monitor progress or check results for the ``aquaplanet`` case, run:
+
+.. code-block:: console
+
+   tail -f ${UFS_WM}/tests-dev/run_dir/aquaplanet_intel/err
+   tail -f ${UFS_WM}/tests-dev/run_dir/aquaplanet_intel/out
