@@ -112,7 +112,7 @@ For example, to monitor progress or check results for the ``aquaplanet`` case, r
    tail -f ${UFS_WM}/tests-dev/run_dir/aquaplanet_intel/err
    tail -f ${UFS_WM}/tests-dev/run_dir/aquaplanet_intel/out
 
-   .. _plotting-aquaplanet:
+.. _plotting-aquaplanet:
 
 =======================
 Plotting Script
