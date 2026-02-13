@@ -385,3 +385,69 @@ Copy the modified file back:
 .. code-block:: console
 
    cp new-IMS-NIC.blended.ice.monthly.clim.grb <run_directory>/IMS-NIC.blended.ice.monthly.clim.grb
+
+Edit Sea-Land Mask Data
+-----------------------
+
+Navigate to the sea-land mask tool directory:
+
+.. code-block:: console
+
+   cd ~/Aquaplanet/slmask/
+
+Copy the sea-land mask file from your run directory:
+
+.. code-block:: console
+
+   cp <run_directory>/global_slmask.t62.192.94.grb .
+
+Compile and run the tool:
+
+.. code-block:: console
+
+   ./compile.sh
+   ./slmask.x
+
+Copy the modified file back:
+
+.. code-block:: console
+
+   cp new-global_slmask.t62.192.94.grb <run_directory>/global_slmask.t62.192.94.grb
+
+Setup Atmospheric Profiles
+---------------------------
+
+Navigate to the atmospheric profile tool directory:
+
+.. code-block:: console
+
+   cd ~/Aquaplanet/atmos-profile
+
+Copy the atmospheric analysis file from ``$EXTRACT_DIR``:
+
+.. code-block:: console
+
+   cp $EXTRACT_DIR/gfs.t06z.atmanl.nc .
+
+Compile and load required modules:
+
+.. code-block:: console
+
+   ./compile.sh
+   module purge
+   module use /contrib/spack-stack/spack-stack-1.9.2/envs/ue-oneapi-2024.2.1/install/modulefiles/Core
+   module load stack-oneapi/2024.2.1
+   module load stack-intel-oneapi-mpi/2021.13
+   module load netcdf-fortran/4.6.1
+
+Run the tool:
+
+.. code-block:: console
+
+   ./profile.x
+
+Copy the modified atmospheric file back to the extract directory:
+
+.. code-block:: console
+
+   cp gfs.t06z.atmanl.nc $EXTRACT_DIR/gfs.20251015/06/atmos/gfs.t06z.atmanl.nc
