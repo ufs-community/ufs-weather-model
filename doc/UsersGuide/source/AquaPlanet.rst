@@ -451,3 +451,48 @@ Copy the modified atmospheric file back to the extract directory:
 .. code-block:: console
 
    cp gfs.t06z.atmanl.nc $EXTRACT_DIR/gfs.20251015/06/atmos/gfs.t06z.atmanl.nc
+
+Prepare Orography Fields
+-------------------------
+
+Navigate to the orography profile tool directory:
+
+.. code-block:: console
+
+   cd ~/Aquaplanet/orog-profile/
+
+Compile the tool:
+
+.. code-block:: console
+
+   ./compile.sh
+
+Verify that ``list.txt`` contains the correct relative path to fix orography files, then run:
+
+.. code-block:: console
+
+   ./patch.sh
+
+This will modify the orography files in place to set land mask to ocean and height to zero.
+
+Regenerate Initial Conditions
+------------------------------
+
+Return to the ``gdas_init`` utility directory:
+
+.. code-block:: console
+
+   cd ~/UFS_UTILS/util/gdas_init/
+
+.. important::
+
+   Set ``EXTRACT_DATA=no`` in the ``config`` file since data is already extracted.
+
+Delete or rename the old output directory, then run the driver script:
+
+.. code-block:: console
+
+   mv $OUTDIR ${OUTDIR}.old
+   ./driver.<platform>.sh
+
+Check the results in the output directory.
