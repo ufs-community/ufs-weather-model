@@ -551,3 +551,80 @@ Check the results in:
 .. code-block:: console
 
    ../../output/gfs.20251015/06/model/atmos/input/
+
+Add Noah-MP Variables to Surface Files
+---------------------------------------
+
+Since the GFS_v17 physics suite is used, empty fields (``sheleg``, ``snwdph``, and ``zorl``) must be added to the surface files:
+
+.. code-block:: console
+
+   cd ~/Aquaplanet/noah-MP-vars/
+
+Copy the surface files from the output directory:
+
+.. code-block:: console
+
+   cp $OUTDIR/gfs.20251015/06/model/atmos/input/sfc_* .
+
+Compile and run:
+
+.. code-block:: console
+
+   ./compile.sh
+   ./add-vars.x
+
+Copy the modified files back:
+
+.. code-block:: console
+
+   cp sfc_* $OUTDIR/gfs.20251015/06/model/atmos/input/.
+
+Copy Initial Conditions to Run Directory
+-----------------------------------------
+
+Copy all generated initial condition files to your run directory:
+
+.. code-block:: console
+
+   cp $OUTDIR/gfs.20251015/06/model/atmos/input/* <run_directory>/INPUT/.
+
+Copy the modified orography files:
+
+.. code-block:: console
+
+   cd <run_directory>/INPUT/
+   cp ~/UFS_UTILS/fix/orog/C48/C48.mx500_oro_data.tile1.nc oro_data.tile1.nc
+   cp ~/UFS_UTILS/fix/orog/C48/C48.mx500_oro_data.tile2.nc oro_data.tile2.nc
+   cp ~/UFS_UTILS/fix/orog/C48/C48.mx500_oro_data.tile3.nc oro_data.tile3.nc
+   cp ~/UFS_UTILS/fix/orog/C48/C48.mx500_oro_data.tile4.nc oro_data.tile4.nc
+   cp ~/UFS_UTILS/fix/orog/C48/C48.mx500_oro_data.tile5.nc oro_data.tile5.nc
+   cp ~/UFS_UTILS/fix/orog/C48/C48.mx500_oro_data.tile6.nc oro_data.tile6.nc
+
+Modify Model Source Code
+-------------------------
+
+Two minor modifications are needed to the UFS Weather Model source code for the aquaplanet configuration.
+
+**Fix Solar Zenith Angle**
+
+Edit the file ``./ufs-weather-model/UFSATM/ccpp/physics/physics/Radiation/radiation_astronomy.f``. After line 600, add:
+
+.. code-block:: console
+
+   ! AQUAPLANET TEST CASE
+         solcon=1370.
+         dlt=0.
+   ! AQUAPLANET TEST CASE
+
+**Reduce Land-Surface Warnings**
+
+Edit the file ``./ufs-weather-model/UFSATM/fv3/atmos_cubed_sphere/tools/fv_diagnostics.F90``. After lines 4292 and 4349, add:
+
+.. code-block:: console
+
+   ! AQUAPLANET TEST CASE
+         return
+   ! AQUAPLANET TEST CASE
+
+Recompile the model after making these changes and update the executable in your run directory.
