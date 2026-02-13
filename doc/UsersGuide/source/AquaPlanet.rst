@@ -256,3 +256,132 @@ Since orography files need to be edited, remove the link and copy the files:
    cp /scratch3/NCEPDEV/global/role.glopara/fix/orog/20240917/*.nc orog/.
    cp /scratch3/NCEPDEV/global/role.glopara/fix/orog/20240917/*.dat orog/.
    cp -r /scratch3/NCEPDEV/global/role.glopara/fix/orog/20240917/C48/ orog/.
+
+Generate Initial Atmospheric Data
+----------------------------------
+
+Navigate to the ``gdas_init`` utility directory:
+
+.. code-block:: console
+
+   cd ../util/gdas_init/
+
+Edit the ``config`` file to set the following variables:
+
+.. code-block:: console
+
+   EXTRACT_DIR=<path_to_UFS_UTILS>/input/
+   EXTRACT_DATA=yes
+   yy=2025
+   mm=10
+   dd=15
+   CRES_HIRES=C48
+   OUTDIR=<path_to_UFS_UTILS>/output/
+
+Edit the driver script (e.g., ``driver.ursa.sh``) to set:
+
+.. code-block:: console
+
+   PROJECT_CODE=<your_account>
+
+Comment out the line that removes the extract directory:
+
+.. code-block:: console
+
+   # rm -fr $EXTRACT_DIR
+
+Run the driver script:
+
+.. code-block:: console
+
+   ./driver.<platform>.sh
+
+Check that results are properly generated in ``$EXTRACT_DIR`` and ``$OUTDIR``.
+
+Create Idealized SST Profile
+-----------------------------
+
+Navigate to the SST profile tool directory:
+
+.. code-block:: console
+
+   cd ~/Aquaplanet/sst-profile/
+
+Copy the SST climatology file from your UFS Weather Model run directory:
+
+.. code-block:: console
+
+   cp <run_directory>/RTGSST.1982.2012.monthly.clim.grb .
+
+Compile and run the tool:
+
+.. code-block:: console
+
+   ./compile.sh
+   ./sst-profile.x
+
+Copy the modified file back to your run directory:
+
+.. code-block:: console
+
+   cp new-RTGSST.1982.2012.monthly.clim.grb <run_directory>/RTGSST.1982.2012.monthly.clim.grb
+
+Edit Global Ice Data
+--------------------
+
+Navigate to the glacier tool directory:
+
+.. code-block:: console
+
+   cd ~/Aquaplanet/glacier/
+
+Copy the glacier file from your run directory:
+
+.. code-block:: console
+
+   cp <run_directory>/global_glacier.2x2.grb .
+
+Compile and run the tool:
+
+.. code-block:: console
+
+   ./compile.sh
+   ./glacier.x
+
+Copy the modified file back:
+
+.. code-block:: console
+
+   cp new-global_glacier.2x2.grb <run_directory>/global_glacier.2x2.grb
+
+Edit Monthly Ice Data
+---------------------
+
+Navigate to the ice monthly tool directory:
+
+.. code-block:: console
+
+   cd ~/Aquaplanet/ice-monthly/
+
+Copy the ice climatology file from your run directory:
+
+.. code-block:: console
+
+   cp <run_directory>/IMS-NIC.blended.ice.monthly.clim.grb .
+
+Compile and run the tool:
+
+.. code-block:: console
+
+   ./compile.sh
+   ./ice-monthly.x
+
+.. note::
+
+   If the tool fails due to lack of memory, use the provided ``job_card`` file as a template and submit to a batch node.
+
+Copy the modified file back:
+
+.. code-block:: console
+
+   cp new-IMS-NIC.blended.ice.monthly.clim.grb <run_directory>/IMS-NIC.blended.ice.monthly.clim.grb
