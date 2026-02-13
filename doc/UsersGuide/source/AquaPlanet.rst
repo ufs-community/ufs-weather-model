@@ -200,3 +200,59 @@ Clone the aquaplanet tools:
 .. code-block:: console
 
    git clone https://github.com/RatkoVasic-NOAA/Aquaplanet
+
+Build UFS Weather Model
+------------------------
+
+Navigate to the UFS Weather Model test directory:
+
+.. code-block:: console
+
+   cd ufs-weather-model/tests/
+
+Edit ``rt.conf`` to include only the following two lines:
+
+.. code-block:: console
+
+   COMPILE | atm_dyn32 | intel | -DAPP=ATM -DCCPP_SUITES=FV3_GFS_v17_p8_ugwpv1 -D32BIT=ON | | fv3 |
+   RUN | control_c48 | | baseline |
+
+Execute the regression test to compile the model and create a baseline run directory:
+
+.. code-block:: console
+
+   ./rt.sh -a <account> -k
+
+Replace ``<account>`` with your project code (e.g., ``epic``). Save the location of the ``control_c48_intel`` run directory for later use.
+
+Build UFS_UTILS
+---------------
+
+Compile the UFS_UTILS tools:
+
+.. code-block:: console
+
+   cd UFS_UTILS/
+   module purge
+   module use $PWD/modulefiles
+   module load build.<platform>.intelllvm
+   ./build_all.sh
+
+Replace ``<platform>`` with your system name (e.g., ``ursa``).
+
+Link the fix directories:
+
+.. code-block:: console
+
+   cd fix/
+   ./link_fixdirs.sh emc <platform>
+
+Since orography files need to be edited, remove the link and copy the files:
+
+.. code-block:: console
+
+   rm orog
+   mkdir orog
+   cp /scratch3/NCEPDEV/global/role.glopara/fix/orog/20240917/*.nc orog/.
+   cp /scratch3/NCEPDEV/global/role.glopara/fix/orog/20240917/*.dat orog/.
+   cp -r /scratch3/NCEPDEV/global/role.glopara/fix/orog/20240917/C48/ orog/.
