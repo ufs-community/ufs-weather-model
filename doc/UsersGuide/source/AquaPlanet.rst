@@ -111,3 +111,46 @@ For example, to monitor progress or check results for the ``aquaplanet`` case, r
 
    tail -f ${UFS_WM}/tests-dev/run_dir/aquaplanet_intel/err
    tail -f ${UFS_WM}/tests-dev/run_dir/aquaplanet_intel/out
+
+   .. _plotting-aquaplanet:
+
+=======================
+Plotting Script
+=======================
+
+A plotting script is available to generate seasonal mean plots for key atmospheric variables. The script is located at:
+
+.. code-block:: console
+
+   ./tests-dev/test_cases/utils/plot_aq.sh
+
+.. note::
+
+   This plotting script is currently configured to run on Hera and Ursa only.
+
+By default, this script creates seasonal means for three variables:
+
+- Jet stream characteristics
+- Precipitation patterns
+- Temperature at 500 mb
+
+The script uses staged data from a 1-year control simulation. If you want to use this dataset on other machines (which have access to :term:`HPSS`), you can retrieve it from HPSS:
+
+.. code-block:: console
+
+   /5year/NCEPDEV/emc-meso/Ratko.Vasic/AQUAPLANET/1yr-results.tar
+
+Customizing the Plotting Script
+--------------------------------
+
+To use the plotting script with user-generated data:
+
+1. Copy the script to your run directory.
+2. Edit the variable ``out_pth`` to point to your output location:
+
+   .. code-block:: bash
+
+      out_pth=./
+
+3. Adjust the seasonal timing variables (``winter_start``, ``spring_start``, etc.), which are given in hours from the start of the 90-day spin-up run (hour 0).
+4. Modify ``season_len`` to set the length of each season in days (typically 90 days, but can be set to 365 for annual means).
