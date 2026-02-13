@@ -628,3 +628,98 @@ Edit the file ``./ufs-weather-model/UFSATM/fv3/atmos_cubed_sphere/tools/fv_diagn
    ! AQUAPLANET TEST CASE
 
 Recompile the model after making these changes and update the executable in your run directory.
+
+Running the 90-Day Spin-Up
+---------------------------
+
+The aquaplanet simulation requires a 90-day spin-up period to reach equilibrium. This is run in three 30-day (720-hour) segments with restarts.
+
+**Initial 30-Day Run**
+
+Edit the ``job_card`` file in your run directory:
+
+.. code-block:: console
+
+   #SBATCH --time=480
+
+Edit the ``model_configure`` file:
+
+.. code-block:: console
+
+   start_year:              2025
+   start_month:             10
+   start_day:               15
+   nhours_fcst:             720
+   quilting_restart:        .false.
+   output_fh:               24 -1
+
+Submit the job:
+
+.. code-block:: console
+
+   sbatch job_card
+
+**First Restart (Days 31-60)**
+
+After the first month completes, prepare for the restart:
+
+.. code-block:: console
+
+   cd RESTART/
+   for file in 20*.060000.*.nc; do mv "$file" "${file#20*.060000.}"; done
+   mv 20*.060000.coupler.res coupler.res
+   mv * ../INPUT/.
+
+Edit ``input.nml`` and set:
+
+.. code-block:: console
+
+   make_nh = .false.
+   na_init = 0
+   external_ic = .false.
+   nggps_ic = .false.
+   mountain = .true.
+   warm_start = .true.
+
+Edit ``model_configure`` and set:
+
+.. code-block:: console
+
+   nhours_fcst:             1440
+   fhrot:                   720
+
+Submit the job:
+
+.. code-block:: console
+
+   sbatch job_card
+
+**Second Restart (Days 61-90)**
+
+After the second month completes:
+
+.. code-block:: console
+
+   cd RESTART/
+   for file in 20*.060000.*.nc; do mv "$file" "${file#20*.060000.}"; done
+   mv 20*.060000.coupler.res coupler.res
+   mv * ../INPUT/.
+
+Keep ``input.nml`` settings from the first restart. Edit ``model_configure`` and set:
+
+.. code-block:: console
+
+   nhours_fcst:             2160
+   fhrot:                   1440
+
+Submit the job:
+
+.. code-block:: console
+
+   sbatch job_card
+
+After this final segment completes, the files in the ``RESTART`` directory represent spun-up initial conditions. Rename and copy these files to the ``INPUT`` directory --- these are the new initial conditions for your experiment (spun up for 90 days). Save them for future use.
+
+To continue running experiments with these self-generated initial conditions, follow the instructions in :numref:`Section %s <run-aquaplanet>`, using the ``input.nml`` from the restart runs and updating ``fhrot`` and ``nhours_fcst`` in ``model_configure`` as described in the extended experiments section.
+
+.. include:: ./doc-snippets/hsd_notes.rst
