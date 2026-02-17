@@ -926,8 +926,15 @@ ENERGYSAVEDAYS = 0.25           !   [days] default = 1.0
                                 ! other globally summed diagnostics.
 
 ! === module ocean_model_init ===
+OCEAN_SURFACE_STAGGER = "A"     ! default = "C"
+                                ! A case-insensitive character string to indicate the staggering of the surface
+                                ! velocity field that is returned to the coupler.  Valid values include 'A',
+                                ! 'B', or 'C'.
 
 ! === module MOM_surface_forcing ===
+WIND_STAGGER = "A"              ! default = "C"
+                                ! A case-insensitive character string to indicate the staggering of the input
+                                ! wind stress field.  Valid values are 'A', 'B', or 'C'.
 BUOY_CONFIG = "data_override"            ! default = "zero"
                                 ! The character string that indicates how buoyancy forcing is specified. Valid
                                 ! options include (file), (zero), (linear), (USER), (BFB) and (NONE).

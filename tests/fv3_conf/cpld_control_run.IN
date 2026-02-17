@@ -31,6 +31,12 @@ elif [[ $ULTRALOW == .true. ]]; then
     FV3_IC=@[INPUTDATA_ROOT]/${FV3_DIR}/INPUT_${LEVELS}_mx${OCNRES}/${SYEAR}${SMONTH}${SDAY}${SHOUR}
     MOM_IC=@[INPUTDATA_ROOT]/MOM6_IC/${ATMRES}mx${OCNRES}/${SYEAR}${SMONTH}${SDAY}${SHOUR}
     ICE_IC=@[INPUTDATA_ROOT]/CICE_IC/${ATMRES}mx${OCNRES}/${SYEAR}${SMONTH}${SDAY}${SHOUR}
+elif [[ $GFSv17opn == .true. ]]; then
+    FV3_IC=@[INPUTDATA_GFSv17opn]/FV3_IC
+    MOM_IC=@[INPUTDATA_GFSv17opn]/MOM6_IC
+    ICE_IC=@[INPUTDATA_GFSv17opn]/CICE_IC
+    WAV_IC=@[INPUTDATA_GFSv17opn]/WW3_IC
+    CMEPS_IC=@[INPUTDATA_GFSv17opn]/CMEPS_IC
 elif [[ $SFS == .true. ]]; then
     FV3_IC=@[INPUTDATA_ROOT]/SFS/${SYEAR}${SMONTH}${SDAY}${SHOUR}
     MOM_IC=${FV3_IC}
@@ -46,39 +52,57 @@ else
 fi
 
 # FV3 fixed input
-cp @[INPUTDATA_ROOT]/${FV3_DIR}/@[FNSMCC] .
-cp @[INPUTDATA_ROOT]/${FV3_DIR}/@[FNMSKH] .
-cp @[INPUTDATA_ROOT]/FV3_fix/@[FNGLAC] .
-cp @[INPUTDATA_ROOT]/FV3_fix/@[FNMXIC] .
-cp @[INPUTDATA_ROOT]/FV3_fix/@[FNTSFC] .
-cp @[INPUTDATA_ROOT]/FV3_fix/@[FNSNOC] .
-cp @[INPUTDATA_ROOT]/FV3_fix/@[FNAISC] .
+if [[ $GFSv17opn == .true. ]]; then
+    cp @[INPUTDATA_GFSv17opn]/FV3_fix/*.nc ./INPUT
+    cp @[INPUTDATA_GFSv17opn]/FV3_fix/*.grb .
+    cp @[INPUTDATA_GFSv17opn]/FV3_fix_tiled/* .
+    cp @[INPUTDATA_GFSv17opn]/MOM6_FIX/* ./INPUT
+    cp @[INPUTDATA_GFSv17opn]/CICE_FIX/* .
+    cp @[INPUTDATA_GFSv17opn]/WW3_FIX/@[WW3_MODDEF] mod_def.ww3
+    # TODO: when uglo_15km is present in standard input-data location
+    # replace the above line with the following location for the mod_def.ww3
+    # the existing mod_def in the GFSv17opn/WW3_FIX directory should be removed
+    # cp @[INPUTDATA_ROOT_WW3]/@[WW3_MODDEF] mod_def.ww3
 
-cp @[INPUTDATA_ROOT]/FV3_fix_tiled/@[ATMRES]mx@[OCNRES]/oro_@[ATMRES].mx@[OCNRES].tile1.nc INPUT/oro_data.tile1.nc
-cp @[INPUTDATA_ROOT]/FV3_fix_tiled/@[ATMRES]mx@[OCNRES]/oro_@[ATMRES].mx@[OCNRES].tile2.nc INPUT/oro_data.tile2.nc
-cp @[INPUTDATA_ROOT]/FV3_fix_tiled/@[ATMRES]mx@[OCNRES]/oro_@[ATMRES].mx@[OCNRES].tile3.nc INPUT/oro_data.tile3.nc
-cp @[INPUTDATA_ROOT]/FV3_fix_tiled/@[ATMRES]mx@[OCNRES]/oro_@[ATMRES].mx@[OCNRES].tile4.nc INPUT/oro_data.tile4.nc
-cp @[INPUTDATA_ROOT]/FV3_fix_tiled/@[ATMRES]mx@[OCNRES]/oro_@[ATMRES].mx@[OCNRES].tile5.nc INPUT/oro_data.tile5.nc
-cp @[INPUTDATA_ROOT]/FV3_fix_tiled/@[ATMRES]mx@[OCNRES]/oro_@[ATMRES].mx@[OCNRES].tile6.nc INPUT/oro_data.tile6.nc
-cp @[INPUTDATA_ROOT]/FV3_fix_tiled/@[ATMRES]mx@[OCNRES]/@[ATMRES]*.nc .
+    cp @[INPUTDATA_GFSv17opn]/WW3_FIX/@[MESH_WAV] .
+    cp @[INPUTDATA_GFSv17opn]/WW3_FIX/wave_gfs.buoys.full ww3_points.list
+    cp @[INPUTDATA_GFSv17opn]/WW3_FIX/pnt_wght.uglo_15km.nc pnt_wght.ww3.nc
+    cp @[INPUTDATA_GFSv17opn]/WW3_FIX/ww3_shel.nml .
+else
+    cp @[INPUTDATA_ROOT]/${FV3_DIR}/@[FNSMCC] .
+    cp @[INPUTDATA_ROOT]/${FV3_DIR}/@[FNMSKH] .
+    cp @[INPUTDATA_ROOT]/FV3_fix/@[FNGLAC] .
+    cp @[INPUTDATA_ROOT]/FV3_fix/@[FNMXIC] .
+    cp @[INPUTDATA_ROOT]/FV3_fix/@[FNTSFC] .
+    cp @[INPUTDATA_ROOT]/FV3_fix/@[FNSNOC] .
+    cp @[INPUTDATA_ROOT]/FV3_fix/@[FNAISC] .
 
-cp @[INPUTDATA_ROOT]/CPL_FIX/a@[ATMRES]o@[OCNRES]/grid_spec.nc ./INPUT
-cp @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT/@[ATMRES]_grid*.nc ./INPUT
-cp @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT/grid_spec.nc ./INPUT/@[ATMRES]_mosaic.nc
+    cp @[INPUTDATA_ROOT]/FV3_fix_tiled/@[ATMRES]mx@[OCNRES]/oro_@[ATMRES].mx@[OCNRES].tile1.nc INPUT/oro_data.tile1.nc
+    cp @[INPUTDATA_ROOT]/FV3_fix_tiled/@[ATMRES]mx@[OCNRES]/oro_@[ATMRES].mx@[OCNRES].tile2.nc INPUT/oro_data.tile2.nc
+    cp @[INPUTDATA_ROOT]/FV3_fix_tiled/@[ATMRES]mx@[OCNRES]/oro_@[ATMRES].mx@[OCNRES].tile3.nc INPUT/oro_data.tile3.nc
+    cp @[INPUTDATA_ROOT]/FV3_fix_tiled/@[ATMRES]mx@[OCNRES]/oro_@[ATMRES].mx@[OCNRES].tile4.nc INPUT/oro_data.tile4.nc
+    cp @[INPUTDATA_ROOT]/FV3_fix_tiled/@[ATMRES]mx@[OCNRES]/oro_@[ATMRES].mx@[OCNRES].tile5.nc INPUT/oro_data.tile5.nc
+    cp @[INPUTDATA_ROOT]/FV3_fix_tiled/@[ATMRES]mx@[OCNRES]/oro_@[ATMRES].mx@[OCNRES].tile6.nc INPUT/oro_data.tile6.nc
+    cp @[INPUTDATA_ROOT]/FV3_fix_tiled/@[ATMRES]mx@[OCNRES]/@[ATMRES]*.nc .
 
-# MOM6 fixed input
-cp @[INPUTDATA_ROOT]/MOM6_FIX/@[OCNRES]/* ./INPUT
+    cp @[INPUTDATA_ROOT]/CPL_FIX/a@[ATMRES]o@[OCNRES]/grid_spec.nc ./INPUT
+    cp @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT/@[ATMRES]_grid*.nc ./INPUT
+    cp @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT/grid_spec.nc ./INPUT/@[ATMRES]_mosaic.nc
 
-# CICE fixed input
-cp @[INPUTDATA_ROOT]/CICE_FIX/@[OCNRES]/grid_cice_NEMS_mx@[OCNRES].nc .
-cp @[INPUTDATA_ROOT]/CICE_FIX/@[OCNRES]/kmtu_cice_NEMS_mx@[OCNRES].nc .
-cp @[INPUTDATA_ROOT]/CICE_FIX/@[OCNRES]/mesh.mx@[OCNRES].nc .
+    # MOM6 fixed input
+    cp @[INPUTDATA_ROOT]/MOM6_FIX/@[OCNRES]/* ./INPUT
 
-# WW3 fix/input
-if [[ $CPLWAV == .true. ]]; then
-    cp @[INPUTDATA_ROOT_WW3]/@[WW3_MODDEF] mod_def.ww3
-    if [[ ${WW3_DOMAIN:0:2} != mx ]]; then
-        cp @[INPUTDATA_ROOT_WW3]/@[MESH_WAV] .
+    # CICE fixed input
+    cp @[INPUTDATA_ROOT]/CICE_FIX/@[OCNRES]/grid_cice_NEMS_mx@[OCNRES].nc .
+    cp @[INPUTDATA_ROOT]/CICE_FIX/@[OCNRES]/kmtu_cice_NEMS_mx@[OCNRES].nc .
+    cp @[INPUTDATA_ROOT]/CICE_FIX/@[OCNRES]/mesh.mx@[OCNRES].nc .
+
+    # WW3 fix/input
+    if [[ $CPLWAV == .true. ]]; then
+        cp @[INPUTDATA_ROOT_WW3]/@[WW3_MODDEF] mod_def.ww3
+        if [[ ${WW3_DOMAIN:0:2} != mx ]]; then
+            cp @[INPUTDATA_ROOT_WW3]/@[MESH_WAV] .
+        fi
     fi
 fi
 
@@ -212,6 +236,14 @@ else
         cp ${FV3_IC}/ufs.cpld.cpl*nc .
         ls -1 ufs.cpld.cpl*nc>rpointer.cpl
         cp ${WAV_IC}/ufs.cpld.ww3.r.${RESTART_FILE_SUFFIX_SECS}.nc .
+    elif [[ $GFSv17opn == .true. ]]; then
+        cp ${FV3_IC}/* ./INPUT
+        cp ${MOM_IC}/* ./INPUT
+        cp  ${ICE_IC}/iced.* ./cice_model.res.nc
+        ls -1 cice_model.res.nc>ice.restart_file
+        cp ${WAV_IC}/* .
+        cp ${CMEPS_IC}/ufs.cpld.cpl.r* ufs.cpld.cpl.r.nc
+        ls -1 ufs.cpld.cpl.r.nc>rpointer.cpl
     fi
 fi
 
@@ -277,8 +309,13 @@ fi
 
 if [ $GWD_OPT -ne 0 ]; then
     cp @[INPUTDATA_ROOT]/FV3_input_data/ugwp_c384_tau.nc ./ugwp_limb_tau.nc
-    cp @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT_L127_gfsv17/oro_data_ls* ./INPUT
-    cp @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT_L127_gfsv17/oro_data_ss* ./INPUT
+    if [[ $GFSv17opn == .true. ]]; then
+        cp @[INPUTDATA_GFSv17opn]/FV3_fix/oro_data_ls* ./INPUT
+        cp @[INPUTDATA_GFSv17opn]/FV3_fix/oro_data_ss* ./INPUT
+    else
+        cp @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT_L127_gfsv17/oro_data_ls* ./INPUT
+        cp @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT_L127_gfsv17/oro_data_ss* ./INPUT
+    fi
 fi
 
 if [ $IMP_PHYSICS = 8 ]; then
