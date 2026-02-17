@@ -23,9 +23,12 @@ load("ufs_common")
 nccmp_ver=os.getenv("nccmp_ver") or "1.9.0.1"
 load(pathJoin("nccmp", nccmp_ver))
 
-setenv("CC", "mpicc")
-setenv("CXX", "mpicxx")
-setenv("FC", "mpif90")
+setenv("CC","cc")
+setenv("CXX","CC")
+setenv("FC","ftn")
+--setenv("CC", "mpicc")
+--setenv("CXX", "mpicxx")
+--setenv("FC", "mpif90")
 setenv("CMAKE_Platform", "derecho.gnu")
 
 whatis("Description: UFS build environment")
