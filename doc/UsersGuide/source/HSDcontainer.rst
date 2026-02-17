@@ -103,7 +103,7 @@ where ``/path/to/hsd`` is the path to this top-level directory (e.g., ``/Users/J
 NOAA RDHPCS Systems
 ----------------------
 
-On many NOAA :term:`RDHPCS`, a container named ``ubuntu22.04-intel2024.2.0-1-devel-wm-hsd.img`` has already been built, and users may access the container at the locations in :numref:`Table %s <PreBuiltContainers>`.
+On many NOAA :term:`RDHPCS`, a container named ``ubuntu22.04-intel-ue-1.9.2-wm-hsd.img`` has already been built, and users may access the container at the locations in :numref:`Table %s <PreBuiltContainers>`.
 
 .. _PreBuiltContainers:
 
@@ -116,7 +116,7 @@ On many NOAA :term:`RDHPCS`, a container named ``ubuntu22.04-intel2024.2.0-1-dev
    +--------------------+--------------------------------------------------------+
    | Ursa               | /scratch3/NCEPDEV/nems/role.epic/containers            |
    +--------------------+--------------------------------------------------------+
-   | NOAA Cloud [#fn]_  | /contrib/EPIC/containers                               |
+   | NOAA Cloud         | /contrib/EPIC/containers                               |
    +--------------------+--------------------------------------------------------+
    | Orion/Hercules     | /work/noaa/epic/role-epic/contrib/containers           |
    +--------------------+--------------------------------------------------------+
@@ -125,30 +125,30 @@ Users can simply set an environment variable to point to the container:
 
 .. code-block:: console
 
-   export img=path/to/ubuntu22.04-intel2024.2.0-1-devel-wm-hsd.img
+   export img=path/to/ubuntu22.04-intel-ue-1.9.2-wm-hsd.img
 
 If users prefer, they may copy the container to their local working directory. For example, on Gaea
 
 .. code-block:: console
 
-   cp /gpfs/f6/bil-fire8/world-shared/containers/ubuntu22.04-intel2024.2.0-1-devel-wm-hsd.img .
+   cp /gpfs/f6/bil-fire8/world-shared/containers/ubuntu22.04-intel-ue-1.9.2-wm-hsd.img .
 
 Other Systems
 ----------------
 
-On other systems, users can build the Singularity container from a public Docker :term:`container` image or download the ``ubuntu22.04-intel2024.2.0-1-devel-wm-hsd.img`` container from the `UFS Hierarchical Testing Framework (HTF) Data Bucket <https://registry.opendata.aws/noaa-ufs-htf-pds/>`_. Downloading may be faster depending on the download speed on the user's system. Note that the container in the data bucket is from the May 30, 2025 ``develop`` branch.
+On other systems, users can build the Singularity container from a public Docker :term:`container` image or download the ``ubuntu22.04-intel-ue-1.9.2-wm-hsd.img`` container from the `UFS Hierarchical Testing Framework (HTF) Data Bucket <https://registry.opendata.aws/noaa-ufs-htf-pds/>`_. Downloading may be faster depending on the download speed on the user's system. Note that the container in the data bucket is from the May 30, 2025 ``develop`` branch.
 
 To download from the data bucket, users can run:
 
 .. code-block:: console
 
-   wget https://noaa-ufs-htf-pds.s3.amazonaws.com/develop-20260212/ubuntu22.04-intel2024.2.0-1-devel-wm-hsd.img
+   wget https://noaa-ufs-htf-pds.s3.amazonaws.com/develop-20260212/ubuntu22.04-intel-ue-1.9.2-wm-hsd.img
 
 To build the container from a Docker image, users can run:
 
 .. code-block:: console
 
-   singularity build --force ubuntu22.04-intel2024.2.0-1-devel-wm-hsd.img docker://noaaepic/ubuntu22.04-intel2024.2.0-1-devel-wm:ue192-hsd-aquaplanet
+   singularity build --force ubuntu22.04-intel-ue-1.9.2-wm-hsd.img docker://noaaepic/ubuntu22.04-intel-ue-1.9.2-wm-hsd.img:ue192-hsd-aquaplanet
 
 This process may take several hours depending on the system. 
 
@@ -191,20 +191,20 @@ Save the location of the container in an environment variable.
 
 .. code-block:: console
 
-   export img=/path/to/ubuntu22.04-intel2024.2.0-1-devel-wm-hsd.img
+   export img=/path/to/ubuntu22.04-intel-ue-1.9.2-wm-hsd.img
 
 Users may convert a container ``.img`` file to a writable sandbox. This step is optional and unnecessary on most systems (it can take several hours):
 
 .. code-block:: console
 
-   singularity build --sandbox ubuntu22.04-intel-ue-1.6.0-wm-hsd $img
+   singularity build --sandbox ubuntu22.04-intel-ue-1.9.2-wm-hsd $img
 
 When making a writable sandbox on NOAA :term:`RDHPCS`, the following warnings commonly appear and can be ignored:
 
 .. code-block:: console
 
    INFO:    Starting build...
-   INFO:    Verifying bootstrap image ubuntu22.04-intel2024.2.0-1-devel-wm-hsd.img
+   INFO:    Verifying bootstrap image ubuntu22.04-intel-ue-1.9.2-wm-hsd.img
    WARNING: integrity: signature not found for object group 1
    WARNING: Bootstrap image could not be verified, but build will continue.
 
@@ -237,7 +237,7 @@ where:
    * ``-c`` is the compiler on the user's local machine (e.g., ``intel/2024.2.1``, ``intel-oneapi-compilers/2024.1.0``, ``intel-oneapi-compilers/2024.2.1``)
    * ``-m`` is the :term:`MPI` on the user's local machine (e.g., ``impi/2024.2.1``, ``intel-oneapi-mpi/2021.12.0``, ``intel-oneapi-mpi/2021.13.1``)
    * ``-p`` refers to the local machine/platform (e.g., ``ursa``, ``gaea``, ``noaacloud``). Required for Gaea, Hercules, Orion, and Ursa only.
-   * ``-i`` is the full path to the container image (e.g., ``$img`` or ``$HSD/ubuntu22.04-intel2024.2.0-1-devel-wm-hsd.img``).
+   * ``-i`` is the full path to the container image (e.g., ``$img`` or ``$HSD/ubuntu22.04-intel-ue-1.9.2-wm-hsd.img``).
 
 .. note::
 
@@ -360,7 +360,7 @@ If the experiment completes successfully, the loop will exit with output similar
    + TEST_END_TIME='20241115 16:43:41'
    + export TEST_END_TIME
    + python -c 'import create_log; create_log.finish_log()'
-   running: /usr/bin/singularity exec --env-file /scratch1/NCEPDEV/stmp4/User.Name/hsd-test/new-cont/ufs-weather-model/container-scripts/ufswm.env -B /scratch1:/scratch1 /scratch1/NCEPDEV/stmp4/User.Name/hsd-test/new-cont/ubuntu22.04-intel2024.2.0-1-devel-wm-hsd.img python tmp_arg_file.py
+   running: /usr/bin/singularity exec --env-file /scratch1/NCEPDEV/stmp4/User.Name/hsd-test/new-cont/ufs-weather-model/container-scripts/ufswm.env -B /scratch1:/scratch1 /scratch1/NCEPDEV/stmp4/User.Name/hsd-test/new-cont/ubuntu22.04-intel-ue-1.9.2-wm-hsd.img python tmp_arg_file.py
    Performing Cleanup...
    REGRESSION TEST RESULT: SUCCESS
    + echo 'ufs_test.sh finished'
