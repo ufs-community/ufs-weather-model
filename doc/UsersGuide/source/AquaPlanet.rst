@@ -4,10 +4,10 @@
 .. _aquaplanet:
 
 *********************
-AquaPlanet Test Case
+Aquaplanet Test Case
 *********************
 
-The AquaPlanet test case is an idealized atmosphere-only forecast configuration designed to study atmospheric dynamics in a simplified Earth-like setting where all land is replaced with ocean. This configuration removes the complexity of land-surface interactions, topography, and regional variations, allowing researchers to focus on fundamental atmospheric processes such as tropical convection, Hadley circulation, jet stream dynamics, and the global energy budget.
+The Aquaplanet test case is an idealized atmosphere-only forecast configuration designed to study atmospheric dynamics in a simplified Earth-like setting where all land is replaced with ocean. This configuration removes the complexity of land-surface interactions, topography, and regional variations, allowing researchers to focus on fundamental atmospheric processes such as tropical convection, Hadley circulation, jet stream dynamics, and the global energy budget.
 
 The test case runs at C48 resolution with the ``FV3_GFS_v17_p8_ugwpv1`` physics suite. Initial conditions are created by modifying standard GFS data to represent an aquaplanet configuration: sea surface temperatures (SST) follow an idealized latitudinal profile, all land is converted to ocean, topography is set to zero, and sea ice is removed. The atmospheric initial state is configured with idealized vertical profiles of temperature, humidity, and winds appropriate for an aquaplanet simulation.
 
@@ -22,10 +22,10 @@ Obtaining Data for HSD Cases
 .. _run-aquaplanet:
 
 ==============================
-Running the AquaPlanet Case
+Running the Aquaplanet Case
 ==============================
 
-This section explains how to run the AquaPlanet case using the ``ufs_test.sh`` script with pre-staged initial conditions. This is the recommended way to run the case for most users.
+This section explains how to run the Aquaplanet case using the ``ufs_test.sh`` script with pre-staged initial conditions. This is the recommended way to run the case for most users.
 
 Clone the Repository
 --------------------
@@ -157,13 +157,13 @@ To use the plotting script with user-generated data:
 
 .. _setup-aquaplanet:
 
-==========================================================
-Advanced: Setting Up the AquaPlanet Experiment from Scratch
-==========================================================
+============================================================
+Advanced: Setting Up the Aquaplanet Experiment from Scratch
+============================================================
 
 .. note::
 
-   This section is **optional**. Most users can run the AquaPlanet case using the ``ufs_test.sh`` method described above, which uses pre-staged initial conditions. The steps below are for advanced users who wish to create their own initial conditions from scratch.
+   This section is **optional**. Most users can run the Aquaplanet case using the ``ufs_test.sh`` method described above, which uses pre-staged initial conditions. The steps below are for advanced users who wish to create their own initial conditions from scratch.
 
 The from-scratch setup involves editing orography, SST, ice, and sea-land mask files to create an aquaplanet configuration, then running a 90-day spin-up to allow the model to reach a balanced state. This process produces the same initial conditions that are provided pre-staged for the standard test case.
 
