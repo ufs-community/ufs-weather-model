@@ -14,8 +14,7 @@ season_len=75
 
 #--- path to output (usually ./) if you copy this script to run directory
 #--- staged data on HPSS: /5year/NCEPDEV/emc-meso/Ratko.Vasic/AQUAPLANET/1yr-results.tar
-out_pth=/scratch3/NAGAPE/epic/Ratko.Vasic/GFS_v17/control_c48_intel/tmp-002
-#out_pth=./
+out_pth=./
 
 
 #========================================================
