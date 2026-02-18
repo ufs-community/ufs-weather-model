@@ -1,4 +1,4 @@
-Launch tests from the ``${UFS_WM}/tests-dev`` directory with the following command:
+Users can launch tests from the ``${UFS_WM}/tests-dev`` directory with the following command:
 
 .. code-block:: console
 

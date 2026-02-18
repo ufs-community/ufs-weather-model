@@ -9,7 +9,7 @@ Aquaplanet Test Case
 
 The Aquaplanet test case is an idealized atmosphere-only forecast configuration designed to study atmospheric dynamics in a simplified Earth-like setting where all land is replaced with ocean. This configuration removes the complexity of land-surface interactions, topography, and regional variations, allowing researchers to focus on fundamental atmospheric processes such as tropical convection, Hadley circulation, jet stream dynamics, and the global energy budget.
 
-The test case runs at C48 resolution with the ``FV3_GFS_v17_p8_ugwpv1`` physics suite. Initial conditions are created by modifying standard GFS data to represent an aquaplanet configuration: sea surface temperatures (SST) follow an idealized latitudinal profile, all land is converted to ocean, topography is set to zero, and sea ice is removed. The atmospheric initial state is configured with idealized vertical profiles of temperature, humidity, and winds appropriate for an aquaplanet simulation.
+The test case runs at C48 resolution with the ``FV3_GFS_v17_p8_ugwpv1`` physics suite. Initial conditions are created by modifying standard GFS data to represent an aquaplanet configuration: Sea surface temperatures (SST) follow an idealized latitudinal profile, all land is converted to ocean, topography is set to zero, and sea ice is removed. The atmospheric initial state is configured with idealized vertical profiles of temperature, humidity, and winds appropriate for an aquaplanet simulation.
 
 A key feature of this configuration is the 90-day spin-up period required to allow the model to adjust from its initial state to a balanced aquaplanet climate. After spin-up, the simulation can be run for extended periods to study seasonal variations, climate statistics, and atmospheric phenomena in the absence of land-surface influences.
 
@@ -51,45 +51,41 @@ Users with access to the ``epic`` account can run the ``aquaplanet`` test case w
 
    ./ufs_test.sh -a epic -s -c -k -r -n "aquaplanet intel"
 
-Where:
+where:
 
-- ``-s``: use tests-dev, symlink sharable test scripts
-- ``-c``: prevents scripts from comparing with previous results
-- ``-k``: keep run directory
-- ``-r``: use rocoto scheduler (``-e`` will use ecFlow)
-- ``-n "aquaplanet intel"``: use the aquaplanet test case with intel compiler
+- ``-s``: uses tests-dev; symlinks sharable test scripts
+- ``-c``: prevents scripts from comparing with previous results (by creating new baselines)
+- ``-k``: keeps run directory
+- ``-r``: uses rocoto scheduler (``-e`` will use ecFlow)
+- ``-n "aquaplanet intel"``: uses the aquaplanet test case with intel compiler
 
 Running Extended Experiments
 -----------------------------
 
 After running the base test case, users can extend the simulation by running multiple restart segments. For example, to run a 1-year experiment broken into four 3-month segments:
 
-Navigate to the run directory (linked as ``./tests-dev/run_dir``).
-
-Use the ``input.nml`` file configured for restart runs (with ``warm_start = .true.``).
-
-For each 3-month segment, update ``fhrot`` and ``nhours_fcst`` in ``model_configure``:
+Navigate to the run directory (``${UFS_WM}/tests-dev/run_dir``). For each 3-month segment, update ``fhrot`` and ``nhours_fcst`` in ``model_configure``:
 
 **First segment (months 4-6):**
 
 .. code-block:: console
 
-   fhrot:                   2160
    nhours_fcst:             4320
+   fhrot:                   2160
 
 **Second segment (months 7-9):**
 
 .. code-block:: console
 
-   fhrot:                   4320
    nhours_fcst:             6480
+   fhrot:                   4320
 
 **Third segment (months 10-12):**
 
 .. code-block:: console
 
-   fhrot:                   6480
    nhours_fcst:             8640
+   fhrot:                   6480
 
 After each segment completes, rename and move restart files to the ``INPUT`` directory:
 
@@ -122,7 +118,7 @@ A plotting script is available to generate seasonal mean plots for key atmospher
 
 .. code-block:: console
 
-   ./tests-dev/test_cases/utils/plot_aq.sh
+   ${UFS_WM}/tests-dev/test_cases/utils/plot_aq.sh
 
 .. note::
 
@@ -134,11 +130,7 @@ By default, this script creates seasonal means for three variables:
 - Precipitation patterns
 - Temperature at 500 mb
 
-The script uses staged data from a 1-year control simulation. If you want to use this dataset on other machines (which have access to :term:`HPSS`), you can retrieve it from HPSS:
-
-.. code-block:: console
-
-   /5year/NCEPDEV/emc-meso/Ratko.Vasic/AQUAPLANET/1yr-results.tar
+The script uses staged data from a 1-year control simulation. If you want to use this dataset on other machines (which have access to :term:`HPSS`), you can retrieve it from HPSS at ``/5year/NCEPDEV/emc-meso/Ratko.Vasic/AQUAPLANET/1yr-results.tar``.
 
 Customizing the Plotting Script
 --------------------------------
@@ -146,14 +138,32 @@ Customizing the Plotting Script
 To use the plotting script with user-generated data:
 
 1. Copy the script to your run directory.
+
+   .. code-block:: bash
+
+      cd ${UFS_WM}/tests-dev/run_dir/aquaplanet_intel
+      cp ${UFS_WM}/tests-dev/test_cases/utils/plot_aq.sh .
+
 2. Edit the variable ``out_pth`` to point to your output location:
 
    .. code-block:: bash
 
-      out_pth=./
+      out_pth=path/to/ufs-weather-model/tests-dev/run_dir/aquaplanet_intel
 
 3. Adjust the seasonal timing variables (``winter_start``, ``spring_start``, etc.), which are given in hours from the start of the 90-day spin-up run (hour 0).
+
+   .. code-block:: bash
+
+      winter_start=2160
+      spring_start=4320
+      summer_start=6480
+      fall_start=8640
+
 4. Modify ``season_len`` to set the length of each season in days (typically 90 days, but can be set to 365 for annual means).
+
+   .. code-block:: bash
+
+      season_len=90
 
 .. _setup-aquaplanet:
 
