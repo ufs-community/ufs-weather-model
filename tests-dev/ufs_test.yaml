@@ -5,6 +5,7 @@ atm_dyn32_intel:
   tests:
     - 2020_CAPE: {'project':['test_case'],'baseline': 'True'}
     - baroclinic_wave: {'project':['test_case'],'baseline': 'True'}  
+    - aquaplanet: {'project':['test_case'],'baseline': 'True'}  
 hafsw_intel:
   build: 
     compiler: 'intel'
@@ -15,7 +16,8 @@ atm_gnu:
   build: 
     compiler: 'gnu'
     option: '-DAPP=ATM -DCCPP_SUITES=FV3_GFS_v16,FV3_GFS_v16_flake,FV3_GFS_v16_ras,FV3_GFS_v17_p8,FV3_GFS_v17_p8_ugwpv1'
-    turnon: ['hera','hercules']
+    turnon: ['hera','hercules','ursa']
   tests:
-    - 2020_CAPE: {'project':['test_case'], 'baseline': 'True','turnon':['hera','hercules']}
-    - baroclinic_wave: {'project':['test_case'], 'baseline': 'True','turnon':['hera','hercules']}  
+    - 2020_CAPE: {'project':['test_case'], 'baseline': 'True','turnon':['hera','hercules','ursa']}
+    - baroclinic_wave: {'project':['test_case'], 'baseline': 'True','turnon':['hera','hercules','ursa']}  
+    - aquaplanet: {'project':['test_case'], 'baseline': 'True','turnon':['hera','hercules','ursa']}  

@@ -47,11 +47,11 @@ echo
 export PATH=.:${PATH}
 
 # if grads-to-control app is not present, get it from web:
-[[ -f g2ctl ]] || wget -q https://ftp.cpc.ncep.noaa.gov/wd51we/g2ctl/g2ctl
+[[ -f g2ctl ]] || https://raw.githubusercontent.com/RatkoVasic-NOAA/Aquaplanet/refs/heads/main/utils/g2ctl
 chmod 755 g2ctl
 
 # if color bar script is not present, get it from web:
-[[ -f cbar.gs ]] || wget -q http://cola.gmu.edu/grads/scripts/cbar.gs
+[[ -f cbar.gs ]] || wget -q //raw.githubusercontent.com/RatkoVasic-NOAA/Aquaplanet/refs/heads/main/utils/cbar.gs
 
 # load modules grads and wgrib2
 HOSTNAME=$(hostname)
