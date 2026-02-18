@@ -126,7 +126,7 @@ A plotting script is available to generate seasonal mean plots for key atmospher
 
 .. note::
 
-   This plotting script is currently configured to run on Hera and Ursa only.
+   This plotting script is currently configured to run on Ursa only.
 
 By default, this script creates seasonal means for three variables:
 
