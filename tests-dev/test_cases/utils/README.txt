@@ -14,7 +14,7 @@ script into your tropical_cyclone_<compiler> directory.
 To run the scripts, invoke from the command line via `./plot_<bcw/cape/tc/aq>.sh`. 
 
 For aquaplanet case follow "Plotting Script" paragraph in documentation:
-https://github.com/ufs-community/ufs-weather-model/blob/develop/doc/UsersGuide/source/AquaPlanet.rst
+https://github.com/ufs-community/ufs-weather-model/blob/develop/doc/UsersGuide/source/Aquaplanet.rst
 
 Users can adjust the experiment name, standard pressure level, and forecast hour in the baroclinic wave script. 
 For the CAPE script, users can choose between global/regional(CONUS) domain, as well as which 
