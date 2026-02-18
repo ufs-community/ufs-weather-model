@@ -144,11 +144,11 @@ To use the plotting script with user-generated data:
       cd ${UFS_WM}/tests-dev/run_dir/aquaplanet_intel
       cp ${UFS_WM}/tests-dev/test_cases/utils/plot_aq.sh .
 
-2. Edit the variable ``out_pth`` to point to your output location:
+2. Edit the variable ``data_path`` to point to your output location:
 
    .. code-block:: bash
 
-      out_pth=path/to/ufs-weather-model/tests-dev/run_dir/aquaplanet_intel
+      data_path=path/to/ufs-weather-model/tests-dev/run_dir/aquaplanet_intel
 
 3. Adjust the seasonal timing variables (``winter_start``, ``spring_start``, etc.), which are given in hours from the start of the 90-day spin-up run (hour 0).
 
