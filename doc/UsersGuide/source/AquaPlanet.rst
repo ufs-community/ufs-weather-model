@@ -193,17 +193,13 @@ Clone the UFS Weather Model:
 
 .. code-block:: console
 
-   git clone https://github.com/ufs-community/ufs-weather-model.git
-   cd ufs-weather-model/
-   git submodule update --init --recursive
+   git clone --recursive https://github.com/ufs-community/ufs-weather-model.git
 
 Clone UFS_UTILS:
 
 .. code-block:: console
 
-   git clone https://github.com/ufs-community/UFS_UTILS.git
-   cd UFS_UTILS/
-   git submodule update --init --recursive
+   git clone --recursive https://github.com/ufs-community/UFS_UTILS.git
 
 Clone the aquaplanet tools:
 
@@ -257,7 +253,7 @@ Link the fix directories:
    cd fix/
    ./link_fixdirs.sh emc <platform>
 
-Since orography files need to be edited, remove the link and copy the files:
+Since orography files need to be edited, remove the link and copy the files. The fix file locations for different platforms are listed in ``link_fixdirs.sh``. For example, on Ursa, users would run:
 
 .. code-block:: console
 
