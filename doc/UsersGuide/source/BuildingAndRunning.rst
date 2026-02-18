@@ -310,8 +310,6 @@ the defaults.
      - Set default values for the coupled 5-component tests using CMEPS.
    * - export_cpl
      - Set default values for *coupled* / S2S configurations. 
-   * - export_35d_run
-     - Set default values for EMC's weekly coupled benchmark 35d tests (see `rt_35d.conf <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/rt_35d.conf>`__). 
    * - export_datm_cdeps
      - Set default values for configurations that use the data atmosphere (:term:`DATM`) component. 
    * - export_hafs_datm_cdeps

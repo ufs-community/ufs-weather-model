@@ -4,12 +4,12 @@
 .. _aquaplanet:
 
 *********************
-AquaPlanet Test Case
+Aquaplanet Test Case
 *********************
 
-The AquaPlanet test case is an idealized atmosphere-only forecast configuration designed to study atmospheric dynamics in a simplified Earth-like setting where all land is replaced with ocean. This configuration removes the complexity of land-surface interactions, topography, and regional variations, allowing researchers to focus on fundamental atmospheric processes such as tropical convection, Hadley circulation, jet stream dynamics, and the global energy budget.
+The Aquaplanet test case is an idealized atmosphere-only forecast configuration designed to study atmospheric dynamics in a simplified Earth-like setting where all land is replaced with ocean. This configuration removes the complexity of land-surface interactions, topography, and regional variations, allowing researchers to focus on fundamental atmospheric processes such as tropical convection, Hadley circulation, jet stream dynamics, and the global energy budget.
 
-The test case runs at C48 resolution with the ``FV3_GFS_v17_p8_ugwpv1`` physics suite. Initial conditions are created by modifying standard GFS data to represent an aquaplanet configuration: sea surface temperatures (SST) follow an idealized latitudinal profile, all land is converted to ocean, topography is set to zero, and sea ice is removed. The atmospheric initial state is configured with idealized vertical profiles of temperature, humidity, and winds appropriate for an aquaplanet simulation.
+The test case runs at C48 resolution with the ``FV3_GFS_v17_p8_ugwpv1`` physics suite. Initial conditions are created by modifying standard GFS data to represent an aquaplanet configuration: Sea surface temperatures (SST) follow an idealized latitudinal profile, all land is converted to ocean, topography is set to zero, and sea ice is removed. The atmospheric initial state is configured with idealized vertical profiles of temperature, humidity, and winds appropriate for an aquaplanet simulation.
 
 A key feature of this configuration is the 90-day spin-up period required to allow the model to adjust from its initial state to a balanced aquaplanet climate. After spin-up, the simulation can be run for extended periods to study seasonal variations, climate statistics, and atmospheric phenomena in the absence of land-surface influences.
 
@@ -22,10 +22,10 @@ Obtaining Data for HSD Cases
 .. _run-aquaplanet:
 
 ==============================
-Running the AquaPlanet Case
+Running the Aquaplanet Case
 ==============================
 
-This section explains how to run the AquaPlanet case using the ``ufs_test.sh`` script with pre-staged initial conditions. This is the recommended way to run the case for most users.
+This section explains how to run the Aquaplanet case using the ``ufs_test.sh`` script with pre-staged initial conditions. This is the recommended way to run the case for most users.
 
 Clone the Repository
 --------------------
@@ -51,45 +51,41 @@ Users with access to the ``epic`` account can run the ``aquaplanet`` test case w
 
    ./ufs_test.sh -a epic -s -c -k -r -n "aquaplanet intel"
 
-Where:
+where:
 
-- ``-s``: use tests-dev, symlink sharable test scripts
-- ``-c``: prevents scripts from comparing with previous results
-- ``-k``: keep run directory
-- ``-r``: use rocoto scheduler (``-e`` will use ecFlow)
-- ``-n "aquaplanet intel"``: use the aquaplanet test case with intel compiler
+- ``-s``: uses tests-dev; symlinks sharable test scripts
+- ``-c``: prevents scripts from comparing with previous results (by creating new baselines)
+- ``-k``: keeps run directory
+- ``-r``: uses rocoto scheduler (``-e`` will use ecFlow)
+- ``-n "aquaplanet intel"``: uses the aquaplanet test case with intel compiler
 
 Running Extended Experiments
 -----------------------------
 
 After running the base test case, users can extend the simulation by running multiple restart segments. For example, to run a 1-year experiment broken into four 3-month segments:
 
-Navigate to the run directory (linked as ``./tests-dev/run_dir``).
-
-Use the ``input.nml`` file configured for restart runs (with ``warm_start = .true.``).
-
-For each 3-month segment, update ``fhrot`` and ``nhours_fcst`` in ``model_configure``:
+Navigate to the run directory (``${UFS_WM}/tests-dev/run_dir``). For each 3-month segment, update ``fhrot`` and ``nhours_fcst`` in ``model_configure``:
 
 **First segment (months 4-6):**
 
 .. code-block:: console
 
-   fhrot:                   2160
    nhours_fcst:             4320
+   fhrot:                   2160
 
 **Second segment (months 7-9):**
 
 .. code-block:: console
 
-   fhrot:                   4320
    nhours_fcst:             6480
+   fhrot:                   4320
 
 **Third segment (months 10-12):**
 
 .. code-block:: console
 
-   fhrot:                   6480
    nhours_fcst:             8640
+   fhrot:                   6480
 
 After each segment completes, rename and move restart files to the ``INPUT`` directory:
 
@@ -122,7 +118,7 @@ A plotting script is available to generate seasonal mean plots for key atmospher
 
 .. code-block:: console
 
-   ./tests-dev/test_cases/utils/plot_aq.sh
+   ${UFS_WM}/tests-dev/test_cases/utils/plot_aq.sh
 
 .. note::
 
@@ -134,11 +130,7 @@ By default, this script creates seasonal means for three variables:
 - Precipitation patterns
 - Temperature at 500 mb
 
-The script uses staged data from a 1-year control simulation. If you want to use this dataset on other machines (which have access to :term:`HPSS`), you can retrieve it from HPSS:
-
-.. code-block:: console
-
-   /5year/NCEPDEV/emc-meso/Ratko.Vasic/AQUAPLANET/1yr-results.tar
+The script uses staged data from a 1-year control simulation. If you want to use this dataset on other machines (which have access to :term:`HPSS`), you can retrieve it from HPSS at ``/5year/NCEPDEV/emc-meso/Ratko.Vasic/AQUAPLANET/1yr-results.tar``.
 
 Customizing the Plotting Script
 --------------------------------
@@ -146,24 +138,42 @@ Customizing the Plotting Script
 To use the plotting script with user-generated data:
 
 1. Copy the script to your run directory.
+
+   .. code-block:: bash
+
+      cd ${UFS_WM}/tests-dev/run_dir/aquaplanet_intel
+      cp ${UFS_WM}/tests-dev/test_cases/utils/plot_aq.sh .
+
 2. Edit the variable ``out_pth`` to point to your output location:
 
    .. code-block:: bash
 
-      out_pth=./
+      out_pth=path/to/ufs-weather-model/tests-dev/run_dir/aquaplanet_intel
 
 3. Adjust the seasonal timing variables (``winter_start``, ``spring_start``, etc.), which are given in hours from the start of the 90-day spin-up run (hour 0).
+
+   .. code-block:: bash
+
+      winter_start=2160
+      spring_start=4320
+      summer_start=6480
+      fall_start=8640
+
 4. Modify ``season_len`` to set the length of each season in days (typically 90 days, but can be set to 365 for annual means).
+
+   .. code-block:: bash
+
+      season_len=90
 
 .. _setup-aquaplanet:
 
-==========================================================
-Advanced: Setting Up the AquaPlanet Experiment from Scratch
-==========================================================
+============================================================
+Advanced: Setting Up the Aquaplanet Experiment from Scratch
+============================================================
 
 .. note::
 
-   This section is **optional**. Most users can run the AquaPlanet case using the ``ufs_test.sh`` method described above, which uses pre-staged initial conditions. The steps below are for advanced users who wish to create their own initial conditions from scratch.
+   This section is **optional**. Most users can run the Aquaplanet case using the ``ufs_test.sh`` method described above, which uses pre-staged initial conditions. The steps below are for advanced users who wish to create their own initial conditions from scratch.
 
 The from-scratch setup involves editing orography, SST, ice, and sea-land mask files to create an aquaplanet configuration, then running a 90-day spin-up to allow the model to reach a balanced state. This process produces the same initial conditions that are provided pre-staged for the standard test case.
 
@@ -183,17 +193,13 @@ Clone the UFS Weather Model:
 
 .. code-block:: console
 
-   git clone https://github.com/ufs-community/ufs-weather-model.git
-   cd ufs-weather-model/
-   git submodule update --init --recursive
+   git clone --recursive https://github.com/ufs-community/ufs-weather-model.git
 
 Clone UFS_UTILS:
 
 .. code-block:: console
 
-   git clone https://github.com/ufs-community/UFS_UTILS.git
-   cd UFS_UTILS/
-   git submodule update --init --recursive
+   git clone --recursive https://github.com/ufs-community/UFS_UTILS.git
 
 Clone the aquaplanet tools:
 
@@ -247,7 +253,7 @@ Link the fix directories:
    cd fix/
    ./link_fixdirs.sh emc <platform>
 
-Since orography files need to be edited, remove the link and copy the files:
+Since orography files need to be edited, remove the link and copy the files. The fix file locations for different platforms are listed in ``link_fixdirs.sh``. For example, on Ursa, users would run:
 
 .. code-block:: console
 
@@ -257,8 +263,8 @@ Since orography files need to be edited, remove the link and copy the files:
    cp /scratch3/NCEPDEV/global/role.glopara/fix/orog/20240917/*.dat orog/.
    cp -r /scratch3/NCEPDEV/global/role.glopara/fix/orog/20240917/C48/ orog/.
 
-Generate Initial Atmospheric Data
-----------------------------------
+Generate Initial Atmospheric Data With UFS_UTILS
+--------------------------------------------------
 
 Navigate to the ``gdas_init`` utility directory:
 
@@ -296,10 +302,10 @@ Run the driver script:
 
    ./driver.<platform>.sh
 
-Check that results are properly generated in ``$EXTRACT_DIR`` and ``$OUTDIR``.
+Check that results are properly generated in ``$EXTRACT_DIR`` and ``$OUTDIR``. This can take some time, so if there is only an empty ``$EXTRACT_DIR``, run ``squeue -u $USER`` (on systems with Slurm) or ``qstat -u $USER`` (on systems with PBS Pro) to ensure that the job is still running. Eventually, both directories will contain a file named ``gfs.20251015``. 
 
-Create Idealized SST Profile
------------------------------
+Create Idealized SST Profile Using Aquaplanet Tools
+-----------------------------------------------------
 
 Navigate to the SST profile tool directory:
 
