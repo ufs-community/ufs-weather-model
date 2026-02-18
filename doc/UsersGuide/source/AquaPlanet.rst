@@ -186,6 +186,26 @@ At a high level, the steps are:
 5. Apply minor source code changes and recompile the model.
 6. Run a 90-day spin-up simulation (in three 30-day restart segments).
 
+Create Working Directory (optional)
+-------------------------------------
+
+Users can create a new directory for their aquaplanet experiment or use an existing directory: 
+
+.. code-block:: console
+
+   mkdir /path/to/ap-expt
+   cd /path/to/ap-expt
+
+where ``/path/to/ap-expt`` is the path to the directory where the user plans to perform the following steps (e.g., ``/Users/Joe.Schmoe/ap-expt``). 
+
+Optionally, users can save this directory path in an environment variable (e.g., ``${AP_EXPT}``) to avoid typing out full path names later. 
+
+.. code-block:: console
+
+   export AP_EXPT=$PWD
+
+In this documentation, ``${AP_EXPT}`` is used, but users are welcome to choose another name for this variable if they prefer. 
+
 Clone Required Repositories
 ----------------------------
 
@@ -201,7 +221,7 @@ Clone UFS_UTILS:
 
    git clone --recursive https://github.com/ufs-community/UFS_UTILS.git
 
-Clone the aquaplanet tools:
+Clone the Aquaplanet tools:
 
 .. code-block:: console
 
@@ -214,7 +234,7 @@ Navigate to the UFS Weather Model test directory:
 
 .. code-block:: console
 
-   cd ufs-weather-model/tests/
+   cd ${AP_EXPT}/ufs-weather-model/tests/
 
 Edit ``rt.conf`` to include only the following two lines:
 
@@ -238,7 +258,7 @@ Compile the UFS_UTILS tools:
 
 .. code-block:: console
 
-   cd UFS_UTILS/
+   cd ${AP_EXPT}/UFS_UTILS/
    module purge
    module use $PWD/modulefiles
    module load build.<platform>.intelllvm
@@ -311,7 +331,7 @@ Navigate to the SST profile tool directory:
 
 .. code-block:: console
 
-   cd ~/Aquaplanet/sst-profile/
+   cd ${AP_EXPT}/Aquaplanet/sst-profile/
 
 Copy the SST climatology file from your UFS Weather Model run directory:
 
@@ -339,7 +359,7 @@ Navigate to the glacier tool directory:
 
 .. code-block:: console
 
-   cd ~/Aquaplanet/glacier/
+   cd ${AP_EXPT}/Aquaplanet/glacier/
 
 Copy the glacier file from your run directory:
 
@@ -367,7 +387,7 @@ Navigate to the ice monthly tool directory:
 
 .. code-block:: console
 
-   cd ~/Aquaplanet/ice-monthly/
+   cd ${AP_EXPT}/Aquaplanet/ice-monthly/
 
 Copy the ice climatology file from your run directory:
 
@@ -399,7 +419,7 @@ Navigate to the sea-land mask tool directory:
 
 .. code-block:: console
 
-   cd ~/Aquaplanet/slmask/
+   cd ${AP_EXPT}/Aquaplanet/slmask/
 
 Copy the sea-land mask file from your run directory:
 
@@ -427,7 +447,7 @@ Navigate to the atmospheric profile tool directory:
 
 .. code-block:: console
 
-   cd ~/Aquaplanet/atmos-profile
+   cd ${AP_EXPT}/Aquaplanet/atmos-profile
 
 Copy the atmospheric analysis file from ``$EXTRACT_DIR``:
 
@@ -465,7 +485,7 @@ Navigate to the surface profile tool directory:
 
 .. code-block:: console
 
-   cd ~/Aquaplanet/sfc-profile/
+   cd ${AP_EXPT}/Aquaplanet/sfc-profile/
 
 Copy the surface analysis file from ``$EXTRACT_DIR``:
 
@@ -503,7 +523,7 @@ Navigate to the orography profile tool directory:
 
 .. code-block:: console
 
-   cd ~/Aquaplanet/orog-profile/
+   cd ${AP_EXPT}/Aquaplanet/orog-profile/
 
 Compile the tool:
 
@@ -528,7 +548,7 @@ Navigate back to the ``gdas_init`` utility directory:
 
 .. code-block:: console
 
-   cd ~/UFS_UTILS/util/gdas_init/
+   cd ${AP_EXPT}/UFS_UTILS/util/gdas_init/
 
 .. important::
 
@@ -565,7 +585,7 @@ Since the GFS_v17 physics suite is used, empty fields (``sheleg``, ``snwdph``, a
 
 .. code-block:: console
 
-   cd ~/Aquaplanet/noah-MP-vars/
+   cd ${AP_EXPT}/Aquaplanet/noah-MP-vars/
 
 Copy the surface files from the output directory:
 
@@ -600,12 +620,12 @@ Copy the modified orography files:
 .. code-block:: console
 
    cd <run_directory>/INPUT/
-   cp ~/UFS_UTILS/fix/orog/C48/C48.mx500_oro_data.tile1.nc oro_data.tile1.nc
-   cp ~/UFS_UTILS/fix/orog/C48/C48.mx500_oro_data.tile2.nc oro_data.tile2.nc
-   cp ~/UFS_UTILS/fix/orog/C48/C48.mx500_oro_data.tile3.nc oro_data.tile3.nc
-   cp ~/UFS_UTILS/fix/orog/C48/C48.mx500_oro_data.tile4.nc oro_data.tile4.nc
-   cp ~/UFS_UTILS/fix/orog/C48/C48.mx500_oro_data.tile5.nc oro_data.tile5.nc
-   cp ~/UFS_UTILS/fix/orog/C48/C48.mx500_oro_data.tile6.nc oro_data.tile6.nc
+   cp ${AP_EXPT}/UFS_UTILS/fix/orog/C48/C48.mx500_oro_data.tile1.nc oro_data.tile1.nc
+   cp ${AP_EXPT}/UFS_UTILS/fix/orog/C48/C48.mx500_oro_data.tile2.nc oro_data.tile2.nc
+   cp ${AP_EXPT}/UFS_UTILS/fix/orog/C48/C48.mx500_oro_data.tile3.nc oro_data.tile3.nc
+   cp ${AP_EXPT}/UFS_UTILS/fix/orog/C48/C48.mx500_oro_data.tile4.nc oro_data.tile4.nc
+   cp ${AP_EXPT}/UFS_UTILS/fix/orog/C48/C48.mx500_oro_data.tile5.nc oro_data.tile5.nc
+   cp ${AP_EXPT}/UFS_UTILS/fix/orog/C48/C48.mx500_oro_data.tile6.nc oro_data.tile6.nc
 
 Modify Model Source Code
 -------------------------
