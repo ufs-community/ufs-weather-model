@@ -12,9 +12,10 @@ fall_start=7584
 #--- duration of season in days (usually 90):
 season_len=75
 
-#--- path to output (usually ./) if you copy this script to run directory
-#--- staged data on HPSS: /5year/NCEPDEV/emc-meso/Ratko.Vasic/AQUAPLANET/1yr-results.tar
-out_pth=./
+#--- path to model output (usually ./) if you copy this script to run directory
+#--- staged model output data on HPSS: /5year/NCEPDEV/emc-meso/Ratko.Vasic/AQUAPLANET/1yr-results.tar
+data_path=/scratch3/NAGAPE/epic/role.epic/Aquaplanet
+#data_path=./
 
 
 #========================================================
@@ -57,7 +58,7 @@ i=1
  while (( i <= season_len ))
 do
 
-echo sdfopen "${out_pth}"/atmf"${hour}".nc      >> plot.j
+echo sdfopen "${data_path}"/atmf"${hour}".nc      >> plot.j
 echo set z 73                                   >> plot.j
 if (( i == 1 )); then
 echo define utot=ugrd.1\(t=1\)                  >> plot.j
@@ -115,7 +116,7 @@ i=1
 while (( i <= season_len ))
 do
 
-echo sdfopen "${out_pth}"/atmf"${hour}".nc      >> plot.j
+echo sdfopen "${data_path}"/atmf"${hour}".nc      >> plot.j
 echo set z 49                                   >> plot.j
 if (( i == 1 )); then
 echo define ttot=tmp.1\(t=1\)                   >> plot.j
@@ -184,7 +185,7 @@ i=1
 while (( i <= season_len ))
 do
 
-echo sdfopen "${out_pth}"/sfcf"${hour}".nc      >> plot.j
+echo sdfopen "${data_path}"/sfcf"${hour}".nc      >> plot.j
 if (( i == 1 )); then
 echo define ptot=prate_ave.1\(t=1\)             >> plot.j
 else
