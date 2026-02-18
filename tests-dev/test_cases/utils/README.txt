@@ -13,8 +13,8 @@ script into your tropical_cyclone_<compiler> directory.
 
 To run the scripts, invoke from the command line via `./plot_<bcw/cape/tc/aq>.sh`. 
 
-For aquaplanet case follow paragraph 21) in documentation:
-https://docs.google.com/document/d/1KbOfT5RgNQQAEIVC3TzVGvxV4v4-C3I3OY8UEde8C1s/edit?pli=1&tab=t.0
+For aquaplanet case follow "Plotting Script" paragraph in documentation:
+https://github.com/ufs-community/ufs-weather-model/blob/develop/doc/UsersGuide/source/AquaPlanet.rst
 
 Users can adjust the experiment name, standard pressure level, and forecast hour in the baroclinic wave script. 
 For the CAPE script, users can choose between global/regional(CONUS) domain, as well as which 
@@ -23,5 +23,3 @@ analysis file resolution to generate plots for.
 To generate an animated GIF for the TC case, users can do the following:
 module load imagemagick
 convert -delay 20 -loop 0 *.png w10.gif
-
-
