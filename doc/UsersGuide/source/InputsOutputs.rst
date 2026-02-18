@@ -28,7 +28,7 @@ mediator). Currently, supported configurations include:
    * - ATMAERO
      - :term:`ATM` coupled to :term:`GOCART`
    * - ATMAQ
-     - :term:`ATM` coupled to :term:`CMAQ`
+     - :term:`ATM` coupled to :term:`AQM`
    * - ATML
      - :term:`ATM` coupled to :term:`NOAHMP`
    * - ATMF
@@ -907,7 +907,7 @@ The input files containing grid information and the time-varying forcing files f
 
 .. note:: 
 
-   Users can find atmospheric forcing files for use with the Noah-MP land component (LND) in the `Land Data Assimilation (DA) data bucket <https://registry.opendata.aws/noaa-ufs-land-da/>`_. These files provide atmospheric forcing data related to precipitation, solar radiation, longwave radiation, temperature, pressure, winds, humidity, topography, and mesh data. Forcing files for the land component configuration come from the Global Soil Wetness Project Phase 3 (`GSWP3 <https://hydro.iis.u-tokyo.ac.jp/GSWP3/>`_) dataset. 
+   Users can find atmospheric forcing files for use with the Noah-MP land component (LND) in the `Land Data Assimilation (DA) data bucket <https://registry.opendata.aws/noaa-ufs-land-da/>`_. These files provide atmospheric forcing data related to precipitation, solar radiation, longwave radiation, temperature, pressure, winds, humidity, topography, and mesh data. Forcing files for the land component configuration come from the Global Soil Wetness Project Phase 3 (`GSWP3 <https://www.isimip.org/gettingstarted/input-data-bias-adjustment/details/4/>`_) dataset. 
 
    .. code-block:: console
 
@@ -1078,7 +1078,7 @@ The aerosol initial input currently read by GOCART is the same format as the UFS
 .. _aqm-in:
 
 --------------
-AQM (CMAQ)
+UFS AQM
 --------------
 
 .. _aqm-fix-files:
@@ -1110,20 +1110,20 @@ AQM inputs defined in ``aqm.rc`` are listed and described in :numref:`Table %s <
 
    * - Filename
      - Description
-   * - AE_cb6r3_ae6_aq.nml 
-     - AE Matrix NML
-   * - GC_cb6r3_ae6_aq.nml 
-     - GC Matrix NML
-   * - NR_cb6r3_ae6_aq.nml 
-     - NR Matrix NML
+   * - AE_cb6r5_ae7_aq.nml 
+     - AE Matrix NML - Specifies chemical species, emissions mapping, and related settings for CMAQ's CB6r5 (Revision 5 of the Carbon Bond 6 Mechanism) chemical mechanism.
+   * - GC_cb6r5_ae7_aq.nml 
+     - GC Matrix NML - Configures CMAQ's gas-phase chemistry controls.
+   * - NR_cb6r5_ae7_aq.nml 
+     - NR Matrix NML - Non-reactive, gas-phase chemical species configuration for CMAQ.
    * - Species_Table_TR_0.nml 
-     - TR Matrix NML
-   * - CSQY_DATA_cb6r3_ae6_aq
-     - CSQY Data
+     - TR Matrix NML - CMAQ species transport definitions. Empty in the UFS as CMAQ is used as a column model with tracer transport using FV3.
+   * - CSQY_DATA_cb6r5_ae7_aq
+     - CSQY Data - CMAQ's chemical stoichiometric yield data table used by the solver for numerical calculations.
    * - PHOT_OPTICS.dat
      - Optics Data
    * - omi_cmaq_2015_361X179.dat
-     - OMI data
+     - OMI data - Ozone Monitoring Instrument (OMI) profile mappings used in establishing CMAQ boundary conditions.
    * - NEXUS/NEXUS_Expt.nc
      - Emissions File
    * - BEIS_RRFScmaq_C775.ncf
@@ -1132,6 +1132,17 @@ AQM inputs defined in ``aqm.rc`` are listed and described in :numref:`Table %s <
      - Biogenic Speciation File
    * - Hourly_Emissions_regrid_rrfs_13km_20190801_t12z_h72.nc
      - File Emissions File 
+
+
+The most recent AQM input data files can be found in the `Weather Model S3 bucket <https://noaa-ufs-regtests-pds.s3.amazonaws.com/index.html>`_ in the input-data-202XXXXX/AQM directory for the most recent date. Below are the data subdirectories that exist in ``input-data-202XXXXX/AQM/v8``.
+
+   * - ``fix``
+     - Fix files are static, climatological, and topographical datasets required for model initialization and running. These files include terrain, land use, vegetation, and soil data.
+   * - ``NEXUS``
+     - "NEXUS" (NOAA Emission and eXchange Unified System) files are specialized input files used for air quality modeling to incorporate pollutant emissions data. 
+   * - ``INPUT``
+     - This directory contains pre-processing, initial conditions, grid-dependent, and namelist files.
+
 
 .. _lnd-in:
 
