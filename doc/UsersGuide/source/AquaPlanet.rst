@@ -263,8 +263,8 @@ Since orography files need to be edited, remove the link and copy the files. The
    cp /scratch3/NCEPDEV/global/role.glopara/fix/orog/20240917/*.dat orog/.
    cp -r /scratch3/NCEPDEV/global/role.glopara/fix/orog/20240917/C48/ orog/.
 
-Generate Initial Atmospheric Data
-----------------------------------
+Generate Initial Atmospheric Data With UFS_UTILS
+--------------------------------------------------
 
 Navigate to the ``gdas_init`` utility directory:
 
@@ -302,10 +302,10 @@ Run the driver script:
 
    ./driver.<platform>.sh
 
-Check that results are properly generated in ``$EXTRACT_DIR`` and ``$OUTDIR``.
+Check that results are properly generated in ``$EXTRACT_DIR`` and ``$OUTDIR``. This can take some time, so if there is only an empty ``$EXTRACT_DIR``, run ``squeue -u $USER`` (on systems with Slurm) or ``qstat -u $USER`` (on systems with PBS Pro) to ensure that the job is still running. Eventually, both directories will contain a file named ``gfs.20251015``. 
 
-Create Idealized SST Profile
------------------------------
+Create Idealized SST Profile Using Aquaplanet Tools
+-----------------------------------------------------
 
 Navigate to the SST profile tool directory:
 
