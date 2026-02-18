@@ -28,7 +28,7 @@ if [[ ${HOSTNAME} == gaea6[1-9] ]]; then module load Core/24.11 ; fi
 module load grads
 
 # if color bar script is not present, get it from github:
-[[ -f cbar.gs ]] || wget -q https://raw.githubusercontent.com/RatkoVasic-NOAA/Aquaplanet/refs/heads/main/utils/cbar.gs
+[[ -f cbar.gs ]] || wget -q https://raw.githubusercontent.com/NOAA-EPIC/Aquaplanet/refs/heads/main/utils/cbar.gs
 
 #========================================================
 # Plot Jet stream, four seasons
