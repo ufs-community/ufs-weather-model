@@ -1,0 +1,25 @@
+###############################################################################
+#
+#  global MPI test: Coupled test at c1152 using operational GFSv17 configuration, MPI dependency
+#
+###############################################################################
+
+source ${PATHRT}/tests/cpld_control_c1152_v17
+export TEST_DESCR+=" MPI"
+
+export LIST_FILES=""
+
+# TODO: wcoss2 settings
+if [[ ${MACHINE_ID} != wcoss2 ]]; then
+    BLOCKSIZE=32
+    INPES=12
+    JNPES=18
+    OCN_tasks=160
+    ICE_tasks=90
+    WAV_tasks=1800
+
+    export CICE_NPROC=$ICE_tasks
+    export np2=`expr $CICE_NPROC / 2`
+    export CICE_BLCKX=`expr $NX_GLB / $np2`
+    export CICE_BLCKY=`expr $NY_GLB / 2`
+fi

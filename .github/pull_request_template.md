@@ -142,7 +142,6 @@ If there are changes to input data for a test, provide information here. Delete 
 <!-- STOP!!! THE FOLLOWING IS FOR CODE MANAGERS ONLY. PLEASE DO NOT FILL OUT -->
 ## Testing Log:
 - RDHPCS
-  - [ ] Hera
   - [ ] Orion
   - [ ] Hercules
   - [ ] GaeaC6
