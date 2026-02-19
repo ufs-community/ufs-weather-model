@@ -685,7 +685,9 @@ Recompile the model after making these changes. To do this, run the following co
    cmake .. -DAPP=ATM -D32BIT=ON -DCCPP_SUITES=FV3_GFS_v17_p8_ugwpv1
    make -j4
 
-This will produce an executable called ``ufs_model``. Rename this executable to ``fv3.exe``. Then, update the executable in your run directory by copying the newly compiled executable in your build directory to your run directory. 
+Note that users can leave off the ``-j`` flag after the ``make`` command or change the integer number after it to run with fewer or more processors. 
+
+Running these commands will produce an executable called ``ufs_model``. Rename this executable to ``fv3.exe``. Then, update the executable in your run directory by copying the newly compiled executable in your build directory to your run directory. 
 
 .. code-block:: console
 
