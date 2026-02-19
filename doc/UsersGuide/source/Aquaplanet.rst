@@ -19,13 +19,15 @@ Obtaining Data for HSD Cases
 
 .. include:: ./doc-snippets/hsd_data.rst
 
+Note that the 90-day spin-up for the aquaplanet case has already been completed for this data. Advanced users may prefer to try the 90-day spin-up themselves using the instructions in :numref:`Section %s <setup-aquaplanet>`. However, it is recommended that all users try the case first with the prestaged data. 
+
 .. _run-aquaplanet:
 
 ==============================
 Running the Aquaplanet Case
 ==============================
 
-This section explains how to run the Aquaplanet case using the ``ufs_test.sh`` script with pre-staged initial conditions. This is the recommended way to run the case for most users.
+This section explains how to run the Aquaplanet case using the ``ufs_test.sh`` script with prestaged initial conditions. This is the recommended way to run the case for most users.
 
 Clone the Repository
 --------------------
@@ -64,7 +66,19 @@ Running Extended Experiments
 
 After running the base test case, users can extend the simulation by running multiple restart segments. For example, to run a 1-year experiment broken into four 3-month segments:
 
-Navigate to the run directory (``${UFS_WM}/tests-dev/run_dir``). For each 3-month segment, update ``fhrot`` and ``nhours_fcst`` in ``model_configure``:
+Navigate to the run directory: 
+
+.. code-block:: console
+
+   cd ${UFS_WM}/tests-dev/run_dir/aquaplanet_intel
+
+Users may optionally save this location in an environment variable(e.g., ``${RUNDIR}``):
+
+.. code-block:: console
+
+   export RUNDIR=${UFS_WM}/tests-dev/run_dir/aquaplanet_intel
+
+For each 3-month segment, update ``fhrot`` and ``nhours_fcst`` in ``model_configure``:
 
 **First segment (months 4-6):**
 
@@ -107,14 +121,33 @@ After each segment completes, rename and move restart files to the ``INPUT`` dir
 Checking Results
 ----------------
 
-.. include:: ./doc-snippets/hsd_check_results.rst
-
-For example, to monitor progress or check results for the ``aquaplanet`` case, run:
+To monitor progress or check results for the ``aquaplanet`` case, run:
 
 .. code-block:: console
 
-   tail -f ${UFS_WM}/tests-dev/run_dir/aquaplanet_intel/err
    tail -f ${UFS_WM}/tests-dev/run_dir/aquaplanet_intel/out
+   tail -f ${UFS_WM}/tests-dev/run_dir/aquaplanet_intel/err
+
+The ``out`` file contains messages output during the model run. The ``err`` file reports on errors and is useful if the case does not finish properly. Additionally, the model will produce ``atmf*.nc`` and ``sfcf*.nc`` files every 24 hours. 
+
+When the test case finishes running, the ``out`` file should include a resource statistics summary at the bottom:
+
+.. code-block:: console
+
+   0: *****************RESOURCE STATISTICS*******************************
+   0: The total amount of wall time                        = 22639.581802
+   0: The total amount of time in user mode                = 22222.145691
+   0: The total amount of time in sys mode                 = 189.322066
+   0: The maximum resident set size (KB)                   = 1769600
+   0: Number of page faults without I/O activity           = 89229617
+   0: Number of page faults with I/O activity              = 99093
+   0: Number of times filesystem performed INPUT           = 1368912
+   0: Number of times filesystem performed OUTPUT          = 115520
+   0: Number of Voluntary Context Switches                 = 347098
+   0: Number of InVoluntary Context Switches               = 758822
+   0: *****************END OF RESOURCE STATISTICS*************************
+   0:
+   Model ended: Thu Feb 19 10:46:07 UTC 2026
 
 .. _plotting-aquaplanet:
 
@@ -156,7 +189,9 @@ To use the plotting script with user-generated data:
 
    .. code-block:: bash
 
-      data_path=path/to/ufs-weather-model/tests-dev/run_dir/aquaplanet_intel
+      data_path=./
+
+   This will use data from the run directory (rather than data from the prestaged model output) to produce the plots. 
 
 3. Adjust the seasonal timing variables (``winter_start``, ``spring_start``, etc.), which are given in hours from the start of the 90-day spin-up run (hour 0).
 
@@ -181,14 +216,14 @@ Advanced: Setting Up the Aquaplanet Experiment from Scratch
 
 .. note::
 
-   This section is **optional**. Most users can run the Aquaplanet case using the ``ufs_test.sh`` method described above, which uses pre-staged initial conditions. The steps below are for advanced users who wish to create their own initial conditions from scratch.
+   This section is **optional**. Most users can run the Aquaplanet case using the ``ufs_test.sh`` method described above, which uses pre-staged initial conditions. The steps below are for advanced users who wish to create their own initial conditions from scratch. :term:`HPSS` access is required for the UFS_UTILS steps. 
 
 The from-scratch setup involves editing orography, SST, ice, and sea-land mask files to create an aquaplanet configuration, then running a 90-day spin-up to allow the model to reach a balanced state. This process produces the same initial conditions that are provided pre-staged for the standard test case.
 
 At a high level, the steps are:
 
 1. Build the UFS Weather Model and run a baseline ``control_c48`` test to generate a run directory.
-2. Build UFS_UTILS and use ``gdas_init`` to generate raw atmospheric initial conditions.
+2. Build UFS_UTILS, and use ``gdas_init`` to generate raw atmospheric initial conditions.
 3. Use the `Aquaplanet tools <https://github.com/NOAA-EPIC/Aquaplanet>`_ to modify SST, ice, sea-land mask, orography, and atmospheric/surface profiles to represent an aquaplanet.
 4. Regenerate initial conditions with the modified files.
 5. Apply minor source code changes and recompile the model.
@@ -197,7 +232,7 @@ At a high level, the steps are:
 Create Working Directory (optional)
 -------------------------------------
 
-Users can create a new directory for their aquaplanet experiment or use an existing directory: 
+Users can create a new directory for their aquaplanet experiment or use an existing directory. To create a new directory, run: 
 
 .. code-block:: console
 
@@ -257,7 +292,7 @@ Execute the regression test to compile the model and create a baseline run direc
 
    ./rt.sh -a <account> -k -e
 
-Replace ``<account>`` with your project code (e.g., ``epic``). Save the location of the ``control_c48_intel`` run directory for later use. The ``-e`` flag (or the ``-r``) flag are not required. 
+Replace ``<account>`` with your project code (e.g., ``epic``). Save the location of the ``control_c48_intel`` run directory for later use. The ``-e`` flag (or the ``-r``) flag are not required but can be useful. 
 
 Build UFS_UTILS
 ---------------
@@ -314,6 +349,8 @@ Edit the ``config`` file to set the following variables:
    CRES_HIRES=C48
    OUTDIR=<path_to_UFS_UTILS>/output/
 
+where ``<path_to_UFS_UTILS>`` is replaced with the actual path to the UFS_UTILS repository. 
+
 Edit the driver script (e.g., ``driver.ursa.sh``) to set:
 
 .. code-block:: console
@@ -332,7 +369,7 @@ Run the driver script:
 
    ./driver.<platform>.sh
 
-Check that results are properly generated in ``$EXTRACT_DIR`` and ``$OUTDIR``. This can take some time, so if there is only an empty ``$EXTRACT_DIR``, run ``squeue -u $USER`` (on systems with Slurm) or ``qstat -u $USER`` (on systems with PBS Pro) to ensure that the job is still running. Eventually, both directories will contain a file named ``gfs.20251015``. 
+Check that results are properly generated in ``${EXTRACT_DIR}`` and ``${OUTDIR}``. This can take some time, so if there is only an empty ``${EXTRACT_DIR}``, run ``squeue -u $USER`` (on systems with Slurm) or ``qstat -u $USER`` (on systems with PBS Pro) to ensure that the job is still running. Eventually, both directories will contain a file named ``gfs.20251015``. 
 
 Create Idealized SST Profile Using Aquaplanet Tools
 -----------------------------------------------------
@@ -459,7 +496,7 @@ Navigate to the atmospheric profile tool directory:
 
    cd ${AP_EXPT}/Aquaplanet/atmos-profile
 
-Copy the atmospheric analysis file from ``$EXTRACT_DIR`` (set in :numref:`Step %s <gen-initial-atmos-data>` to ``${AP_EXPT}/UFS_UTILS/input``):
+Copy the atmospheric analysis file from ``${EXTRACT_DIR}`` (set in :numref:`Step %s <gen-initial-atmos-data>` to ``${AP_EXPT}/UFS_UTILS/input``):
 
 .. code-block:: console
 
@@ -486,7 +523,7 @@ Copy the modified atmospheric file back to the extract directory:
 
 .. code-block:: console
 
-   cp gfs.t06z.atmanl.nc $EXTRACT_DIR/gfs.20251015/06/atmos/gfs.t06z.atmanl.nc
+   cp gfs.t06z.atmanl.nc ${EXTRACT_DIR}/gfs.20251015/06/atmos/gfs.t06z.atmanl.nc
 
 Setup Surface Profiles
 -----------------------
@@ -497,7 +534,7 @@ Navigate to the surface profile tool directory:
 
    cd ${AP_EXPT}/Aquaplanet/sfc-profile/
 
-Copy the surface analysis file from ``$EXTRACT_DIR`` (set in :numref:`Step %s <gen-initial-atmos-data>` to ``${AP_EXPT}/UFS_UTILS/input``):
+Copy the surface analysis file from ``${EXTRACT_DIR}`` (set in :numref:`Step %s <gen-initial-atmos-data>` to ``${AP_EXPT}/UFS_UTILS/input``):
 
 .. code-block:: console
 
@@ -524,7 +561,7 @@ Copy the modified surface file back to the extract directory:
 
 .. code-block:: console
 
-   cp gfs.t06z.sfcanl.nc $EXTRACT_DIR/gfs.20251015/06/atmos/gfs.t06z.sfcanl.nc
+   cp gfs.t06z.sfcanl.nc ${EXTRACT_DIR}/gfs.20251015/06/atmos/gfs.t06z.sfcanl.nc
 
 Prepare Orography Fields
 -------------------------
