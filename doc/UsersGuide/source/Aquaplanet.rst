@@ -138,7 +138,7 @@ By default, this script creates seasonal means for three variables:
 - Precipitation patterns
 - Temperature at 500 mb
 
-The script uses staged data from a 1-year control simulation. If you want to use this dataset on other machines (which have access to :term:`HPSS`), you can retrieve it from HPSS at ``/5year/NCEPDEV/emc-meso/Ratko.Vasic/AQUAPLANET/1yr-results.tar``.
+The script uses staged data from a 1-year control simulation. If you want to use this dataset on other machines (which have access to :term:`HPSS`), you can retrieve it from HPSS at ``/5year/NCEPDEV/emc-meso/Ratko.Vasic/AQUAPLANET/1yr-results.tar``. Alternatively, users can adjust the ``data_path`` variable to point to their own model output from an extended run. 
 
 Customizing the Plotting Script
 --------------------------------
@@ -152,7 +152,7 @@ To use the plotting script with user-generated data:
       cd ${UFS_WM}/tests-dev/run_dir/aquaplanet_intel
       cp ${UFS_WM}/tests-dev/test_cases/utils/plot_aq.sh .
 
-2. Edit the variable ``data_path`` to point to your output location:
+2. Edit the variable ``data_path`` to point to either the prestaged model output data on Ursa or the data generated from your own model run. For example:
 
    .. code-block:: bash
 
@@ -343,11 +343,11 @@ Navigate to the SST profile tool directory:
 
    cd ${AP_EXPT}/Aquaplanet/sst-profile/
 
-Copy the SST climatology file from your UFS Weather Model run directory:
+Copy the SST climatology file from your UFS Weather Model run directory, which will be referred to as ``${RUNDIR}`` in this documentation:
 
 .. code-block:: console
 
-   cp <run_directory>/RTGSST.1982.2012.monthly.clim.grb .
+   cp ${RUNDIR}/RTGSST.1982.2012.monthly.clim.grb .
 
 Compile and run the tool:
 
@@ -360,7 +360,7 @@ Copy the modified file back to your run directory:
 
 .. code-block:: console
 
-   cp new-RTGSST.1982.2012.monthly.clim.grb <run_directory>/RTGSST.1982.2012.monthly.clim.grb
+   cp new-RTGSST.1982.2012.monthly.clim.grb ${RUNDIR}/RTGSST.1982.2012.monthly.clim.grb
 
 Edit Global Ice Data
 --------------------
@@ -375,7 +375,7 @@ Copy the glacier file from your run directory:
 
 .. code-block:: console
 
-   cp <run_directory>/global_glacier.2x2.grb .
+   cp ${RUNDIR}/global_glacier.2x2.grb .
 
 Compile and run the tool:
 
@@ -388,7 +388,7 @@ Copy the modified file back:
 
 .. code-block:: console
 
-   cp new-global_glacier.2x2.grb <run_directory>/global_glacier.2x2.grb
+   cp new-global_glacier.2x2.grb ${RUNDIR}/global_glacier.2x2.grb
 
 Edit Monthly Ice Data
 ---------------------
@@ -403,7 +403,7 @@ Copy the ice climatology file from your run directory:
 
 .. code-block:: console
 
-   cp <run_directory>/IMS-NIC.blended.ice.monthly.clim.grb .
+   cp ${RUNDIR}/IMS-NIC.blended.ice.monthly.clim.grb .
 
 Compile and run the tool:
 
@@ -420,7 +420,7 @@ Copy the modified file back:
 
 .. code-block:: console
 
-   cp new-IMS-NIC.blended.ice.monthly.clim.grb <run_directory>/IMS-NIC.blended.ice.monthly.clim.grb
+   cp new-IMS-NIC.blended.ice.monthly.clim.grb ${RUNDIR}/IMS-NIC.blended.ice.monthly.clim.grb
 
 Edit Sea-Land Mask Data
 -----------------------
@@ -435,7 +435,7 @@ Copy the sea-land mask file from your run directory:
 
 .. code-block:: console
 
-   cp <run_directory>/global_slmask.t62.192.94.grb .
+   cp ${RUNDIR}/global_slmask.t62.192.94.grb .
 
 Compile and run the tool:
 
@@ -448,7 +448,7 @@ Copy the modified file back:
 
 .. code-block:: console
 
-   cp new-global_slmask.t62.192.94.grb <run_directory>/global_slmask.t62.192.94.grb
+   cp new-global_slmask.t62.192.94.grb ${RUNDIR}/global_slmask.t62.192.94.grb
 
 Setup Atmospheric Profiles
 ---------------------------
@@ -633,13 +633,13 @@ Copy all generated initial condition files from ``${OUTDIR}`` (set in to ``${AP_
 
 .. code-block:: console
 
-   cp $OUTDIR/gfs.20251015/06/model/atmos/input/* <run_directory>/INPUT/.
+   cp $OUTDIR/gfs.20251015/06/model/atmos/input/* ${RUNDIR}/INPUT/.
 
 Copy the modified orography files:
 
 .. code-block:: console
 
-   cd <run_directory>/INPUT/
+   cd ${RUNDIR}/INPUT/
    cp ${AP_EXPT}/UFS_UTILS/fix/orog/C48/C48.mx500_oro_data.tile1.nc oro_data.tile1.nc
    cp ${AP_EXPT}/UFS_UTILS/fix/orog/C48/C48.mx500_oro_data.tile2.nc oro_data.tile2.nc
    cp ${AP_EXPT}/UFS_UTILS/fix/orog/C48/C48.mx500_oro_data.tile3.nc oro_data.tile3.nc
@@ -673,17 +673,24 @@ Edit the file ``./ufs-weather-model/UFSATM/fv3/atmos_cubed_sphere/tools/fv_diagn
          return
    ! AQUAPLANET TEST CASE
 
-Recompile the model after making these changes. To do this, users can comment out the ``RUN`` line in ``rt.conf`` and run the ``rt.sh`` script:
+Recompile the model after making these changes. To do this, run the following commands:
 
 .. code-block:: console
 
-   ./rt.sh -a <account> -k -e
+   module use ${AP_EXPT}/ufs-weather-model/modulefiles
+   module load ufs_<platform>_intel
+   cd ${AP_EXPT}/ufs-weather-model
+   mkdir build
+   cd build
+   cmake .. -DAPP=ATM -D32BIT=ON -DCCPP_SUITES=FV3_GFS_v17_p8_ugwpv1
+   make -j4
 
-Then, update the executable in your run directory by copying the newly compiled executable in your test directory (``fv3_atm_dyn32_intel.exe``) to your run directory, where it is named ``fv3.exe``. 
+This will produce an executable called ``ufs_model``. Rename this executable to ``fv3.exe``. Then, update the executable in your run directory by copying the newly compiled executable in your build directory to your run directory. 
 
 .. code-block:: console
 
-   cp ${AP_EXPT}/ufs-weather-model/tests/fv3_atm_dyn32_intel.exe <run_directory>/fv3.exe
+   cp ufs_model fv3.exe
+   mv fv3.exe ${RUNDIR}
 
 Running the 90-Day Spin-Up
 ---------------------------
@@ -714,6 +721,12 @@ Submit the job:
 .. code-block:: console
 
    sbatch job_card
+
+In general, each 30-day run will take 5.5-6 hours, but this can vary. User can view progress with the ``tail`` command:
+
+.. code-block:: console
+
+   tail -f out
 
 **First Restart (Days 31-60)**
 
