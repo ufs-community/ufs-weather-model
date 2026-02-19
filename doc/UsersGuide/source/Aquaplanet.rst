@@ -87,6 +87,14 @@ Navigate to the run directory (``${UFS_WM}/tests-dev/run_dir``). For each 3-mont
    nhours_fcst:             8640
    fhrot:                   6480
 
+Then, update the walltime in the ``job_card`` to run for approximately 8 hours (480 minutes):  
+
+.. code-block:: bash
+   
+   #SBATCH --time=480
+
+Some systems may succeed in less time; others may need more time, but this is a reasonable starting point. 
+
 After each segment completes, rename and move restart files to the ``INPUT`` directory:
 
 .. code-block:: console
@@ -181,7 +189,7 @@ At a high level, the steps are:
 
 1. Build the UFS Weather Model and run a baseline ``control_c48`` test to generate a run directory.
 2. Build UFS_UTILS and use ``gdas_init`` to generate raw atmospheric initial conditions.
-3. Use the `Aquaplanet tools <https://github.com/RatkoVasic-NOAA/Aquaplanet>`_ to modify SST, ice, sea-land mask, orography, and atmospheric/surface profiles to represent an aquaplanet.
+3. Use the `Aquaplanet tools <https://github.com/NOAA-EPIC/Aquaplanet>`_ to modify SST, ice, sea-land mask, orography, and atmospheric/surface profiles to represent an aquaplanet.
 4. Regenerate initial conditions with the modified files.
 5. Apply minor source code changes and recompile the model.
 6. Run a 90-day spin-up simulation (in three 30-day restart segments).
@@ -225,7 +233,7 @@ Clone the Aquaplanet tools:
 
 .. code-block:: console
 
-   git clone https://github.com/RatkoVasic-NOAA/Aquaplanet
+   git clone https://github.com/NOAA-EPIC/Aquaplanet
 
 Build UFS Weather Model
 ------------------------
@@ -247,9 +255,9 @@ Execute the regression test to compile the model and create a baseline run direc
 
 .. code-block:: console
 
-   ./rt.sh -a <account> -k
+   ./rt.sh -a <account> -k -e
 
-Replace ``<account>`` with your project code (e.g., ``epic``). Save the location of the ``control_c48_intel`` run directory for later use.
+Replace ``<account>`` with your project code (e.g., ``epic``). Save the location of the ``control_c48_intel`` run directory for later use. The ``-e`` flag (or the ``-r``) flag are not required. 
 
 Build UFS_UTILS
 ---------------
@@ -282,6 +290,8 @@ Since orography files need to be edited, remove the link and copy the files. The
    cp /scratch3/NCEPDEV/global/role.glopara/fix/orog/20240917/*.nc orog/.
    cp /scratch3/NCEPDEV/global/role.glopara/fix/orog/20240917/*.dat orog/.
    cp -r /scratch3/NCEPDEV/global/role.glopara/fix/orog/20240917/C48/ orog/.
+
+.. _gen-initial-atmos-data:
 
 Generate Initial Atmospheric Data With UFS_UTILS
 --------------------------------------------------
@@ -449,11 +459,11 @@ Navigate to the atmospheric profile tool directory:
 
    cd ${AP_EXPT}/Aquaplanet/atmos-profile
 
-Copy the atmospheric analysis file from ``$EXTRACT_DIR``:
+Copy the atmospheric analysis file from ``$EXTRACT_DIR`` (set in :numref:`Step %s <gen-initial-atmos-data>` to ``${AP_EXPT}/UFS_UTILS/input``):
 
 .. code-block:: console
 
-   cp $EXTRACT_DIR/gfs.t06z.atmanl.nc .
+   cp ${EXTRACT_DIR}/gfs.20251015/06/atmos/gfs.t06z.atmanl.nc .
 
 Compile and load required modules:
 
@@ -487,11 +497,11 @@ Navigate to the surface profile tool directory:
 
    cd ${AP_EXPT}/Aquaplanet/sfc-profile/
 
-Copy the surface analysis file from ``$EXTRACT_DIR``:
+Copy the surface analysis file from ``$EXTRACT_DIR`` (set in :numref:`Step %s <gen-initial-atmos-data>` to ``${AP_EXPT}/UFS_UTILS/input``):
 
 .. code-block:: console
 
-   cp $EXTRACT_DIR/gfs.t06z.sfcanl.nc .
+   cp ${EXTRACT_DIR}/gfs.20251015/06/atmos/gfs.t06z.sfcanl.nc .
 
 Compile and load required modules:
 
@@ -552,7 +562,7 @@ Navigate back to the ``gdas_init`` utility directory:
 
 .. important::
 
-   In the ``config`` file, make sure that ``EXTRACT_DATA`` is set to ``no`` since data is already extracted.
+   In the ``config`` file, set ``EXTRACT_DATA`` to ``no`` since data is already extracted.
 
 Delete or rename the output directory. For example:
 
@@ -572,7 +582,7 @@ Run the driver script:
 
    ./driver.<platform>.sh
 
-Check the results in:
+Once the job has finished running, check the results in:
 
 .. code-block:: console
 
@@ -587,17 +597,27 @@ Since the GFS_v17 physics suite is used, empty fields (``sheleg``, ``snwdph``, a
 
    cd ${AP_EXPT}/Aquaplanet/noah-MP-vars/
 
-Copy the surface files from the output directory:
+Copy the surface files from the output directory (set in :numref:`Step %s <gen-initial-atmos-data>` to ``${AP_EXPT}/UFS_UTILS/output``):
 
 .. code-block:: console
 
    cp $OUTDIR/gfs.20251015/06/model/atmos/input/sfc_* .
 
-Compile and run:
+Compile and load required modules:
 
 .. code-block:: console
 
    ./compile.sh
+   module purge
+   module use /contrib/spack-stack/spack-stack-1.9.2/envs/ue-oneapi-2024.2.1/install/modulefiles/Core
+   module load stack-oneapi/2024.2.1
+   module load stack-intel-oneapi-mpi/2021.13
+   module load netcdf-fortran/4.6.1
+
+Run the tool:
+
+.. code-block:: console
+
    ./add-vars.x
 
 Copy the modified files back:
@@ -609,7 +629,7 @@ Copy the modified files back:
 Copy Initial Conditions to Run Directory
 -----------------------------------------
 
-Copy all generated initial condition files to your run directory:
+Copy all generated initial condition files from ``${OUTDIR}`` (set in to ``${AP_EXPT}/UFS_UTILS/output`` in :numref:`Step %s <gen-initial-atmos-data>`) to your run directory:
 
 .. code-block:: console
 
@@ -645,7 +665,7 @@ Edit the file ``./ufs-weather-model/UFSATM/ccpp/physics/physics/Radiation/radiat
 
 **Reduce Land-Surface Warnings**
 
-Edit the file ``./ufs-weather-model/UFSATM/fv3/atmos_cubed_sphere/tools/fv_diagnostics.F90``. After lines 4292 and 4349, add:
+Edit the file ``./ufs-weather-model/UFSATM/fv3/atmos_cubed_sphere/tools/fv_diagnostics.F90``. After lines 4292 and 4349, where it says ``if ( present(bad_range) ) then``, add:
 
 .. code-block:: console
 
@@ -653,7 +673,17 @@ Edit the file ``./ufs-weather-model/UFSATM/fv3/atmos_cubed_sphere/tools/fv_diagn
          return
    ! AQUAPLANET TEST CASE
 
-Recompile the model after making these changes and update the executable in your run directory.
+Recompile the model after making these changes. To do this, users can comment out the ``RUN`` line in ``rt.conf`` and run the ``rt.sh`` script:
+
+.. code-block:: console
+
+   ./rt.sh -a <account> -k -e
+
+Then, update the executable in your run directory by copying the newly compiled executable in your test directory (``fv3_atm_dyn32_intel.exe``) to your run directory, where it is named ``fv3.exe``. 
+
+.. code-block:: console
+
+   cp ${AP_EXPT}/ufs-weather-model/tests/fv3_atm_dyn32_intel.exe <run_directory>/fv3.exe
 
 Running the 90-Day Spin-Up
 ---------------------------
@@ -747,5 +777,3 @@ Submit the job:
 After this final segment completes, the files in the ``RESTART`` directory represent spun-up initial conditions. Rename and copy these files to the ``INPUT`` directory --- these are the new initial conditions for your experiment (spun up for 90 days). Save them for future use.
 
 To continue running experiments with these self-generated initial conditions, follow the instructions in :numref:`Section %s <run-aquaplanet>`, using the ``input.nml`` from the restart runs and updating ``fhrot`` and ``nhours_fcst`` in ``model_configure`` as described in the extended experiments section.
-
-.. include:: ./doc-snippets/hsd_notes.rst
