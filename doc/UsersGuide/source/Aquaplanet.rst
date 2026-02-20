@@ -107,13 +107,13 @@ Then, update the walltime in the ``job_card`` to run for approximately 8 hours (
    
    #SBATCH --time=480
 
-Submit the job:
+Some systems may succeed in less time; others may need more time, but this is a reasonable starting point. 
+
+Next, submit the job:
 
 .. code-block:: console
 
    sbatch job_card
-
-Some systems may succeed in less time; others may need more time, but this is a reasonable starting point. 
 
 After each segment completes, rename and move restart files to the ``INPUT`` directory:
 
