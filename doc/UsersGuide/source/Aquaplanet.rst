@@ -813,6 +813,7 @@ After the second month completes:
    for file in 20*.060000.*.nc; do mv "$file" "${file#20*.060000.}"; done
    mv 20*.060000.coupler.res coupler.res
    mv * ../INPUT/.
+   cd ..
 
 Keep ``input.nml`` settings from the first restart. Edit ``model_configure`` and set:
 
