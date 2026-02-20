@@ -107,6 +107,12 @@ Then, update the walltime in the ``job_card`` to run for approximately 8 hours (
    
    #SBATCH --time=480
 
+Submit the job:
+
+.. code-block:: console
+
+   sbatch job_card
+
 Some systems may succeed in less time; others may need more time, but this is a reasonable starting point. 
 
 After each segment completes, rename and move restart files to the ``INPUT`` directory:
@@ -117,6 +123,9 @@ After each segment completes, rename and move restart files to the ``INPUT`` dir
    for file in 20*.060000.*.nc; do mv "$file" "${file#20*.060000.}"; done
    mv 20*.060000.coupler.res coupler.res
    mv * ../INPUT/.
+   cd ..
+
+Then, repeat the steps above to adjust ``nhours_fcst`` and ``fhrot`` and submit the job card. 
 
 Checking Results
 ----------------
