@@ -777,6 +777,7 @@ After the first month completes, prepare for the restart:
    for file in 20*.060000.*.nc; do mv "$file" "${file#20*.060000.}"; done
    mv 20*.060000.coupler.res coupler.res
    mv * ../INPUT/.
+   cd ..
 
 Edit ``input.nml`` and set:
 
