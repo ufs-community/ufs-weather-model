@@ -11,7 +11,10 @@ That is, to generate plots for a 2020 CAPE test, copy `plot_cape.sh` into your
 copy `plot_bcw.sh` into your baroclinic_wave_<compiler> run directory, or the plot_tc.sh
 script into your tropical_cyclone_<compiler> directory.
 
-To run the scripts, invoke from the command line via `./plot_<bcw/cape/tc>.sh`. 
+To run the scripts, invoke from the command line via `./plot_<bcw/cape/tc/aq>.sh`. 
+
+For aquaplanet case follow "Plotting Script" paragraph in documentation:
+https://github.com/ufs-community/ufs-weather-model/blob/develop/doc/UsersGuide/source/Aquaplanet.rst
 
 Users can adjust the experiment name, standard pressure level, and forecast hour in the baroclinic wave script. 
 For the CAPE script, users can choose between global/regional(CONUS) domain, as well as which 
@@ -20,5 +23,3 @@ analysis file resolution to generate plots for.
 To generate an animated GIF for the TC case, users can do the following:
 module load imagemagick
 convert -delay 20 -loop 0 *.png w10.gif
-
-
