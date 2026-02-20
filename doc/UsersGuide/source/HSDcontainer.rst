@@ -148,7 +148,7 @@ To build the container from a Docker image, users can run:
 
 .. code-block:: console
 
-   singularity build --force ubuntu22.04-intel-ue-1.9.2-wm-hsd.img docker://noaaepic/ubuntu22.04-intel-ue-1.9.2-wm-hsd.img:ue192-hsd-aquaplanet
+   singularity build --force ubuntu22.04-intel-ue-1.9.2-wm-hsd.img docker://noaaepic/ubuntu22.04-intel2024.2.0-1-devel-wm:ue192-hsd-aquaplanet
 
 This process may take several hours depending on the system. 
 
