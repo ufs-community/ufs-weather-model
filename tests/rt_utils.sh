@@ -310,7 +310,7 @@ submit_and_wait() {
         set +e
         job_info=$( qstat "${jobid}" )
         set -e
-        if grep -q "${jobid}" <<< "${job_info}" && [[ ${status_label:-} != "Unknown" ]]; then
+        if [[ ${job_info} == *"${jobid}"* && ${status_label:-} != "Unknown" ]]; then
           job_running=true
           # Getting the status letter from scheduler info
           status=$( grep "${jobid}" <<< "${job_info}" )
