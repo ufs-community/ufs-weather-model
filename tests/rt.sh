@@ -943,13 +943,12 @@ case ${MACHINE_ID} in
     echo "rt.sh: Setting up derecho..."
     if [[ "${ROCOTO:-false}" == true ]] ; then
       module use /glade/work/epicufsrt/contrib/derecho/modulefiles
-      module load rocoto/1.3.7-fix
-    fi
-    module use /glade/work/epicufsrt/contrib/spack-stack/derecho/modulefiles
-    if [[ "${ECFLOW:-false}" == true ]] ; then
-      module load ecflow/5.8.4
+      module load rocoto/1.3.7
     fi
     if [[ "${ECFLOW:-false}" == true ]] ; then
+      module use /glade/work/epicufsrt/contrib/spack-stack/derecho/spack-stack-1.9.2/envs/ue-oneapi-2024.2.1/install/modulefiles/oneapi/2024.2.1
+      module load stack-python/3.11.7
+      module load ecflow/5.11.4
       ECF_HOST=$(hostname)
       ECF_PORT=$(( $(id -u) + 1500 ))
       export ECF_PORT ECF_HOST
@@ -1060,6 +1059,7 @@ fi
 INPUTDATA_ROOT=${INPUTDATA_ROOT:-${DISKNM}/NEMSfv3gfs/input-data-20251015}
 INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT}/WW3_input_data_20250807
 INPUTDATA_LM4=${INPUTDATA_LM4:-${INPUTDATA_ROOT}/LM4_input_data}
+INPUTDATA_GFSv17opn=${INPUTDATA_GFSv17opn:-${DISKNM}/NEMSfv3gfs/GFSv17opn_20251014}
 
 shift $((OPTIND-1))
 if [[ $# -gt 1 ]]; then
@@ -1329,6 +1329,7 @@ export RTPWD=${RTPWD}
 export INPUTDATA_ROOT=${INPUTDATA_ROOT}
 export INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT_WW3}
 export INPUTDATA_LM4=${INPUTDATA_LM4}
+export INPUTDATA_GFSv17opn=${INPUTDATA_GFSv17opn}
 export PATHRT=${PATHRT}
 export PATHTR=${PATHTR}
 export NEW_BASELINE=${NEW_BASELINE}

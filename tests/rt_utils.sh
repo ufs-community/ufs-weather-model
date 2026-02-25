@@ -93,8 +93,8 @@ function compute_petbounds_and_tasks_traditional_threading() {
   # CHM
   chm_petlist_bounds="0 $((ATM_compute_tasks - 1))"
 
-  # MED - mediator (CMEPS) runs on at most 300 tasks.
-  MED_compute_tasks=$((ATM_compute_tasks<=300 ? ATM_compute_tasks : 300))
+  # MED - mediator (CMEPS) runs on at most 1200 tasks.
+  MED_compute_tasks=$((ATM_compute_tasks<=1200 ? ATM_compute_tasks : 1200))
   med_petlist_bounds="0 $((MED_compute_tasks - 1))"
 
   # AQM
@@ -187,8 +187,8 @@ function compute_petbounds_and_tasks_esmf_threading() {
   # CHM
   chm_petlist_bounds="0 $((ATM_compute_tasks * atm_omp_num_threads - 1))"
 
-  # MED - mediator (CMEPS) runs on at most 300 tasks.
-  MED_compute_tasks=$((ATM_compute_tasks<=300 ? ATM_compute_tasks : 300))
+  # MED - mediator (CMEPS) runs on at most 1200 tasks.
+  MED_compute_tasks=$((ATM_compute_tasks<=1200 ? ATM_compute_tasks : 1200))
   med_petlist_bounds="0 $((MED_compute_tasks * atm_omp_num_threads - 1))"
 
   # AQM
@@ -318,6 +318,7 @@ submit_and_wait() {
         else
           job_running=false
           status='COMPLETED'
+	  sleep 60
           set +e
           exit_status=$( qstat "${jobid}" -x -f | grep Exit_status | awk '{print $3}')
           set -e
@@ -435,6 +436,9 @@ rocoto_create_compile_task() {
     BUILD_WALLTIME="01:00:00"
   fi
   if [[ ${MACHINE_ID} == gaeac6 ]]; then
+    BUILD_WALLTIME="01:00:00"
+  fi
+  if [[ ${MACHINE_ID} == derecho ]]; then
     BUILD_WALLTIME="01:00:00"
   fi
 
