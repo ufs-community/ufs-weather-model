@@ -1,0 +1,146 @@
+import requests
+import os
+import json
+import re
+import logging
+
+class APICall():
+   """A GitHub API call"""
+
+   def __init__(self, endpoint='', num_commits=1):
+      self.token = os.environ.get('GITHUB_TOKEN')
+      self.base_url = os.environ.get('BASE_URL')
+      self.endpoint = endpoint
+      self.url = f"{self.base_url}/{self.endpoint}" #Could use a path join?
+      self.num_commits = num_commits
+      self.header = {
+         "Accept": "application/vnd.github.v3+json",
+         "Authorization": f"Bearer {self.token}",
+         "X-GitHub-Api-Version": "2022-11-28",
+         "Accept": "application/vnd.github.raw"
+      }
+
+# class LogManager():
+#    endpoint = "/repos/{owner}/{repo}/pulls/{pull_number}"
+
+class Log():
+   """A Regression Test log file."""
+   
+   def __init__(self, machine):
+      """Create the log file object for a specific machine."""
+      self.machine = machine.lower()
+      self.text_per_log = []
+
+   def call_API(self, endpoint):
+      """Call the GitHub API to get information about the log file."""
+
+      api_call = APICall(endpoint)
+      response = requests.get(api_call.url, headers=api_call.header)
+      response = json.loads(response.text)
+      
+      return response
+
+   def _get_commits(self):
+      """Get SHA for the HEAD of the PR. Structure of response: 
+         response = [{"head": {"sha": "a1b2c3d..."}, "base": {"sha": "b2c3d4e..."}}]
+         See GitHub documentation for https://docs.github.com/en/rest/commits/commits?apiVersion=2022-11-28#list-commits
+      """
+      response = self.call_API(f"pulls/{os.environ.get('PR_NUM')}")
+      self.pr_head_commit = response['head']['sha']
+      self.pr_base_commit = response['base']['sha']
+
+   def _get_pr_data(self, commit):
+      """Extract warnings/remarks data for a particular commit.
+      Returns:
+         log_data: A dictionary of tests as the key with a tuple of (warnings, remarks) as the value
+      """
+      try:
+         log_text = self._fetch_log_text(commit)
+         log_data = self._get_test_data(log_text)
+         return log_data
+      except:
+         logging.error(f"No commit found for the ref {commit}")
+
+   def _fetch_log_text(self, commit): 
+      """For each commit of a log, extract the log text."""
+
+      try:
+         api_call = APICall(f"contents/tests/logs/RegressionTests_{self.machine}.log")
+
+         url = api_call.url + (f"?ref={commit}") #Could use a path join?
+         r = requests.get(url, headers=api_call.header)
+         return r.text
+      except:
+         logging.error("An appropriate commit(s) was not provided. Call _get_commits() first.")
+
+   def _get_test_data(self, log_instance):
+      """For each instance of a log at a given commit, extract runtime and memory data from the log text
+         Args:
+            log_instance: Log text for a given commit
+         Returns: 
+            tests_for_log_instance: A dictionary of tests (keys) with an array of warnings and remarks the value for each test
+      """
+
+      tests_for_log_instance = {}
+
+      pattern = r"COMPILE \'(.*)\' \[\d+:\d+, \d+:\d+\] \( (\d+) warnings (\d+) remarks \)"
+      log_instance = log_instance.splitlines()
+
+      for line in log_instance:
+         test_match = re.search(pattern, line)
+         if test_match:
+            test_name, warnings, remarks = test_match.groups()
+            tests_for_log_instance[test_name] = (int(warnings), int(remarks))
+
+      return tests_for_log_instance
+
+   def compare_results(self, pr_log, base_log): 
+      """Check results from previous two commits to determine whether the test runtime/memory usage is within normal bounds."""
+
+      increases = {'warnings': [], 'remarks': []}
+
+      for test in pr_log:
+         if pr_log[test][0] > base_log[test][0]:
+            increases['warnings'].append(test)
+         if pr_log[test][1] > base_log[test][1]:
+            increases['remarks'].append(test)
+      
+      return increases
+
+"""Utilities for file I/O"""
+
+def print_results(dict):
+   
+   for machine in dict:
+      print(machine.upper())
+      for category in dict[machine]:
+         print(f"{category.title()}:")
+         [print(f"- {x}") for x in dict[machine][category] if x != ]
+
+
+def main():
+   """For each machine, create a log object, get current PR data, gather historical runtime/memory data, 
+   and compare results to determine which test/machine combinations fall more than 2 standard deviations 
+   above the historical mean for each test.""" 
+
+   machines = os.environ.get('MACHINES').split()
+
+   # For each machine, tests where warnings and/or remarks increase
+   increased_warnings_remarks = {}
+
+   for machine in machines:
+      print(machine.upper())
+      log = Log(machine)
+      log._get_commits()
+      log.pr_log_data = log._get_pr_data(log.pr_head_commit)
+      log.base_log_data = log._get_pr_data(log.pr_base_commit)
+
+      increased_warnings_remarks[machine] = log.compare_results(log.pr_log_data, log.base_log_data)
+
+   print_results(increased_warnings_remarks)
+
+   return 0
+
+if __name__ == "__main__": # pragma: no coverage
+
+   main()
