@@ -119,8 +119,8 @@ def print_html_results(dict):
       for category in results.keys():
          if results[category]:
             mdFile.write(f"\n<h3>{machine.upper()}</h3>")
-            mdFile.new_line(f" - {category.title()}:")
-            [mdFile.new_line(f"    - {x}") for x in dict[machine][category]]
+            unordered_list = [f"{category.title()}:", dict[machine][category]]
+            mdFile.new_list(unordered_list, marked_with='-')
    print(mdFile.get_md_text())
 
 def main():
