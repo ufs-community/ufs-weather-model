@@ -121,7 +121,7 @@ def print_html_results(dict):
             mdFile.write(f"\n<h3>{machine.upper()}</h3>")
             unordered_list = [f"{category.title()}:", dict[machine][category]]
             mdFile.new_list(unordered_list, marked_with='-')
-   print(mdFile.get_md_text())
+   return mdFile.get_md_text()
 
 def main():
    """For each machine, create a log object, get current PR data, gather historical runtime/memory data, 
@@ -141,9 +141,13 @@ def main():
 
       increased_warnings_remarks[machine] = log.compare_results(log.pr_log_data, log.base_log_data)
 
-   print_html_results(increased_warnings_remarks)
+   results = print_html_results(increased_warnings_remarks)
 
-   return 0
+   if len(results) > 81: # Length of HTML header
+      print(results)
+      return 1
+   else:
+      return 0
 
 if __name__ == "__main__": # pragma: no coverage
 
