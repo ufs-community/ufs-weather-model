@@ -1,6 +1,6 @@
 import requests
 from mdutils.mdutils import MdUtils
-import os
+import os, sys
 import json
 import re
 import logging
@@ -145,9 +145,9 @@ def main():
 
    if len(results) > 81: # Length of HTML header
       print(results)
-      return 1
+      sys.exit(1)
    else:
-      return 0
+      sys.exit(0)
 
 if __name__ == "__main__": # pragma: no coverage
 
