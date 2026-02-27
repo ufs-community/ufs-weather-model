@@ -1,4 +1,5 @@
 import requests
+from mdutils.mdutils import MdUtils
 import os
 import json
 import re
@@ -109,14 +110,18 @@ class Log():
 
 """Utilities for file I/O"""
 
-def print_results(dict):
+def print_html_results(dict):
    
-   for machine in dict:
-      print(machine.upper())
-      for category in dict[machine]:
-         print(f" - {category.title()}:")
-         [print(f"    - {x}") if x is not None else print("    - None") for x in dict[machine][category]]
+   pr_num = os.environ.get('PR_NUM')
+   mdFile = MdUtils(file_name='summary.md', title=f'Increased Warnings/Remarks for PR #{pr_num}')
 
+   for machine, results in dict.items():
+      for category in results.keys():
+         if results[category]:
+            mdFile.write(f"\n<h3>{machine.upper()}</h3>")
+            mdFile.new_line(f" - {category.title()}:")
+            [mdFile.new_line(f"    - {x}") for x in dict[machine][category]]
+   print(mdFile.get_md_text())
 
 def main():
    """For each machine, create a log object, get current PR data, gather historical runtime/memory data, 
@@ -129,7 +134,6 @@ def main():
    increased_warnings_remarks = {}
 
    for machine in machines:
-      print(machine.upper())
       log = Log(machine)
       log._get_commits()
       log.pr_log_data = log._get_pr_data(log.pr_head_commit)
@@ -137,7 +141,7 @@ def main():
 
       increased_warnings_remarks[machine] = log.compare_results(log.pr_log_data, log.base_log_data)
 
-   print_results(increased_warnings_remarks)
+   print_html_results(increased_warnings_remarks)
 
    return 0
 

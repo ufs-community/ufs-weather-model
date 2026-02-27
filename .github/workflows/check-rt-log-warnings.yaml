@@ -29,7 +29,7 @@ jobs:
         uses: actions/checkout@v4
       - name: Install dependencies
         run: |
-          pip install requests
+          pip install requests mdutils
       - name: Compare PR head logs with PR base logs
         run: |
           python ${{ github.workspace }}/.github/scripts/check_log_warnings_remarks.py >> $GITHUB_STEP_SUMMARY
