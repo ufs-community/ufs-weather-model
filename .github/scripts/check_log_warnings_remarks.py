@@ -114,8 +114,8 @@ def print_results(dict):
    for machine in dict:
       print(machine.upper())
       for category in dict[machine]:
-         print(f"{category.title()}:")
-         [print(f"- {x}") for x in dict[machine][category] if x != ]
+         print(f" - {category.title()}:")
+         [print(f"    - {x}") if x is not None else print("    - None") for x in dict[machine][category]]
 
 
 def main():
