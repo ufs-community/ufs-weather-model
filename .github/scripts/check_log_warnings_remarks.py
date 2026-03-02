@@ -115,11 +115,11 @@ def print_html_results(dict):
    for machine, results in dict.items():
       for category in results.keys():
          if results[category]:
-            mdFile.write(f"\n<h3>{machine.upper()}</h3>")
-            #unordered_list = [f"{category.title()}:\n", dict[machine][category]]
-            #mdFile.new_list(unordered_list, marked_with='*')
-            mdFile.new_paragraph(f" - {category.title()}:")
-            [mdFile.new_paragraph(f"    - {test}") for test in dict[machine][category]]
+            mdFile.write(f"\n<h3>{machine.upper()}</h3>\n")
+            unordered_list = [f"{category.title()}:", dict[machine][category]]
+            mdFile.new_list(unordered_list, marked_with='*')
+            #mdFile.new_paragraph(f"** - {category.title()}:**")
+            #[mdFile.new_paragraph(f"    - {test}") for test in dict[machine][category]]
    return mdFile.get_md_text()
 
 def main():
