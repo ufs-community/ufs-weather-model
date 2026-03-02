@@ -21,9 +21,6 @@ class APICall():
          "Accept": "application/vnd.github.raw"
       }
 
-# class LogManager():
-#    endpoint = "/repos/{owner}/{repo}/pulls/{pull_number}"
-
 class Log():
    """A Regression Test log file."""
    
@@ -49,18 +46,6 @@ class Log():
       response = self.call_API(f"pulls/{os.environ.get('PR_NUM')}")
       self.pr_head_commit = response['head']['sha']
       self.pr_base_commit = response['base']['sha']
-
-   def _get_pr_data(self, commit):
-      """Extract warnings/remarks data for a particular commit.
-      Returns:
-         log_data: A dictionary of tests as the key with a tuple of (warnings, remarks) as the value
-      """
-      try:
-         log_text = self._fetch_log_text(commit)
-         log_data = self._get_test_data(log_text)
-         return log_data
-      except:
-         logging.error(f"No commit found for the ref {commit}")
 
    def _fetch_log_text(self, commit): 
       """For each commit of a log, extract the log text."""
@@ -95,6 +80,18 @@ class Log():
 
       return tests_for_log_instance
 
+   def _get_pr_data(self, commit):
+      """Extract warnings/remarks data for a particular commit.
+      Returns:
+         log_data: A dictionary of tests as the key with a tuple of (warnings, remarks) as the value
+      """
+      try:
+         log_text = self._fetch_log_text(commit)
+         log_data = self._get_test_data(log_text)
+         return log_data
+      except:
+         logging.error(f"No commit found for the ref {commit}")
+
    def compare_results(self, pr_log, base_log): 
       """Check results from previous two commits to determine whether the test runtime/memory usage is within normal bounds."""
 
@@ -119,8 +116,10 @@ def print_html_results(dict):
       for category in results.keys():
          if results[category]:
             mdFile.write(f"\n<h3>{machine.upper()}</h3>")
-            unordered_list = [f"{category.title()}:\n", dict[machine][category]]
-            mdFile.new_list(unordered_list, marked_with='-')
+            #unordered_list = [f"{category.title()}:\n", dict[machine][category]]
+            #mdFile.new_list(unordered_list, marked_with='*')
+            mdFile.new_line(f" - {category.title()}:")
+            [mdFile.new_line(f"    - {test}") for test in dict[machine][category]]
    return mdFile.get_md_text()
 
 def main():
