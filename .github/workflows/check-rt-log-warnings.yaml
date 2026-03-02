@@ -33,8 +33,3 @@ jobs:
       - name: Compare PR head logs with PR base logs
         run: |
           python ${{ github.workspace }}/.github/scripts/check_log_warnings_remarks.py >> $GITHUB_STEP_SUMMARY
-          exit_code = $?
-          if $exit_code -ne 0; then
-            echo 'There was an increase of warnings or remarks on at least one system.'
-            exit 1
-          fi

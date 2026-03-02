@@ -39,7 +39,7 @@ class Log():
       return response
 
    def _get_commits(self):
-      """Get SHA for the HEAD of the PR. Structure of response: 
+      """Get PR head and base commits. Structure of response: 
          response = [{"head": {"sha": "a1b2c3d..."}, "base": {"sha": "b2c3d4e..."}}]
          See GitHub documentation for https://docs.github.com/en/rest/commits/commits?apiVersion=2022-11-28#list-commits
       """
@@ -64,7 +64,7 @@ class Log():
          Args:
             log_instance: Log text for a given commit
          Returns: 
-            tests_for_log_instance: A dictionary of tests (keys) with an array of warnings and remarks the value for each test
+            tests_for_log_instance: A dictionary of tests (keys) with a tuple of warnings and remarks as the value for each test
       """
 
       tests_for_log_instance = {}
@@ -91,23 +91,25 @@ class Log():
          return log_data
       except:
          logging.error(f"No commit found for the ref {commit}")
+         sys.exit(1)
 
    def compare_results(self, pr_log, base_log): 
-      """Check results from previous two commits to determine whether the test runtime/memory usage is within normal bounds."""
+      """Compare warnings/remarks for PR head and base commits to determine whether warnings/remarks have increased."""
 
       increases = {'warnings': [], 'remarks': []}
 
       for test in pr_log:
+         # Check warnings
          if pr_log[test][0] > base_log[test][0]:
             increases['warnings'].append(test)
+         # Check remarks
          if pr_log[test][1] > base_log[test][1]:
             increases['remarks'].append(test)
       
       return increases
 
-"""Utilities for file I/O"""
-
 def print_html_results(dict):
+   """Print the comparison results in HTML."""
    
    pr_num = os.environ.get('PR_NUM')
    mdFile = MdUtils(file_name='summary.md', title=f'Increased Warnings/Remarks for PR #{pr_num}')
@@ -118,8 +120,6 @@ def print_html_results(dict):
             mdFile.write(f"\n<h3>{machine.upper()}</h3>\n")
             unordered_list = [f"{category.title()}:", dict[machine][category]]
             mdFile.new_list(unordered_list, marked_with='*')
-            #mdFile.new_paragraph(f"** - {category.title()}:**")
-            #[mdFile.new_paragraph(f"    - {test}") for test in dict[machine][category]]
    return mdFile.get_md_text()
 
 def main():
