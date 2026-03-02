@@ -118,8 +118,8 @@ def print_html_results(dict):
             mdFile.write(f"\n<h3>{machine.upper()}</h3>")
             #unordered_list = [f"{category.title()}:\n", dict[machine][category]]
             #mdFile.new_list(unordered_list, marked_with='*')
-            mdFile.new_line(f" - {category.title()}:")
-            [mdFile.new_line(f"    - {test}") for test in dict[machine][category]]
+            mdFile.new_paragraph(f" - {category.title()}:")
+            [mdFile.new_paragraph(f"    - {test}") for test in dict[machine][category]]
    return mdFile.get_md_text()
 
 def main():
