@@ -630,7 +630,7 @@ export_mpas ()
     export OUTPUT_GRID="'mpas'"
     export OUTPUT_FILE="'netcdf'"
     export ZSTANDARD_LEVEL=0
-
+    export ZSTANDARD_LEVEL_RST=0
     export DOMAINS_STACK_SIZE=3000000
 }
 
@@ -912,7 +912,9 @@ export FILENAME_BASE="'atm' 'sfc'"
 export OUTPUT_GRID="'cubed_sphere_grid'"
 export OUTPUT_FILE="'netcdf'"
 export ZSTANDARD_LEVEL=0
+export ZSTANDARD_LEVEL_RST=0
 export IDEFLATE=0
+export IDEFLATE_RST=0
 export QUANTIZE_NSD=0
 export ICHUNK2D=0
 export JCHUNK2D=0
@@ -1654,6 +1656,7 @@ export_mom6() {
   export MOM6_USE_LI2016=True
   export MOM6_TOPOEDITS=''
   export MOM6_HFREEZE=20.0
+  export MOM6_WRITE_GEOM=2
   # since CPL_SLOW is set to DT_THERM, this should be always be false
   export MOM6_THERMO_SPAN=False
   export MOM6_USE_WAVES=True
@@ -2119,7 +2122,9 @@ export_hafs_regional ()
   export OUTPUT_GRID="'regional_latlon'"
   export OUTPUT_FILE="'netcdf'"
   export ZSTANDARD_LEVEL=0
+  export ZSTANDARD_LEVEL_RST=0
   export IDEFLATE=0
+  export IDEFLATE_RST=0
   export QUANTIZE_NSD=0
   export CEN_LON=-62.0
   export CEN_LAT=25.0
