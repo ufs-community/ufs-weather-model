@@ -118,14 +118,13 @@ def print_html_results(dict):
       for category in results.keys():
          if results[category]:
             mdFile.write(f"\n<h3>{machine.upper()}</h3>\n")
-            unordered_list = [f"{category.title()}:", dict[machine][category]]
+            unordered_list = [f"**{category.title()}:**", dict[machine][category]]
             mdFile.new_list(unordered_list, marked_with='*')
    return mdFile.get_md_text()
 
 def main():
-   """For each machine, create a log object, get current PR data, gather historical runtime/memory data, 
-   and compare results to determine which test/machine combinations fall more than 2 standard deviations 
-   above the historical mean for each test.""" 
+   """For each machine, create a log object, get current PR data, and determine 
+   which tests increase warnings and/or remarks on each machine.""" 
 
    machines = os.environ.get('MACHINES').split()
 
