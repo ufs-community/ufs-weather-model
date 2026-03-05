@@ -37,9 +37,9 @@ function disk_usage() {
     local directory="${1:-${PWD}}"
     local depth="${2:-1}"
     local size="${3:-k}"
-    echo "Disk usage: ${JOB_NAME:-ci}/${UFS_PLATFORM}/$(basename ${directory})"
+    echo "Disk usage: ${JOB_NAME:-ci}/${UFS_PLATFORM}/$(basename \"${directory}\")"
     (
-    cd ${directory} || exit 1
+    cd "${directory}" || exit 1
     echo "Platform,Build,Owner,Group,Inodes,${size:-k}bytes,Access Time,Filename"
     du -Px -d ${depth:-1} --inode --exclude='./workspace' | \
         while read -r line ; do
@@ -50,4 +50,4 @@ function disk_usage() {
     echo ""
 }
 
-disk_usage "${1}" "${2}" "${3}" | tee ${outfile}
+disk_usage "${1}" "${2}" "${3}" | tee "${outfile}"
