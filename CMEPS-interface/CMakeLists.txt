@@ -38,6 +38,7 @@ list(APPEND _ufs_util_files
   CMEPS/ufs/ufs_kind_mod.F90
   CMEPS/ufs/perf_mod.F90
   CMEPS/ufs/ufs_const_mod.F90
+  CMEPS/ufs/wtracers_mod.F90
   ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/share/shr_orb_mod.F90
   ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/share/shr_const_mod.F90
   ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/share/shr_abort_mod.F90
@@ -85,7 +86,8 @@ list(APPEND _mediator_files
   CMEPS/mediator/med_phases_post_glc_mod.F90
   CMEPS/mediator/med_phases_post_rof_mod.F90
   CMEPS/mediator/med_phases_post_wav_mod.F90
-  CMEPS/mediator/med_ufs_trace_wrapper.F90)
+  CMEPS/mediator/med_ufs_trace_wrapper.F90
+  CMEPS/mediator/med_field_info_mod.F90)
 
 if(CDEPS_INLINE)
   list(APPEND _mediator_files CMEPS/mediator/med_phases_cdeps_mod.F90)
