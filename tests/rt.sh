@@ -952,6 +952,10 @@ case ${MACHINE_ID} in
       ECF_HOST=$(hostname)
       ECF_PORT=$(( $(id -u) + 1500 ))
       export ECF_PORT ECF_HOST
+    else
+      echo "Current workflow scheduler setting: ECFLOW=$ECFLOW, ROCOTO=$ROCOTO"
+      echo "Either the EcFlow (-e) or Rocoto (-r) flag must be chosen when running rt.sh on Derecho. Exiting..."
+      exit 1
     fi
 
     QUEUE="main"
