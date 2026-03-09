@@ -122,9 +122,9 @@ def print_html_results(dict):
       for category in results.keys():
          if results[category]:
             mdFile.write(f"\n<h3>{machine.upper()}</h3>\n")
-            unordered_list = [f"**{category.title()}:**"]
+            unordered_list = [f"**{category.title()}:**", []]
             for test, value in dict[machine][category].items():
-               unordered_list.append(f"{test}: {value}")
+               unordered_list[1].append(f"{test}: {value}")
             mdFile.new_list(unordered_list, marked_with='*')
    return mdFile.get_md_text()
 
