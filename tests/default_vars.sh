@@ -128,11 +128,16 @@ export fbh_omp_num_threads=1
 
 export histaux_enabled=.false.
 export BMIC=.false.
+
+export GFSv17opn=.false.
 export SFS=.false.
+
+export EXCLUSIVE_NODES=.false.
 
 if [[ ${MACHINE_ID} = wcoss2 || ${MACHINE_ID} = acorn ]]; then
 
   export TPN=128
+  export EXCLUSIVE_NODES=.true.
 
   export INPES_dflt=3
   export JNPES_dflt=8
@@ -154,6 +159,7 @@ if [[ ${MACHINE_ID} = wcoss2 || ${MACHINE_ID} = acorn ]]; then
 elif [[ ${MACHINE_ID} = orion ]]; then
 
   export TPN=40
+  export EXCLUSIVE_NODES=.true.
 
   export INPES_dflt=3
   export JNPES_dflt=8
@@ -175,7 +181,7 @@ elif [[ ${MACHINE_ID} = orion ]]; then
 elif [[ ${MACHINE_ID} = hercules ]]; then
 
   export TPN=80
-
+  export EXCLUSIVE_NODES=.true.
   export INPES_dflt=3
   export JNPES_dflt=8
   export INPES_thrd=3
@@ -405,6 +411,7 @@ elif [[ ${MACHINE_ID} = noaacloud ]] ; then
       export TPN=30
     fi
 
+    export EXCLUSIVE_NODES=.true.
     export INPES_dflt=3
     export JNPES_dflt=8
     export INPES_thrd=3
@@ -436,6 +443,7 @@ elif [[ ${MACHINE_ID} = noaacloud ]] ; then
 elif [[ ${MACHINE_ID} = frontera ]]; then
 
   TPN=56
+  export EXCLUSIVE_NODES=.true.
 
 else
 
@@ -471,12 +479,13 @@ export_fv3
 export USE_MERRA2=.false.
 export WRITE_NSFLIP=.false.
 
-export DIAG_TABLE=diag_table_gfsv16
+export DIAG_TABLE=diag_table_gfsv16.IN
 export FIELD_TABLE=field_table_gfsv16
 export FV3_RUN=control_run.IN
 export INPUT_NML=control.nml.IN
 export CCPP_SUITE=FV3_GFS_v16
 
+export DOGP_CLDOPTICS_LUT=.false.
 export DOGP_LWSCAT=.false.
 export IAER=111
 export ICLIQ_SW=1
@@ -609,7 +618,6 @@ export_mpas ()
     export LNDP_TYPE=0
     export N_VAR_LNDP=0
 
-
     export INPES=${INPES_dflt}
     export JNPES=${JNPES_dflt}
 
@@ -654,6 +662,7 @@ export_gfs_physics ()
     export HYBEDMF=.false.
     # RRTMGP
     export DO_RRTMGP=.false.
+    export DOGP_CLDOPTICS_LUT=.true.
     export DOGP_LWSCAT=.true.
     export DOGP_SGS_CNV=.true.
     export USE_LW_JACOBIAN=.false.
@@ -993,8 +1002,9 @@ export TTENDLIM=-999
 
 # Radiation
 export DO_RRTMGP=.false.
+export DOGP_CLDOPTICS_LUT=.true.
 export DOGP_LWSCAT=.true.
-export DOGP_SGS_CNV=.false.
+export DOGP_SGS_CNV=.true.
 export USE_LW_JACOBIAN=.false.
 export DAMP_LW_FLUXADJ=.false.
 export RRTMGP_LW_PHYS_BLKSZ=2
@@ -1392,6 +1402,7 @@ export CHOUR=06
 export MOM6_OUTPUT_DIR=./MOM6_OUTPUT
 export MOM6_RESTART_DIR=./RESTART/
 export MOM6_RESTART_SETTING=n
+export MOM6_HISTFREQ_N=6
 
 # Following not used for standalone
 export USE_CICE_ALB=.false.
@@ -1639,7 +1650,7 @@ export_mom6() {
   export DT_THERM_MOM6=3600
   export MOM6_INPUT=MOM_input_100.IN
   export MOM6_OUTPUT_DIR=./MOM6_OUTPUT
-  export MOM6_OUTPUT_FH=6
+  export MOM6_HISTFREQ_N=6
   export MOM6_RESTART_DIR=./RESTART/
   export MOM6_RESTART_SETTING=n
   export MOM6_RIVER_RUNOFF=False
@@ -1648,6 +1659,8 @@ export_mom6() {
   export MOM6_USE_LI2016=True
   export MOM6_TOPOEDITS=''
   export MOM6_HFREEZE=20.0
+  export MOM6_GUST_CONST=0.02
+  export MOM6_WRITE_GEOM=2
   # since CPL_SLOW is set to DT_THERM, this should be always be false
   export MOM6_THERMO_SPAN=False
   export MOM6_USE_WAVES=True
@@ -1889,8 +1902,9 @@ export LSEASPRAY=.true.
 
 # RRTMGP
 export DO_RRTMGP=.false.
+export DOGP_CLDOPTICS_LUT=.true.
 export DOGP_LWSCAT=.true.
-export DOGP_SGS_CNV=.false.
+export DOGP_SGS_CNV=.true.
 
 # CA
 export DO_CA=.true.
@@ -1968,6 +1982,7 @@ export_datm_cdeps ()
   export SMONTH=10
   export SDAY=01
   export SHOUR=00
+  export CHOUR=00
   export FHMAX=24
   export DT_ATMOS=900
   export FHROT=0
@@ -2013,11 +2028,11 @@ export_datm_cdeps ()
   # default configure
   export UFS_CONFIGURE=ufs.configure.datm_cdeps.IN
   export atm_model=datm
-  export CPLMODE=ufs.nfrac.aoflux
+  export CPLMODE=ufs.frac.aoflux
 
   # datm defaults
   export INPUT_NML=input.mom6.nml.IN
-  export DIAG_TABLE=diag_table_template
+  export DIAG_TABLE=diag_table_cpld.IN
   export DATM_SRC=CFSR
   export FILEBASE_DATM=cfsr
   export MESH_ATM=mesh.datm.1760x880.nc
@@ -2478,6 +2493,7 @@ export DIAG_TABLE=diag_table_hrrr
 export MODEL_CONFIGURE=model_configure_rrfs_conus13km.IN
 export DIAG_TABLE_ADDITIONAL=diag_additional_rrfs_smoke
 export FRAC_ICE=.true.
+export USE_CDEPS_INLINE=.false.
 }
 
 export_rap_common()
