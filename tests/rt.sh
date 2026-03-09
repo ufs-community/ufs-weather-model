@@ -841,7 +841,8 @@ case ${MACHINE_ID} in
     QUEUE="batch"
     COMPILE_QUEUE="batch"
     PARTITION="orion"
-    dprefix=${dprefix:-"/work/noaa/stmp/${USER}"}
+  # dprefix=${dprefix:-"/work/noaa/stmp/${USER}"}
+    dprefix=${dprefix:-"/work2/noaa/${USER}"}
     DISKNM="/work2/noaa/epic/UFS-WM_RT"
     STMP="${dprefix}/stmp"
     PTMP="${dprefix}/stmp"
@@ -869,7 +870,8 @@ case ${MACHINE_ID} in
     QUEUE="batch"
     COMPILE_QUEUE="batch"
     PARTITION="hercules"
-    dprefix=${dprefix:-"/work2/noaa/stmp/${USER}"}
+  # dprefix=${dprefix:-"/work2/noaa/stmp/${USER}"}
+    dprefix=${dprefix:-"/work2/noaa/${USER}"}
     DISKNM="/work2/noaa/epic/hercules/UFS-WM_RT"
     STMP="${dprefix}/stmp"
     PTMP="${dprefix}/stmp"
