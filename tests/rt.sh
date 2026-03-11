@@ -944,8 +944,7 @@ case ${MACHINE_ID} in
     if [[ "${ROCOTO:-false}" == true ]] ; then
       module use /glade/work/epicufsrt/contrib/derecho/modulefiles
       module load rocoto/1.3.7
-    fi
-    if [[ "${ECFLOW:-false}" == true ]] ; then
+    elif [[ "${ECFLOW:-false}" == true ]] ; then
       module use /glade/work/epicufsrt/contrib/spack-stack/derecho/spack-stack-1.9.2/envs/ue-oneapi-2024.2.1/install/modulefiles/oneapi/2024.2.1
       module load stack-python/3.11.7
       module load ecflow/5.11.4
