@@ -34,6 +34,10 @@ class Log():
 
       api_call = APICall(endpoint)
       response = requests.get(api_call.url, headers=api_call.header)
+      if response.status_code != 200:
+         logging.warning(response)
+         print(response)
+         sys.exit(1)
       response = json.loads(response.text)
       
       return response
@@ -96,15 +100,15 @@ class Log():
    def compare_results(self, pr_log, base_log): 
       """Compare warnings/remarks for PR head and base commits to determine whether warnings/remarks have increased."""
 
-      increases = {'warnings': [], 'remarks': []}
+      increases = {'warnings': {}, 'remarks': {}}
 
       for test in pr_log:
          # Check warnings
          if pr_log[test][0] > base_log[test][0]:
-            increases['warnings'].append(test)
+            increases['warnings'].update({test: pr_log[test][0] - base_log[test][0]})
          # Check remarks
          if pr_log[test][1] > base_log[test][1]:
-            increases['remarks'].append(test)
+            increases['remarks'].update({test: pr_log[test][1] - base_log[test][1]})
       
       return increases
 
@@ -118,7 +122,9 @@ def print_html_results(dict):
       for category in results.keys():
          if results[category]:
             mdFile.write(f"\n<h3>{machine.upper()}</h3>\n")
-            unordered_list = [f"**{category.title()}:**", dict[machine][category]]
+            unordered_list = [f"**{category.title()}:**", []]
+            for test, value in dict[machine][category].items():
+               unordered_list[1].append(f"{test}: {value}")
             mdFile.new_list(unordered_list, marked_with='*')
    return mdFile.get_md_text()
 
