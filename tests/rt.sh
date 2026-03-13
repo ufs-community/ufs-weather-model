@@ -24,6 +24,7 @@ usage() {
   echo "  -m  compare against new baseline results"
   echo "  -n  run single test <name>"
   echo "  -o  compile only, skip tests"
+  echo "  -p  run for pull request compliance"
   echo "  -r  use Rocoto workflow manager"
   echo "  -v  verbose output"
   echo "  -w  for weekly_test, skip comparing baseline results"
@@ -197,6 +198,7 @@ RT.SH OPTIONS USED:
 EOF
 
   [[ -n ${ACCNR} ]] && echo "* (-a) - HPC PROJECT ACCOUNT: ${ACCNR}" >> "${REGRESSIONTEST_LOG}"
+  [[ ${RUN_PR} == true ]] && echo "* (-p) - RUN SCRIPT TO AUTOMATE PREP FOR PULL REQUESTS:" >> "${REGRESSIONTEST_LOG}"
   [[ -n ${NEW_BASELINES_FILE} ]] && echo "* (-b) - NEW BASELINES FROM FILE: ${NEW_BASELINES_FILE}" >> "${REGRESSIONTEST_LOG}"
   [[ ${CREATE_BASELINE} == true ]] && echo "* (-c) - CREATE NEW BASELINES" >> "${REGRESSIONTEST_LOG}"
   [[ ${DEFINE_CONF_FILE} == true ]] && echo "* (-l) - USE CONFIG FILE: ${TESTS_FILE}" >> "${REGRESSIONTEST_LOG}"
@@ -411,7 +413,6 @@ EOF
 
   # PRINT FAILED TESTS
   if [[ "${#FAILED_TESTS[@]}" -ne "0" ]]; then
-
     echo "Failed Tests:" >> "${REGRESSIONTEST_LOG}"
     for j in "${!FAILED_TESTS[@]}"; do
       echo "* ${FAILED_TESTS[${j}]}" >> "${REGRESSIONTEST_LOG}"
@@ -420,10 +421,11 @@ EOF
 
   fi
 
-  # WRITE FAILED_TEST_ID LIST TO TEST_CHANGES_LOG
-  if [[ "${#FAILED_TESTS[@]}" -ne "0" ]]; then
+  # WRITE FAILED_TEST_ID LIST TO TEST_CHANGES_LOG IF PART OF A PULL REQUEST
+  if [[ "${RUN_PR}" == true && "${#FAILED_TESTS[@]}" -ne "0" ]]; then
     for item in "${FAILED_TEST_ID[@]}"; do
       echo "${item}" >> "${TEST_CHANGES_LOG}"
+      change_test_baseline_date "${item}"
     done
   fi
 
@@ -588,7 +590,7 @@ export RTVERBOSE
 export STOP_ECFLOW_AT_END=false
 ACCNR=${ACCNR:-""}
 
-while getopts ":a:b:cl:mn:dwkreovh" opt; do
+while getopts ":a:b:cl:mn:pdwkreovh" opt; do
   case ${opt} in
     a)
       ACCNR=${OPTARG}
@@ -628,7 +630,6 @@ while getopts ":a:b:cl:mn:dwkreovh" opt; do
       ;;
     p)
       RUN_PR=true
-      NEW_BL_DATE=${OPTARG}
       ;;
     d)
       export delete_rundir=true
