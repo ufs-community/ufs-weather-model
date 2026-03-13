@@ -40,6 +40,7 @@ set(CMEPS           OFF CACHE BOOL "Enable CMEPS")
 set(CDEPS           OFF CACHE BOOL "Enable CDEPS")
 set(NOAHMP          OFF CACHE BOOL "Enable NOAHMP")
 set(FIRE_BEHAVIOR   OFF CACHE BOOL "Enable Fire Behavior")
+set(WARN_AS_ERROR   OFF CACHE BOOL "Enable compile option to treat warning as error")
 
 # Configure selected application specific components
 message("")
@@ -61,6 +62,7 @@ message("CDEPS ............ ${CDEPS}")
 message("CMEPS ............ ${CMEPS}")
 message("NOAHMP ........... ${NOAHMP}")
 message("FIRE_BEHAVIOR .... ${FIRE_BEHAVIOR}")
+message("WARN_AS_ERROR .... ${WARN_AS_ERROR}")
 
 ###############################################################################
 ### Build Options

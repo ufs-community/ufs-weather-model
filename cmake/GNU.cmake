@@ -23,3 +23,7 @@ else()
     set(CMAKE_Fortran_FLAGS_RELEASE "-O2")
     set(CMAKE_C_FLAGS_RELEASE "-O2")
 endif()
+
+if(WARN_AS_ERROR)
+    set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -Werror")
+endif()
