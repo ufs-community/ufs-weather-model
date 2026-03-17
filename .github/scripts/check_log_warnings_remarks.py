@@ -79,7 +79,6 @@ class Log():
       log_instance = log_instance.splitlines()
 
       for line in log_instance:
-         
          test_match = re.search(pattern, line)
          if test_match:
             test_name, warnings, remarks = test_match.groups()
@@ -102,7 +101,7 @@ class Log():
          sys.exit(1)
 
    def _clean_data(self, test_data):
-      """Convert None values to zeros in the test dictionary"""
+      """Convert None values to zeros in the test_data dictionary"""
       clean_data = {
          k: tuple(0 if v is None else int(v) for v in values) 
          for k, values in test_data.items()
@@ -116,7 +115,7 @@ class Log():
 
       for test in pr_log:
          if test not in base_log:
-            logging.info(f"Skipped new test {test}; nothing to compare against.")
+            logging.info(f"Skipped test {test}; nothing to compare against.")
             continue
          # Check warnings
          if pr_log[test][0] > base_log[test][0]:
