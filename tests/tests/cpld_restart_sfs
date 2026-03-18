@@ -65,6 +65,8 @@ export LIST_FILES="RESTART/19940502.000000.coupler.res \
 # export FHMAX=24
 export FHROT=12
 export RESTART_N=$((FHMAX-$FHROT))
+export RESTART_INTERVAL=0
+#export RESTART_FH=12
 
 # export OUTPUT_FH="24 -1"
 # export FHZERO=24
@@ -125,7 +127,7 @@ export RESTART_FILE_SUFFIX_SECS="${SYEAR}-${SMONTH}-${SDAY}-$(printf "%05d" $(( 
 # export DT_CICE=${DT_ATMOS}
 # export DT_DYNAM_MOM6=900
 # export DT_THERM_MOM6=1800
-# export CICE_DIAGFREQ=`expr $((FHMAX-$FHROT)) \* 3600 / $DT_CICE`
+export CICE_DIAGFREQ=`expr $((FHMAX-$FHROT)) \* 3600 / $DT_CICE`
 
 # # ufs.configure
 # export coupling_interval_slow_sec=${DT_THERM_MOM6}
@@ -182,6 +184,11 @@ export CICE_USE_RESTART_TIME=.true.
 
 # MOM6 warm start
 export MOM6_RESTART_SETTING=r
+
+#unused in restart test
+export CICE_ICE_IC='cice_model.res.nc'
+export MOM6_WARMSTART_FILE=none
+export MOM6_INIT_UV=zero
 
 # export FNALBC="'C192.snowfree_albedo.tileX.nc'"
 # export FNALBC2="'C192.facsf.tileX.nc'"

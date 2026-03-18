@@ -56,8 +56,10 @@ export LIST_FILES="RESTART/19940501.020000.coupler.res \
 export DAYS=0.0833
 export FHMAX=2
 export RESTART_N=2
-# export RESTART_INTERVAL="${RESTART_N} -1"
+export RESTART_INTERVAL="${RESTART_N} -1"
 # export FHROT=0
+
+export CICE_DIAGFREQ=`expr $((FHMAX-$FHROT)) \* 3600 / $DT_CICE`
 
 # export OUTPUT_FH="24 -1"
 # export FHZERO=24
