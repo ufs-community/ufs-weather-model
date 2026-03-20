@@ -346,9 +346,17 @@ The input files containing grid information and the initial conditions for globa
      - land mask
      - 1.00, 0.50
      -
-   * - basin_codes.nc 
+   * - basin_codes.nc
      - ocean basin classification grid
      - 0.50
+     -
+   * - hycom1_25.nc
+     - vertical coordinate thickness defining 25 vertical levels
+     - 9.00, 5.00
+     -
+   * - hycom1_75_800m.nc
+     - vertical coordinate level thickness
+     - 1.00, 0.50, 0.25
      -
    * - layer_coord.nc 
      - vertical layer target potential density
