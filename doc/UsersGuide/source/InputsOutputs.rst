@@ -54,13 +54,13 @@ mediator). Currently, supported configurations include:
    * - LND-LM4
      - Coupled :term:`CDEPS` - :term:`DATM` - :term:`LM4`
    * - HAFS
-     - Coupled :term:`ATM` - :term:`HYCOM` - :term:`CMEPS`
+     - Coupled :term:`ATM` - :term:`CMEPS`
    * - HAFSW
-     - Coupled :term:`ATM` - :term:`HYCOM` - :term:`WW3` - :term:`CMEPS`
+     - Coupled :term:`ATM` - :term:`WW3` - :term:`CMEPS`
    * - HAFS-MOM6W
      - Coupled :term:`ATM` - :term:`MOM6`- :term:`WW3` - :term:`CMEPS`
    * - HAFS-ALL
-     - Coupled :term:`CDEPS` - :term:`ATM` - :term:`HYCOM` - :term:`WW3` - :term:`CMEPS`
+     - Coupled :term:`CDEPS` - :term:`ATM` - :term:`WW3` - :term:`CMEPS`
 
 .. COMMENT: Should HAFS-ALL be DATM instead of ATM?
 .. COMMENT: No RTs for these apps: ATMWM, S2SL, S2SWL, HAFS-MOM6
@@ -350,14 +350,6 @@ The input files containing grid information and the initial conditions for globa
      - ocean basin classification grid
      - 0.50
      -
-   * - hycom1_25.nc
-     - vertical coordinate thickness defining 25 vertical levels
-     - 9.00, 5.00
-     -
-   * - hycom1_75_800m.nc 
-     - vertical coordinate level thickness
-     - 1.00, 0.50, 0.25
-     -
    * - layer_coord.nc 
      - vertical layer target potential density
      - 1.00, 0.50, 0.25
@@ -427,166 +419,6 @@ The input files containing grid information and the initial conditions for globa
      - 1.00
      - ✔
     
-.. _hycom-in:
-
--------
-HYCOM
--------
-
-.. _hycom-fix-files:
-
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Static Datasets (i.e., *fix files*)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Static input files have been created for several regional domains. These domains are listed and described in :numref:`Table %s <HYCOM_DomainIdentifiers>`.
-
-.. _HYCOM_DomainIdentifiers:
-
-.. list-table:: *The following table describes each domain identifier.*
-   :widths: 10 20
-   :header-rows: 1
-
-   * - Identifier
-     - Description
-   * - hat10
-     - Hurricane North Atlantic (1/12 degree)
-   * - hep20
-     - Hurricane Eastern North Pacific (1/12 degree)
-   * - hwp30
-     - Hurricane Western North Pacific (1/12 degree)
-   * - hcp70
-     - Hurricane Central North Pacific (1/12 degree)
-
-Static input files are listed and described in :numref:`Table %s <HYCOM_FixFiles>`. Several datasets contain both dot-a (.a) and dot-b (.b) files. Dot-a files contain data written as 32-bit IEEE real values (idm*jdm) and dot-b files contain plain text metadata for each field in the dot-a file.
-
-.. COMMENT: What is (idm*jdm)?
-
-.. _HYCOM_FixFiles:
-
-.. list-table:: *Fix files containing climatological information*
-   :widths: 15 30 15
-   :header-rows: 1
-
-   * - Filename
-     - Description
-     - Domain
-   * - :ref:`blkdat.input<HYCOM_BlkdatInput>`
-     - Model input parameters
-     -
-   * - patch.input
-     - Tile description
-     -
-   * - ports.input
-     - Open boundary cells
-     -
-   * - forcing.chl.(a,b)
-     - Chlorophyll (monthly climatology)
-     - hat10, hep20, hwp30, hcp70
-   * - forcing.rivers.(a,b)
-     - River discharge (monthly climatology)
-     - hat10, hep20, hwp30, hcp70
-   * - iso.sigma.(a,b)
-     - Fixed sigma thickness
-     - hat10, hep20, hwp30, hcp70
-   * - regional.depth.(a,b)
-     - Total depth of ocean
-     - hat10, hep20, hwp30, hcp70
-   * - regional.grid.(a,b)
-     - Grid information for HYCOM "C" grid
-     - hat10, hep20, hwp30, hcp70
-   * - relax.rmu.(a,b)
-     - Open boundary nudging value
-     - hat10, hep20, hwp30, hcp70
-   * - relax.ssh.(a,b)
-     - Surface height nudging value (monthly climatology)
-     - hat10, hep20, hwp30, hcp70
-   * - tbaric.(a,b)
-     - Thermobaricity correction
-     - hat10, hep20, hwp30, hcp70
-   * - thkdf4.(a,b)
-     - Diffusion velocity (m/s) for Laplacian thickness diffusivity
-     - hat10, hep20, hwp30, hcp70
-   * - veldf2.(a,b)
-     - Diffusion velocity (m/s) for biharmonic momentum dissipation
-     - hat10, hep20, hwp30, hcp70
-   * - veldf4.(a,b)
-     - Diffusion velocity (m/s) for Laplacian momentum dissipation
-     - hat10, hep20, hwp30, hcp70
-
-.. _hycom-grid-ic-files:
-
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Grid Description and Initial Condition Files
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-The input files containing time dependent configuration and forcing data are listed and described in :numref:`Table %s <HYCOM_GridICFiles>`. These files are generated for specific regional domains (see :numref:`Table %s <HYCOM_DomainIdentifiers>`) during ocean prep. When uncoupled, the the forcing data drives the ocean model. When coupled, the forcing data is used to fill in unmapped grid cells. Several datasets contain both dot-a (.a) and dot-b (.b) files. Dot-a files contain data written as 32-bit IEEE real values (idm*jdm) and dot-b files contain plain text metadata for each field in the dot-a file.
-
-.. COMMENT: What is (idm*jdm)?
-
-.. _HYCOM_GridICFiles:
-
-.. list-table:: *Input files containing grid information, initial conditions, and forcing data for regional configurations.*
-   :widths: 12 30 18 5
-   :header-rows: 1
-
-   * - Filename
-     - Description
-     - Domain
-     - Date-dependent
-   * - limits
-     - Model begin and end time (since HYCOM epoch)
-     -
-     - ✔
-   * - forcing.airtmp.(a,b)
-     - GFS forcing data for 2m air temperature
-     - hat10, hep20, hwp30, hcp70
-     - ✔
-   * - forcing.mslprs.(a,b)
-     - GFS forcing data for mean sea level pressure (symlink)
-     - hat10, hep20, hwp30, hcp70
-     - ✔
-   * - forcing.precip.(a,b)
-     - GFS forcing data for precipitation rate
-     - hat10, hep20, hwp30, hcp70
-     - ✔
-   * - forcing.presur.(a,b)
-     - GFS forcing data for mean sea level pressure
-     - hat10, hep20, hwp30, hcp70
-     - ✔
-   * - forcing.radflx.(a,b)
-     - GFS forcing data for total radiation flux
-     - hat10, hep20, hwp30, hcp70
-     - ✔
-   * - forcing.shwflx.(a,b)
-     - GFS forcing data for net downward shortwave radiation flux
-     - hat10, hep20, hwp30, hcp70
-     - ✔
-   * - forcing.surtmp.(a,b)
-     - GFS forcing data for surface temperature
-     - hat10, hep20, hwp30, hcp70
-     - ✔
-   * - forcing.tauewd.(a,b)
-     - GFS forcing data for eastward momentum flux
-     - hat10, hep20, hwp30, hcp70
-     - ✔
-   * - forcing.taunwd.(a,b)
-     - GFS forcing data for northward momentum flux
-     - hat10, hep20, hwp30, hcp70
-     - ✔
-   * - forcing.vapmix.(a,b)
-     - GFS forcing data for 2m vapor mixing ratio
-     - hat10, hep20, hwp30, hcp70
-     - ✔
-   * - forcing.wndspd.(a,b)
-     - GFS forcing data for 10m wind speed
-     - hat10, hep20, hwp30, hcp70
-     - ✔
-   * - restart_in.(a,b)
-     - Restart file for ocean state variables
-     - hat10, hep20, hwp30, hcp70
-     - ✔
-
 .. _cice-in:
 
 -------
@@ -955,9 +787,6 @@ The input files containing grid information and the time-varying forcing files f
    * - GHRSST_mesh.nc
      - ESMF mesh file for GHRSST data source
      -
-   * - hycom_YYYYMM_surf_nolev.nc
-     - MOM6 forcing file for year YYYY and month MM
-     - ✔
    * - ghrsst_YYYYMMDD.nc
      - GHRSST forcing file for year YYYY, month MM and day DD
      - ✔
@@ -1277,7 +1106,6 @@ The configuration files used by the UFS Weather Model are listed here and descri
    * ``suite_[suite_name].xml`` (used only at build time)
    * ``datm.streams`` (used by CDEPS)
    * ``datm_in`` (used by CDEPS)
-   * ``blkdat.input`` (used by HYCOM)
 
 While the ``input.nml`` file is also a configuration file used by the UFS Weather Model, it is described in
 :numref:`Section %s <InputNML>`. The run-time configuration of model output fields is controlled by the combination of ``diag_table`` and ``model_configure``, and is described in detail in :numref:`Section %s <OutputFiles>`.
@@ -1966,14 +1794,6 @@ A sample of the data stream namelist file is shown below:
   restfilm = "null"
   /
 
-.. _HYCOM_BlkdatInput:
-
----------------------------------------
-``blkdat.input``
----------------------------------------
-
-The HYCOM model reads parameters from a custom formatted configuraiton file, blkdat.input. The `HYCOM User's Guide <https://www.hycom.org/hycom/documentation>`_ provides an in depth description of the configuration settings.
-
 .. _InputNML:
 
 -----------------------------
@@ -2375,52 +2195,6 @@ A brief example of the diag_table is shown below.  ``"..."`` denotes where lines
    "ocean_model", "taux",      "taux",          "ocn%4yr%2mo%2dy%2hr","all",.true.,"none",2
    "ocean_model", "tauy",      "tauy",          "ocn%4yr%2mo%2dy%2hr","all",.true.,"none",2
    ...
-
-.. _hycom-out:
-
--------
-HYCOM
--------
-
-HYCOM output configuration is set in the :ref:`blkdat.input<HYCOM_BlkdatInput>` file. A few common configuration options are described in :numref:`Table %s <HYCOM_OutputConfig>`
-
-.. _HYCOM_OutputConfig:
-
-.. list-table:: *The following table describes HYCOM output configuration.*
-   :widths: 10 25
-   :header-rows: 1
-
-   * - Parameter
-     - Description
-   * - dsurfq
-     - Number of days between model diagnostics at the surface
-   * - diagfq
-     - Number of days between model diagnostics
-   * - meanfq
-     - Number of days between model time averaged diagnostics
-   * - rstrfq
-     - Number of days between model restart output
-   * - itest
-     - i grid point where detailed diagnostics are desired
-   * - jtest
-     - j grid point where detailed diagnostics are desired
-
-HYCOM outpus multiple datasets. These datasets contain both dot-a (.a), dot-b (.b), and dot-txt (.txt) files. Dot-a files contain data written as 32-bit IEEE real values (idm*jdm). Dot-b files contain plain text metadata for each field in the dot-a file. Dot-txt files contain plain text data for a single cell for profiling purposes. Post-processing utilties are available in the `HYCOM-tools <https://github.com/HYCOM/HYCOM-tools>`_ repository.
-
-.. _HYCOM_OutputFiles:
-
-.. list-table:: *The following table describes HYCOM output files.*
-   :widths: 10 10
-   :header-rows: 1
-
-   * - Filename
-     - Description
-   * - archs.YYYY_DDD_HH.(a,b,txt)
-     - HYCOM surface archive data
-   * - archv.YYYY_DDD_HH.(a,b,txt)
-     - HYCOM archive data
-   * - restart_out.(a,b)
-     - HYCOM restart files
 
 .. _cice-out:
 

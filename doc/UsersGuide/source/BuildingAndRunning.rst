@@ -378,7 +378,6 @@ Lastly, the :wm-repo:`test configuration file <blob/develop/tests/tests/hafs_reg
    export OCEAN_START_DTG=43340.00000
 
    export atm_model=fv3
-   export ocn_model=hycom
    export wav_model=ww3
    OCN_tasks=60
    WAV_tasks=60
@@ -390,7 +389,7 @@ Lastly, the :wm-repo:`test configuration file <blob/develop/tests/tests/hafs_reg
    export INPUT_NML=input_regional_hafs.nml.IN
    export MODEL_CONFIGURE=model_configure_hafs.IN
    export UFS_CONFIGURE=ufs.configure.hafs_atm_ocn_wav.IN
-   export FV3_RUN="hafs_fv3_run.IN hycom_hat10_run.IN hafs_ww3_run.IN"
+   export FV3_RUN="hafs_fv3_run.IN hafs_ww3_run.IN"
 
    if [[ $MACHINE_ID = orion ]]; then
    WLCLK=40

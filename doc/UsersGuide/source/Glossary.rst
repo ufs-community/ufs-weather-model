@@ -75,7 +75,7 @@ Glossary
       DICE is the *Data Sea-Ice* component of :term:`CDEPS`. It uses static sea-ice forcing data (e.g., derived from observations) instead of output from an active sea-ice model (e.g., :term:`CICE6`). This reduces the complexity and computational cost associated with coupling to an active sea-ice model. The *Data Sea-Ice* component is particularly useful when employing computationally intensive Data Assimilation (DA) techniques to update atmospheric fields in a coupled model. In general, use of DICE in place of :term:`CICE6` can be appropriate when users are running a coupled model and only want certain components of the model to be active. More information about DICE is available in the `CDEPS DICE Documentation <https://escomp.github.io/CDEPS/versions/master/html/dice.html>`_.
 
    DOCN
-      DOCN is the *Data Ocean* component of :term:`CDEPS`. It uses static ocean forcing files (derived from observations or previous ocean model runs) instead of output from an active ocean model. This reduces the complexity and computational cost associated with coupling to an active ocean model. The *Data Ocean* component is particularly useful when employing computationally intensive Data Assimilation (DA) techniques to update atmospheric fields in a coupled model. In general, use of DOCN in place of :term:`MOM6` or :term:`HYCOM` can be appropriate when users are running a coupled model and only want certain components of the model to be active. More information about DOCN is available in the `CDEPS DOCN Documentation <https://escomp.github.io/CDEPS/versions/master/html/docn.html>`_.
+      DOCN is the *Data Ocean* component of :term:`CDEPS`. It uses static ocean forcing files (derived from observations or previous ocean model runs) instead of output from an active ocean model. This reduces the complexity and computational cost associated with coupling to an active ocean model. The *Data Ocean* component is particularly useful when employing computationally intensive Data Assimilation (DA) techniques to update atmospheric fields in a coupled model. In general, use of DOCN in place of :term:`MOM6` can be appropriate when users are running a coupled model and only want certain components of the model to be active. More information about DOCN is available in the `CDEPS DOCN Documentation <https://escomp.github.io/CDEPS/versions/master/html/docn.html>`_.
    
    dycore
    dynamical core
@@ -111,9 +111,6 @@ Glossary
    HPSS
       High Performance Storage System (HPSS).
 
-   HYCOM
-      The HYbrid Coordinate Ocean Model (`HYCOM <https://www.hycom.org/>`_) was developed to address known shortcomings in the vertical coordinate scheme of the Miami Isopycnic-Coordinate Ocean Model (MICOM). HYCOM is a primitive equation, general circulation model with vertical coordinates that remain isopycnic in the open, stratified ocean. However, the isopycnal vertical coordinates smoothly transition to z-coordinates in the weakly stratified upper-ocean mixed layer, to terrain-following sigma coordinates in shallow water regions, and back to z-level coordinates in very shallow water. The latter transition prevents layers from becoming too thin where the water is very shallow. See the `HYCOM User's Guide <https://www.hycom.org/attachments/063_hycom_users_guide.pdf>`_ for more information on using the model. The `HYCOM model code <https://github.com/NOAA-EMC/HYCOM-src>`_ is publicly available on GitHub. 
-   
    ICs
       Initial conditions
    

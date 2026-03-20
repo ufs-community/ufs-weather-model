@@ -79,9 +79,6 @@ The UFS :term:`WM` repository supports the :term:`UFS` short-range weather appli
    * - MOM6
      - Modular Ocean Model (:term:`MOM6`)
      - https://github.com/NOAA-EMC/MOM6
-   * - HYCOM-src
-     - HYbrid Coordinate Ocean Model (:term:`HYCOM`)
-     - https://github.com/NOAA-EMC/HYCOM-src
    * - CICE
      - Los Alamos sea ice model (:term:`CICE6`)
      - https://github.com/NOAA-EMC/CICE
@@ -149,9 +146,6 @@ The umbrella repository for the UFS WM is named ``ufs-weather-model``. Under thi
     ├── fire_behavior                               -------- Community Fire Behavior Model
     ├── GOCART
     │    └── (ESMF)                                 -------- GOCART model
-    ├── HYCOM-interface
-    │    └── HYCOM                                  -------- HYCOM ocean model
-    │         └── (NUOPC)                           -------- NUOPC HYCOM cap
     ├── LICENSE.md
     ├── LM4-driver 
     │    ├── (LM4)                                  -------- NUOPC NOAA-GFDL Land Model version 4
