@@ -56,7 +56,6 @@ mediator). Currently, supported configurations include:
    * - HAFS
      - Coupled :term:`ATM` - :term:`CMEPS`
    * - HAFSW
-     - Coupled :term:`ATM` - :term:`WW3` - :term:`CMEPS`
    * - HAFS-MOM6W
      - Coupled :term:`ATM` - :term:`MOM6`- :term:`WW3` - :term:`CMEPS`
    * - HAFS-ALL
