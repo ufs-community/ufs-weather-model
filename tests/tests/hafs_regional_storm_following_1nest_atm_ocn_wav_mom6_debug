@@ -1,0 +1,24 @@
+###############################################################################
+#
+#  HAFS regional with 1 storm-following moving nest and atmosphere-ocean-wave coupled with MOM6 and WW3
+#
+###############################################################################
+
+export TEST_DESCR="Compare HAFS regional with 1 storm-following moving nest and fv3-mom6-ww3 coupled results with previous trunk version DEBUG test"
+
+source ${PATHRT}/tests/hafs_regional_storm_following_1nest_atm_ocn_wav_mom6
+
+export CNTL_DIR=hafs_regional_storm_following_1nest_atm_ocn_wav_mom6_debug
+
+export LIST_FILES="atmf001.nc \
+                   sfcf001.nc \
+                   atm.nest02.f001.nc \
+                   sfc.nest02.f001.nc \
+                   RESTART/20200825.130000.MOM.res.nc \
+                   RESTART/20200825.130000.MOM.res_1.nc \
+                   20200825.130000.out_grd.ww3 \
+                   20200825.130000.out_pnt.ww3.nc"
+
+
+export FHMAX=1
+export OUTPUT_FH='1 -1'
