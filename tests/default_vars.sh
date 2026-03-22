@@ -397,11 +397,6 @@ elif [[ ${MACHINE_ID} = noaacloud ]] ; then
     export ICE_tasks_cpl_thrd=10
     export WAV_tasks_cpl_thrd=12
 
-elif [[ ${MACHINE_ID} = frontera ]]; then
-
-  TPN=56
-  export EXCLUSIVE_NODES=.true.
-
 else
 
   echo "Unknown MACHINE_ID ${MACHINE_ID}"

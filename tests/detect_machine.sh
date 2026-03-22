@@ -57,9 +57,6 @@ case $(hostname -f) in
   derecho7.hsn.de.hpc.ucar.edu) MACHINE_ID=derecho ;; ### derecho7
   derecho8.hsn.de.hpc.ucar.edu) MACHINE_ID=derecho ;; ### derecho8
   
-  login[1-4].frontera.tacc.utexas.edu) MACHINE_ID=frontera ;; ### frontera1-4
-  c*.frontera.tacc.utexas.edu) MACHINE_ID=frontera ;; ### frontera compute 
-
   discover3[1-5].prv.cube) MACHINE_ID=discover ;; ### discover31-35
   *) MACHINE_ID=UNKNOWN ;;  # Unknown platform
 esac
@@ -92,9 +89,6 @@ if [[ -d /lfs/h3 ]]; then
 elif [[ -d /lfs/h1 && ! -d /lfs/h3 ]]; then
   # We are on NOAA TDS Acorn
   MACHINE_ID=acorn
-elif [[ -d /mnt/lfs1 ]]; then
-  # We are on NOAA Jet
-  MACHINE_ID=jet
 elif [[ -d /scratch3 ]]; then
   # We are on NOAA Hera or Ursa
   mount=$(findmnt -n -o SOURCE /home)   
