@@ -42,8 +42,6 @@ case $(hostname -f) in
   ufe04) MACHINE_ID=ursa ;; ### ursa
   uecflow01) MACHINE_ID=ursa ;; ### ursaecflow01
 
-  s4-submit.ssec.wisc.edu) MACHINE_ID=s4 ;; ### s4
-
   Orion-login-[1-4].HPC.MsState.Edu) MACHINE_ID=orion ;; ### orion1-4
 
   [Hh]ercules-login-[1-4].[Hh][Pp][Cc].[Mm]s[Ss]tate.[Ee]du) MACHINE_ID=hercules ;; ### hercules1-4
@@ -113,9 +111,6 @@ elif [[ -d /gpfs/f5 && -d /ncrc ]]; then
 elif [[ -d /gpfs/f6 && -d /ncrc ]]; then
   # We are on GAEA C6.
   MACHINE_ID=gaeac6
-elif [[ -d /data/prod ]]; then
-  # We are on SSEC's S4
-  MACHINE_ID=s4
 elif [[ -d /opt/spack-stack && -v SINGULARITY_CONTAINER ]]; then
   # We are in a container
   MACHINE_ID=container

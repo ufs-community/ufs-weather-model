@@ -885,36 +885,6 @@ case ${MACHINE_ID} in
     cp fv3_conf/fv3_slurm.IN_hercules fv3_conf/fv3_slurm.IN
     cp fv3_conf/compile_slurm.IN_hercules fv3_conf/compile_slurm.IN
     ;;
-  s4)
-    echo "rt.sh: Setting up s4..."
-    if [[ "${ROCOTO:-false}" == true ]] ; then
-      module load rocoto/1.3.2
-      ROCOTO_SCHEDULER=slurm
-    fi
-    if [[ "${ECFLOW:-false}" == true ]] ; then
-      module load ecflow/5.6.0
-    fi
-    module load miniconda/3.8-s4
-
-    module use /data/prod/jedi/spack-stack/modulefiles
-    if [[ "${ECFLOW:-false}" == true ]] ; then
-      module load ecflow/5.8.4
-      ECF_HOST=$(hostname)
-      ECF_PORT="$(( $(id -u) + 1500 ))"
-      export ECF_PORT ECF_HOST
-    fi
-
-    QUEUE="s4"
-    COMPILE_QUEUE="s4"
-
-    PARTITION="s4"
-    dprefix=${dprefix:-"/data/prod"}
-    DISKNM="${dprefix}/emc.nemspara/RT"
-    STMP="/scratch/short/users"
-    PTMP="/scratch/users"
-
-    SCHEDULER="slurm"
-    ;;
   derecho)
     echo "rt.sh: Setting up derecho..."
     if [[ "${ROCOTO:-false}" == true ]] ; then
@@ -1118,11 +1088,6 @@ if [[ ${ECFLOW} == true ]]; then
   MAX_BUILDS=10 #Max build jobs
   MAX_JOBS=30   #Max test/run jobs
   ECF_TRIES=2   #Tries before failure
-
-  # Reduce maximum number of compile jobs on s4 because of licensing issues
-  if [[ ${MACHINE_ID} = s4 ]]; then
-    MAX_BUILDS=1
-  fi
 
   ECFLOW_RUN=${PATHRT}/ecflow_run
   ECFLOW_SUITE=regtest_$$
