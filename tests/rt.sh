@@ -274,6 +274,13 @@ EOF
                [[ ${COMPILE_NUM_REMARKS}  -gt 0 ]] && COMPILE_WARNINGS+=" ${COMPILE_NUM_REMARKS} remarks"
                COMPILE_WARNINGS+=" )"
             fi
+          elif [[ ${COMPILER} == "gnu" ]]; then
+            COMPILE_NUM_WARNINGS=$(grep -c "^Warning: " "${RUNDIR_ROOT}/compile_${COMPILE_ID}/err" || true)
+            if [[ ${COMPILE_NUM_WARNINGS} -gt 0 ]]; then
+               COMPILE_WARNINGS+=" ("
+               [[ ${COMPILE_NUM_WARNINGS} -gt 0 ]] && COMPILE_WARNINGS+=" ${COMPILE_NUM_WARNINGS} warnings"
+               COMPILE_WARNINGS+=" )"
+            fi
           fi
           TIME_FILE="${LOG_DIR}/compile_${COMPILE_ID}_timestamp.txt"
           if [[ -f "${TIME_FILE}" ]]; then
