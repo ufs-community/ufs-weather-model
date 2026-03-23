@@ -58,7 +58,7 @@ mediator). Currently, supported configurations include:
    * - HAFS-MOM6W
      - Coupled :term:`ATM` - :term:`MOM6`- :term:`WW3` - :term:`CMEPS`
    * - HAFS-ALL
-     - Coupled :term:`CDEPS` - :term:`ATM` - :term:`WW3` - :term:`CMEPS`
+     - Coupled :term:`CDEPS` - :term:`ATM` - :term:`MOM6` - :term:`WW3` - :term:`CMEPS`
 
 .. COMMENT: Should HAFS-ALL be DATM instead of ATM?
 .. COMMENT: No RTs for these apps: ATMWM, S2SL, S2SWL, HAFS-MOM6
