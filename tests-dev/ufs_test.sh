@@ -240,6 +240,44 @@ echo "Machine:  ""${MACHINE_ID}""    Account: ""${ACCNR}"" "
 shift $((OPTIND-1))
 [[ $# -gt 1 ]] && usage
 
+#############################################################################
+# For aquaplanet case we need to change the radiation code,
+# as well as supress warnings for land points:
+#############################################################################
+if [[ ${SRT_NAME} == aquaplanet ]]; then
+
+#--- find radiation_astronomy.f file
+  RAD_FILE=$(find ../ -name radiation_astronomy.f)
+#--- if we cannot find radiation_astronomy.f file, then exit:
+  [[ -z ${RAD_FILE} ]] && die "cannot find radiation_astronomy.f file"
+#--- find if file is original (grep text containing word AQUAPLANET)
+#--- if file is original, then add lines to appropriate place
+  if ! grep -q "AQUAPLANET TEST CASE" "${RAD_FILE}"; then
+sed -i '/solcon = solc0/a\
+\
+! AQUAPLANET TEST CASE\
+      solcon=1370.\
+      dlt=0.\
+! AQUAPLANET TEST CASE' "${RAD_FILE}"
+  fi
+
+#--- find fv_diagnostics.F90 file
+  DIAG_FILE=$(find ../ -name fv_diagnostics.F90)
+#--- if we cannot find find ../ -name fv_diagnostics.F90 file, then exit:
+  [[ -z ${DIAG_FILE} ]] && die "cannot find fv_diagnostics.F90 file"
+#--- find if file is original (grep text containing word AQUAPLANET)
+#--- if file is original, then add lines to appropriate place
+  if ! grep -q "AQUAPLANET TEST CASE" "${DIAG_FILE}"; then
+sed -i '/Print out where/a\
+\
+! AQUAPLANET TEST CASE\
+      return\
+! AQUAPLANET TEST CASE' "${DIAG_FILE}"
+  fi
+
+fi
+#############################################################################
+
 TEST_START_TIME="$(date '+%Y%m%d %T')"
 export TEST_START_TIME
 

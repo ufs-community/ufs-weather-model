@@ -7,7 +7,7 @@ logKindFlag:            ESMF_LOGKIND_MULTI
 globalResourceControl:  @[ESMF_THREADING]
 
 # EARTH #
-EARTH_component_list: MED ATM CHM OCN ICE WAV LND
+EARTH_component_list: MED ATM OCN ICE WAV LND
 EARTH_attributes::
   Verbosity = 0
 ::
@@ -26,14 +26,6 @@ ATM_attributes::
   DumpFields = false
   ProfileMemory = false
   OverwriteSlice = true
-::
-
-# CHM #
-CHM_model:                      @[chm_model]
-CHM_petlist_bounds:             @[chm_petlist_bounds]
-CHM_omp_num_threads:            @[chm_omp_num_threads]
-CHM_attributes::
-  Verbosity = 0
 ::
 
 # OCN #
@@ -141,11 +133,7 @@ runSeq::
      MED -> ICE :remapMethod=redist
      MED -> WAV :remapMethod=redist
      MED -> LND :remapMethod=redist
-     ATM phase1
-     ATM -> CHM
-     CHM
-     CHM -> ATM
-     ATM phase2
+     ATM
      ICE
      WAV
      LND

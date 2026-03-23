@@ -130,3 +130,8 @@ export DO_GSL_DRAG_SS=.false.
 
 # for nccmp of cice history files
 export nccmp_exclude_attr="--globalex=date_created"
+
+# GNU-Release is slow on Ursa; fill out the node
+if [[ $MACHINE_ID = ursa ]] && [[ $RT_COMPILER = gnu ]]; then
+   WAV_tasks="$(($WAV_tasks_cpl_unstr + 100))"
+fi
