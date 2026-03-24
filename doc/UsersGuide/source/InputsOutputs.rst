@@ -54,7 +54,9 @@ mediator). Currently, supported configurations include:
    * - LND-LM4
      - Coupled :term:`CDEPS` - :term:`DATM` - :term:`LM4`
    * - HAFS
+     - Coupled :term:`ATM` - :term:`MOM6` - :term:`CMEPS`
    * - HAFSW
+     - Coupled :term:`ATM` - :term:`MOM6` - :term:`WW3` - :term:`CMEPS`
    * - HAFS-MOM6W
      - Coupled :term:`ATM` - :term:`MOM6`- :term:`WW3` - :term:`CMEPS`
    * - HAFS-ALL
