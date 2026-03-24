@@ -795,6 +795,9 @@ The input files containing grid information and the time-varying forcing files f
    * - GHRSST_mesh.nc
      - ESMF mesh file for GHRSST data source
      -
+   * - hycom_YYYYMM_surf_nolev.nc
+     - MOM6 forcing file for year YYYY and month MM
+     - ✔
    * - ghrsst_YYYYMMDD.nc
      - GHRSST forcing file for year YYYY, month MM and day DD
      - ✔
