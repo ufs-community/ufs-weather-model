@@ -1,5 +1,9 @@
 set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -g -traceback -fpp -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -sox -align array64byte -qno-opt-dynamic-align")
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -qno-opt-dynamic-align -sox -fp-model source")
+#set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -qno-opt-dynamic-align -sox -fp-model source")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -qno-opt-dynamic-align -fp-model precise")
+
+# supress ifort deprecation warning
+set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -diag-disable 10448")
 
 # warning #5462: Global name too long.
 set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -diag-disable 5462")
