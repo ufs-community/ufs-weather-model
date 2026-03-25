@@ -97,9 +97,9 @@ else
   fi
 fi
 
-if [[ ${MACHINE_ID} == wcoss2 ]] || [[ ${MACHINE_ID} == acorn ]]; then
-    CMAKE_FLAGS+=" -DENABLE_PARALLELRESTART=ON"
-fi
+#if [[ ${MACHINE_ID} == wcoss2 ]] || [[ ${MACHINE_ID} == acorn ]]; then
+#   CMAKE_FLAGS+=" -DENABLE_PARALLELRESTART=ON"
+#fi
 
 # Check if suites argument is provided or not
 set +ex
