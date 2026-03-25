@@ -2,13 +2,12 @@
 
 # ufs-weather-model
 
-This is the UFS weather model source code
+This repository contains the UFS Weather Model source code.
 
 # Where to find information
 
-Start at the [wiki](https://github.com/ufs-community/ufs-weather-model/wiki) which has quick start instructions.
-
 The [WM User's Guide](https://ufs-weather-model.readthedocs.org/) is hosted on ReadTheDocs.
+The [WM wiki](https://github.com/ufs-community/ufs-weather-model/wiki) also has instructions for getting started.
 
 # What files are what
 
@@ -48,7 +47,7 @@ $> CMAKE_FLAGS="-DAPP=S2S -D32BIT=ON -DHYDRO=ON -DCCPP_SUITES=FV3_GFS_v17_couple
 The build system is regularly tested on [Tier-1 platforms](
 https://github.com/ufs-community/ufs-weather-model/wiki/Regression-Test-Policy-for-Weather-Model-Platforms-and-Compilers).
 Configurations for other platforms that are available with UFS should be used with the understanding that they are not regularly
-tested and users will have to adapt those to make it work.
+tested, and users will have to adapt the code to make it work on those platforms.
 
 # Disclaimer
 
