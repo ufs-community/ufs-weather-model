@@ -43,6 +43,7 @@ $> module use modulefiles
 $> module load ufs_<machine>.<compiler>
 $> CMAKE_FLAGS="-DAPP=S2S -D32BIT=ON -DHYDRO=ON -DCCPP_SUITES=FV3_GFS_v17_coupled_p8_ugwpv1" ./build.sh
 ```
+where the machine is any Tier 1-4 platform listed in an existing modulefile and the compiler is `intel`, `intelllvm`, or `gnu`.
 
 The build system is regularly tested on [Tier-1 platforms](
 https://github.com/ufs-community/ufs-weather-model/wiki/Regression-Test-Policy-for-Weather-Model-Platforms-and-Compilers).
