@@ -98,8 +98,6 @@ the data required to run the WM RTs are already available at the following ``DIS
      - /contrib/ufs-weather-model/RT
    * - Orion
      - /work/noaa/epic/UFS-WM_RT
-   * - S4 (Level 2)
-     - /data/prod/emc.nemspara/RT
    * - WCOSS2
      - /lfs/h2/emc/nems/noscrub/emc.nems/RT
 
