@@ -30,7 +30,7 @@ mediator). Currently, supported configurations include:
    * - ATMAQ
      - :term:`ATM` coupled to :term:`AQM`
    * - ATML
-     - :term:`ATM` coupled to :term:`NOAHMP` - :term:`CDEPS`
+     - Coupled :term:`ATM` - :term:`NOAHMP` - :term:`CMEPS` - :term:`CDEPS`
    * - ATMF
      - :term:`ATM` coupled to the Community Fire Behavior Model (aka :term:`UFS FIRE`) 
    * - ATM_DS2S
