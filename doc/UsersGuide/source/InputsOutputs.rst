@@ -1137,7 +1137,7 @@ Grid files are available in the ``inputs/FV3_fix_tiled/C96`` directory:
 .. code-block::
 
    C96_grid.tile*.nc
-   C96_grid_spec.nc     # aka C96.mosaic.nc
+   C96_grid_spec.nc     # aka C96_mosaic.nc
 
 The ``C96_grid.tile*.nc`` files contain grid information for tiles 1-6 at C96 grid resolution. The ``C96_grid_spec.nc`` file contains information on the mosaic grid.
 
