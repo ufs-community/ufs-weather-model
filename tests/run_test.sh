@@ -111,15 +111,6 @@ case ${MACHINE_ID} in
     module load hdf5-D/1.14.0
     module load nccmp-D/1.9.0.1
     ;;
-  s4)
-    module use /data/prod/jedi/spack-stack/spack-stack-1.4.1/envs/ufs-pio-2.5.10/install/modulefiles/Core
-    module load stack-intel/2021.5.0 stack-intel-oneapi-mpi/2021.5.0
-    module load miniconda/3.9.12
-    module load nccmp/1.9.0.1
-    ;;
-  noaacloud|frontera)
-    echo "No special nccmp load necessary"
-    ;;
   gaeac5)
     module use /ncrc/proj/epic/spack-stack/spack-stack-1.6.0/envs/unified-env/install/modulefiles/Core
     module load stack-intel/2023.2.0 stack-cray-mpich/8.1.28
@@ -511,7 +502,7 @@ if [[ ${skip_check_results} == false ]]; then
 
       else
         if [[ ${i##*.} == nc* ]] ; then
-          if [[ " orion hercules hera ursa wcoss2 acorn derecho gaeac5 gaeac6 jet s4 noaacloud frontera " =~ ${MACHINE_ID} ]]; then
+          if [[ " orion hercules hera ursa wcoss2 acorn derecho gaeac5 gaeac6 noaacloud " =~ ${MACHINE_ID} ]]; then
             printf "USING NCCMP.." >> "${RT_LOG}"
             printf "USING NCCMP.."
               nccmp_args=(-d -S -q -f -B --Attribute=checksum --warn=format)
