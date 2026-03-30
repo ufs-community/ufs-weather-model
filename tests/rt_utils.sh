@@ -414,9 +414,6 @@ rocoto_create_compile_task() {
   NATIVE=""
   BUILD_CORES=8
   BUILD_WALLTIME="00:30:00"
-  if [[ ${MACHINE_ID} == jet ]]; then
-    BUILD_WALLTIME="02:00:00"
-  fi
   if [[ ${MACHINE_ID} == hera ]]; then
     BUILD_WALLTIME="01:00:00"
   fi
@@ -427,9 +424,6 @@ rocoto_create_compile_task() {
     BUILD_WALLTIME="01:00:00"
   fi
   if [[ ${MACHINE_ID} == hercules ]]; then
-    BUILD_WALLTIME="01:00:00"
-  fi
-  if [[ ${MACHINE_ID} == s4 ]]; then
     BUILD_WALLTIME="01:00:00"
   fi
   if [[ ${MACHINE_ID} == gaeac5 ]]; then
@@ -660,7 +654,7 @@ ecflow_run() {
     elif [[ "${HOST::1}" == "d" ]]; then
       ECF_HOST=ddecflow01
     fi
-  elif [[ ${MACHINE_ID} == hera || ${MACHINE_ID} == jet || ${MACHINE_ID} == ursa ]]; then
+  elif [[ ${MACHINE_ID} == hera || ${MACHINE_ID} == ursa ]]; then
     module load ecflow
   fi
   if [[ -z ${ECF_HOST} || -z ${ECF_PORT} ]]; then
@@ -686,7 +680,7 @@ ecflow_run() {
     save_traps=$(trap)
     trap "" SIGINT  # Ignore INT signal during ecflow startup
     case ${MACHINE_ID} in
-      wcoss2|acorn|hera|jet)
+      wcoss2|acorn|hera)
         #shellcheck disable=SC2029
         ssh "${ECF_HOST}" "bash -l -c \"module load ecflow && ${ECFLOW_START} -p ${ECF_PORT}\""
         ;;
