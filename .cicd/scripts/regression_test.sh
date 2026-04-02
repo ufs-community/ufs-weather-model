@@ -7,7 +7,6 @@ export ACCNR=epic
 
 export account="-a ${ACCNR}"
 export workflow="-e"
-	#[[ ${UFS_PLATFORM} =  jet         ]] && workflow="-r"
 	#[[ ${UFS_PLATFORM} =  hera        ]] && workflow="-r"
 	#[[ ${UFS_PLATFORM} =~ clusternoaa ]] && workflow=""
 
@@ -59,16 +58,7 @@ function regression_test() {
 		BL_DATE=$(cut -d '=' -f2 bl_date.conf)
 		export BL_DATE
 
-		if [[ ${machine} =~ "Jet" ]]
-		then
-		    echo "Running regression tests on ${machine}"
-		    export dprefix=/lfs5/NAGAPE/${ACCNR}/${USER}
-		    sed 's|/lfs4/HFIP/${ACCNR}/${USER}|/lfs4/HFIP/hfv3gfs/${USER}|g' -i rt.sh
-		    sed 's|/lfs5/HFIP/${ACCNR}/${USER}|/lfs5/NAGAPE/${ACCNR}/${USER}|g' -i rt.sh
-		    local workflow="-r"
-		    ./rt.sh -a "${ACCNR}" "${workflow}" "${opt}" "${suite}" | tee "${WORKSPACE}/tests/logs/RT-run-${machine}.log"
-		    status=${PIPESTATUS[0]}
-		elif [[ ${machine} =~ "Hercules" ]]
+		if [[ ${machine} =~ "Hercules" ]]
 		then
 		    echo "Running regression tests on ${machine}"
 		    export dprefix=/work2/noaa/${ACCNR}/${USER}
