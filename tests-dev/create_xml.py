@@ -54,18 +54,16 @@ def rocoto_create_compile_task(MACHINE_ID,COMPILE_ID,ROCOTO_COMPILE_MAXTRIES,MAK
         MAKE_OPT (str): Make build options
         ACCNR (str): Account to run the job with
         COMPILE_QUEUE (str): Quality of Service (QOS), i.e., batch, windfall, normal, etc.
-        PARTITION (str): System partition i.e., xjet, c5
+        PARTITION (str): System partition i.e., c5
         ROCOTO_XML (str): Rocoto XML filename to write to
     """
     NATIVE=""
     BUILD_CORES="8"
     BUILD_WALLTIME="00:30:00"
-    if ( MACHINE_ID == 'jet' ):  BUILD_WALLTIME="02:00:00"
     if ( MACHINE_ID == 'hera'):  BUILD_WALLTIME="01:00:00"
     if ( MACHINE_ID == 'ursa'):  BUILD_WALLTIME="01:00:00"
     if ( MACHINE_ID == 'orion'): BUILD_WALLTIME="01:00:00"
     if ( MACHINE_ID == 'hercules'): BUILD_WALLTIME="01:00:00"
-    if ( MACHINE_ID == 's4' ):   BUILD_WALLTIME="01:00:00"
     if ( MACHINE_ID == 'gaeac6' ): BUILD_WALLTIME="01:00:00"
     compile_task = f"""  <task name="compile_{COMPILE_ID}" maxtries="{ROCOTO_COMPILE_MAXTRIES}">
     <command>&PATHRT;/run_compile.sh &PATHRT; &RUNDIR_ROOT; "{MAKE_OPT}" {COMPILE_ID} 2>&amp;1 | tee &LOG;/compile_{COMPILE_ID}.log</\
@@ -122,7 +120,7 @@ def write_compile_env(SCHEDULER,PARTITION,JOB_NR,COMPILE_QUEUE,RUNDIR_ROOT):
 
     Args:
         SCHEDULER (str): Job scheduler, e.g., pbs, slurm
-        PARTITION (str): System partition, i.e., xjet, c5
+        PARTITION (str): System partition, i.e., c5
         JOB_NR (str): Job number
         COMPILE_QUEUE (str): Quality of Service (QOS), i.e., batch, windfall, normal, etc.
         RUNDIR_ROOT (str): Test run directory
@@ -218,9 +216,6 @@ export delete_rundir={delete_rundir}
 export WLCLK={WLCLK}
 export RTVERBOSE=false
 """
-    if ( MACHINE_ID == 'jet' ):
-        runtest_envs += f"export PATH=/lfs4/HFIP/hfv3gfs/software/miniconda3/4.8.3/envs/ufs-weather-model/bin:/lfs4/HFIP/hfv3gfs/software/miniconda3/4.8.3/bin:$PATH\n"
-        runtest_envs += f"export PYTHONPATH=/lfs4/HFIP/hfv3gfs/software/miniconda3/4.8.3/envs/ufs-weather-model/lib/python3.8/site-packages:/lfs4/HFIP/hfv3gfs/software/miniconda3/4.8.3/lib/python3.8/site-packages\n"
      
     with open(filename,"w+") as f:
         f.writelines(runtest_envs)
@@ -231,7 +226,7 @@ def make_loghead(ACCNR,MACHINE_ID,RUNDIR_ROOT,RTPWD,REGRESSIONTEST_LOG):
 
     Args:
         ACCNR (str): Account to run the job with
-        MACHINE_ID (str): Machine ID i.e. Hera, GaeaC6, Jet, etc.
+        MACHINE_ID (str): Machine ID i.e. Hera, GaeaC6,  etc.
         RUNDIR_ROOT (str): Test run directory
         RTPWD (str): Baseline directory
         REGRESSIONTEST_LOG (str): Regression Test log filename

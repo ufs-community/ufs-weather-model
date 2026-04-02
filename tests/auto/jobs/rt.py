@@ -16,8 +16,6 @@ def set_directories(job_obj):
     logger = logging.getLogger('RT/SET_DIRECTORIES')
     if job_obj.machine == 'hera':
         workdir = '/scratch1/NCEPDEV/nems/emc.nemspara/autort/pr'
-    elif job_obj.machine == 'jet':
-        workdir = '/lfs5/HFIP/hfv3gfs/role.epic/h-nems/autort/pr'
     elif job_obj.machine == 'orion':
         workdir = '/work/noaa/nems/emc.nemspara/autort/pr'
     elif job_obj.machine == 'derecho':

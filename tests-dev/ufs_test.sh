@@ -173,7 +173,7 @@ source rt_utils.sh
 source module-setup.sh
 
 check_machine=false
-platforms=( hera ursa orion hercules gaeac6 derecho noaacloud s4 )
+platforms=( hera ursa orion hercules gaeac6 derecho noaacloud )
 for name in "${platforms[@]}"
 do
   if [[ ${MACHINE_ID} == "${name}" ]]; then
