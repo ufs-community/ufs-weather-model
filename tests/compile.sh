@@ -57,6 +57,7 @@ BUILD_JOBS=${BUILD_JOBS:-8}
 set +x
 case ${MACHINE_ID} in
   macosx|linux)
+    # shellcheck source=/github/workspace/modulefiles/ufs_ursa.intelllvm.lua
     source "${PATHTR}/modulefiles/ufs_${MACHINE_ID}.${RT_COMPILER}"
     ;;
   *)
@@ -67,6 +68,7 @@ case ${MACHINE_ID} in
     if [[ ${MACHINE_ID} == gaeac6 ]]; then
       module reset
     elif [[ ${MACHINE_ID} == container ]]; then
+      # shellcheck disable=SC1091
       source /usr/lmod/lmod/init/bash
       module purge
     elif [[ ${MACHINE_ID} == hercules ]]; then

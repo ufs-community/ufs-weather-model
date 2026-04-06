@@ -49,10 +49,11 @@ export JBNME="compile_${COMPILE_ID}"
 cd "${PATHRT}"
 remove_fail_test
 
+# shellcheck disable=SC1090
 [[ -e ${RUNDIR_ROOT}/${JBNME}.env ]] && source "${RUNDIR_ROOT}/${JBNME}.env"
 source default_vars.sh
+# shellcheck disable=SC1090
 [[ -e ${RUNDIR_ROOT}/${JBNME}.env ]] && source "${RUNDIR_ROOT}/${JBNME}.env"
-
 
 export RUNDIR=${RUNDIR_ROOT}/${JBNME}
 date_s=$( date +%s )

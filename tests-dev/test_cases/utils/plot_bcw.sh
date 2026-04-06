@@ -11,6 +11,7 @@ fcst_time=150
 
 ###############################################################
 # initialize module
+# shellcheck disable=SC1091
 . "${LMOD_ROOT}"/lmod/init/bash
 
 # update path with current directory
