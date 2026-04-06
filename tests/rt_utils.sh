@@ -779,3 +779,13 @@ ecflow_stop() {
   fi
   set -e
 }
+
+update_test_bl_date() {
+  # Update the baseline date for the test if the test passed and the baseline date is not already set to today.
+  TEST_NAME=$1
+  if [[ "${TEST_BL_DATE}" != "${BL_DATE}" ]]; then
+    echo "rt_utils.sh: Updating baseline date for ${TEST_ID} from ${TEST_BL_DATE} to ${BL_DATE}"
+    sed -i "s/TEST_BL_DATE=\"${TEST_BL_DATE}\"/TEST_BL_DATE=\"${BL_DATE}\"/" "${TEST_DIR}/tests/${TEST_NAME}"
+  fi
+
+}

@@ -18,6 +18,7 @@ usage() {
   echo "  -c  create new baseline results"
   echo "  -d  delete run directories that are not used by other tests"
   echo "  -e  use ecFlow workflow manager"
+  echo "  -f  final testing; generates test_changes.list."
   echo "  -h  display this help"
   echo "  -k  keep run directory after rt.sh is completed"
   echo "  -l  runs test specified in <file>"
@@ -209,10 +210,13 @@ EOF
   [[ ${ROCOTO} == true ]] && echo "* (-r) - USE ROCOTO" >> "${REGRESSIONTEST_LOG}"
   [[ ${ECFLOW} == true ]] && echo "* (-e) - USE ECFLOW" >> "${REGRESSIONTEST_LOG}"
   [[ ${RTVERBOSE} == true ]] && echo "* (-v) - VERBOSE OUTPUT" >> "${REGRESSIONTEST_LOG}"
+  [[ ${FINAL_TESTING} == true ]] && echo "* (-f) - FINAL TESTING" >> "${REGRESSIONTEST_LOG}"
 
-
-  [[ -f "${TEST_CHANGES_LOG}" ]] && rm "${TEST_CHANGES_LOG}"
-  touch "${TEST_CHANGES_LOG}"
+  if [[ ${FINAL_TESTING} == true ]]; then
+    [[ -f "${TEST_CHANGES_LOG}" ]] && rm "${TEST_CHANGES_LOG}"
+    touch "${TEST_CHANGES_LOG}"
+  fi
+  
   while read -r line; do
     line="${line#"${line%%[![:space:]]*}"}"
     [[ -n "${line}" ]] || continue
@@ -432,17 +436,19 @@ EOF
   fi
 
   # WRITE FAILED_TEST_ID LIST TO TEST_CHANGES_LOG
-  if [[ "${#FAILED_TESTS[@]}" -ne "0" ]]; then
-    for item in "${FAILED_TEST_ID[@]}"; do
-      echo "${item}" >> "${TEST_CHANGES_LOG}"
-    done
+  if [[ "${FINAL_TESTING}" == true ]]; then
+    if [[ "${#FAILED_TESTS[@]}" -ne "0" ]]; then
+      for item in "${FAILED_TEST_ID[@]}"; do
+        echo "${item}" >> "${TEST_CHANGES_LOG}"
+      done
+    fi
   fi
 
   if [[ "${#FAILED_COMPILES[@]}" -eq "0" && "${#FAILED_TESTS[@]}" -eq "0" ]]; then
     cat << EOF >> "${REGRESSIONTEST_LOG}"
 
 NOTES:
-A file '${TEST_CHANGES_LOG}' was generated but is empty.
+If a file '${TEST_CHANGES_LOG}' was generated, it will be empty.
 If you are using this log as a pull request verification, please commit '${TEST_CHANGES_LOG}'.
 
 Result: SUCCESS
@@ -459,7 +465,7 @@ EOF
     cat << EOF >> "${REGRESSIONTEST_LOG}"
 
 NOTES:
-A file '${TEST_CHANGES_LOG}' was generated with list of all failed tests.
+If a file '${TEST_CHANGES_LOG}' was generated it will contain a list of all failed tests.
 You can use './rt.sh -c -b test_changes.list' to create baselines for the failed tests.
 If you are using this log as a pull request verification, please commit '${TEST_CHANGES_LOG}'.
 
@@ -594,6 +600,7 @@ NEW_BASELINES_FILE=''
 DEFINE_CONF_FILE=false
 RUN_SINGLE_TEST=false
 RTVERBOSE=false
+FINAL_TESTING=false
 export RTVERBOSE
 export STOP_ECFLOW_AT_END=false
 ACCNR=${ACCNR:-""}
@@ -635,6 +642,9 @@ while getopts ":a:b:cl:mn:dwkreovh" opt; do
       if [[ "${SRT_COMPILER}" != "intel" ]] && [[ "${SRT_COMPILER}" != "intelllvm" ]] && [[ "${SRT_COMPILER}" != "gnu" ]]; then
         die "COMPILER MUST BE 'intel' OR 'intelllvm' OR 'gnu'"
       fi
+      ;;
+    f)
+      FINAL_TESTING=true
       ;;
     d)
       export delete_rundir=true
@@ -1257,6 +1267,7 @@ export NEW_BASELINE=${NEW_BASELINE}
 export CREATE_BASELINE=${CREATE_BASELINE}
 export RT_SUFFIX=${RT_SUFFIX}
 export BL_SUFFIX=${BL_SUFFIX}
+export BL_DATE=${BL_DATE}
 export SCHEDULER=${SCHEDULER}
 export ACCNR=${ACCNR}
 export QUEUE=${QUEUE}
@@ -1270,6 +1281,7 @@ export skip_check_results=${skip_check_results}
 export RTVERBOSE=${RTVERBOSE}
 export delete_rundir=${delete_rundir}
 export WLCLK=${WLCLK}
+export FINAL_TESTING=${FINAL_TESTING}
 EOF
 
       if [[ ${ROCOTO} == true ]]; then
