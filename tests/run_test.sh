@@ -464,6 +464,34 @@ else
   fi
 
 fi
+if [[ "${RTPWD_NEW_BASELINE}" == true ]] ; then
+  RTPWD=${NEW_BASELINE}
+else
+  # RTPWD=${RTPWD:-${DISKNM}/NEMSfv3gfs/develop-${BL_DATE}}
+  RTPWD=${RTPWD:-${DISKNM}/NEMSfv3gfs/develop-${TEST_BL_DATE}}
+fi
+
+if [[ "${CREATE_BASELINE}" == false ]] ; then
+  EMPTY_CHECK=$(find "${RTPWD}/" -type d -prune -empty)
+  if [[ ! -d "${RTPWD}" ]] ; then
+    echo "Baseline directory does not exist:"
+    echo "   ${RTPWD}"
+    exit 1
+  elif [[ -n ${EMPTY_CHECK} ]] ; then
+    echo "Baseline directory is empty:"
+    echo "   ${RTPWD}"
+    exit 1
+  fi
+fi
+
+if [[ ${CREATE_BASELINE} == true && ${NEW_BASELINES_FILE} != '' ]]; then
+  if [[ -d "${NEW_BASELINE}/${TEST_ID}${RT_SUFFIX}" ]]; then
+    echo "Directory ${NEW_BASELINE}/${TEST_ID}${RT_SUFFIX} already exists. Skipping linking it to new baseline."
+  else
+    ln -s "${TEST_ID}${RT_SUFFIX}" "${NEW_BASELINE}/"
+  fi
+fi
+
 skip_check_results=${skip_check_results:-false}
 if [[ ${skip_check_results} == false ]]; then
 

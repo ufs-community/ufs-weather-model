@@ -191,7 +191,7 @@ The first time is for the full script (prep+run+finalize).
 The second time is specifically for the run phase.
 Times/Memory will be empty for failed tests.
 
-BASELINE DIRECTORY: ${RTPWD}
+BASELINE DIRECTORY: ${DISKNM}/NEMSfv3gfs
 COMPARISON DIRECTORY: ${RUNDIR_ROOT}
 
 RT.SH OPTIONS USED:
@@ -832,7 +832,8 @@ case ${MACHINE_ID} in
     if [[ "${ACCNR}" == 'epic' ]] ; then
       dprefix="/scratch4/NAGAPE/epic/${USER}/stmp"
     fi
-    DISKNM="/scratch4/NAGAPE/epic/role-epic/UFS-WM_RT"
+    # DISKNM="/scratch4/NAGAPE/epic/role-epic/UFS-WM_RT"
+    DISKNM="/scratch4/NCEPDEV/nems/Brian.Curtis/UFS-WM_RT"
     STMP="${STMP:-${dprefix}/RT_BASELINE}"
     PTMP="${PTMP:-${dprefix}/RT_RUNDIRS}"
 
@@ -975,24 +976,25 @@ fi
 
 source bl_date.conf
 
-if [[ "${RTPWD_NEW_BASELINE}" == true ]] ; then
-  RTPWD=${NEW_BASELINE}
-else
-  RTPWD=${RTPWD:-${DISKNM}/NEMSfv3gfs/develop-${BL_DATE}}
-fi
+# if [[ "${RTPWD_NEW_BASELINE}" == true ]] ; then
+#   RTPWD=${NEW_BASELINE}
+# else
+#   # RTPWD=${RTPWD:-${DISKNM}/NEMSfv3gfs/develop-${BL_DATE}}
+#   RTPWD=${RTPWD:-${DISKNM}/NEMSfv3gfs/develop-${BL_DATE}}
+# fi
 
-if [[ "${CREATE_BASELINE}" == false ]] ; then
-  EMPTY_CHECK=$(find "${RTPWD}/" -type d -prune -empty)
-  if [[ ! -d "${RTPWD}" ]] ; then
-    echo "Baseline directory does not exist:"
-    echo "   ${RTPWD}"
-    exit 1
-  elif [[ -n ${EMPTY_CHECK} ]] ; then
-    echo "Baseline directory is empty:"
-    echo "   ${RTPWD}"
-    exit 1
-  fi
-fi
+# if [[ "${CREATE_BASELINE}" == false ]] ; then
+#   EMPTY_CHECK=$(find "${RTPWD}/" -type d -prune -empty)
+#   if [[ ! -d "${RTPWD}" ]] ; then
+#     echo "Baseline directory does not exist:"
+#     echo "   ${RTPWD}"
+#     exit 1
+#   elif [[ -n ${EMPTY_CHECK} ]] ; then
+#     echo "Baseline directory is empty:"
+#     echo "   ${RTPWD}"
+#     exit 1
+#   fi
+# fi
 
 INPUTDATA_ROOT=${INPUTDATA_ROOT:-${DISKNM}/NEMSfv3gfs/input-data-20251015}
 INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT}/WW3_input_data_20250807
@@ -1064,7 +1066,7 @@ if [[ ${ROCOTO} == true ]]; then
   <!ENTITY PATHRT         "${PATHRT}">
   <!ENTITY LOG            "${LOG_DIR}">
   <!ENTITY PATHTR         "${PATHTR}">
-  <!ENTITY RTPWD          "${RTPWD}">
+  <!ENTITY RTPWD_NEW_BASELINE "${RTPWD_NEW_BASELINE}">
   <!ENTITY INPUTDATA_ROOT "${INPUTDATA_ROOT}">
   <!ENTITY INPUTDATA_ROOT_WW3 "${INPUTDATA_ROOT_WW3}">
   <!ENTITY RUNDIR_ROOT    "${RUNDIR_ROOT}">
@@ -1256,7 +1258,7 @@ EOF
 export TEST_ID=${TEST_ID}
 export MACHINE_ID=${MACHINE_ID}
 export RT_COMPILER=${RT_COMPILER}
-export RTPWD=${RTPWD}
+export RTPWD_NEW_BASELINE=${RTPWD_NEW_BASELINE}
 export INPUTDATA_ROOT=${INPUTDATA_ROOT}
 export INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT_WW3}
 export INPUTDATA_LM4=${INPUTDATA_LM4}
@@ -1264,6 +1266,7 @@ export INPUTDATA_GFSv17opn=${INPUTDATA_GFSv17opn}
 export PATHRT=${PATHRT}
 export PATHTR=${PATHTR}
 export NEW_BASELINE=${NEW_BASELINE}
+export NEW_BASELINES_FILE=${NEW_BASELINES_FILE}
 export CREATE_BASELINE=${CREATE_BASELINE}
 export RT_SUFFIX=${RT_SUFFIX}
 export BL_SUFFIX=${BL_SUFFIX}
@@ -1320,13 +1323,13 @@ if [[ ${ECFLOW} == true ]]; then
 fi
 
 # IF -c AND -b; LINK VERIFIED BASELINES TO NEW_BASELINE
-if [[ ${CREATE_BASELINE} == true && ${NEW_BASELINES_FILE} != '' ]]; then
-  for dir in "${RTPWD}"/*/; do
-    dir=${dir%*/}
-    [[ -d "${NEW_BASELINE}/${dir##*/}" ]] && continue
-    ln -s "${dir%*/}" "${NEW_BASELINE}/"
-  done
-fi
+# if [[ ${CREATE_BASELINE} == true && ${NEW_BASELINES_FILE} != '' ]]; then
+#   for dir in "${RTPWD}"/*/; do
+#     dir=${dir%*/}
+#     [[ -d "${NEW_BASELINE}/${dir##*/}" ]] && continue
+#     ln -s "${dir%*/}" "${NEW_BASELINE}/"
+#   done
+# fi
 
 ## Lets verify all tests were run and that they passed
 generate_log
