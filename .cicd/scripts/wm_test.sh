@@ -55,7 +55,6 @@ ls -l build/ufs_model || : # just checking
 status=$?
 
 [[ -n "${WM_REGRESSION_TESTS:-""}"    ]] || WM_REGRESSION_TESTS=true     # default
-#[[ ${UFS_PLATFORM} == jet         ]] && WM_REGRESSION_TESTS=false   # takes too long
 #[[ ${UFS_PLATFORM} == derecho     ]] && WM_REGRESSION_TESTS=false
 #[[ ${UFS_PLATFORM} =~ clusternoaa ]] && WM_REGRESSION_TESTS=false || :
 export WM_REGRESSION_TESTS
@@ -64,7 +63,7 @@ export WM_CREATE_BASELINE
 [[ -n "${WM_POST_TEST_RESULTS:-""}"   ]] || WM_POST_TEST_RESULTS=false   # default
 export WM_POST_TEST_RESULTS
 
-rm -f ${workspace}/wm_test_results-${UFS_PLATFORM}-${UFS_COMPILER}.txt
+rm -f "${workspace}/wm_test_results-${UFS_PLATFORM}-${UFS_COMPILER}".txt
 
 if [[ ${WM_REGRESSION_TESTS} = true ]] ; then
 	echo "Pipeline Reqression Tests on ${UFS_PLATFORM} starting."
@@ -80,12 +79,13 @@ if [[ ${WM_REGRESSION_TESTS} = true ]] ; then
 	fi
 
 	if [[ ${UFS_PLATFORM} = gaea ]] ; then
+      # shellcheck disable=SC1091
 		source /gpfs/f5/epic/scratch/role.epic/contrib/Lmod_init_C5.sh
 		echo "LMOD_VERSION=${LMOD_VERSION}"
 	fi
 
-	module use ${PWD}/modulefiles >/dev/null 2>&1
-	module load ufs_${machine_id}.${UFS_COMPILER} || true
+	module use "${PWD}"/modulefiles >/dev/null 2>&1
+	module load "ufs_${machine_id}.${UFS_COMPILER}" || true
 	[[ ${UFS_PLATFORM} = gaea ]] && module load cmake/3.23.1
 	module list
 	set -x
@@ -93,18 +93,18 @@ if [[ ${WM_REGRESSION_TESTS} = true ]] ; then
 	echo "CHANGE_ID=${CHANGE_ID:-null}"
 	echo "ACCNR=${ACCNR}"
 
-	[[ ! -f tests/logs/RegressionTests_${UFS_PLATFORM}.log ]] || mv tests/logs/RegressionTests_${UFS_PLATFORM}.log tests/logs/RegressionTests_${UFS_PLATFORM}.log.orig
+	[[ ! -f tests/logs/RegressionTests_${UFS_PLATFORM}.log ]] || mv "tests/logs/RegressionTests_${UFS_PLATFORM}.log" "tests/logs/RegressionTests_${UFS_PLATFORM}.log.orig"
 
-	rm -f ${workspace}/${UFS_PLATFORM}-${UFS_COMPILER}-wm_*-log.txt
+	rm -f "${workspace}/${UFS_PLATFORM}-${UFS_COMPILER}-wm_*-log.txt"
 	umask 002
 	if [[ ${WM_CREATE_BASELINE} = true ]] ; then
 		echo "start Creating baseline on ${UFS_PLATFORM} ..."
 		ls -al .cicd/*
 		echo "Pipeline Creating Baseline Tests ${WM_OPERATIONAL_TESTS:=default} on ${UFS_PLATFORM} ${UFS_COMPILER}"
 		/usr/bin/time -p \
-			-o ${WORKSPACE:-$(pwd)}/${UFS_PLATFORM}-${UFS_COMPILER}-time-wm_test.json \
+			-o "${WORKSPACE:-$(pwd)}"/"${UFS_PLATFORM}-${UFS_COMPILER}-time-wm_test.json" \
 			-f '{\n  "cpu": "%P"\n, "memMax": "%M"\n, "mem": {"text": "%X", "data": "%D", "swaps": "%W", "context": "%c", "waits": "%w"}\n, "pagefaults": {"major": "%F", "minor": "%R"}\n, "filesystem": {"inputs": "%I", "outputs": "%O"}\n, "time": {"real": "%e", "user": "%U", "sys": "%S"}\n}' \
-			./.cicd/scripts/create_baseline.sh | tee -a ${workspace}/${UFS_PLATFORM}-${UFS_COMPILER}-wm_test-log.txt
+			./.cicd/scripts/create_baseline.sh | tee -a "${workspace}/${UFS_PLATFORM}-${UFS_COMPILER}-wm_test-log.txt"
 		status=${PIPESTATUS[0]}
 		echo "Pipeline Completed Baseline Tests ${WM_OPERATIONAL_TESTS} on ${UFS_PLATFORM} ${UFS_COMPILER}. status=${status}"
 		[[ ${WM_POST_TEST_RESULTS} = true ]] && ./.cicd/scripts/post_test_results.sh "${UFS_PLATFORM}" "BL" || echo "post test results seprately"
@@ -113,9 +113,9 @@ if [[ ${WM_REGRESSION_TESTS} = true ]] ; then
 		ls -al .cicd/*
 		echo "Pipeline Running Regression Tests ${WM_OPERATIONAL_TESTS:=default} on ${UFS_PLATFORM} ${UFS_COMPILER}"
 		/usr/bin/time -p \
-			-o ${WORKSPACE:-$(pwd)}/${UFS_PLATFORM}-${UFS_COMPILER}-time-wm_test.json \
+			-o "${WORKSPACE:-$(pwd)}"/"${UFS_PLATFORM}-${UFS_COMPILER}-time-wm_test.json" \
 			-f '{\n  "cpu": "%P"\n, "memMax": "%M"\n, "mem": {"text": "%X", "data": "%D", "swaps": "%W", "context": "%c", "waits": "%w"}\n, "pagefaults": {"major": "%F", "minor": "%R"}\n, "filesystem": {"inputs": "%I", "outputs": "%O"}\n, "time": {"real": "%e", "user": "%U", "sys": "%S"}\n}' \
-			./.cicd/scripts/regression_test.sh | tee -a ${workspace}/${UFS_PLATFORM}-${UFS_COMPILER}-wm_test-log.txt
+			./.cicd/scripts/regression_test.sh | tee -a "${workspace}/${UFS_PLATFORM}-${UFS_COMPILER}-wm_test-log.txt"
 		status=${PIPESTATUS[0]}
 		echo "Pipeline Completed Regression Tests ${WM_OPERATIONAL_TESTS} on ${UFS_PLATFORM} ${UFS_COMPILER}. status=${status}"
 		[[ ${WM_POST_TEST_RESULTS} = true ]] && ./.cicd/scripts/post_test_results.sh "${UFS_PLATFORM}" "RT" || echo "post test results seprately"
@@ -128,21 +128,21 @@ if [[ ${WM_REGRESSION_TESTS} = true ]] ; then
 	ls -al logs/.
 
 	## Test Results ...
-	echo "ExperimentName: ${WM_OPERATIONAL_TESTS:=default}" | tee -a ${workspace}/${UFS_PLATFORM}-${UFS_COMPILER}-wm_test-log.txt | tee    ${workspace}/wm_test_results-${UFS_PLATFORM}-${UFS_COMPILER}.txt
-	grep -E " DIRECTORY: |Time: | Completed: |Result: " logs/RegressionTests_${UFS_PLATFORM}.log        | tee -a ${workspace}/wm_test_results-${UFS_PLATFORM}-${UFS_COMPILER}.txt
-	grep -E " -- COMPILE | -- TEST "                    logs/RegressionTests_${UFS_PLATFORM}.log        | tee -a ${workspace}/wm_test_results-${UFS_PLATFORM}-${UFS_COMPILER}.txt
+	echo "ExperimentName: ${WM_OPERATIONAL_TESTS:=default}" | tee -a "${workspace}/${UFS_PLATFORM}-${UFS_COMPILER}-wm_test-log.txt" | tee    "${workspace}/wm_test_results-${UFS_PLATFORM}-${UFS_COMPILER}.txt"
+	grep -E " DIRECTORY: |Time: | Completed: |Result: " "logs/RegressionTests_${UFS_PLATFORM}.log"        | tee -a "${workspace}/wm_test_results-${UFS_PLATFORM}-${UFS_COMPILER}.txt"
+	grep -E " -- COMPILE | -- TEST "                    "logs/RegressionTests_${UFS_PLATFORM}.log"        | tee -a "${workspace}/wm_test_results-${UFS_PLATFORM}-${UFS_COMPILER}.txt"
 
-	cd ${workspace}
-	find ${workspace}/tests/logs -ls
+	cd "${workspace}"
+	find "${workspace}/tests/logs" -ls
         ###Fail case check if no test logs were completed move old file back.
 	if [[ ! -f "tests/logs/RegressionTests_${UFS_PLATFORM}.log" && -f "tests/logs/RegressionTests_${UFS_PLATFORM}.log.orig" ]];then 
-           mv tests/logs/RegressionTests_${UFS_PLATFORM}.log.orig tests/logs/RegressionTests_${UFS_PLATFORM}.log
+           mv "tests/logs/RegressionTests_${UFS_PLATFORM}.log.orig" "tests/logs/RegressionTests_${UFS_PLATFORM}.log"
         fi
 
-	echo "Pipeline Reqression Tests on ${UFS_PLATFORM} complete. status=${status}" | tee ${workspace}/${UFS_PLATFORM}-status
+	echo "Pipeline Reqression Tests on ${UFS_PLATFORM} complete. status=${status}" | tee "${workspace}/${UFS_PLATFORM}-status"
 else
 	echo "Pipeline Regression Tests on ${UFS_PLATFORM} (${machine}) skipped."
-	echo "ExperimentName: null" > ${workspace}/wm_test_results-${UFS_PLATFORM}-${UFS_COMPILER}.txt
+	echo "ExperimentName: null" > "${workspace}/wm_test_results-${UFS_PLATFORM}-${UFS_COMPILER}.txt"
 fi
 
-exit ${status}
+exit "${status}"

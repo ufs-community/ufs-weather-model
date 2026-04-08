@@ -8,8 +8,11 @@ else
 fi
 
 function set_run_task() {
+    # shellcheck source=/github/workspace/tests/default_vars.sh
     source default_vars.sh
+    # shellcheck source=/github/workspace/tests/rt_utils.sh
     source rt_utils.sh
+    # shellcheck source=/github/workspace/tests/tests/control_c48
     source "${PATHRT}"/tests/"${TEST_NAME}"
     #jkim compute_petbounds_and_tasks
     if [[ ${ESMF_THREADING} == true ]]; then
@@ -21,7 +24,7 @@ function set_run_task() {
     TPN=$(( TPN / THRD ))
     NODES=$(( TASKS / TPN ))
     if (( NODES * TPN < TASKS )); then
-	NODES=$(( NODES + 1 ))
+    NODES=$(( NODES + 1 ))
     fi
 
     PPN=$(( TASKS / NODES ))
@@ -38,8 +41,8 @@ function set_run_task() {
 
 function link_new_baselines() {
     for dir in "${RTPWD}"/*/; do
-	dir=${dir%*/}
-	[[ -d "${NEW_BASELINE}/${dir##*/}" ]] && continue
-	ln -s "${dir%*/}" "${NEW_BASELINE}/"
+    dir=${dir%*/}
+    [[ -d "${NEW_BASELINE}/${dir##*/}" ]] && continue
+    ln -s "${dir%*/}" "${NEW_BASELINE}/"
     done
 }
