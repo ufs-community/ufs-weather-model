@@ -24,81 +24,72 @@ get_shas () {
 
 flag_sync=true
 
-declare -A urls branches pathes
-submodules="base ufsatm mom6 cice ww3 stoch cmeps cdeps hycom ccpp_physics aqm noahmp cubed_sphere"
+declare -A urls branches paths
+# UPP, ccpp-framework, and gocart are intentionally excluded because they update at a different cadence 
+# and periodically bring in changes. 
+submodules="base ufsatm mom6 cice ww3 stoch cmeps cdeps cmake ccpp_physics aqm noahmp cubed_sphere lm4"
 
 urls[base]='https://github.com/ufs-community/ufs-weather-model'
 branches[base]='develop'
-pathes[base]=''
+paths[base]=''
 
 urls[ufsatm]='https://github.com/NOAA-EMC/ufsatm'
 branches[ufsatm]='develop'
-pathes[ufsatm]='UFSATM'
+paths[ufsatm]='UFSATM'
 
 urls[mom6]='https://github.com/NOAA-EMC/MOM6'
 branches[mom6]='dev/emc'
-pathes[mom6]='MOM6-interface/MOM6'
+paths[mom6]='MOM6-interface/MOM6'
 
 urls[cice]='https://github.com/NOAA-EMC/CICE'
 branches[cice]='develop'
-pathes[cice]='CICE-interface/CICE'
+paths[cice]='CICE-interface/CICE'
 
 urls[ww3]='https://github.com/NOAA-EMC/WW3'
 branches[ww3]='dev/ufs-weather-model'
-pathes[ww3]='WW3'
+paths[ww3]='WW3'
 
 urls[stoch]='https://github.com/noaa-psl/stochastic_physics'
 branches[stoch]='master'
-pathes[stoch]='stochastic_physics'
-
-urls[gocart]='https://github.com/GEOS-ESM/GOCART'
-branches[gocart]='develop'
-pathes[gocart]='GOCART'
+paths[stoch]='stochastic_physics'
 
 urls[cmeps]='https://github.com/NOAA-EMC/CMEPS'
 branches[cmeps]='emc/develop'
-pathes[cmeps]='CMEPS-interface/CMEPS'
+paths[cmeps]='CMEPS-interface/CMEPS'
 
 urls[cdeps]='https://github.com/NOAA-EMC/CDEPS'
 branches[cdeps]='develop'
-pathes[cdeps]='CDEPS-interface/CDEPS'
-
-urls[hycom]='https://github.com/NOAA-EMC/HYCOM-src'
-branches[hycom]='emc/develop'
-pathes[hycom]='HYCOM-interface/HYCOM'
+paths[cdeps]='CDEPS-interface/CDEPS'
 
 urls[cmake]='https://github.com/NOAA-EMC/CMakeModules'
 branches[cmake]='develop'
-pathes[cmake]='CMakeModules'
+paths[cmake]='CMakeModules'
 
 urls[ccpp_physics]='https://github.com/ufs-community/ccpp-physics'
 branches[ccpp_physics]='ufs/dev'
-pathes[ccpp_physics]='UFSATM/ccpp/physics'
-
-urls[ccpp_framework]='https://github.com/NCAR/ccpp-framework'
-branches[ccpp_framework]='main'
-pathes[ccpp_framework]='UFSATM/ccpp/framework'
+paths[ccpp_physics]='UFSATM/ccpp/physics'
 
 urls[aqm]='https://github.com/NOAA-EMC/AQM'
 branches[aqm]='develop'
-pathes[aqm]='AQM'
+paths[aqm]='AQM'
 
 urls[noahmp]='https://github.com/NOAA-EMC/noahmp'
 branches[noahmp]='develop'
-pathes[noahmp]='NOAHMP-interface/noahmp'
-
-#urls[upp]='https://github.com/NOAA-EMC/UPP'
-#branches[upp]='develop'
-#pathes[upp]='upp'
+paths[noahmp]='NOAHMP-interface/noahmp'
 
 urls[cubed_sphere]='https://github.com/NOAA-GFDL/GFDL_atmos_cubed_sphere'
 branches[cubed_sphere]='dev/emc'
-pathes[cubed_sphere]='UFSATM/fv3/atmos_cubed_sphere'
+paths[cubed_sphere]='UFSATM/fv3/atmos_cubed_sphere'
+
+urls[lm4]='https://github.com/NOAA-GFDL/LM4-NUOPC-driver'
+branches[lm4]='develop'
+paths[lm4]='LM4-driver'
+
 
 for submodule in $submodules; do
     url=${urls[$submodule]}
     branch=${branches[$submodule]}
-    workspace=${GITHUB_WORKSPACE}'/'${pathes[$submodule]}
+    workspace=${GITHUB_WORKSPACE}'/'${paths[$submodule]}
     gitapi=$(echo "$url" | sed 's/github.com/api.github.com\/repos/g')'/branches/'$branch
     get_shas $url $gitapi $branch $workspace
 
