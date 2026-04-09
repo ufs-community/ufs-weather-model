@@ -488,14 +488,6 @@ if [[ "${CREATE_BASELINE}" == false ]] ; then
   fi
 fi
 
-if [[ ${CREATE_BASELINE} == true && ${NEW_BASELINES_FILE} != '' ]]; then
-  if [[ -d "${NEW_BASELINE}/${TEST_ID}${RT_SUFFIX}" ]]; then
-    echo "Directory ${NEW_BASELINE}/${TEST_ID}${RT_SUFFIX} already exists. Skipping linking it to new baseline."
-  else
-    ln -s "${RUNDIR}" "${NEW_BASELINE}/"
-  fi
-fi
-
 skip_check_results=${skip_check_results:-false}
 if [[ ${skip_check_results} == false ]]; then
 
