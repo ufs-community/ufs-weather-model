@@ -52,9 +52,12 @@ cd "${PATHRT}"
 unset MODEL_CONFIGURE
 unset UFS_CONFIGURE
 
+# shellcheck disable=SC1090
 [[ -e ${RUNDIR_ROOT}/run_test_${TEST_ID}.env ]] && source "${RUNDIR_ROOT}/run_test_${TEST_ID}.env"
 source default_vars.sh
+# shellcheck disable=SC1090
 [[ -e ${RUNDIR_ROOT}/run_test_${TEST_ID}.env ]] && source "${RUNDIR_ROOT}/run_test_${TEST_ID}.env"
+# shellcheck disable=SC1090
 source "tests/${TEST_NAME}"
 
 rm -f "${PATHRT}/fail_test_${TEST_ID}"
@@ -286,6 +289,7 @@ fi
 cp "${PATHRT}/parm/fd_ufs.yaml" fd_ufs.yaml
 
 # Set up the run directory
+# shellcheck disable=SC1091
 source ./fv3_run
 
 if [[ ${CPLWAV} == .true. ]]; then
