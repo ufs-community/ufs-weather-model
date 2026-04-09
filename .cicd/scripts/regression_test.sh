@@ -37,7 +37,7 @@ TESTS_DIR=${TESTS_DIR:-${UFS_MODEL_DIR}/tests}
 
 pwd
 ls -al .cicd/*
-ls -al ${TESTS_DIR}/rt.sh
+ls -al "${TESTS_DIR}/rt.sh"
 
 function regression_test() {
 	local machine=${1:-${NODE_NAME}}
@@ -52,6 +52,7 @@ function regression_test() {
 	cd tests
 		pwd
 
+      # shellcheck disable=SC2015
 		[[ ${UFS_PLATFORM} =~ clusternoaa ]] && echo "export BL_DATE=20240426" > bl_date.conf || cat bl_date.conf
 
 		mkdir -p logs/
@@ -74,7 +75,7 @@ function regression_test() {
 		    cd .. && cd .. && cd ..
 		    pwd
 		    cp "$(dirname "${WORKSPACE}")/RegressionTests_${machine_id}.log" "${WORKSPACE}/tests/logs/"
-		    cd ${WORKSPACE}/tests/
+		    cd "${WORKSPACE}/tests/"
 		elif [[ ${machine} =~ "Orion" ]]
 		then
 		    echo "Running regression tests on ${machine}"
@@ -95,7 +96,7 @@ function regression_test() {
 		    cd .. && cd .. && cd ..
 		    pwd
 		    cp "$(dirname "${WORKSPACE}")/RegressionTests_${machine_id}.log" "${WORKSPACE}/tests/logs/"
-		    cd ${WORKSPACE}/tests/
+		    cd "${WORKSPACE}/tests/"
 		elif [[ ${machine} =~ "Gaea" ]]
 		then
 		    echo "Running regression tests on ${machine}"
@@ -110,7 +111,7 @@ function regression_test() {
 		    cd .. && cd .. && cd ..
 		    pwd
 		    cp "$(dirname "${WORKSPACE}")/RegressionTests_${machine_id}.log" "${WORKSPACE}/tests/logs/"
-		    cd ${WORKSPACE}/tests/
+		    cd "${WORKSPACE}/tests/"
 		elif [[ ${machine} =~ "Hera" ]]
 		then
 		    echo "Running regression tests on ${machine}"
@@ -127,7 +128,7 @@ function regression_test() {
 		    cd .. && cd .. && cd ..
 		    pwd
 		    cp "$(dirname "${WORKSPACE}")/RegressionTests_${machine_id}.log" "${WORKSPACE}/tests/logs/"
-		    cd ${WORKSPACE}/tests/
+		    cd "${WORKSPACE}/tests/"
 		elif [[ ${machine} =~ "Derecho" ]]
 		then
 		    echo "Running regression tests on ${machine}"
@@ -142,7 +143,7 @@ function regression_test() {
 		    cd .. && cd .. && cd ..
 		    pwd
 		    cp "$(dirname "${WORKSPACE}")/RegressionTests_${machine_id}.log" "${WORKSPACE}/tests/logs/"
-		    cd ${WORKSPACE}/tests/
+		    cd "${WORKSPACE}/tests/"
 		else
 		    echo "Running regression tests on ${machine}"
 		    local workflow="-r"
@@ -150,10 +151,10 @@ function regression_test() {
 		    status=${PIPESTATUS[0]}
 		fi
 
-	cd ${WORKSPACE}
+	cd "${WORKSPACE}"
 
 	echo "Testing concluded for ${machine}. status=${status}"
-	return ${status}
+	return "${status}"
 }
 
 regression_test "${machine}"
