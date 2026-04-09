@@ -98,8 +98,6 @@ the data required to run the WM RTs are already available at the following ``DIS
      - /contrib/ufs-weather-model/RT
    * - Orion
      - /work/noaa/epic/UFS-WM_RT
-   * - S4 (Level 2)
-     - /data/prod/emc.nemspara/RT
    * - WCOSS2
      - /lfs/h2/emc/nems/noscrub/emc.nems/RT
 
@@ -339,62 +337,57 @@ Test Files
 
 Individual test files typically start with an ``export TEST_DESCR`` statement describing the test, followed by an ``export CNTL_DIR`` statement indicating the name of the directory that contains the baselines for the experiment. Next, an ``export LIST_FILES`` statement indicates which files the test expects to output from the model run. This list often includes RESTART files. After the LIST_FILES statement, the tests typically call functions from ``default_vars.sh`` to set default values. 
 
-For example, the ``hafs_regional_atm_ocn_wav`` test file lists the files that it will output and then calls three ``export_*`` functions from ``default_vars.sh``, moving from the most general to the most specific:
+For example, the ``hafs_regional_storm_following_1nest_atm_ocn_wav_mom6`` test file lists the files that it will output and then calls three ``export_*`` functions from ``default_vars.sh``, moving from the most general to the most specific:
 
 .. code-block:: console
 
-   export LIST_FILES="atmf006.nc \
-                   sfcf006.nc \
-                   archv.2019_241_06.a \
-                   archs.2019_241_06.a \
-                   20190829.060000.out_grd.ww3 \
-                   20190829.060000.out_pnt.ww3 \
-                   ufs.hafs.ww3.r.2019-08-29-21600.nc \
-                   ufs.hafs.cpl.r.2019-08-29-21600.nc"
+   export LIST_FILES="atmf003.nc \
+                   sfcf003.nc \
+                   atm.nest02.f003.nc \
+                   sfc.nest02.f003.nc \
+                   RESTART/20200825.150000.MOM.res.nc \
+                   RESTART/20200825.150000.MOM.res_1.nc \
+                   20200825.150000.out_grd.ww3 \
+                   20200825.150000.out_pnt.ww3.nc"
 
    export_fv3
    export_hafs
    export_hafs_regional
 
-Lastly, the :wm-repo:`test configuration file <blob/develop/tests/tests/hafs_regional_atm_ocn_wav>` sets any test-specific variables for the experiment. These variables will override the default values from ``default_vars.sh``. In the excerpt below, ``...`` indicates omitted lines: 
+Lastly, the :wm-repo:`test configuration file <blob/develop/tests/tests/hafs_regional_storm_following_1nest_atm_ocn_wav_mom6>` sets any test-specific variables for the experiment. These variables will override the default values from ``default_vars.sh``. In the excerpt below, ``...`` indicates omitted lines:
 
 .. code-block:: console
 
    export HAFS=true
-   export FHMAX=6
+   export FHMAX=3
    export RESTART_N=${FHMAX}
    export DT_ATMOS=180
-   export IDEFLATE=1
    export OUTPUT_FH='3 -1'
    export OUTPUT_FILE="'netcdf' 'netcdf'"
-   export SDAY=29
-   export SHOUR=00
+   export SDAY=25
+   export SHOUR=12
    export SMONTH=08
-   export SYEAR=2019
+   export SYEAR=2020
 
    ...
 
    export CDEPS_DOCN=false
-   export OCEAN_START_DTG=43340.00000
 
    export atm_model=fv3
-   export ocn_model=hycom
+   export ocn_model=mom6
    export wav_model=ww3
    OCN_tasks=60
    WAV_tasks=60
    export coupling_interval_sec=360
    export MESH_ATM=unset
+   export MESH_OCN=INPUT/mom6_mesh.nc
 
    export FIELD_TABLE=field_table_hafs
-   export DIAG_TABLE=diag_table_hafs_template
+   export DIAG_TABLE=diag_table_hafs_template.IN
    export INPUT_NML=input_regional_hafs.nml.IN
    export MODEL_CONFIGURE=model_configure_hafs.IN
-   export UFS_CONFIGURE=ufs.configure.hafs_atm_ocn_wav.IN
-   export FV3_RUN="hafs_fv3_run.IN hycom_hat10_run.IN hafs_ww3_run.IN"
-
-   if [[ $MACHINE_ID = orion ]]; then
-   WLCLK=40
-   fi
+   export UFS_CONFIGURE=ufs.configure.hafs_atm_ocn_wav_mom6.IN
+   export FV3_RUN="hafs_fv3_run.IN hafs_ww3_run.IN"
    ...
 
 .. _new-test:
