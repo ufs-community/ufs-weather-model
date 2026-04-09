@@ -1203,18 +1203,28 @@ while read -r line || [[ -n "${line}" ]]; do
     fi
 
     export TEST_ID=${TEST_NAME}_${RT_COMPILER}
-
+    skipping_test=false
     [[ -e "tests/${TEST_NAME}" ]] || die "run test file tests/${TEST_NAME} does not exist"
-    [[ ${CREATE_BASELINE} == true && ${CB} != *baseline* ]] && continue
-
+    [[ ${CREATE_BASELINE} == true && ${CB} != *baseline* ]] && skipping_test=true; continue
+    
     if [[ ${MACHINES} != '' ]]; then
       if [[ ${MACHINES} == -* ]]; then
-        [[ ${MACHINES} =~ ${MACHINE_ID} ]] && continue
+        [[ ${MACHINES} =~ ${MACHINE_ID} ]] && skipping_test=true; continue
       elif [[ ${MACHINES} == +* ]]; then
-        [[ ${MACHINES} =~ ${MACHINE_ID} ]] || continue
+        [[ ${MACHINES} =~ ${MACHINE_ID} ]] || skipping_test=true; continue 
       else
         echo "MACHINES=|${MACHINES}|"
         die "MACHINES spec must be either an empty string or start with either '+' or '-'"
+      fi
+    fi
+
+    if [[ ${skipping_test} == true ]]; then
+      if [[ ${CREATE_BASELINE} == true && ${NEW_BASELINES_FILE} != '' ]]; then
+        if [[ -d "${NEW_BASELINE}/${TEST_ID}${RT_SUFFIX}" ]]; then
+          echo "Directory ${NEW_BASELINE}/${TEST_ID}${RT_SUFFIX} already exists. Skipping linking it to new baseline."
+        else
+          ln -s "${RUNDIR}" "${NEW_BASELINE}/"
+        fi
       fi
     fi
 
