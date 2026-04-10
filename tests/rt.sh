@@ -1215,17 +1215,26 @@ while read -r line || [[ -n "${line}" ]]; do
 
     export TEST_ID=${TEST_NAME}_${RT_COMPILER}
     [[ -e "tests/${TEST_NAME}" ]] || die "run test file tests/${TEST_NAME} does not exist"
-    [[ ${CREATE_BASELINE} == true && ${CB} != *baseline* ]] && skip_test_work && continue
+    if [[ ${CREATE_BASELINE} == true && ${CB} != *baseline* ]]; then
+      skip_test_work
+      continue
+    fi
     # [[ ${CREATE_BASELINE} == true && ${CB} != *baseline* ]] && continue
 
     
     if [[ ${MACHINES} != '' ]]; then
       if [[ ${MACHINES} == -* ]]; then
-        [[ ${MACHINES} =~ ${MACHINE_ID} ]] && skip_test_work && continue
+        if [[ ${MACHINES} =~ ${MACHINE_ID} ]]
+          skip_test_work
+          continue
+        fi
         # [[ ${MACHINES} =~ ${MACHINE_ID} ]] && continue
 
       elif [[ ${MACHINES} == +* ]]; then
-        [[ ${MACHINES} =~ ${MACHINE_ID} ]] || skip_test_work && continue
+        if ! [[ ${MACHINES} =~ ${MACHINE_ID} ]]
+          skip_test_work
+          continue
+        fi
         # [[ ${MACHINES} =~ ${MACHINE_ID} ]] || continue 
 
       else
