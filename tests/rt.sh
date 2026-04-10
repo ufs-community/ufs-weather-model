@@ -33,6 +33,16 @@ usage() {
 
 [[ $# -eq 0 ]] && usage
 
+skip_test_work() {
+  if [[ ${CREATE_BASELINE} == true && ${NEW_BASELINES_FILE} != '' ]]; then
+    if [[ -d "${NEW_BASELINE}/${TEST_ID}${RT_SUFFIX}" ]]; then
+      echo "Directory ${NEW_BASELINE}/${TEST_ID}${RT_SUFFIX} already exists. Skipping linking it to new baseline."
+    else
+      ln -s "${RUNDIR}" "${NEW_BASELINE}/"
+    fi
+  fi
+}
+
 update_rtconf() {
   echo "rt.sh: Checking & Updating test configuration..."
   find_match() {
@@ -1203,28 +1213,17 @@ while read -r line || [[ -n "${line}" ]]; do
     fi
 
     export TEST_ID=${TEST_NAME}_${RT_COMPILER}
-    skipping_test=false
     [[ -e "tests/${TEST_NAME}" ]] || die "run test file tests/${TEST_NAME} does not exist"
-    [[ ${CREATE_BASELINE} == true && ${CB} != *baseline* ]] && skipping_test=true; continue
+    [[ ${CREATE_BASELINE} == true && ${CB} != *baseline* ]] && skip_test_work; continue
     
     if [[ ${MACHINES} != '' ]]; then
       if [[ ${MACHINES} == -* ]]; then
-        [[ ${MACHINES} =~ ${MACHINE_ID} ]] && skipping_test=true; continue
+        [[ ${MACHINES} =~ ${MACHINE_ID} ]] && skip_test_work; continue
       elif [[ ${MACHINES} == +* ]]; then
-        [[ ${MACHINES} =~ ${MACHINE_ID} ]] || skipping_test=true; continue 
+        [[ ${MACHINES} =~ ${MACHINE_ID} ]] || skip_test_work; continue 
       else
         echo "MACHINES=|${MACHINES}|"
         die "MACHINES spec must be either an empty string or start with either '+' or '-'"
-      fi
-    fi
-
-    if [[ ${skipping_test} == true ]]; then
-      if [[ ${CREATE_BASELINE} == true && ${NEW_BASELINES_FILE} != '' ]]; then
-        if [[ -d "${NEW_BASELINE}/${TEST_ID}${RT_SUFFIX}" ]]; then
-          echo "Directory ${NEW_BASELINE}/${TEST_ID}${RT_SUFFIX} already exists. Skipping linking it to new baseline."
-        else
-          ln -s "${RUNDIR}" "${NEW_BASELINE}/"
-        fi
       fi
     fi
 
