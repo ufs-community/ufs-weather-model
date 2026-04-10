@@ -1224,14 +1224,14 @@ while read -r line || [[ -n "${line}" ]]; do
     
     if [[ ${MACHINES} != '' ]]; then
       if [[ ${MACHINES} == -* ]]; then
-        if [[ ${MACHINES} =~ ${MACHINE_ID} ]]
+        if [[ ${MACHINES} =~ ${MACHINE_ID} ]]; then
           skip_test_work
           continue
         fi
         # [[ ${MACHINES} =~ ${MACHINE_ID} ]] && continue
 
       elif [[ ${MACHINES} == +* ]]; then
-        if ! [[ ${MACHINES} =~ ${MACHINE_ID} ]]
+        if ! [[ ${MACHINES} =~ ${MACHINE_ID} ]]; then
           skip_test_work
           continue
         fi
