@@ -34,6 +34,7 @@ usage() {
 [[ $# -eq 0 ]] && usage
 
 skip_test_work() {
+  RUNDIR=${RUNDIR_ROOT}/${TEST_ID}${RT_SUFFIX}
   if [[ ${CREATE_BASELINE} == true && ${NEW_BASELINES_FILE} != '' ]]; then
     if [[ -d "${NEW_BASELINE}/${TEST_ID}${RT_SUFFIX}" ]]; then
       echo "Directory ${NEW_BASELINE}/${TEST_ID}${RT_SUFFIX} already exists. Skipping linking it to new baseline."
