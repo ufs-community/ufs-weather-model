@@ -1,6 +1,7 @@
 #!/bin/bash
 set -eu
 
+# shellcheck disable=SC1091
 if [[ ${MACHINE_ID} = hera ]] ; then
     # We are on NOAA Hera
     if ( ! eval module help > /dev/null 2>&1 ) ; then

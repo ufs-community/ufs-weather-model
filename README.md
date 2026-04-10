@@ -1,14 +1,13 @@
-[![Read The Docs Status](https://readthedocs.org/projects/ufs-weather-model/badge/?badge=latest)](http://ufs-weather-model.readthedocs.io/)
+[![Read The Docs Status](https://readthedocs.org/projects/ufs-weather-model/badge/?badge=latest)](http://ufs-weather-model.readthedocs.org/)
 
 # ufs-weather-model
 
-This is the UFS weather model source code
+This repository contains the UFS Weather Model source code.
 
 # Where to find information
 
-Start at the [wiki](https://github.com/ufs-community/ufs-weather-model/wiki) which has quick start instructions.
-
-[User's reference guide](http://ufs-weather-model.readthedocs.io/) is hosted on read the docs.
+The [WM User's Guide](https://ufs-weather-model.readthedocs.org/) is hosted on ReadTheDocs.
+The [WM wiki](https://github.com/ufs-community/ufs-weather-model/wiki) also has instructions for getting started.
 
 # What files are what
 
@@ -19,32 +18,37 @@ The top level directory structure groups source code and input files as follow:
 | ```LICENSE.md```          | A copy of the GNU Lesser General Public License, Version 3. |
 | ```README.md```           | This file with basic pointers to more information. |
 | ```AQM/```                | Contains air quality modeling component |
-| ```CMEPS-interface/```    | Contains CMEPS mediator |
-| ```CICE-interface/```     | Contains CICE sea-ice model component including CICE6 and Icepack |
 | ```CDEPS-interface/```    | Contains CDEPS data components, including data-atmosphere (DATM) and data-ocean (DOCN) model components|
+| ```CICE-interface/```     | Contains CICE sea-ice model component including CICE6 and Icepack |
+| ```CMakeModules/```       | Contains common cmake modulefiles used by Spack and CMake to find dependencies
+| ```CMEPS-interface/```    | Contains CMEPS mediator |
 | ```fire_behavior/```      | Contains the Community Fire Behavior Model component |
-| ```FV3/```                | Contains FV3 atmosphere model component including FV3 dynamical core, dynamics to physics driver, physics and IO. |
 | ```GOCART/```             | Contains GOCART aerosol model component |
 | ```HYCOM-interface/```    | Contains HYCOM ocean model component |
 | ```LM4-driver/```         | Contains LM4 land component |
 | ```MOM6-interface/```     | Contains MOM6 ocean model component |
 | ```NOAHMP-interface/```   | Contains Noah-MP land model component |
-| ```WW3/```                | Contains community wave modeling framework WW3 |
 | ```stochastic_physics/``` | Contains the stochastic physics source code |
+| ```UFSATM/```                | Contains FV3 atmosphere model component including FV3 dynamical core, dynamics to physics driver, physics and IO. |
+| ```WW3/```                | Contains community wave modeling framework WW3 |
 | ```cmake/```              | Contains compile option files on various platforms. |
 | ```modulefiles/```        | Contains module files on various platforms. |
 | ```tests/```              | Regression and unit testing framework scripts. |
 | ```tests-dev/```          | Developmental testing framework scripts. |
 | ```build.sh```            | Script to build the model executable (also used by `tests/`) |
 
-E.g. use of `build.sh` to build the coupled model with `FV3_GFS_v15p2` as the CCPP suite.
+To use `build.sh` to build the coupled model with `FV3_GFS_v17_coupled_p8_ugwpv1` as the CCPP suite, run:
 ```
-$> CMAKE_FLAGS="-DAPP=S2S" CCPP_SUITES="FV3_GFS_v15p2" ./build.sh
+$> module use modulefiles
+$> module load ufs_<machine>.<compiler>
+$> CMAKE_FLAGS="-DAPP=S2S -D32BIT=ON -DHYDRO=ON -DCCPP_SUITES=FV3_GFS_v17_coupled_p8_ugwpv1" ./build.sh
 ```
-The build system is regularly tested with [Tier-1 and Tier-2 platforms](
+where the machine is any Tier 1-4 platform listed in an existing modulefile and the compiler is `intel`, `intelllvm`, or `gnu`.
+
+The build system is regularly tested on [Tier-1 platforms](
 https://github.com/ufs-community/ufs-weather-model/wiki/Regression-Test-Policy-for-Weather-Model-Platforms-and-Compilers).
 Configurations for other platforms that are available with UFS should be used with the understanding that they are not regularly
-tested and users will have to adapt those to make it work.
+tested, and users will have to adapt the code to make it work on those platforms.
 
 # Disclaimer
 
