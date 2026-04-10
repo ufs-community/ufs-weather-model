@@ -19,7 +19,7 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMakeModules/Modules)
 ###############################################################################
 
 # Valid applications and choices
-list(APPEND VALID_APPS ATM ATMAERO ATMAQ ATMW ATMWM ATML ATMF ATMMPAS LND LND-LM4 S2S S2SL S2SA S2SW S2SWA S2SWL S2SWAL ATM_DS2S ATM_DS2S-PCICE HAFS HAFSW HAFS-MOM6 HAFS-MOM6W HAFS-ALL NG-GODAS)
+list(APPEND VALID_APPS ATM ATMAERO ATMAQ ATME ATMW ATMWM ATML ATMF ATMMPAS LND LND-LM4 S2S S2SL S2SA S2SW S2SWA S2SWL S2SWAL ATM_DS2S ATM_DS2S-PCICE HAFS HAFSW HAFS-MOM6 HAFS-MOM6W HAFS-ALL NG-GODAS)
 set(APP NONE CACHE BOOL "Application Name")
 if(NOT (APP IN_LIST VALID_APPS))
   message(FATAL_ERROR "${APP} is not a valid application.\nValid Applications are: ${VALID_APPS}")
@@ -29,6 +29,7 @@ set(FMS             OFF CACHE BOOL "Enable FMS")
 set(FV3             OFF CACHE BOOL "Enable FV3 dycore")
 set(MPAS            OFF CACHE BOOL "Enable MPAS dycore")
 set(AQM             OFF CACHE BOOL "Enable AQM")
+set(CECE            OFF CACHE BOOL "Enable CECE")
 set(UFS_GOCART      OFF CACHE BOOL "Enable GOCART")
 set(MOM6            OFF CACHE BOOL "Enable MOM6")
 set(CICE6           OFF CACHE BOOL "Enable CICE6")
@@ -50,6 +51,7 @@ message("FMS .............. ${FMS}")
 message("FV3 .............. ${FV3}")
 message("MPAS ............. ${MPAS}")
 message("AQM .............. ${AQM}")
+message("CECE ............. ${CECE}")
 message("GOCART ........... ${UFS_GOCART}")
 message("MOM6 ............. ${MOM6}")
 message("CICE6 ............ ${CICE6}")
@@ -173,7 +175,7 @@ if(FMS)
   elseif (APP MATCHES "^(S2S|S2SA|S2SL|S2SW|S2SWL|S2SWA|S2SWAL|ATM_DS2S|ATM_DS2S-PCICE|NG-GODAS|HAFS-MOM6|HAFS-MOM6W)$")
     add_library(fms ALIAS FMS::fms_r8)
   endif()
-  if(APP MATCHES "^(ATM|ATMAERO|ATMAQ|ATMWM|ATMW|ATML|ATMF|ATMMPAS|ATML-LM4|LND-LM4|HAFS|HAFS-ALL)$")
+  if(APP MATCHES "^(ATM|ATMAERO|ATMAQ|ATME|ATMWM|ATMW|ATML|ATMF|ATMMPAS|ATML-LM4|LND-LM4|HAFS|HAFS-ALL)$")
     if(32BIT)
       add_library(fms ALIAS FMS::fms_r4)
     else()
@@ -228,6 +230,13 @@ endif()
 ###############################################################################
 if(AQM)
   add_subdirectory(AQM)
+endif()
+
+###############################################################################
+### CECE
+###############################################################################
+if(CECE)
+  add_subdirectory(CECE)
 endif()
 
 ###############################################################################
@@ -326,6 +335,12 @@ if(AQM)
   add_dependencies(ufs aqm)
   list(APPEND _ufs_defs_private FRONT_AQM=aqm)
   list(APPEND _ufs_libs_public aqm)
+endif()
+
+if(CECE)
+  add_dependencies(ufs cece)
+  list(APPEND _ufs_defs_private FRONT_CECE=cece_cap_mod)
+  list(APPEND _ufs_libs_public cece)
 endif()
 
 if(UFS_GOCART)
