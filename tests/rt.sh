@@ -1008,7 +1008,7 @@ if [[ ${skip_check_results} == true ]]; then
 else
   REGRESSIONTEST_LOG=${PATHRT}/logs/RegressionTests_${MACHINE_ID}.log
 fi
-rm -f "${REGRESSIONTEST_LOG}"
+mv "${REGRESSIONTEST_LOG}" "${REGRESSIONTEST_LOG}.bak"
 
 TEST_START_TIME="$(date '+%Y%m%d %T')"
 export TEST_START_TIME
