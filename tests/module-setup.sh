@@ -1,14 +1,8 @@
 #!/bin/bash
 set -eu
 
-if [[ ${MACHINE_ID} = jet ]] ; then
-    # We are on NOAA Jet
-    if ( ! eval module help > /dev/null 2>&1 ) ; then
-        source /apps/lmod/lmod/init/bash
-    fi
-    module purge
-
-elif [[ ${MACHINE_ID} = hera ]] ; then
+# shellcheck disable=SC1091
+if [[ ${MACHINE_ID} = hera ]] ; then
     # We are on NOAA Hera
     if ( ! eval module help > /dev/null 2>&1 ) ; then
         source /apps/lmod/lmod/init/bash
@@ -36,13 +30,6 @@ elif [[ ${MACHINE_ID} = hercules ]] ; then
     fi
     module purge
 
-elif [[ ${MACHINE_ID} = s4 ]] ; then
-    # We are on SSEC Wisconsin S4
-    if ( ! eval module help > /dev/null 2>&1 ) ; then
-        source /usr/share/lmod/lmod/init/bash
-    fi
-    module purge
-
 elif [[ ${MACHINE_ID} = wcoss2 || ${MACHINE_ID} = acorn ]] ; then
     # We are on NOAA Cactus or Dogwood
     if ( ! eval module help > /dev/null 2>&1 ) ; then
@@ -58,13 +45,6 @@ elif [[ ${MACHINE_ID} = derecho ]] ; then
     fi
     module purge
     
-elif [[ ${MACHINE_ID} = frontera ]] ; then
-    # We are on TACC Frontera
-    if ( ! eval module help > /dev/null 2>&1 ) ; then
-        source /opt/apps/lmod/lmod/init/bash
-    fi
-    module purge
-
 elif [[ ${MACHINE_ID} = gaeac5 ]] ; then
     # We are on GAEA
     if ( ! eval module help > /dev/null 2>&1 ) ; then
