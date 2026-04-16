@@ -3,7 +3,7 @@ loads UFS Model prerequisites for NOAA Parallelworks/Intel
 ]])
 
 prepend_path("MODULEPATH", "/opt/spack-stack/envs/ue-oneapi-2024.2.1/install/modulefiles/Core")
-prepend_path("MODULEPATH", "/opt/spack-stack/envs/ue-oneapi-2024.2.1/install/modulefiles/intel-oneapi-mpi/2021.13-dsdmcwn/gcc/11.4.0")
+prepend_path("MODULEPATH", "/opt/spack-stack/envs/ue-oneapi-2024.2.1/install/modulefiles/intel-oneapi-mpi/2021.13-76kidpb/gcc/11.4.0")
 prepend_path("MODULEPATH", "/opt/modulefiles")
 
 stack_intel_ver=os.getenv("stack_intel_ver") or "2024.2.1"
@@ -24,9 +24,6 @@ load(pathJoin("nccmp", nccmp_ver))
 setenv("CC", "mpiicx")
 setenv("CXX", "mpiicpx")
 setenv("FC", "mpiifort")
--- setenv("CC", "mpiicx")
--- setenv("CXX", "mpiicpx")
--- setenv("FC", "mpiifx")
-setenv("CMAKE_Platform", "noaacloud.intel")
+setenv("CMAKE_Platform", "aws-ec2.intel")
 
 whatis("Description: UFS build environment")
