@@ -1662,12 +1662,11 @@ export_fire_behavior() {
 }
 
 
-# Defaults for the coupled 5-component
+# Defaults for the global coupled
 export_cmeps() {
-  export UFS_CONFIGURE=ufs.configure.s2swa_fast.IN
+  export UFS_CONFIGURE=ufs.configure.s2sw_fast.IN
   export med_model=cmeps
   export atm_model=fv3
-  export chm_model=gocart
   export ocn_model=mom6
   export ice_model=cice6
   export wav_model=ww3
@@ -1860,7 +1859,7 @@ export CPL=.true.
 export CPLWAV=.true.
 export CPLWAV2ATM=.true.
 export USE_MED_FLUX=.false.
-export CPLCHM=.true.
+export CPLCHM=.false.
 export CPLLND=.false.
 
 # for FV3: default values will be changed if doing a warm-warm restart
