@@ -27,7 +27,7 @@
 !          |    |   |
 !          |    |   (CICE, etc.)
 !          |    |
-!          |    (MOM6, HYCOM, etc.)
+!          |    (MOM6, etc.)
 !          |
 !          (FV3, MPAS, etc.)
 !
@@ -52,9 +52,6 @@
       use FRONT_CDEPS_DATM, only: DATM_SS  => SetServices
 #endif
   ! - Handle build time OCN options:
-#ifdef FRONT_HYCOM
-      use FRONT_HYCOM,      only: HYCOM_SS  => SetServices
-#endif
 #ifdef FRONT_MOM6
       use FRONT_MOM6,       only: MOM6_SS   => SetServices, &
                                   MOM6_SV   => SetVM
@@ -87,7 +84,8 @@
 #endif
   ! - Handle build time FIR options:
 #ifdef FRONT_FIRE_BEHAVIOR
-      use FRONT_FIRE_BEHAVIOR, only: FIRE_BEHAVIOR_SS => SetServices
+      use FRONT_FIRE_BEHAVIOR, only: FIRE_BEHAVIOR_SS => SetServices, &
+                                     FIRE_BEHAVIOR_SV => SetVM
 #endif
 #ifdef FRONT_LIS
       use FRONT_LIS,        only: LIS_SS   => SetServices
@@ -387,14 +385,6 @@
             found_comp = .true.
           end if
 #endif
-#ifdef FRONT_HYCOM
-          if (trim(model) == "hycom") then
-            call NUOPC_DriverAddComp(driver, trim(prefix), HYCOM_SS, &
-              SetVM, info=info, petList=petList, comp=comp, rc=rc)
-            if (ChkErr(rc,__LINE__,u_FILE_u)) return
-            found_comp = .true.
-          end if
-#endif
 #ifdef FRONT_MOM6
           if (trim(model) == "mom6") then
             call NUOPC_DriverAddComp(driver, trim(prefix), MOM6_SS, &
@@ -489,6 +479,7 @@
 #ifdef FRONT_FIRE_BEHAVIOR
           if (trim(model) == "fire_behavior") then
             call NUOPC_DriverAddComp(driver, trim(prefix), FIRE_BEHAVIOR_SS, &
+              FIRE_BEHAVIOR_SV, info=info, &
               petList=petList, comp=comp, rc=rc)
             if (ChkErr(rc,__LINE__,u_FILE_u)) return
             found_comp = .true.

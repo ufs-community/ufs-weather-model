@@ -94,46 +94,6 @@ stage('Run ORT on Ursa parallel'){
           '''
           } //steps
           } //stage
-         stage('cpid_control_nowave_noaero_p8'){
-           agent{ label 'ursa'}
-          options{
-             timeout(time:6, unit:'HOURS')
-                 }
-        environment {
-        ACCNR = 'epic'
-        NODE_PATH = '/scratch3/NAGAPE/epic/role-epic/'
-        GITHUB_TOKEN = credentials('GithubJenkinsNew')
-        }
-        when{ 
-           beforeAgent true
-            expression {  env.CHOICE_NODE == "ursa" ? true : null  } 
-            }
-        steps{
-        cleanWs()
-        checkout scm
-        sh '''
-	    git submodule update --init --recursive
-        cd tests/fv3_conf
-	    sed 's/#SBATCH --time=.*/#SBATCH --time=02:00:00/g' -i fv3_slurm.IN_ursa
-        cd ..
-	    export machine=${NODE_NAME}
-        export PATH=$PATH:~/bin
-        export SSH_ORIGIN=$(curl --silent https://api.github.com/repos/ufs-community/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.repo.ssh_url')
-        export FORK_BRANCH=$(curl --silent https://api.github.com/repos/ufs-community/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.ref')
-        export ACCNR=epic
-        export GIT_OWNER=$(echo $GIT_URL | cut -d '/' -f4)
-        export GIT_REPO_NAME=$(echo $GIT_URL | cut -d '/' -f5 | cut -d '.' -f1)
-
-           pwd
-           ./opnReqTest -n cpld_control_nowave_noaero_p8 -a ${ACCNR} -c dbg,rst
-           cd logs/
-# change "cp" to "mv" to be tighter on logfiles existence (prevents using logfiles from a previous run)
-           mv OpnReqTests_cpld_control_nowave_noaero_p8_ursa.log /scratch3/NAGAPE/epic/role-epic/jenkins/workspace/
-           cd ..
-           pwd
-           '''
-           } //steps
-           } //stage
          stage('control_p8'){
            agent{ label 'ursa' }
           options{
@@ -214,14 +174,13 @@ stage('Run ORT on Ursa parallel'){
 # change "cp" to "mv" to be tighter on logfiles existence (prevents using logfiles from a previous run)
 	    mv OpnReqTests_control_p8_ursa.log $WORKSPACE/tests/logs/
         mv OpnReqTests_regional_control_ursa.log $WORKSPACE/tests/logs/
-        mv OpnReqTests_cpld_control_nowave_noaero_p8_ursa.log $WORKSPACE/tests/logs/
         cd $WORKSPACE/tests/
         git config user.email "ecc.platform@noaa.gov"
         git config user.name "epic-cicd-jenkins"
         export machine_name_logs=$(echo $machine | awk '{ print tolower($1) }')
         git remote -v | grep -w sshorigin > /dev/null 2>&1 && git remote remove sshorigin > /dev/null 2>&1
         git remote add sshorigin $SSH_ORIGIN > /dev/null 2>&1
-        git add logs/OpnReqTests_control_p8_ursa.log logs/OpnReqTests_regional_control_ursa.log logs/OpnReqTests_cpld_control_nowave_noaero_p8_ursa.log
+        git add logs/OpnReqTests_control_p8_ursa.log logs/OpnReqTests_regional_control_ursa.log
         git commit -m "ORT Jobs Completed.\n\n\n on-behalf-of @ufs-community <ecc.platform@noaa.gov>"
         git pull sshorigin $FORK_BRANCH
         git push sshorigin HEAD:$FORK_BRANCH
@@ -304,47 +263,6 @@ stage('Run ORT on Ursa parallel'){
           } //steps
           } //stage
 
-        stage('cpid_control_nowave_noaero_p8'){
-           agent{ label 'hercules'}
-          options{
-             timeout(time:6, unit:'HOURS')
-                 }
-        environment {
-        ACCNR = 'epic'
-        NODE_PATH = '/work2/noaa/epic/role-epic/'
-        GITHUB_TOKEN = credentials('GithubJenkinsNew')
-        }
-        when{ 
-           beforeAgent true
-            expression {  env.CHOICE_NODE == "hercules" ? true : null  } 
-            }
-        steps{
-        cleanWs()
-        checkout scm
-        sh '''
-	    git submodule update --init --recursive
-        cd tests/fv3_conf
-	    sed 's/#SBATCH --time=.*/#SBATCH --time=02:00:00/g' -i fv3_slurm.IN_hercules
-        cd ..
-	    export machine=${NODE_NAME}
-        export PATH=$PATH:~/bin
-        export SSH_ORIGIN=$(curl --silent https://api.github.com/repos/ufs-community/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.repo.ssh_url')
-        export FORK_BRANCH=$(curl --silent https://api.github.com/repos/ufs-community/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.ref')
-        export ACCNR=epic
-        export GIT_OWNER=$(echo $GIT_URL | cut -d '/' -f4)
-        export GIT_REPO_NAME=$(echo $GIT_URL | cut -d '/' -f5 | cut -d '.' -f1)
-
-           pwd
-           ./opnReqTest -n cpld_control_nowave_noaero_p8 -a ${ACCNR} -c dbg,rst
-           cd logs/
-# change "cp" to "mv" to be tighter on logfiles existence (prevents using logfiles from a previous run)
-           mv OpnReqTests_cpld_control_nowave_noaero_p8_hercules.log /work2/noaa/epic/role-epic/jenkins/workspace/
-           cd ..
-           pwd
-           '''
-           } //steps
-           } //stage
-
         stage('control_p8'){
            agent{ label 'hercules' }
           options{
@@ -424,14 +342,13 @@ stage('Run ORT on Ursa parallel'){
 # change "cp" to "mv" to be tighter on logfiles existence (prevents using logfiles from a previous run)
         mv OpnReqTests_control_p8_hercules.log $WORKSPACE/tests/logs/
         mv OpnReqTests_regional_control_hercules.log $WORKSPACE/tests/logs/
-        mv OpnReqTests_cpld_control_nowave_noaero_p8_hercules.log $WORKSPACE/tests/logs/
         cd $WORKSPACE/tests/
         git config user.email "ecc.platform@noaa.gov"
         git config user.name "epic-cicd-jenkins"
         export machine_name_logs=$(echo $machine | awk '{ print tolower($1) }')
         git remote -v | grep -w sshorigin > /dev/null 2>&1 && git remote remove sshorigin > /dev/null 2>&1
         git remote add sshorigin $SSH_ORIGIN > /dev/null 2>&1
-        git add logs/OpnReqTests_control_p8_hercules.log logs/OpnReqTests_regional_control_hercules.log logs/OpnReqTests_cpld_control_nowave_noaero_p8_hercules.log
+        git add logs/OpnReqTests_control_p8_hercules.log logs/OpnReqTests_regional_control_hercules.log
         git commit -m "ORT Jobs Completed.\n\n\n on-behalf-of @ufs-community <ecc.platform@noaa.gov>"
         git pull sshorigin $FORK_BRANCH
         git push sshorigin HEAD:$FORK_BRANCH
@@ -514,47 +431,6 @@ stage('Run ORT on Ursa parallel'){
           } //steps
           } //stage
 
-        stage('cpid_control_nowave_noaero_p8'){
-           agent{ label 'orion'}
-          options{
-             timeout(time:6, unit:'HOURS')
-                 }
-        environment {
-        ACCNR = 'epic'
-        NODE_PATH = '/work/noaa/epic/role-epic/'
-        GITHUB_TOKEN = credentials('GithubJenkinsNew')
-        }
-        when{ 
-           beforeAgent true
-            expression { env.CHOICE_NODE == "orion" ? true : null  } 
-            }
-        steps{
-        cleanWs()
-        checkout scm
-        sh '''
-	    git submodule update --init --recursive
-        cd tests/fv3_conf
-	    sed 's/#SBATCH --time=.*/#SBATCH --time=02:00:00/g' -i fv3_slurm.IN_orion
-        cd ..
-	    export machine=${NODE_NAME}
-        export PATH=$PATH:~/bin
-        export SSH_ORIGIN=$(curl --silent https://api.github.com/repos/ufs-community/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.repo.ssh_url')
-        export FORK_BRANCH=$(curl --silent https://api.github.com/repos/ufs-community/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.ref')
-        export ACCNR=epic
-        export GIT_OWNER=$(echo $GIT_URL | cut -d '/' -f4)
-        export GIT_REPO_NAME=$(echo $GIT_URL | cut -d '/' -f5 | cut -d '.' -f1)
-
-           pwd
-           ./opnReqTest -n cpld_control_nowave_noaero_p8 -a ${ACCNR} -c dbg,rst
-           cd logs/
-# change "cp" to "mv" to be tighter on logfiles existence (prevents using logfiles from a previous run)
-           mv OpnReqTests_cpld_control_nowave_noaero_p8_orion.log /work/noaa/epic/role-epic/jenkins/workspace/
-           cd ..
-           pwd
-           '''
-           } //steps
-           } //stage
-
         stage('control_p8'){
         agent{ label 'orion' }
           options{
@@ -635,14 +511,13 @@ stage('Run ORT on Ursa parallel'){
 # change "cp" to "mv" to be tighter on logfiles existence (prevents using logfiles from a previous run)
 	    mv OpnReqTests_control_p8_orion.log $WORKSPACE/tests/logs/
         mv OpnReqTests_regional_control_orion.log $WORKSPACE/tests/logs/
-        mv OpnReqTests_cpld_control_nowave_noaero_p8_orion.log $WORKSPACE/tests/logs/
         cd $WORKSPACE/tests/
         git config user.email "ecc.platform@noaa.gov"
         git config user.name "epic-cicd-jenkins"
         export machine_name_logs=$(echo $machine | awk '{ print tolower($1) }')
         git remote -v | grep -w sshorigin > /dev/null 2>&1 && git remote remove sshorigin > /dev/null 2>&1
         git remote add sshorigin $SSH_ORIGIN > /dev/null 2>&1
-        git add logs/OpnReqTests_control_p8_orion.log logs/OpnReqTests_regional_control_orion.log logs/OpnReqTests_cpld_control_nowave_noaero_p8_orion.log
+        git add logs/OpnReqTests_control_p8_orion.log logs/OpnReqTests_regional_control_orion.log
         git commit -m "ORT Jobs Completed.\n\n\n on-behalf-of @ufs-community <ecc.platform@noaa.gov>"
         git pull sshorigin $FORK_BRANCH
         git push sshorigin HEAD:$FORK_BRANCH

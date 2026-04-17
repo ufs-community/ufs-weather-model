@@ -1,6 +1,8 @@
 #!/bin/bash
 set -eux
 
+# shellcheck source-path=${GITHUB_WORKSPACE}/tests/
+
 SECONDS=0
 
 hostname
@@ -168,12 +170,15 @@ while getopts ":a:b:cl:mn:dwkreohs" opt; do
   esac
 done
 
+# shellcheck source=/github/workspace/tests/detect_machine.sh
 source detect_machine.sh # Note: this does not set ACCNR. The "if" block below does.
+# shellcheck source=/github/workspace/tests/rt_utils.sh
 source rt_utils.sh
+# shellcheck source=/github/workspace/tests/module-setup.sh
 source module-setup.sh
 
 check_machine=false
-platforms=( hera ursa orion hercules gaeac6 derecho noaacloud s4 )
+platforms=( hera ursa orion hercules gaeac6 derecho noaacloud )
 for name in "${platforms[@]}"
 do
   if [[ ${MACHINE_ID} == "${name}" ]]; then
@@ -183,6 +188,7 @@ do
 done
 
 if [[ ${check_machine} == true ]]; then
+    # shellcheck source=/github/workspace/tests-dev/machine_config/machine_ursa.config
     source "${PATHRT}"/machine_config/machine_"${MACHINE_ID}".config
 else
     echo "*** Current support of ufs_test.sh only for ${platforms[*]} ! ***"

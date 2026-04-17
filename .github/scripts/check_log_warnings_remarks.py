@@ -34,6 +34,10 @@ class Log():
 
       api_call = APICall(endpoint)
       response = requests.get(api_call.url, headers=api_call.header)
+      if response.status_code != 200:
+         logging.warning(response)
+         print(response)
+         sys.exit(1)
       response = json.loads(response.text)
       
       return response
@@ -69,14 +73,16 @@ class Log():
 
       tests_for_log_instance = {}
 
-      pattern = r"COMPILE \'(.*)\' \[\d+:\d+, \d+:\d+\] \( (\d+) warnings (\d+) remarks \)"
+      # Use non-capturing groups in pattern to indicate warnings/remarks may or may not be present.
+      pattern = r"COMPILE \'(.*)\' \[\d+:\d+, \d+:\d+\](?: \( (?:(\d+) warnings)?\s*(?:(\d+) remarks)? \))?"
+      
       log_instance = log_instance.splitlines()
 
       for line in log_instance:
          test_match = re.search(pattern, line)
          if test_match:
             test_name, warnings, remarks = test_match.groups()
-            tests_for_log_instance[test_name] = (int(warnings), int(remarks))
+            tests_for_log_instance[test_name] = (warnings, remarks)
 
       return tests_for_log_instance
 
@@ -88,23 +94,35 @@ class Log():
       try:
          log_text = self._fetch_log_text(commit)
          log_data = self._get_test_data(log_text)
+         log_data = self._clean_data(log_data)
          return log_data
       except:
          logging.error(f"No commit found for the ref {commit}")
          sys.exit(1)
 
+   def _clean_data(self, test_data):
+      """Convert None values to zeros in the test_data dictionary"""
+      clean_data = {
+         k: tuple(0 if v is None else int(v) for v in values) 
+         for k, values in test_data.items()
+      }
+      return clean_data
+
    def compare_results(self, pr_log, base_log): 
       """Compare warnings/remarks for PR head and base commits to determine whether warnings/remarks have increased."""
 
-      increases = {'warnings': [], 'remarks': []}
+      increases = {'warnings': {}, 'remarks': {}}
 
       for test in pr_log:
+         if test not in base_log:
+            logging.info(f"Skipped test {test}; nothing to compare against.")
+            continue
          # Check warnings
          if pr_log[test][0] > base_log[test][0]:
-            increases['warnings'].append(test)
+            increases['warnings'].update({test: pr_log[test][0] - base_log[test][0]})
          # Check remarks
          if pr_log[test][1] > base_log[test][1]:
-            increases['remarks'].append(test)
+            increases['remarks'].update({test: pr_log[test][1] - base_log[test][1]})
       
       return increases
 
@@ -118,7 +136,9 @@ def print_html_results(dict):
       for category in results.keys():
          if results[category]:
             mdFile.write(f"\n<h3>{machine.upper()}</h3>\n")
-            unordered_list = [f"**{category.title()}:**", dict[machine][category]]
+            unordered_list = [f"**{category.title()}:**", []]
+            for test, value in dict[machine][category].items():
+               unordered_list[1].append(f"{test}: {value}")
             mdFile.new_list(unordered_list, marked_with='*')
    return mdFile.get_md_text()
 
@@ -136,7 +156,7 @@ def main():
       log._get_commits()
       log.pr_log_data = log._get_pr_data(log.pr_head_commit)
       log.base_log_data = log._get_pr_data(log.pr_base_commit)
-
+      
       increased_warnings_remarks[machine] = log.compare_results(log.pr_log_data, log.base_log_data)
 
    results = print_html_results(increased_warnings_remarks)

@@ -268,78 +268,6 @@ elif [[ ${MACHINE_ID} = linux ]]; then
   export ICE_tasks_cpl_thrd=10
   export WAV_tasks_cpl_thrd=12
 
-elif [[ ${MACHINE_ID} = jet ]]; then
-
-  export TPN=24
-
-  export INPES_dflt=3
-  export JNPES_dflt=8
-  export INPES_thrd=3
-  export JNPES_thrd=4
-  export INPES_c384=6
-  export JNPES_c384=12
-  export THRD_c384=1
-  export INPES_c768=8
-  export JNPES_c768=16
-  export THRD_c768=2
-  export WRTTASK_PER_GROUP_c384=84
-  export WRTTASK_PER_GROUP_c384gdas=88
-
-  export THRD_cpl_atmw_gdas=2
-  export INPES_cpl_atmw_gdas=6
-  export JNPES_cpl_atmw_gdas=8
-  export WPG_cpl_atmw_gdas=24
-  export WAV_tasks_atmw_gdas=240
-
-  # run only in weekly test
-  export THRD_cpl_bmrk=2
-  export INPES_cpl_bmrk=16
-  export JNPES_cpl_bmrk=16
-  export WPG_cpl_bmrk=48
-  export OCN_tasks_cpl_bmrk=100
-  export ICE_tasks_cpl_bmrk=48
-  export WAV_tasks_cpl_bmrk=100
-  export WLCLK_cpl_bmrk=120
-
-  # run only in weekly test
-  export THRD_cpl_c192=2
-  export INPES_cpl_c192=12
-  export JNPES_cpl_c192=16
-  export WPG_cpl_c192=24
-  export OCN_tasks_cpl_c192=100
-  export ICE_tasks_cpl_c192=48
-  export WAV_tasks_cpl_c192=80
-  export WLCLK_cpl_c192=120
-
-elif [[ ${MACHINE_ID} = s4 ]]; then
-
-  export TPN=32
-
-  export INPES_dflt=3
-  export JNPES_dflt=8
-  export INPES_thrd=3
-  export JNPES_thrd=4
-  export INPES_c384=6
-  export JNPES_c384=8
-  export THRD_c384=2
-  export INPES_c768=8
-  export JNPES_c768=16
-  export THRD_c768=1
-
-  export THRD_cpl_atmw_gdas=2
-  export INPES_cpl_atmw_gdas=6
-  export JNPES_cpl_atmw_gdas=8
-  export WPG_cpl_atmw_gdas=24
-  export WAV_tasks_atmw_gdas=248
-
-  export THRD_cpl_bmrk=2
-  export INPES_cpl_bmrk=6;
-  export JNPES_cpl_bmrk=8
-  export WPG_cpl_bmrk=24
-  export OCN_tasks_cpl_bmrk=120
-  export ICE_tasks_cpl_bmrk=48
-  export WAV_tasks_cpl_bmrk=80
-
 elif [[ ${MACHINE_ID} = gaeac5 ]]; then
 
   export TPN=128
@@ -439,11 +367,6 @@ elif [[ ${MACHINE_ID} = noaacloud ]] ; then
     export OCN_tasks_cpl_thrd=20
     export ICE_tasks_cpl_thrd=10
     export WAV_tasks_cpl_thrd=12
-
-elif [[ ${MACHINE_ID} = frontera ]]; then
-
-  TPN=56
-  export EXCLUSIVE_NODES=.true.
 
 else
 
@@ -1739,12 +1662,11 @@ export_fire_behavior() {
 }
 
 
-# Defaults for the coupled 5-component
+# Defaults for the global coupled
 export_cmeps() {
-  export UFS_CONFIGURE=ufs.configure.s2swa_fast.IN
+  export UFS_CONFIGURE=ufs.configure.s2sw_fast.IN
   export med_model=cmeps
   export atm_model=fv3
-  export chm_model=gocart
   export ocn_model=mom6
   export ice_model=cice6
   export wav_model=ww3
@@ -1937,7 +1859,7 @@ export CPL=.true.
 export CPLWAV=.true.
 export CPLWAV2ATM=.true.
 export USE_MED_FLUX=.false.
-export CPLCHM=.true.
+export CPLCHM=.false.
 export CPLLND=.false.
 
 # for FV3: default values will be changed if doing a warm-warm restart
