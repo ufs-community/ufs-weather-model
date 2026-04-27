@@ -191,7 +191,7 @@ target_include_directories(adcirc PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINAR
 target_include_directories(adcirc PRIVATE ${CMAKE_CURRENT_BINARY_DIR}/mod)
 set_target_properties(adcirc PROPERTIES COMPILE_FLAGS "${Fortran_LINELENGTH_FLAG} ${Fortran_COMPILER_SPECIFIC_FLAG}")
 target_compile_definitions(adcirc PRIVATE ${LOCAL_COMPILER_DEFINITIONS})
-target_link_libraries(adcirc PUBLIC esmf $<TARGET_OBJECTS:version> $<TARGET_OBJECTS:mkdir>)
+target_link_libraries(adcirc PUBLIC ESMF::ESMF $<TARGET_OBJECTS:version> $<TARGET_OBJECTS:mkdir>)
 # mpi support
 if(ADCIRC_CONFIG STREQUAL "PADCIRC" OR ADCIRC_CONFIG STREQUAL "PADCSWAN" OR ADCIRC_CONFIG STREQUAL "PUNSWAN")
   add_mpi(adcirc)

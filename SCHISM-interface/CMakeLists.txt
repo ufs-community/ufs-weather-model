@@ -30,10 +30,20 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/SCHISM-interface/SCHISM/cmake/modules)
 
 ###############################################################################
+### Options
+###############################################################################
+
+option(USE_CICE "Build SCHISM with sea-ice coupling support" OFF)
+
+###############################################################################
 ### Set variables
 ###############################################################################
 
 set(BLD_STANDALONE "OFF")
+
+if(USE_CICE)
+  add_definitions(-DUSE_CICE)
+endif()
 
 if(NOT NO_PARMETIS)
   # find parmetis
@@ -103,7 +113,7 @@ else(USE_WWM)
 endif(USE_WWM)
 set_target_properties(schism PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod)
 target_include_directories(schism PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod> $<INSTALL_INTERFACE:mod>)
-list(APPEND schism_libs esmf)
+target_link_libraries(schism PUBLIC ESMF::ESMF)
 if(NOT NO_PARMETIS)
   list(APPEND schism_libs parmetis metis)
 endif()

@@ -90,7 +90,8 @@ endif()
 ###############################################################################
 
 if ( ESMF_FOUND )
-  include_directories(${ESMF_F90COMPILEPATHS})
+  message ( STATUS "ESMF_F90COMPILEPATHS = ${ESMF_F90COMPILEPATHS}" )
+  set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} ${ESMF_F90COMPILEPATHS}")
 endif()
 
 add_subdirectory( ${ROMS_SRC_DIR} ${CMAKE_CURRENT_BINARY_DIR}/ROMS )

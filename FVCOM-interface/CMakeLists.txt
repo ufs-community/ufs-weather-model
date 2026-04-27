@@ -98,7 +98,7 @@ set_target_properties(fvcom PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_
 target_compile_options(fvcom PRIVATE $<$<COMPILE_LANGUAGE:Fortran>:${Fortran_LINELENGTH_FLAG}>)
 set_target_properties(fvcom PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod)
 target_include_directories(fvcom PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod> $<INSTALL_INTERFACE:mod>)
-target_link_libraries(fvcom PRIVATE metis julian fproj proj esmf NetCDF::NetCDF_Fortran)
+target_link_libraries(fvcom PRIVATE metis julian fproj proj ESMF::ESMF NetCDF::NetCDF_Fortran)
 
 ###############################################################################
 ### Install dependencies

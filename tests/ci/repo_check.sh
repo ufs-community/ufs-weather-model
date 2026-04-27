@@ -1,5 +1,5 @@
 #!/bin/bash
-#set -eu
+set -eu
 
 get_shas () {
     cwd=$(pwd)
@@ -15,7 +15,7 @@ get_shas () {
     git fetch -q upstream $branch
     common=$(git merge-base $base_sha @)
     echo $common $base_sha $workspace
-    if [[ $common != $base_sha ]]; then
+    if [[ "$common" != "$base_sha" ]]; then
         printf "%s\n\n" "** $workspace **NOT** up to date"
         flag_sync=false
     fi
@@ -25,15 +25,15 @@ get_shas () {
 flag_sync=true
 
 declare -A urls branches pathes
-submodules="base fv3 mom6 cice ww3 stoch cmeps cdeps hycom ccpp_physics aqm noahmp cubed_sphere"
+submodules="base ufsatm mom6 cice ww3 stoch cmeps cdeps hycom ccpp_physics aqm noahmp cubed_sphere"
 
 urls[base]='https://github.com/ufs-community/ufs-weather-model'
 branches[base]='develop'
 pathes[base]=''
 
-urls[fv3]='https://github.com/NOAA-EMC/fv3atm'
-branches[fv3]='develop'
-pathes[fv3]='FV3'
+urls[ufsatm]='https://github.com/NOAA-EMC/ufsatm'
+branches[ufsatm]='develop'
+pathes[ufsatm]='UFSATM'
 
 urls[mom6]='https://github.com/NOAA-EMC/MOM6'
 branches[mom6]='dev/emc'
@@ -73,11 +73,11 @@ pathes[cmake]='CMakeModules'
 
 urls[ccpp_physics]='https://github.com/ufs-community/ccpp-physics'
 branches[ccpp_physics]='ufs/dev'
-pathes[ccpp_physics]='FV3/ccpp/physics'
+pathes[ccpp_physics]='UFSATM/ccpp/physics'
 
 urls[ccpp_framework]='https://github.com/NCAR/ccpp-framework'
 branches[ccpp_framework]='main'
-pathes[ccpp_framework]='FV3/ccpp/framework'
+pathes[ccpp_framework]='UFSATM/ccpp/framework'
 
 urls[aqm]='https://github.com/NOAA-EMC/AQM'
 branches[aqm]='develop'
@@ -93,7 +93,7 @@ pathes[noahmp]='NOAHMP-interface/noahmp'
 
 urls[cubed_sphere]='https://github.com/NOAA-GFDL/GFDL_atmos_cubed_sphere'
 branches[cubed_sphere]='dev/emc'
-pathes[cubed_sphere]='FV3/fv3/atmos_cubed_sphere'
+pathes[cubed_sphere]='UFSATM/fv3/atmos_cubed_sphere'
 
 for submodule in $submodules; do
     url=${urls[$submodule]}
@@ -101,12 +101,13 @@ for submodule in $submodules; do
     workspace=${GITHUB_WORKSPACE}'/'${pathes[$submodule]}
     gitapi=$(echo "$url" | sed 's/github.com/api.github.com\/repos/g')'/branches/'$branch
     get_shas $url $gitapi $branch $workspace
+
+    if [[ "$flag_sync" == "false" ]]; then
+       echo "** ${GITHUB_WORKSPACE} **NOT** up to date"
+       exit 1
+    fi
 done
 
-if [[ ! $flag_sync ]]; then
-    echo "** ${GITHUB_WORKSPACE} **NOT** up to date"
-    exit 1
-fi
 
 echo "** ${GITHUB_WORKSPACE} up to date **"
 

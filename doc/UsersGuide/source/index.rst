@@ -17,7 +17,6 @@ Welcome to the UFS Weather Model User's Guide
    HSD
    modules
    ConfigParameters
-   AutomatedTesting
    FAQ
    Acronyms
    Glossary

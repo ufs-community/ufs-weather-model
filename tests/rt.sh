@@ -754,8 +754,8 @@ case ${MACHINE_ID} in
     module load cray-mpich/8.1.30
     module load python/3.11
     if [[ "${ECFLOW:-false}" == true ]] ; then
-      module use /ncrc/proj/epic/spack-stack/modulefiles
-      module load ecflow/5.8.4
+      module use /ncrc/proj/epic/spack-stack/c6/spack-stack-1.9.2/envs/ue-intel-2023.2.0/install/modulefiles/gcc/12.3.0
+      module load ecflow/5.11.4
       ECF_HOST=$(hostname)
       ECF_PORT=$(( $(id -u) + 1500 ))
       export ECF_PORT ECF_HOST
@@ -842,7 +842,7 @@ case ${MACHINE_ID} in
     COMPILE_QUEUE="batch"
     PARTITION="orion"
     dprefix=${dprefix:-"/work/noaa/stmp/${USER}"}
-    DISKNM="/work/noaa/epic/UFS-WM_RT"
+    DISKNM="/work2/noaa/epic/UFS-WM_RT"
     STMP="${dprefix}/stmp"
     PTMP="${dprefix}/stmp"
 
@@ -870,7 +870,7 @@ case ${MACHINE_ID} in
     COMPILE_QUEUE="batch"
     PARTITION="hercules"
     dprefix=${dprefix:-"/work2/noaa/stmp/${USER}"}
-    DISKNM="/work/noaa/epic/hercules/UFS-WM_RT"
+    DISKNM="/work2/noaa/epic/hercules/UFS-WM_RT"
     STMP="${dprefix}/stmp"
     PTMP="${dprefix}/stmp"
 
@@ -942,19 +942,13 @@ case ${MACHINE_ID} in
   derecho)
     echo "rt.sh: Setting up derecho..."
     if [[ "${ROCOTO:-false}" == true ]] ; then
-      module use /glade/work/epicufsrt/contrib/derecho/rocoto/modulefiles
-      module load rocoto
+      module use /glade/work/epicufsrt/contrib/derecho/modulefiles
+      module load rocoto/1.3.7
     fi
-    module use /glade/work/epicufsrt/contrib/spack-stack/derecho/modulefiles
     if [[ "${ECFLOW:-false}" == true ]] ; then
-      module load ecflow/5.8.4
-    fi
-    module unload ncarcompilers
-    module use /glade/work/epicufsrt/contrib/spack-stack/derecho/spack-stack-1.5.1/envs/unified-env/install/modulefiles/Core
-    module load stack-intel/2021.10.0
-    module load stack-python/3.10.8
-  #  export PYTHONPATH=/glade/p/ral/jntp/tools/miniconda3/4.8.3/envs/ufs-weather-model/lib/python3.8/site-packages:/glade/p/ral/jntp/tools/miniconda3/4.8.3/lib/python3.8/site-packages
-    if [[ "${ECFLOW:-false}" == true ]] ; then
+      module use /glade/work/epicufsrt/contrib/spack-stack/derecho/spack-stack-1.9.2/envs/ue-oneapi-2024.2.1/install/modulefiles/oneapi/2024.2.1
+      module load stack-python/3.11.7
+      module load ecflow/5.11.4
       ECF_HOST=$(hostname)
       ECF_PORT=$(( $(id -u) + 1500 ))
       export ECF_PORT ECF_HOST
@@ -1062,9 +1056,10 @@ if [[ "${CREATE_BASELINE}" == false ]] ; then
   fi
 fi
 
-INPUTDATA_ROOT=${INPUTDATA_ROOT:-${DISKNM}/NEMSfv3gfs/input-data-20250507}
-INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT}/WW3_input_data_20250225
+INPUTDATA_ROOT=${INPUTDATA_ROOT:-${DISKNM}/NEMSfv3gfs/input-data-20251015}
+INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT}/WW3_input_data_20250807
 INPUTDATA_LM4=${INPUTDATA_LM4:-${INPUTDATA_ROOT}/LM4_input_data}
+INPUTDATA_GFSv17opn=${INPUTDATA_GFSv17opn:-${DISKNM}/NEMSfv3gfs/GFSv17opn_20251014}
 
 shift $((OPTIND-1))
 if [[ $# -gt 1 ]]; then
@@ -1334,6 +1329,7 @@ export RTPWD=${RTPWD}
 export INPUTDATA_ROOT=${INPUTDATA_ROOT}
 export INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT_WW3}
 export INPUTDATA_LM4=${INPUTDATA_LM4}
+export INPUTDATA_GFSv17opn=${INPUTDATA_GFSv17opn}
 export PATHRT=${PATHRT}
 export PATHTR=${PATHTR}
 export NEW_BASELINE=${NEW_BASELINE}

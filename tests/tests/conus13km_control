@@ -30,6 +30,8 @@ export RESTART_INTERVAL=1
 export QUILTING_RESTART=.false.
 export USE_MERRA2=.true.
 
-if [[ " hera orion hercules jet " =~ " ${MACHINE_ID} " ]] ; then
-  ZSTANDARD_LEVEL=5
+export ZSTANDARD_LEVEL=5
+
+if [[ $MACHINE_ID = ursa ]]; then
+  export EXCLUSIVE_NODES=.true.
 fi

@@ -126,15 +126,12 @@ case ${MACHINE_ID} in
     module load nccmp/1.9.0.1
     ;;
   gaeac6)
-    module use /ncrc/proj/epic/spack-stack/c6/spack-stack-1.6.0/envs/fms-2024.01/install/modulefiles/Core
-    module load stack-intel/2023.2.0 stack-cray-mpich/8.1.29
+    module use /ncrc/proj/epic/spack-stack/c6/spack-stack-1.9.2/envs/ue-intel-2023.2.0/install/modulefiles/Core
+    module load stack-intel/2023.2.0 stack-cray-mpich/8.1.30
     module load nccmp/1.9.0.1
     #module use modulefiles
     #module load modules.fv3
     #module load gcc-native/12.3
-    ;;
-  derecho)
-    module load nccmp
     ;;
   frontera)
     module use /work2/01118/tg803972/frontera/spack-stack/spack-stack-1.9.2/envs/unified-env/install/modulefiles/Core
@@ -169,10 +166,15 @@ else
 fi
 
 # Set IAU Global workflow related tags to ' '
-export HIDE_AIAU=' '
-export HIDE_LIAU=' '
+if [[ ${GFSv17opn} == .true. ]] ; then
+    export HIDE_AIAU=' '
+    export HIDE_LIAU='!'
+else
+    export HIDE_AIAU=' '
+    export HIDE_LIAU=' '
+fi
 
-if [[ ${DATM_CDEPS} = 'true' ]] || [[ ${FV3} = 'true' ]] || [[ ${S2S} = 'true' ]]; then
+if [[ ${DATM_CDEPS} = 'true' ]] || [[ ${FV3} = 'true' ]] || [[ ${S2S} = 'true' ]] || [[ ${MPAS} = 'true' ]]; then
   if [[ ${HAFS} = 'false' ]] || [[ ${FV3} = 'true' && ${HAFS} = 'true' ]]; then
     if [[ ${COASTAL} = 'false' ]]; then
       atparse < "${PATHRT}"/parm/"${INPUT_NML:-input.nml.IN}" > input.nml
@@ -304,8 +306,10 @@ cp "${PATHRT}/parm/fd_ufs.yaml" fd_ufs.yaml
 source ./fv3_run
 
 if [[ ${CPLWAV} == .true. ]]; then
-    atparse < "${PATHRT}/parm/ww3_shel.nml.IN" > ww3_shel.nml
-    cp "${PATHRT}/parm/ww3_points.list" .
+    if [[ ${GFSv17opn} == .false. ]]; then
+        atparse < "${PATHRT}/parm/ww3_shel.nml.IN" > ww3_shel.nml
+        cp "${PATHRT}/parm/ww3_points.list" .
+    fi
 fi
 
 if [[ ${CPLCHM} == .true. ]]; then
@@ -322,15 +326,15 @@ fi
 #ocean or ice
 if [[ ${DATM_CDEPS} = 'true' ]] || [[ ${S2S} = 'true' ]]; then
   if [[ ${HAFS} = 'false' ]] && [[ ${COASTAL} = 'false' ]] ; then
-    atparse < "${PATHRT}"/parm/ice_in.IN > ice_in
-    atparse < "${PATHRT}"/parm/"${MOM6_INPUT:-MOM_input_${OCNRES}.IN}" > INPUT/MOM_input
-    atparse < "${PATHRT}"/parm/diag_table/"${DIAG_TABLE:-diag_table_template}" > diag_table
-    atparse < "${PATHRT}"/parm/MOM6_data_table.IN > data_table
+    atparse < "${PATHRT}/parm/ice_in.IN" > ice_in
+    atparse < "${PATHRT}/parm/${MOM6_INPUT:-MOM_input_${OCNRES}.IN}" > INPUT/MOM_input
+    atparse < "${PATHRT}/parm/diag_table/${DIAG_TABLE:-diag_table_template.IN}" > diag_table
+    atparse < "${PATHRT}/parm/MOM6_data_table.IN" > data_table
   fi
 fi
 
 if [[ ${HAFS} = 'true' ]] && [[ ${DATM_CDEPS} = 'false' ]]; then
-  atparse < "${PATHRT}/parm/diag_table/${DIAG_TABLE:-diag_table_template}" > diag_table
+  atparse < "${PATHRT}/parm/diag_table/${DIAG_TABLE:-diag_table_template.IN}" > diag_table
 fi
 
 if [[ "${DIAG_TABLE_ADDITIONAL:-}Q" != Q ]]; then
@@ -346,7 +350,7 @@ fi
 
 # ATMAERO
 if [[ ${CPLCHM} == .true. ]] && [[ ${S2S} = 'false' ]]; then
-  atparse < "${PATHRT}/parm/diag_table/${DIAG_TABLE:-diag_table_template}" > diag_table
+  atparse < "${PATHRT}/parm/diag_table/${DIAG_TABLE:-diag_table_template.IN}" > diag_table
 fi
 
 if [[ ${DATM_CDEPS} = 'true' ]]; then
@@ -419,7 +423,15 @@ if [[ ${ESMF_THREADING} != true ]]; then
   PPN=${TPN}
 fi
 
+export NCPUS=$(( TPN * THRD ))
+
+export EXCLUSIVE_NODES_OPT=""
+
 if [[ ${SCHEDULER} = 'pbs' ]]; then
+  if [[ ${EXCLUSIVE_NODES} == .true. ]]; then
+    export EXCLUSIVE_NODES_OPT="#PBS -l place=excl"
+  fi
+    	  
   if [[ -e ${PATHRT}/fv3_conf/fv3_qsub.IN_${MACHINE_ID} ]]; then
     atparse < "${PATHRT}/fv3_conf/fv3_qsub.IN_${MACHINE_ID}" > job_card
   else
@@ -427,6 +439,10 @@ if [[ ${SCHEDULER} = 'pbs' ]]; then
     exit 1
   fi
 elif [[ ${SCHEDULER} = 'slurm' ]]; then
+  if [[ ${EXCLUSIVE_NODES} == .true. ]]; then 
+    export EXCLUSIVE_NODES_OPT="#SBATCH --exclusive"
+  fi
+
   if [[ -e ${PATHRT}/fv3_conf/fv3_slurm.IN_${MACHINE_ID} ]]; then
     atparse < "${PATHRT}/fv3_conf/fv3_slurm.IN_${MACHINE_ID}" > job_card
   else
@@ -509,6 +525,7 @@ if [[ ${skip_check_results} == false ]]; then
               nccmp_args=(-d -S -q -f -B --Attribute=checksum --warn=format)
               if [[ ${CMP_DATAONLY} == false ]]; then nccmp_args+=("-g"); fi
               if [[ -n "${nccmp_exclude// }" ]]; then nccmp_args+=("${nccmp_exclude}"); fi
+              if [[ -n "${nccmp_exclude_attr// }" ]]; then nccmp_args+=("${nccmp_exclude_attr}"); fi
               nccmp "${nccmp_args[@]}" "${RTPWD}/${CNTL_DIR}_${RT_COMPILER}/${i}" "${RUNDIR}/${i}" > "${i}_nccmp.log" 2>&1 && d=$? || d=$?
               if [[ ${d} -ne 0 && ${d} -ne 1 ]]; then
                 printf "....ERROR" >> "${RT_LOG}"

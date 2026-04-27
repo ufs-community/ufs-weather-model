@@ -8,7 +8,10 @@ if (CMAKE_Fortran_COMPILER_ID MATCHES "GNU" AND CMAKE_Fortran_COMPILER_VERSION V
   message(FATAL_ERROR "GNU Compiler >= 9 is required")
 endif()
 
-list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
+set(CMAKE_Platform $ENV{CMAKE_Platform})
+
+list(APPEND CMAKE_MODULE_PATH $ENV{ESMF_ROOT}/cmake)
+list(APPEND CMAKE_MODULE_PATH $ENV{esmf_ROOT}/cmake)
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMakeModules/Modules)
 
 ###############################################################################
@@ -16,14 +19,15 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMakeModules/Modules)
 ###############################################################################
 
 # Valid applications and choices
-list(APPEND VALID_APPS ATM ATMAERO ATMAQ ATMW ATMWM ATML ATMF LND LND-LM4 S2S S2SL S2SA S2SW S2SWA S2SWL S2SWAL ATM_DS2S ATM_DS2S-PCICE HAFS HAFSW HAFS-MOM6 HAFS-MOM6W HAFS-ALL NG-GODAS CSTLA CSTLPA CSTLAW CSTLPAW CSTLF CSTLFW CSTLR CSTLRW CSTLRC CSTLRCW CSTLS CSTLPS CSTLSW CSTLPSW CSTLP CSTLW CSTL-ALL)
+list(APPEND VALID_APPS ATM ATMAERO ATMAQ ATMW ATMWM ATML ATMF ATMMPAS LND LND-LM4 S2S S2SL S2SA S2SW S2SWA S2SWL S2SWAL ATM_DS2S ATM_DS2S-PCICE HAFS HAFSW HAFS-MOM6 HAFS-MOM6W HAFS-ALL NG-GODAS CSTLA CSTLPA CSTLAW CSTLPAW CSTLF CSTLFW CSTLR CSTLRW CSTLRC CSTLRCW CSTLS CSTLPS CSTLSW CSTLPSW CSTLP CSTLW CSTL-ALL)
 set(APP NONE CACHE BOOL "Application Name")
 if(NOT (APP IN_LIST VALID_APPS))
   message(FATAL_ERROR "${APP} is not a valid application.\nValid Applications are: ${VALID_APPS}")
 endif()
 
 set(FMS             OFF CACHE BOOL "Enable FMS")
-set(FV3             OFF CACHE BOOL "Enable FV3")
+set(FV3             OFF CACHE BOOL "Enable FV3 dycore")
+set(MPAS            OFF CACHE BOOL "Enable MPAS dycore")
 set(AQM             OFF CACHE BOOL "Enable AQM")
 set(UFS_GOCART      OFF CACHE BOOL "Enable GOCART")
 set(MOM6            OFF CACHE BOOL "Enable MOM6")
@@ -49,7 +53,8 @@ include(cmake/configure_apps.cmake)
 
 message("")
 message("FMS .............. ${FMS}")
-message("FV3_dy ........... ${FV3}")
+message("FV3 .............. ${FV3}")
+message("MPAS ............. ${MPAS}")
 message("AQM .............. ${AQM}")
 message("GOCART ........... ${UFS_GOCART}")
 message("MOM6 ............. ${MOM6}")
@@ -74,6 +79,8 @@ message("GEOGATE .......... ${GEOGATE}")
 ###############################################################################
 set(32BIT           OFF CACHE BOOL "Enable 32BIT (single precision arithmetic in dycore and fast physics)")
 set(CCPP_32BIT      OFF CACHE BOOL "Enable CCPP_32BIT (single precision arithmetic in slow physics)")
+set(RRTMGP_32BIT    OFF CACHE BOOL "Enable 32BIT (single precision arithmetic in rte-rrtmgp radiation)")
+set(FASTER          ON  CACHE BOOL "Enable faster optimization compiler flags")
 set(AVX2            ON  CACHE BOOL "Enable AVX2 instruction set")
 set(AVX             OFF CACHE BOOL "Enable AVX-I instruction set")
 set(SIMDMULTIARCH   OFF CACHE BOOL "Enable multi-target SIMD instruction sets")
@@ -91,8 +98,8 @@ set(PDLIB           OFF CACHE BOOL "Enable Domain Decomposition in WW3 via PDLIB
 set(PDLIB_BT4       OFF CACHE BOOL "Enable Domain Decomposition in WW3 via PDLIB with BT4")
 set(CDEPS_INLINE    OFF CACHE BOOL "Enable CDEPS inline capability")
 set(HYDRO           OFF CACHE BOOL "Enable hydrostatic set")
+set(UFS_TRACING     OFF CACHE BOOL "Enable UFS Tracing")
 
-set(CMAKE_Platform $ENV{CMAKE_Platform})
 if(CMAKE_Platform)
   message("")
   if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/cmake/configure_${CMAKE_Platform}.cmake)
@@ -128,6 +135,7 @@ endif()
 message("")
 message("32BIT ............ ${32BIT}")
 message("CCPP_32BIT ....... ${CCPP_32BIT}")
+message("RRTMGP_32BIT ..... ${RRTMGP_32BIT}")
 message("AVX2 ............. ${AVX2}")
 message("SIMDMULTIARCH .... ${SIMDMULTIARCH}")
 message("DEBUG ............ ${DEBUG}")
@@ -140,7 +148,8 @@ message("PARALLEL_NETCDF .. ${PARALLEL_NETCDF}")
 message("JEDI_DRIVER ...... ${JEDI_DRIVER}")
 message("CMEPS_AOFLUX ..... ${CMEPS_AOFLUX}")
 message("CDEPS_INLINE ..... ${CDEPS_INLINE}")
-message("HYDRO  ........... ${HYDRO}")
+message("HYDRO ............ ${HYDRO}")
+message("UFS_TRACING ...... ${UFS_TRACING}")
 
 message("")
 
@@ -167,8 +176,8 @@ if(OPENMP)
 endif()
 
 find_package(NetCDF 4.7.4 REQUIRED C Fortran)
+set(USE_ESMF_STATIC_LIBS ON)
 find_package(ESMF 8.8.0 MODULE REQUIRED)
-#add_library(ESMF::ESMF ALIAS esmf)
 if(FMS)
   find_package(FMS 2022.04 REQUIRED COMPONENTS R4 R8)
   if(APP MATCHES "^(HAFSW)$")
@@ -176,7 +185,7 @@ if(FMS)
   elseif (APP MATCHES "^(S2S|S2SA|S2SL|S2SW|S2SWL|S2SWA|S2SWAL|ATM_DS2S|ATM_DS2S-PCICE|NG-GODAS|HAFS-MOM6|HAFS-MOM6W|CSTLA|CSTLPA|CSTLAW|CSTLPAW|CSTLF|CSTLFW|CSTLR|CSTLRW|CSTLRC|CSTLRCW|CSTLS|CSTLPS|CSTLSW|CSTLPSW|CSTLP|CSTLW|CSTL-ALL)$")
     add_library(fms ALIAS FMS::fms_r8)
   endif()
-  if(APP MATCHES "^(ATM|ATMAERO|ATMAQ|ATMWM|ATMW|ATML|ATMF|ATML-LM4|LND-LM4|HAFS|HAFS-ALL)$")
+  if(APP MATCHES "^(ATM|ATMAERO|ATMAQ|ATMWM|ATMW|ATML|ATMF|ATMMPAS|ATML-LM4|LND-LM4|HAFS|HAFS-ALL)$")
     if(32BIT)
       add_library(fms ALIAS FMS::fms_r4)
     else()
@@ -185,7 +194,7 @@ if(FMS)
   endif()
 endif()
 
-if(CMEPS)
+if(CMEPS OR CDEPS)
   find_package(PIO 2.5.3 REQUIRED COMPONENTS C Fortran)
 endif()
 
@@ -193,9 +202,19 @@ find_package(bacio 2.4.0 REQUIRED)
 find_package(sp 2.3.3 REQUIRED)
 find_package(w3emc 2.9.2 REQUIRED)
 
+if(MPAS)
+  find_package(PnetCDF REQUIRED COMPONENTS Fortran)
+  find_package(PIO REQUIRED COMPONENTS Fortran C)
+endif()
+
 # Configure Python
 find_package(Python 3.6 REQUIRED COMPONENTS Interpreter)
 message("Found Python: ${Python_EXECUTABLE}")
+
+if(UFS_TRACING)
+  add_subdirectory(ufs_tracing)
+  add_compile_definitions(UFS_TRACING)
+endif()
 
 ###############################################################################
 ### stochastic_physics
@@ -205,15 +224,15 @@ if(STOCH_PHYS)
 endif()
 
 ###############################################################################
-### Atmosphere Components [FV3, MPAS?]
-### DJS2024: There will be a generalized atmospheric component with multiple
-###          dycores, not multiple atmospheric components (one for each dycore).
-###          So, - rename the atmospheric component FV3 to UFSATM or ATM, then
-###              - if FV3 or MPAS, add_sudirectory(UFSATM or ATM)
-###
+### Atmosphere Components [FV3, MPAS]
 ###############################################################################
-if(FV3)
-  add_subdirectory(FV3)
+
+if(FV3 AND MPAS)
+  message(FATAL_ERROR "Multiple dynamical cores cannot be selected.")
+endif()
+
+if (FV3 OR MPAS)
+  add_subdirectory(UFSATM)
 endif()
 
 if(PAHM)
@@ -334,6 +353,9 @@ endif()
 ### UFS Library
 ###############################################################################
 add_library(ufs driver/UFSDriver.F90)
+if(UFS_TRACING)
+  add_dependencies(ufs ufs_tracing)
+endif()
 set_target_properties(ufs PROPERTIES Fortran_MODULE_DIRECTORY
                                      ${CMAKE_CURRENT_BINARY_DIR}/mod)
 target_include_directories(ufs INTERFACE $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>
@@ -359,7 +381,7 @@ if(WW3)
   target_link_libraries(ufs PUBLIC WW3::WW3)
 endif()
 
-list(APPEND _ufs_libs_public esmf)
+list(APPEND _ufs_libs_public ESMF::ESMF)
 
 if(STOCH_PHYS)
   list(APPEND _ufs_libs_public stochastic_physics)
@@ -367,8 +389,14 @@ endif()
 
 if(FV3)
   add_dependencies(ufs ufsatm_fv3)
-  list(APPEND _ufs_defs_private FRONT_FV3=${DYCORE_TARGET_CAP_MOD})
+  list(APPEND _ufs_defs_private FRONT_UFSATM=${DYCORE_TARGET_CAP_MOD})
   list(APPEND _ufs_libs_public ${DYCORE_TARGET})
+endif()
+
+if(MPAS)
+  add_dependencies(ufs ufsatm_mpas)
+  list(APPEND _ufs_defs_private FRONT_UFSATM=ufsatm_cap_mod)
+  list(APPEND _ufs_libs_public ufsatm_mpas)
 endif()
 
 if(MOM6)
@@ -465,7 +493,7 @@ target_link_libraries(ufs PUBLIC "${_ufs_libs_public}")
 ###############################################################################
 add_executable(ufs_model driver/UFS.F90)
 add_dependencies(ufs_model ufs)
-target_link_libraries(ufs_model ufs esmf w3emc::w3emc_d)
+target_link_libraries(ufs_model ufs ESMF::ESMF w3emc::w3emc_d)
 set_target_properties(ufs_model PROPERTIES LINKER_LANGUAGE Fortran)
 
 ###############################################################################

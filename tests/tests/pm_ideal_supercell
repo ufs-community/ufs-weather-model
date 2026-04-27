@@ -1,0 +1,28 @@
+###############################################################################
+#
+#   Doubly periodic Process Model idealized bubble (supercell) 3km with minimal physics (only microphysics) 
+#
+###############################################################################
+
+export TEST_DESCR="Compare idealized, minimal physics run with results with previous trunk version"
+
+export CNTL_DIR=fv3_pm_supercell
+
+export LIST_FILES="fv3_history.nc"
+
+export_fv3
+
+export INPES=4
+export JNPES=4
+export NTILES=1
+export QUILTING=.false.
+
+export FV3_RUN=ideal_run.IN
+
+export WRITE_DOPOST=.false.
+
+export CCPP_SUITE=FV3_ideal_mp_nssl
+export INPUT_NML=pm_ideal_supercell.nml.IN
+export MODEL_CONFIGURE=model_configure_ideal.IN
+export FIELD_TABLE=field_table_nssl_tke
+export DIAG_TABLE=diag_table_ideal
