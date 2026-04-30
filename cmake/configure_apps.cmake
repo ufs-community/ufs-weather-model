@@ -13,7 +13,7 @@
 ###############################################################################
 ### Configure Application Components
 ###############################################################################
-if(APP MATCHES "^(ATM|ATMW|ATMWM|ATMAQ|ATML|ATMF|ATML-LM4|ATMMPAS)$")
+if(APP MATCHES "^(ATM|ATMW|ATMWM|ATMAQ|ATML|ATMF|ATML-LM4|ATMMPAS|CATCHEM)$")
   set(FMS        ON  CACHE BOOL "Enable FMS"                 FORCE)
   set(FV3        ON  CACHE BOOL "Enable FV3"                 FORCE)
   set(STOCH_PHYS ON  CACHE BOOL "Enable Stochastic Physics"  FORCE)
@@ -45,6 +45,9 @@ if(APP MATCHES "^(ATM|ATMW|ATMWM|ATMAQ|ATML|ATMF|ATML-LM4|ATMMPAS)$")
     message("Configuring UFS app in Atmosphere with Air Quality mode")
   elseif(APP MATCHES "ATMF")
     set(FIRE_BEHAVIOR ON CACHE BOOL "Enable Fire Behavior"   FORCE)
+  elseif(APP MATCHES "CATCHEM")
+    set(CATCHEM  ON CACHE BOOL "Enable CATChem"   FORCE)
+    message("Configuring UFS app in CATChem mode")
   else()
     message("Configuring UFS app in Atmosphere Only mode")
   endif()
