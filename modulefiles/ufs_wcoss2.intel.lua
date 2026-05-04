@@ -31,8 +31,7 @@ local ufs_modules = {
   {["crtm"]        = "2.4.0"},
   {["g2"]          = "3.5.1"},
   {["g2tmpl"]      = "1.13.0"},
-  {["ip"]          = "4.0.0"},
-  {["sp"]          = "2.3.3"},
+--  {["ip"]          = "5.4.0"},
   {["w3emc"]       = "2.12.0"},
   {["gftl-shared"] = "1.6.1"},
   {["mapl-D"]      = "2.53.0"},
@@ -47,6 +46,10 @@ for i = 1, #ufs_modules do
     load(pathJoin(name, os.getenv(env_version_name) or default_version))
   end
 end
+
+append_path("MODULEPATH","/apps/ops/para/libs/modulefiles/compiler/intel/19.1.3.304")
+load("intel/19.1.3.304")
+load("ip/5.4.1")
 
 setenv("CC", "cc")
 setenv("CXX", "CC")
