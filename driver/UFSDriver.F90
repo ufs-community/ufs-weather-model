@@ -98,6 +98,10 @@
 #ifdef FRONT_AQM
       use FRONT_AQM,        only: AQM_SS  => SetServices
 #endif
+  ! - Handle build time CATChem options:
+#ifdef FRONT_CATCHEM
+      use FRONT_CATCHEM,    only: CATCHEM_SS  => SetServices
+#endif
   ! - Handle build time GOCART options:
 #ifdef FRONT_GOCART
       use FRONT_GOCART,     only: GOCART_SS  => SetServices, &
@@ -531,6 +535,21 @@
               return  ! bail out
             endif
             call NUOPC_DriverAddComp(driver, trim(prefix), AQM_SS, &
+              petList=petList, comp=comp, rc=rc)
+            if (ChkErr(rc,__LINE__,u_FILE_u)) return
+            found_comp = .true.
+          end if
+#endif
+#ifdef FRONT_CATCHEM
+          if (trim(model) == "catchem") then
+            if (ompNumThreads > 1) then
+              write (msg, *) "ESMF-aware threading NOT implemented for model: "//&
+                trim(model)
+              call ESMF_LogSetError(ESMF_RC_NOT_VALID, msg=msg, line=__LINE__, &
+                file=__FILE__, rcToReturn=rc)
+              return  ! bail out
+            endif
+            call NUOPC_DriverAddComp(driver, trim(prefix), CATCHEM_SS, &
               petList=petList, comp=comp, rc=rc)
             if (ChkErr(rc,__LINE__,u_FILE_u)) return
             found_comp = .true.

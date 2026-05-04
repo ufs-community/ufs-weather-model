@@ -341,7 +341,7 @@ endif()
 
 if(CATCHEM)
   add_dependencies(ufs cc_nuopc)
-  list(APPEND _ufs_defs_private FRONT_AQM=cc_nuopc)
+  list(APPEND _ufs_defs_private FRONT_CATCHEM=cc_nuopc)
   list(APPEND _ufs_libs_public cc_nuopc)
 endif()
 
