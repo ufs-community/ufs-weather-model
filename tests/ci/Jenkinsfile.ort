@@ -33,7 +33,9 @@ pipeline {
             else{
               env.CHOICE_NODE=='none'
             } 
-          } //script
+          } // for
+
+          echo "${env.CHOICE_NODE}"
           
           if (env.CHOICE_NODE.contains('orion')) {
             echo "Starting up orion ${env.CHOICE_NODE}...this might take 5-10 minutes...please be patient."    
