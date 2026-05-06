@@ -455,14 +455,7 @@ export_mpas ()
     export_gfs_physics
     # ufs.configure defaults
     export UFS_CONFIGURE=ufs.configure.atm.IN
-    export MODEL_CONFIGURE=mpasatm_configure.IN
     export atm_model=mpas
-
-    export DIAG_TABLE=diag_table_rrfs_a
-    export FIELD_TABLE=field_table_regional_rrfs_a
-    export FV3_RUN=rrfs_mpas_run.IN
-    export INPUT_NML=control_mpas.nml.IN
-    export CCPP_SUITE=MPAS_RRFS
 
     #
     export MPAS=true
@@ -495,14 +488,14 @@ export_mpas ()
 
     export DAYS=1
     export ENS_NUM=1
-    export SYEAR=2016 #mpasatm_configure.IN
-    export SMONTH=10 #mpasatm_configure.IN
-    export SDAY=03 #mpasatm_configure.IN
-    export SHOUR=00 #mpasatm_configure.IN
-    export SECS=$(( SHOUR*3600 )) #mpasatm_configure.IN
-    export FHMAX=$(( DAYS*24 )) #mpasatm_configure.IN
+    export SYEAR=2016
+    export SMONTH=10
+    export SDAY=03
+    export SHOUR=00
+    export SECS=$(( SHOUR*3600 ))
+    export FHMAX=$(( DAYS*24 ))
     export FHCYC=0
-    export FHROT=0 #mpasatm_configure.IN
+    export FHROT=0
     export LDIAG3D=.false.
     export QDIAG3D=.false.
     export PRINT_DIFF_PGR=.false.
@@ -557,6 +550,36 @@ export_mpas ()
     export ZSTANDARD_LEVEL=0
 
     export DOMAINS_STACK_SIZE=3000000
+}
+export_mpas_rrfs ()
+{
+    # RRFS agnostic MPAS settings
+    export_mpas
+
+    # RRFS specific MPAS settings.
+    export DIAG_TABLE=diag_table_mpas
+    export FIELD_TABLE=field_table_rrfs_mpas
+    export FV3_RUN=rrfs_mpas_run.IN
+    export INPUT_NML=control_rrfs_mpas.nml.IN
+    export CCPP_SUITE=MPAS_RRFS
+
+    MODEL_CONFIGURE=mpasrrfs_configure.IN
+}
+
+export_mpas_gfs ()
+{
+    # GFS agnostic MPAS settings.
+    export_mpas
+
+    # GFS specific MPAS setting
+    export DIAG_TABLE=diag_table_mpas
+    export FIELD_TABLE=field_table_gfsv17_mpas
+    export FV3_RUN=gfs_mpas_run.IN
+    export INPUT_NML=control_gfs_mpas.nml.IN
+    # Use regional physics for now.
+    export CCPP_SUITE=MPAS_RRFS
+
+    MODEL_CONFIGURE=mpasgfs_configure.IN
 }
 
 export_gfs_physics ()
@@ -1662,12 +1685,11 @@ export_fire_behavior() {
 }
 
 
-# Defaults for the coupled 5-component
+# Defaults for the global coupled
 export_cmeps() {
-  export UFS_CONFIGURE=ufs.configure.s2swa_fast.IN
+  export UFS_CONFIGURE=ufs.configure.s2sw_fast.IN
   export med_model=cmeps
   export atm_model=fv3
-  export chm_model=gocart
   export ocn_model=mom6
   export ice_model=cice6
   export wav_model=ww3
@@ -1860,7 +1882,7 @@ export CPL=.true.
 export CPLWAV=.true.
 export CPLWAV2ATM=.true.
 export USE_MED_FLUX=.false.
-export CPLCHM=.true.
+export CPLCHM=.false.
 export CPLLND=.false.
 
 # for FV3: default values will be changed if doing a warm-warm restart

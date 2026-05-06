@@ -31,7 +31,6 @@ set(MPAS            OFF CACHE BOOL "Enable MPAS dycore")
 set(AQM             OFF CACHE BOOL "Enable AQM")
 set(UFS_GOCART      OFF CACHE BOOL "Enable GOCART")
 set(MOM6            OFF CACHE BOOL "Enable MOM6")
-set(HYCOM           OFF CACHE BOOL "Enable HYCOM")
 set(CICE6           OFF CACHE BOOL "Enable CICE6")
 set(LM4             OFF CACHE BOOL "Enable LM4")
 set(WW3             OFF CACHE BOOL "Enable WW3")
@@ -53,7 +52,6 @@ message("MPAS ............. ${MPAS}")
 message("AQM .............. ${AQM}")
 message("GOCART ........... ${UFS_GOCART}")
 message("MOM6 ............. ${MOM6}")
-message("HYCOM ............ ${HYCOM}")
 message("CICE6 ............ ${CICE6}")
 message("LM4 .............. ${LM4}")
 message("WW3 .............. ${WW3}")
@@ -264,14 +262,10 @@ if(WW3)
 endif()
 
 ###############################################################################
-### Marine Components [MOM6, HYCOM, CICE6]
+### Marine Components [MOM6, CICE6]
 ###############################################################################
 if(MOM6)
   add_subdirectory(MOM6-interface)
-endif()
-
-if(HYCOM)
-  add_subdirectory(HYCOM-interface)
 endif()
 
 if(CICE6)
@@ -366,12 +360,6 @@ if(MOM6)
   add_dependencies(ufs mom6)
   list(APPEND _ufs_defs_private FRONT_MOM6=mom_cap_mod)
   list(APPEND _ufs_libs_public mom6)
-endif()
-
-if(HYCOM)
-  list(APPEND _ufs_defs_private FRONT_HYCOM=HYCOM_Mod)
-  add_dependencies(ufs hycom)
-  target_link_libraries(ufs PUBLIC hycom)
 endif()
 
 if(CICE6)
