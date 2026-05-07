@@ -634,7 +634,6 @@ Where can I find more information about previous public releases of the UFS Weat
 Previous releases of the UFS WM are available, but we recommend using the UFS WM within an application workflow (e.g., `SRW App v3.0.0 <https://github.com/ufs-community/ufs-srweather-app/releases/tag/ufs-srw-v3.0.0>`_ ). Alternatively, users can run the `develop branch <https://github.com/ufs-community/ufs-weather-model>`_ code to check out the latest and greatest features! This code is constantly maintained via regression testing. Users can access information about previous releases of the UFS WM in the User’s Guide for each release:
 `UFS WM User’s Guide <https://ufs-weather-model.readthedocs.io/en/release-public-v3.0.0/>`_ (released with SRW APP v3.0.0)
 `UFS WM User’s Guide <https://ufs-weather-model.readthedocs.io/en/ufs-srw-v2.2.0-doc/>`_ (released with SRW App v2.2.0)
-`UFS WM User’s Guide <https://ufs-weather-model.readthedocs.io/en/ufs-srw-v2.1.0/>`_ (released with SRW App v2.1.0)
 
 ======================================================================================================
 What is the most recent public release of the UFS Weather Model? What has been updated in the release?======================================================================================================
