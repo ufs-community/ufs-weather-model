@@ -239,6 +239,9 @@ jobs:
       - name: FB
         if: contains(github.event.pull_request.labels.*.name, 'FB')
         run: echo "SUBCOMPONENTS=${SUBCOMPONENTS} FB" >> $GITHUB_ENV
+      - name: CCPP-sub
+        if: contains(github.event.pull_request.labels.*.name, 'CCPP-sub')
+        run: echo "SUBCOMPONENTS=${SUBCOMPONENTS} CCPP-sub" >> $GITHUB_ENV
       - name: Update subcomponents text
         if: ${{ env.SUBCOMPONENTS != '' }}
         uses: nipe0324/update-project-v2-item-field@v2.0.2
