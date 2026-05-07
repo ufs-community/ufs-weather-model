@@ -40,11 +40,13 @@ jobs:
     - name: "Build UFS Weather Model"
       shell: bash
       run: |
-        . /entrypoint.sh
+        . /opt/spack/share/spack/setup-env.sh
+        spack env activate /opt/spack-environment
+        spack load $(spack find --format '{name}')
         cmake -S $GITHUB_WORKSPACE/ufs-weather-model -B build \
           -DAPP=${{ matrix.config.app }} \
           -DCCPP_SUITES=${{ matrix.config.ccpp_suites }} \
           -D32BIT=ON \
           -DUSE_ESMF_STATIC_LIBS=OFF \
-          -DCMAKE_MODULE_PATH=/opt/view/cmake
+          -DCMAKE_MODULE_PATH=$(spack location --install-dir esmf)/cmake
         cmake --build build --parallel 4
