@@ -1,23 +1,22 @@
 ###############################################################################
 #
-# GFS test with MPAS dynamical core.
+# GFS test with MPAS dynamical core in DEBUG mode.
 #
 ###############################################################################
 
 export TEST_DESCR="Build UWM with MPAS dynamical core for GFS application"
 
-export CNTL_DIR=control_gfs_mpas
+export CNTL_DIR=control_gfs_mpas_debug
 
 export LIST_FILES="history.2023-03-10_15:00:00.nc \
-                   history.2023-03-10_18:00:00.nc \
-		   history.2023-03-10_21:00:00.nc \
-		   history.2023-03-11_00:00:00.nc \
-		   history.2023-03-11_03:00:00.nc"
+      	      	   history.2023-03-10_16:00:00.nc \
+		   history.2023-03-10_17:00:00.nc \
+		   history.2023-03-10_18:00:00.nc"
 
 export_mpas_gfs
 
-export FHMAX=12
-export OUTPUT_FH="3 -1"
+export FHMAX=3
+export OUTPUT_FH="1 -1"
 
 export ATM_compute_tasks=12
 export FV3_RUN=gfs_mpas_run.IN
