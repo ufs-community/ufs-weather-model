@@ -59,9 +59,6 @@ case $(hostname -f) in
   compute-dy-*) MACHINE_ID=aws-ec2 ;; ### aws-ec2
   processing-dy-*) MACHINE_ID=aws-ec2 ;; ### aws-ec2
 
-  login[1-4].frontera.tacc.utexas.edu) MACHINE_ID=frontera ;; ### frontera1-4
-  c*.frontera.tacc.utexas.edu) MACHINE_ID=frontera ;; ### frontera compute 
-
   discover3[1-5].prv.cube) MACHINE_ID=discover ;; ### discover31-35
   *) MACHINE_ID=UNKNOWN ;;  # Unknown platform
 esac
