@@ -33,13 +33,17 @@ Provide a concise commit message for the UFS WM and any subcomponents; delete un
 ```
 * UFSWM - 
   * AQM - 
+  * CATChem - 
   * CDEPS - 
+  * CECE - 
   * CICE - 
   * CMEPS - 
   * CMakeModules - 
   * UFSATM - 
-    * ccpp-physics - 
-    * atmos_cubed_sphere - 
+    * ccpp-physics -
+      * CCPP submodules (list) - 
+    * atmos_cubed_sphere -
+    * MPAS
   * GOCART - 
   * MOM6 - 
   * NOAHMP - 
@@ -72,20 +76,25 @@ Example:
 * WW3: NOAA-EMC/WW3#321
 Delete sections that are not needed.
 -->
-* AQM:
-* CDEPS:
-* CICE:
-* CMEPS:
-* CMakeModules:
-* UFSATM:
-  * ccpp-physics:
-  * atmos_cubed_sphere:
-* GOCART:
-* MOM6:
-* NOAHMP:
-* WW3:
-* fire_behavior:
-* stochastic_physics:
+* UFSWM - 
+  * AQM - 
+  * CATChem - 
+  * CDEPS - 
+  * CECE - 
+  * CICE - 
+  * CMEPS - 
+  * CMakeModules - 
+  * UFSATM - 
+    * ccpp-physics -
+      * CCPP submodules (list) - 
+    * atmos_cubed_sphere -
+    * MPAS
+  * GOCART - 
+  * MOM6 - 
+  * NOAHMP - 
+  * WW3 - 
+  * fire_behavior
+  * stochastic_physics - 
 * None
 
 ### UFSWM Blocking Dependencies:
