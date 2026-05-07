@@ -40,8 +40,10 @@ jobs:
     - name: "Build UFS Weather Model"
       shell: bash
       run: |
+        . /entrypoint.sh
         . /opt/spack/share/spack/setup-env.sh
         spack env activate /opt/spack-environment
+        unset CMAKE_PREFIX_PATH
         spack load $(spack find --format '{name}')
         cmake -S $GITHUB_WORKSPACE/ufs-weather-model -B build \
           -DAPP=${{ matrix.config.app }} \
