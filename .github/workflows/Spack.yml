@@ -20,13 +20,11 @@ jobs:
             os: "ubuntu-24.04",
             app: "S2SWA",
             ccpp_suites: "FV3_GFS_v17_coupled_p8,FV3_GFS_v17_coupled_p8_ugwpv1",
-            other-variants: ' ^esmf@8.8.0',
           }
         - {
             os: "ubuntu-24.04",
             app: "ATM",
             ccpp_suites: "FV3_GFS_v16,FV3_GFS_v16_flake,FV3_GFS_v16_ras,FV3_GFS_v17_p8,FV3_GFS_v17_p8_ugwpv1",
-            other-variants: ' ^esmf@8.8.0',
           }
 
     runs-on: ${{ matrix.config.os }}
@@ -37,10 +35,10 @@ jobs:
 
     steps:
 
-    - name: "Install dependencies with APT"
+    - name: "Force shared esmf"
       shell: bash
       run: |
-        mv /usr/local /usr/local_mv # relocate so CMake doesn't pick up on bad libraries
+        rm -f /opt/software/linux-x86_64/esmf-*/lib/libesmf.a
 
     - name: "Build Spack package"
       uses: NOAA-EMC/ci-test-spack-package@container-support-2
