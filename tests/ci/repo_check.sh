@@ -27,7 +27,7 @@ flag_sync=true
 declare -A urls branches paths
 # UPP, ccpp-framework, and gocart are intentionally excluded because they update at a different cadence 
 # and periodically bring in changes. 
-submodules="base ufsatm mom6 cice ww3 stoch cmeps cdeps cmake ccpp_physics aqm noahmp cubed_sphere lm4"
+submodules="base ufsatm mom6 cice ww3 stoch cmeps cdeps cmake ccpp_physics aqm noahmp cubed_sphere mpas lm4 fb" # Add CECE and CATChem once available
 
 urls[base]='https://github.com/ufs-community/ufs-weather-model'
 branches[base]='develop'
@@ -81,9 +81,19 @@ urls[cubed_sphere]='https://github.com/NOAA-GFDL/GFDL_atmos_cubed_sphere'
 branches[cubed_sphere]='dev/emc'
 paths[cubed_sphere]='UFSATM/fv3/atmos_cubed_sphere'
 
+urls[mpas]='https://github.com/ufs-community/MPAS-Model'
+branches[mpas]='feature/mpas-in-ufs'
+paths[mpas]='UFSATM/mpas/MPAS-Model'
+
 urls[lm4]='https://github.com/NOAA-GFDL/LM4-NUOPC-driver'
 branches[lm4]='develop'
 paths[lm4]='LM4-driver'
+
+urls[fb]='https://github.com/NOAA-EMC/fire_behavior.git'
+branches[fb]='emc/develop'
+paths[fb]='fire_behavior'
+
+# Add CECE and CATChem once available
 
 
 for submodule in $submodules; do
