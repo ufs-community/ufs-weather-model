@@ -40,5 +40,6 @@ jobs:
     - name: "Build UFS Weather Model"
       shell: bash
       run: |
+        . /entrypoint.sh
         cmake -S ufs-weather-model -B build -DAPP=${{ matrix.config.app }} -DCCPP_SUITES=${{ matrix.config.ccpp_suites }} -DUSE_ESMF_STATIC_LIBS=OFF
         cmake --build build
