@@ -635,8 +635,6 @@ Previous releases of the UFS WM are available, but we recommend using the UFS WM
 `UFS WM User’s Guide <https://ufs-weather-model.readthedocs.io/en/release-public-v3.0.0/>`_ (released with SRW APP v3.0.0)
 `UFS WM User’s Guide <https://ufs-weather-model.readthedocs.io/en/ufs-srw-v2.2.0-doc/>`_ (released with SRW App v2.2.0)
 `UFS WM User’s Guide <https://ufs-weather-model.readthedocs.io/en/ufs-srw-v2.1.0/>`_ (released with SRW App v2.1.0)
-`UFS WM User’s Guide <https://ufs-weather-model.readthedocs.io/en/ufs-v1.1.0/>`_ (released with MRW App v1.1.0)
-`UFS WM User’s Guide <https://ufs-weather-model.readthedocs.io/en/ufs-v1.0.0/>`_ (released with MRW App v1.0.0)
 
 ======================================================================================================
 What is the most recent public release of the UFS Weather Model? What has been updated in the release?======================================================================================================
