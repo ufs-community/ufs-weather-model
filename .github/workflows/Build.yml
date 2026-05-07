@@ -1,0 +1,44 @@
+# This is a CI workflow for the ufs-weather-model repository that builds the
+# modified UWM in a given PR.
+#
+# Alex Richert, Mar 2025
+
+name: Build with CMake
+on: [push,pull_request,workflow_dispatch]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  Spack:
+    strategy:
+      matrix:
+        config:
+        - {
+            os: "ubuntu-24.04",
+            app: "S2SWA",
+            ccpp_suites: "FV3_GFS_v17_coupled_p8,FV3_GFS_v17_coupled_p8_ugwpv1",
+          }
+        - {
+            os: "ubuntu-24.04",
+            app: "ATM",
+            ccpp_suites: "FV3_GFS_v16,FV3_GFS_v16_flake,FV3_GFS_v16_ras,FV3_GFS_v17_p8,FV3_GFS_v17_p8_ugwpv1",
+          }
+
+    runs-on: ${{ matrix.config.os }}
+    container: ghcr.io/noaa-emc/ci-common-build-cache/ufs-weather-model-ubuntu-24.04-gcc-13-mpich-x:latest
+    permissions:
+      # For repo-level build caching by NOAA-EMC/ci-test-spack-package action
+      actions: write
+
+    steps:
+
+    - name: "Checkout"
+      uses: actions/checkout@v4
+
+    - name: "Build UFS Weather Model"
+      shell: bash
+      run: |
+        cmake -S ufs-weather-model -B build -DAPP=${{ matrix.config.app }} -DCCPP_SUITES=${{ matrix.config.ccpp_suites }} -DUSE_ESMF_STATIC_LIBS=OFF
+        cmake --build build
