@@ -71,7 +71,7 @@ pipeline {
           environment {
             ACCNR = 'epic'
             NODE_PATH = '/scratch3/NAGAPE/epic/role-epic/'
-            GITHUB_TOKEN = credentials('GithubJenkinsNew')
+            GITHUB_TOKEN = credentials('GithubJenkins')
           }
           when{ 
             beforeAgent true
@@ -185,7 +185,7 @@ pipeline {
           environment {
             ACCNR = 'epic'
             NODE_PATH = '/work2/noaa/epic/role-epic/'
-            GITHUB_TOKEN = credentials('GithubJenkinsNew')
+            GITHUB_TOKEN = credentials('GithubJenkins')
           }
           when{ 
             beforeAgent true
@@ -299,7 +299,7 @@ pipeline {
           environment {
             ACCNR = 'epic'
             NODE_PATH = '/work/noaa/epic/role-epic/'
-            GITHUB_TOKEN = credentials('GithubJenkinsNew')
+            GITHUB_TOKEN = credentials('GithubJenkins')
           }
           when{ 
             beforeAgent true
@@ -407,6 +407,10 @@ pipeline {
               } //stage Orion
 
           } // parallel
+     } // stage Run ORT all hosts Parallel
+
+      stage('Post'){
+      agent { label 'built-in' }
                post {
                 always {
                   sh '''
@@ -426,6 +430,14 @@ pipeline {
                   )
                 } // success
 
+                aborted {
+                 slackSend (
+                  channel: '#jenkins-notifications',
+                  color: 'warning',
+                   message: "*TIMEOUT: Build ${env.JOB_NAME} #${env.BUILD_NUMBER}* <${env.BUILD_URL}|Open Build>"
+                   )
+                 } //aborted
+            
                 failure {
                   slackSend (
                     channel: '#jenkins-notifications', 
@@ -434,6 +446,7 @@ pipeline {
                   ) // slacksend
                 } // failure
               } // post
-     } // stage Run ORT all hosts Parallel
+         } // stage Post
+
   } // stages
 } // pipeline
