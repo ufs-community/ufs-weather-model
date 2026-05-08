@@ -44,7 +44,8 @@ Provide a concise commit message for the UFS WM and any subcomponents; delete un
       * CCPP submodules (list) - 
     * atmos_cubed_sphere -
     * MPAS
-  * GOCART - 
+  * GOCART -
+  * LM4 - 
   * MOM6 - 
   * NOAHMP - 
   * WW3 - 
@@ -89,7 +90,8 @@ Delete sections that are not needed.
       * CCPP submodules (list) - 
     * atmos_cubed_sphere -
     * MPAS
-  * GOCART - 
+  * GOCART -
+  * LM4 - 
   * MOM6 - 
   * NOAHMP - 
   * WW3 - 
