@@ -411,6 +411,7 @@ pipeline {
 
       stage('Post'){
       agent { label 'built-in' }
+        steps{
                post {
                 always {
                   sh '''
@@ -446,6 +447,7 @@ pipeline {
                   ) // slacksend
                 } // failure
               } // post
+            } // steps
          } // stage Post
 
   } // stages
