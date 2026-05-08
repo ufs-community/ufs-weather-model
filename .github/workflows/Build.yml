@@ -27,7 +27,7 @@ jobs:
           }
 
     runs-on: ${{ matrix.config.os }}
-    container: ghcr.io/noaa-emc/ci-common-build-cache/ufs-weather-model-ubuntu-24.04-gcc-13-mpich-x:latest
+    container: ghcr.io/noaa-emc/ci-common-build-cache/ufs-weather-model-ubuntu-24.04-gcc-13-openmpi-x:latest
 
     steps:
 
@@ -41,10 +41,9 @@ jobs:
       shell: bash
       run: |
         . /entrypoint.sh
-        . /opt/spack/share/spack/setup-env.sh
-        spack env activate /opt/spack-environment
-        unset CMAKE_PREFIX_PATH
-        spack load $(spack find --format '{name}')
+        export CC=mpicc
+        export CXX=mpic++
+        export FC=mpif90
         cmake -S $GITHUB_WORKSPACE/ufs-weather-model -B build \
           -DAPP=${{ matrix.config.app }} \
           -DCCPP_SUITES=${{ matrix.config.ccpp_suites }} \
