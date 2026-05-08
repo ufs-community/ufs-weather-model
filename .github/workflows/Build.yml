@@ -44,9 +44,9 @@ jobs:
         . /entrypoint.sh
         # Swap out a package: ######
         spack remove esmf mapl ufs-weather-model
-        spack add mapl ^esmf@8.9.1
+        spack add ufs-weather-model ^esmf@8.9.1
         spack concretize --fresh
-        spack install
+        spack install --only dependencies ufs-weather-model
         ############################
         export CC=mpicc
         export CXX=mpic++
