@@ -42,9 +42,12 @@ jobs:
       run: |
         set -x
         . /entrypoint.sh
+        # Swap out a package: ######
         spack remove esmf mapl ufs-weather-model
         spack add mapl ^esmf@8.9.1
         spack concretize --fresh
+        spack install
+        ############################
         export CC=mpicc
         export CXX=mpic++
         export FC=mpif90
