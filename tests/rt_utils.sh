@@ -315,6 +315,7 @@ submit_and_wait() {
       pbs)
         set +e
         job_info=$( qstat "${jobid}" )
+	job_info=$( grep -v "Job has finished, use -x or -H to obtain historical job information" <<< "${job_info}")
         set -e
         if grep -q "${jobid}" <<< "${job_info}"; then
           job_running=true
