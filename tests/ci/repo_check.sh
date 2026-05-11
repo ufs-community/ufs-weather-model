@@ -27,7 +27,7 @@ flag_sync=true
 declare -A urls branches paths
 # UPP, ccpp-framework, and gocart are intentionally excluded because they update at a different cadence 
 # and periodically bring in changes. 
-submodules="base ufsatm mom6 cice ww3 stoch cmeps cdeps cmake ccpp_physics aqm noahmp cubed_sphere mpas lm4 fb" # Add CECE and CATChem once available
+submodules="base ufsatm mom6 cice ww3 stoch cmeps cdeps cmake ccpp_physics aqm noahmp cubed_sphere mpas lm4 fb" # Add cece and catchem once available
 
 urls[base]='https://github.com/ufs-community/ufs-weather-model'
 branches[base]='develop'
@@ -93,7 +93,15 @@ urls[fb]='https://github.com/NOAA-EMC/fire_behavior.git'
 branches[fb]='emc/develop'
 paths[fb]='fire_behavior'
 
-# Add CECE and CATChem once available
+# Update w/CECE & CATChem PRs
+urls[cece]='https://github.com/ufs-community/CECE.git'
+branches[cece]='develop'
+paths[cece]='CECE'
+
+urls[catchem]='https://github.com/ufs-community/CATChem.git'
+branches[catchem]='main'
+paths[catchem]='CATChem'
+
 
 
 for submodule in $submodules; do
