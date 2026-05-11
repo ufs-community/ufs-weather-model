@@ -161,3 +161,8 @@ If there are changes to input data for a test, provide information here. Delete 
   - [ ] Acorn
 - [ ] CI
 - [ ] opnReqTest (complete task if unnecessary)
+
+## Testing Remarks:
+<!-- Lead CM: List (1) testing issues that we are bypassing (e.g., failing CI due to remarks or an early-merged component PR) 
+(2) Issues that have been opened based on testing results (3) any other relevant info -->
+- 
