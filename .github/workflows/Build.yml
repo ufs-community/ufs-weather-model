@@ -42,20 +42,19 @@ jobs:
       run: |
         set -x
         . /entrypoint.sh
+        ############################
         # Swap out a package: ######
-        spack remove esmf mapl ufs-weather-model
-        spack add ufs-weather-model ^esmf@8.9.1
-        spack concretize --fresh
-        spack install --only dependencies ufs-weather-model
+        spack swap-package --concretize scotch@7.0.9
+        spack install
         ############################
         export CC=mpicc
         export CXX=mpic++
         export FC=mpif90
-        esmfcmakemod=$(spack location --install-dir esmf)/cmake
+        esmfcmakemoddir=$(spack location --install-dir esmf)/cmake
         cmake -S $GITHUB_WORKSPACE/ufs-weather-model -B build \
           -DAPP=${{ matrix.config.app }} \
           -DCCPP_SUITES=${{ matrix.config.ccpp_suites }} \
           -D32BIT=ON \
           -DUSE_ESMF_STATIC_LIBS=OFF \
-          -DCMAKE_MODULE_PATH=$esmfcmakemod
+          -DCMAKE_MODULE_PATH=$esmfcmakemoddir
         cmake --build build --parallel 4
