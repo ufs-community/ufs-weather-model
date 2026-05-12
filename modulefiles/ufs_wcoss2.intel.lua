@@ -48,7 +48,6 @@ for i = 1, #ufs_modules do
 end
 
 append_path("MODULEPATH","/apps/ops/para/libs/modulefiles/compiler/intel/19.1.3.304")
-load("intel/19.1.3.304")
 load("ip/5.4.1")
 
 setenv("CC", "cc")
