@@ -947,18 +947,6 @@ NEW_BASELINE=${STMP}/${USER}/FV3_RT/REGRESSION_TEST
 # Overwrite default RUNDIR_ROOT if environment variable RUNDIR_ROOT is set
 RUNDIR_ROOT=${RUNDIR_ROOT:-${PTMP}/${USER}/FV3_RT}/rt_$$
 mkdir -p "${RUNDIR_ROOT}"
-
-#tdk: this needs to happen in the catchem configuration somehow
-catchem_root=$(readlink -f "${PATHRT}"/../CATChem)
-catchem_dst_dir=${RUNDIR_ROOT}/catchem_control_p8_intel
-mkdir -p ${catchem_dst_dir}
-echo ${catchem_root}
-echo ${catchem_dst_dir}
-cp "${catchem_root}"/tests/Configs/Default/CATChem_emission_GCAFS.yml "${catchem_dst_dir}"
-cp "${catchem_root}"/tests/Configs/Default/CATChem_new_config.yml "${catchem_dst_dir}"
-cp "${catchem_root}"/tests/Configs/Default/CATChem_species.yml "${catchem_dst_dir}"
-cp "${catchem_root}"/drivers/nuopc/CATChem_field_mapping.yml "${catchem_dst_dir}"
-
 rm -rf "${PATHRT}/run_dir"
 echo "Linking ${RUNDIR_ROOT} to ${PATHRT}/run_dir"
 ln -s "${RUNDIR_ROOT}" "${PATHRT}/run_dir"
