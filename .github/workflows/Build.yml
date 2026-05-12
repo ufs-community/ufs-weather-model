@@ -1,5 +1,5 @@
 # This is a CI workflow for the ufs-weather-model repository that builds the
-# modified UWM in a given PR.
+# modified UWM for any given PR.
 #
 # Alex Richert, May 2026
 
@@ -27,6 +27,8 @@ jobs:
           }
 
     runs-on: ${{ matrix.config.os }}
+    # Dependencies are preinstalled in a container image.
+    # For available images, see https://github.com/orgs/NOAA-EMC/packages?tab=packages&q=ufs-weather-model
     container: ghcr.io/noaa-emc/ci-common-build-cache/ufs-weather-model-ubuntu-24.04-gcc-13-mpich-x:latest
 
     steps:
@@ -43,9 +45,11 @@ jobs:
         set -x
         . /entrypoint.sh
         ############################
-        # Swap out a package: ######
-        spack swap-package --concretize scotch@7.0.9
-        spack install --only-concrete
+        ## Swap out a package:
+        ##  For `swap-package` custom Spack command documentation,
+        ##  see https://github.com/NOAA-EMC/spack-helpers#modify-package-spec-swap-package
+        #spack swap-package --concretize scotch@7.0.9
+        #spack install --only-concrete
         ############################
         export CC=mpicc
         export CXX=mpic++
