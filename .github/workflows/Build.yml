@@ -29,7 +29,7 @@ jobs:
     runs-on: ${{ matrix.config.os }}
     # Dependencies are preinstalled in a container image.
     # For available images, see https://github.com/orgs/NOAA-EMC/packages?tab=packages&q=ufs-weather-model
-    container: ghcr.io/noaa-emc/ci-common-build-cache/ufs-weather-model-ubuntu-24.04-gcc-13-mpich-x:latest
+    container: ghcr.io/noaa-emc/ci-common-build-cache/ufs-weather-model-ubuntu-24.04-gcc-13-mpich-x@sha256:a7250b7fa7e40b322c082fdebba570b8c449af6b27565f15f5457f736e3020b9
 
     steps:
 
@@ -45,10 +45,19 @@ jobs:
         set -x
         . /entrypoint.sh
         ############################
-        ## Swap out a package:
-        ##  For `swap-package` custom Spack command documentation,
-        ##  see https://github.com/NOAA-EMC/spack-helpers#modify-package-spec-swap-package
+        ## Modify Spack installation, if needed
+        ##
+        ## For `swap-package` custom Spack command documentation,
+        ## see https://github.com/NOAA-EMC/spack-helpers#modify-package-spec-swap-package.
+        ## To request a package addition or update , create an issue or PR at
+        ## https://github.com/NOAA-EMC/ci-common-build-cache/.
+        ##
+        ## Configure a different version/build options for a package:
         #spack swap-package --concretize scotch@7.0.9
+        ## Configure an additional package not already in Spack:
+        #spack add py-scipy
+        #spack concretize --fresh
+        ## Run the installation:
         #spack install --only-concrete
         ############################
         export CC=mpicc
