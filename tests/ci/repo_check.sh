@@ -103,7 +103,6 @@ branches[catchem]='develop'
 paths[catchem]='CATChem'
 
 
-
 for submodule in $submodules; do
     url=${urls[$submodule]}
     branch=${branches[$submodule]}
