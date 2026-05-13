@@ -439,10 +439,6 @@ pipeline {
               } //stage Orion
 
           } // parallel
-     } // stage Run ORT all hosts Parallel
-
-      stage('Post'){
-      agent { label 'built-in' }
 
                post {
                 success {
@@ -469,8 +465,7 @@ pipeline {
                   ) // slacksend
                 } // failure
               } // post
-
-         } // stage Post
+     } // stage Run ORT all hosts Parallel
 
   } // stages
 } // pipeline
