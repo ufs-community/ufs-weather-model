@@ -89,16 +89,16 @@ urls[lm4]='https://github.com/NOAA-GFDL/LM4-NUOPC-driver'
 branches[lm4]='develop'
 paths[lm4]='LM4-driver'
 
-urls[fb]='https://github.com/NOAA-EMC/fire_behavior.git'
+urls[fb]='https://github.com/NOAA-EMC/fire_behavior'
 branches[fb]='emc/develop'
 paths[fb]='fire_behavior'
 
 # Update w/CECE & CATChem PRs
-urls[cece]='https://github.com/ufs-community/CECE.git'
+urls[cece]='https://github.com/ufs-community/CECE'
 branches[cece]='develop'
 paths[cece]='CECE'
 
-urls[catchem]='https://github.com/ufs-community/CATChem.git'
+urls[catchem]='https://github.com/ufs-community/CATChem'
 branches[catchem]='develop'
 paths[catchem]='CATChem'
 
