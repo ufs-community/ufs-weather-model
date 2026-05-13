@@ -99,7 +99,7 @@ branches[cece]='develop'
 paths[cece]='CECE'
 
 urls[catchem]='https://github.com/ufs-community/CATChem.git'
-branches[catchem]='main'
+branches[catchem]='develop'
 paths[catchem]='CATChem'
 
 
