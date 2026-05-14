@@ -70,9 +70,9 @@ contains
         if (ESMF_LogFoundError(rcToCheck=rc, msg=ESMF_LOGERR_PASSTHRU, line=__LINE__, file=__FILE__)) return
 
         ! Support case where restart_fh: "fh_interval -1"
-        if (nfh == 2 .and. restart_fh(2) == -1) then
+        if (nfh == 2 .and. int(restart_fh(2)) == -1) then
            call ESMF_ConfigGetAttribute(CF_mc,value=nhours_fcst,label='nhours_fcst:', rc=rc)
-           fhi = restart_fh(1)
+           fhi = int(restart_fh(1))
            ntimeout = nhours_fcst/fhi
            nfh = ntimeout
            deallocate(restart_fh)
