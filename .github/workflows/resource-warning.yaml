@@ -26,14 +26,14 @@ jobs:
     runs-on: ubuntu-latest
     steps: 
       - name: Checkout feature branch
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Install dependencies
         run: |
           pip install requests numpy
           mkdir -p data
       - name: Cache machine stats
         id: cache-stats
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ${{ github.workspace }}/data/stats.json
           key: hist-stats-${{ github.event.pull_request.base.sha }} # If develop gets updated, stats.json should, too
@@ -51,7 +51,7 @@ jobs:
           python .github/scripts/get_data.py
           ls -R ${{ github.workspace }}/data
       - name: Upload json
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with: 
           name: data
           path: ${{ github.workspace }}/data
@@ -60,12 +60,12 @@ jobs:
     needs: get-data
     steps:
       - name: Checkout feature branch
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Install dependencies
         run: |
           pip install pandas mdutils
       - name: Download test results
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v8
         with: 
           name: data
           path: ${{ github.workspace }}/data

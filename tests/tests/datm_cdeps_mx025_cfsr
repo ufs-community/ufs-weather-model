@@ -2,7 +2,9 @@
 #  DATM_CDEPS_MOM6_CICE_CMEPS_CFSR test
 #
 
-export TEST_DESCR="DATM_CDEPS-MOM6-CICE-CMEPS_CFSR - 1/4deg ocean+ice"
+source ${PATHRT}/tests/datm_cdeps_control_cfsr
+
+export TEST_DESCR+=" - 1/4deg ocean+ice"
 
 export CNTL_DIR=datm_cdeps_mx025_cfsr
 
@@ -13,11 +15,6 @@ export LIST_FILES="RESTART/20111001.120000.MOM.res.nc \
                    RESTART/iced.2011-10-01-43200.nc \
                    RESTART/DATM_CFSR.cpl.r.2011-10-01-43200.nc"
 
-export_datm_cdeps
-export DATM_SRC=CFSR
-export FILEBASE_DATM=cfsr
-export IATM=1760
-export JATM=880
 export DAYS=0.5
 export FHMAX=12
 export RESTART_N=${FHMAX}
@@ -51,4 +48,6 @@ export MOM6_FRUNOFF=runoff.daitren.clim.1440x1080.v20180328.nc
 export MOM6_RESTART_SETTING=r
 export MOM6_GUST_CONST=0.0 
 
-export FV3_RUN=cpld_datm_cdeps.IN
+# defaults back from source base test
+export MOM6_TOPOEDITS=''
+export MOM6_ALLOW_LANDMASK_CHANGES=False

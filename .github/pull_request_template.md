@@ -41,7 +41,6 @@ Provide a concise commit message for the UFS WM and any subcomponents; delete un
     * ccpp-physics - 
     * atmos_cubed_sphere - 
   * GOCART - 
-  * HYCOM - 
   * MOM6 - 
   * NOAHMP - 
   * WW3 - 
@@ -82,7 +81,6 @@ Delete sections that are not needed.
   * ccpp-physics:
   * atmos_cubed_sphere:
 * GOCART:
-* HYCOM:
 * MOM6:
 * NOAHMP:
 * WW3:

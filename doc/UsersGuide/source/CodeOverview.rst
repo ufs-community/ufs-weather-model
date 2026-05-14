@@ -26,22 +26,16 @@ Currently, Level 1 (or Tier-1) platforms for regression testing are:
    * WCOSS2 (Intel)
    * Gaea C6 (Intel)
    * Ursa (Intel/GNU compilers)
-   * Jet (Intel)
    * Orion (Intel)
    * Hercules (Intel/GNU compilers)
    * Derecho (Intel/GNU compilers)
-   * AWS Docker container (Intel)
-
+   
 More information is available in the :wm-wiki:`UFS WM wiki <Regression-Test-Policy-for-Weather-Model-Platforms-and-Compilers>`. 
 
 Level 2-4 Systems
 ===================
 
 On non-Level 1 platforms, users must install the required libraries before building the UFS WM. Additionally, users must stage the required data in order to run regression tests. Once the prerequisite libraries are installed, and the data has been staged, the WM should build and run successfully. However, users may need to perform additional troubleshooting on Level 3 or 4 systems since little or no testing is conducted on these systems.
-
-Currently, Level 2 platforms for regression testing are:
-
-   * S4 (Intel)
 
 ===================================================
 UFS Weather Model Hierarchical Repository Structure
@@ -79,9 +73,6 @@ The UFS :term:`WM` repository supports the :term:`UFS` short-range weather appli
    * - MOM6
      - Modular Ocean Model (:term:`MOM6`)
      - https://github.com/NOAA-EMC/MOM6
-   * - HYCOM-src
-     - HYbrid Coordinate Ocean Model (:term:`HYCOM`)
-     - https://github.com/NOAA-EMC/HYCOM-src
    * - CICE
      - Los Alamos sea ice model (:term:`CICE6`)
      - https://github.com/NOAA-EMC/CICE
@@ -149,9 +140,6 @@ The umbrella repository for the UFS WM is named ``ufs-weather-model``. Under thi
     ├── fire_behavior                               -------- Community Fire Behavior Model
     ├── GOCART
     │    └── (ESMF)                                 -------- GOCART model
-    ├── HYCOM-interface
-    │    └── HYCOM                                  -------- HYCOM ocean model
-    │         └── (NUOPC)                           -------- NUOPC HYCOM cap
     ├── LICENSE.md
     ├── LM4-driver 
     │    ├── (LM4)                                  -------- NUOPC NOAA-GFDL Land Model version 4

@@ -50,6 +50,7 @@ function compute_petbounds_and_tasks_traditional_threading() {
   if [[ ${ATM_tasks:-0} -gt 0 ]]; then
      atm_petlist_bounds="${n} $((n + ATM_tasks - 1))"
      n=$((n + ATM_tasks))
+     # shellcheck disable=SC2154
      _tasks=$(( ATM_tasks*atm_omp_num_threads ))
      atm_nodes=$(( _tasks / TPN ))
      if (( atm_nodes * TPN < _tasks )); then
@@ -61,6 +62,7 @@ function compute_petbounds_and_tasks_traditional_threading() {
   if [[ ${OCN_tasks:-0} -gt 0 ]]; then
      ocn_petlist_bounds="${n} $((n + OCN_tasks - 1))"
      n=$((n + OCN_tasks))
+     # shellcheck disable=SC2154
      _tasks=$(( OCN_tasks*ocn_omp_num_threads ))
      ocn_nodes=$(( _tasks / TPN ))
      if (( ocn_nodes * TPN < _tasks )); then
@@ -72,6 +74,7 @@ function compute_petbounds_and_tasks_traditional_threading() {
   if [[ ${ICE_tasks:-0} -gt 0 ]]; then
      ice_petlist_bounds="${n} $((n + ICE_tasks - 1))"
      n=$((n + ICE_tasks))
+     # shellcheck disable=SC2154
      _tasks=$(( ICE_tasks*ice_omp_num_threads ))
      ice_nodes=$(( _tasks / TPN ))
      if (( ice_nodes * TPN < _tasks )); then
@@ -83,6 +86,7 @@ function compute_petbounds_and_tasks_traditional_threading() {
   if [[ ${WAV_tasks:-0} -gt 0 ]]; then
      wav_petlist_bounds="${n} $((n + WAV_tasks - 1))"
      n=$((n + WAV_tasks))
+     # shellcheck disable=SC2154
      _tasks=$(( WAV_tasks*wav_omp_num_threads ))
      wav_nodes=$(( _tasks / TPN ))
      if (( wav_nodes * TPN < _tasks )); then
@@ -199,6 +203,7 @@ function compute_petbounds_and_tasks_esmf_threading() {
       # set lnd_petlist_bounds to be same as ATM_compute_tasks
       lnd_petlist_bounds="0 $((ATM_compute_tasks - 1))"
   elif [[ ${LND_tasks:-0} -gt 0 ]]; then # noahmp component or other
+      # shellcheck disable=SC2154
       LND_tasks=$((LND_tasks * lnd_omp_num_threads))
       lnd_petlist_bounds="${n} $((n + LND_tasks - 1))"
       n=$((n + LND_tasks))
@@ -206,6 +211,7 @@ function compute_petbounds_and_tasks_esmf_threading() {
 
   # FBH
   if [[ ${FBH_tasks:-0} -gt 0 ]]; then
+     # shellcheck disable=SC2154
      FBH_tasks=$((FBH_tasks * fbh_omp_num_threads))
      fbh_petlist_bounds="${n} $((n + FBH_tasks - 1))"
      n=$((n + FBH_tasks))
@@ -309,6 +315,7 @@ submit_and_wait() {
       pbs)
         set +e
         job_info=$( qstat "${jobid}" )
+	job_info=$( grep -v "Job has finished, use -x or -H to obtain historical job information" <<< "${job_info}")
         set -e
         if grep -q "${jobid}" <<< "${job_info}"; then
           job_running=true
@@ -414,9 +421,6 @@ rocoto_create_compile_task() {
   NATIVE=""
   BUILD_CORES=8
   BUILD_WALLTIME="00:30:00"
-  if [[ ${MACHINE_ID} == jet ]]; then
-    BUILD_WALLTIME="02:00:00"
-  fi
   if [[ ${MACHINE_ID} == hera ]]; then
     BUILD_WALLTIME="01:00:00"
   fi
@@ -427,9 +431,6 @@ rocoto_create_compile_task() {
     BUILD_WALLTIME="01:00:00"
   fi
   if [[ ${MACHINE_ID} == hercules ]]; then
-    BUILD_WALLTIME="01:00:00"
-  fi
-  if [[ ${MACHINE_ID} == s4 ]]; then
     BUILD_WALLTIME="01:00:00"
   fi
   if [[ ${MACHINE_ID} == gaeac5 ]]; then
@@ -660,7 +661,7 @@ ecflow_run() {
     elif [[ "${HOST::1}" == "d" ]]; then
       ECF_HOST=ddecflow01
     fi
-  elif [[ ${MACHINE_ID} == hera || ${MACHINE_ID} == jet || ${MACHINE_ID} == ursa ]]; then
+  elif [[ ${MACHINE_ID} == hera || ${MACHINE_ID} == ursa ]]; then
     module load ecflow
   fi
   if [[ -z ${ECF_HOST} || -z ${ECF_PORT} ]]; then
@@ -686,7 +687,7 @@ ecflow_run() {
     save_traps=$(trap)
     trap "" SIGINT  # Ignore INT signal during ecflow startup
     case ${MACHINE_ID} in
-      wcoss2|acorn|hera|jet)
+      wcoss2|acorn|hera)
         #shellcheck disable=SC2029
         ssh "${ECF_HOST}" "bash -l -c \"module load ecflow && ${ECFLOW_START} -p ${ECF_PORT}\""
         ;;
