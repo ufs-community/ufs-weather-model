@@ -237,6 +237,7 @@ endif()
 ###############################################################################
 if(CATCHEM)
   set(CATCHEM_BUILD_NUOPC ON CACHE BOOL "Enable CATChem NUOPC cap for UFS integration" FORCE)
+  set(CATCHEM_TRACE_NUOPC ON CACHE BOOL "Enable ESMF trace regions in the CATChem NUOPC cap" FORCE)
   set(CATCHEM_BUILD_TESTING ON CACHE BOOL "Enable CATChem testing framework" FORCE) #tdk: set to off or set default to off and update other scripts
   add_subdirectory(CATChem)
 endif()
