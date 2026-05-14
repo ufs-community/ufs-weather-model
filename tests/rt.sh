@@ -1008,6 +1008,8 @@ if [[ ${skip_check_results} == true ]]; then
 else
   REGRESSIONTEST_LOG=${PATHRT}/logs/RegressionTests_${MACHINE_ID}.log
 fi
+
+[ -f "${REGRESSIONTEST_LOG}" ] && cp "${REGRESSIONTEST_LOG}" "${REGRESSIONTEST_LOG}.bak"
 rm -f "${REGRESSIONTEST_LOG}"
 
 TEST_START_TIME="$(date '+%Y%m%d %T')"
@@ -1222,7 +1224,8 @@ while read -r line || [[ -n "${line}" ]]; do
 EOF
     fi
 
-    (
+    ( 
+      # shellcheck source=/github/workspace/tests/tests/control_c48
       source "${PATHRT}/tests/${TEST_NAME}"
 
       if [[ ${ESMF_THREADING} == true ]]; then
