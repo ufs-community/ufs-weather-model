@@ -822,3 +822,827 @@ If you are using this log as a pull request verification, please commit 'test_ch
 Result: FAILURE
 
 ====END OF DERECHO REGRESSION TESTING LOG====
+====START OF DERECHO REGRESSION TESTING LOG====
+
+UFSWM hash used in testing:
+1dbb5ce7d22d6e11ae5e4ddb94b064fdcd87612d
+
+Submodule hashes used in testing:
+ fc153862cfcc01fc4da513a2ff56af0bbd1234e0 AQM (v0.2.0-73-gfc15386)
+ 642e81395472d5887b54f601b60ee607ed39bf09 AQM/src/model/CMAQ (CMAQv5.2.1_07Feb2018-6194-g642e81395)
+ 9f53664ef2e607ad25d6b6c939f2eac9ec818ee6 CDEPS-interface/CDEPS (cdeps0.4.17-432-g9f53664)
+ def9c53b17d6722cc9991ba72ddae8ad2d5d25d9 CICE-interface/CICE (CICE6.0.0-445-gdef9c53)
+ 4954a6f9033f78e5c32bf33780384cbf2d0843e6 CICE-interface/CICE/icepack (Icepack1.1.0-225-g4954a6f)
+ fc8b9140e08465dcb5eab48056d4d5636c0e1716 CMEPS-interface/CMEPS (cmeps_v0.4.1-2335-gfc8b914)
+ 69049ec0c26b3160c3dbe1980b2feb78470a37a6 CMakeModules (v1.0.0-36-g69049ec)
+ 9ff3df9545dd582f415f682d3297e8c6c841e5cb GOCART (sdr_v2.1.2.6-291-g9ff3df9)
+ 513b67312510a15ae178ea5c3eddb0854e41486b LM4-driver (baseline_change_240904-8-g513b673)
+ c61e4e280dbde13af0023b1e86d98296ff65d6a7 LM4-driver/LM4 (land_lad2_2021.02-3-gc61e4e2)
+ 4778b91ffebac913de85bd24abed3839c3545312 MOM6-interface/MOM6 (dev/master/repository_split_2014.10.10-10796-g4778b91ff)
+ c38ddb7ebdd2d58c517b63a99bbdc8e348732db2 MOM6-interface/MOM6/pkg/CVMix-src (c38ddb7)
+ 29e64d652786e1d076a05128c920f394202bfe10 MOM6-interface/MOM6/pkg/GSW-Fortran (29e64d6)
+ 2c7b3bc2a8096f6232020c47507593058795102e NOAHMP-interface/noahmp (v3.7.1-471-g2c7b3bc)
+ 624dbff31d16a8d35bb98b66b7179f2532f73c7a UFSATM (heads/develop)
+ 22bc1a5de8a19996310aedc3482931616cd74a1b UFSATM/ccpp/framework (2025-10-15-dev-5-g22bc1a5)
+ bab5040758c0f1f29a201022ce4c1d3c49844440 UFSATM/ccpp/physics (EP4-2459-gbab50407)
+ c62efd27caa26f660edf24232f33f154e608b77a UFSATM/ccpp/physics/physics/MP/TEMPO/TEMPO (v2.1.3~3)
+ 41c5fcd950fed09b8afe186dede266824eca7fd3 UFSATM/ccpp/physics/physics/Radiation/RRTMGP/rte-rrtmgp (41c5fcd)
+ cce9a5fc4479749f489be24020e5c06c3e4202d4 UFSATM/ccpp/physics/physics/SFC_Layer/MYNN/MYNN (remotes/origin/ccpp/dev)
+ 2382b4f7d8eefa44635b88b6d45ee49255ee294c UFSATM/fv3/atmos_cubed_sphere (201912_public_release-528-g2382b4f)
+ 99890240d93a6b28a75f84c9f7248161797656ae UFSATM/mpas/MPAS-Model (remotes/origin/master-101-g99890240)
+ 7d9597c471470be061ab8853dd62bcd03f15d6aa UFSATM/upp (upp_v10.2.0-354-g7d9597c4)
+-5afd607642ae0fd6a53b137230336386beb47ce6 UFSATM/upp/sorc/libIFI.fd
+-3d35332fe66e3e63a285cc8d96facdf255a33481 UFSATM/upp/sorc/ncep_post.fd/post_gtg.fd
+ dcc9da76c2d32c6ca7a5318a56db033295d9f43c WW3 (6.07.1-531-gdcc9da76)
+ 23a6e57b5bb6b9288a7ff1fbbd20a599e908f718 fire_behavior (v0.2.0-176-g23a6e57)
+ ae192f119b8614b4476a1b04ba55f6fb93e2953d stochastic_physics (ufs-v2.0.0-298-gae192f1)
+
+
+NOTES:
+[Times](Memory) are at the end of each compile/test in format [MM:SS](Size).
+The first time is for the full script (prep+run+finalize).
+The second time is specifically for the run phase.
+Times/Memory will be empty for failed tests.
+
+BASELINE DIRECTORY: /glade/derecho/scratch/epicufsrt/ufs-weather-model/RT//NEMSfv3gfs/develop-20260515
+COMPARISON DIRECTORY: /glade/derecho/scratch/gpetro/FV3_RT/rt_15623
+
+RT.SH OPTIONS USED:
+* (-a) - HPC PROJECT ACCOUNT: NRAL0032
+* (-e) - USE ECFLOW
+
+PASS -- COMPILE 's2swa_32bit_intel' [06:18, 25:35] ( 1 warnings 1089 remarks )
+
+PASS -- COMPILE 's2sw_32bit_pdlib_intel' [09:51, 22:51] ( 1 warnings 1070 remarks )
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'cpld_control_gfsv17_intel' [, ]( MB)
+FAILED: UNABLE TO START TEST -- TEST 'cpld_control_gfsv17_iau_intel' [, ]( MB)
+FAILED: UNABLE TO START TEST -- TEST 'cpld_restart_gfsv17_intel' [, ]( MB)
+FAILED: UNABLE TO START TEST -- TEST 'cpld_restart_gfsv17_iau_intel' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'cpld_mpi_gfsv17_intel' [, ]( MB)
+
+PASS -- COMPILE 's2sw_32bit_pdlib_debug_intel' [52:13, 05:52] ( 336 warnings 1382 remarks )
+PASS -- TEST 'cpld_debug_gfsv17_intel' [28:50, 18:31](1870 MB)
+
+PASS -- COMPILE 's2sw_intel' [08:50, 21:54] ( 1 warnings 1071 remarks )
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'cpld_control_p8_intel' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'cpld_control_p8.v2.sfc_intel' [, ]( MB)
+FAILED: UNABLE TO START TEST -- TEST 'cpld_restart_p8_intel' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'cpld_2threads_p8_intel' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'cpld_decomp_p8_intel' [, ]( MB)
+FAILED: RUN DID NOT COMPLETE -- TEST 'cpld_mpi_p8_intel' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'cpld_control_ciceC_p8_intel' [, ]( MB)
+
+FAILED: UNABLE TO FINISH COMPILE -- COMPILE 's2swl_intel' [, ]
+
+PASS -- COMPILE 's2s_aoflux_intel' [04:41, 17:58] ( 1 warnings 995 remarks )
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'cpld_control_noaero_p8_agrid_intel' [, ]( MB)
+
+PASS -- COMPILE 's2sw_pdlib_intel' [09:51, 23:04] ( 1 warnings 1080 remarks )
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'cpld_control_c48_5deg_intel' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'cpld_warmstart_c48_5deg_intel' [, ]( MB)
+FAILED: UNABLE TO START TEST -- TEST 'cpld_restart_c48_5deg_intel' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'cpld_control_c24_5deg_intel' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'cpld_warmstart_c24_5deg_intel' [, ]( MB)
+FAILED: UNABLE TO START TEST -- TEST 'cpld_restart_c24_5deg_intel' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'cpld_control_c24_9deg_intel' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'cpld_warmstart_c24_9deg_intel' [, ]( MB)
+FAILED: UNABLE TO START TEST -- TEST 'cpld_restart_c24_9deg_intel' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'cpld_control_c12_9deg_intel' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'cpld_warmstart_c12_9deg_intel' [, ]( MB)
+FAILED: UNABLE TO START TEST -- TEST 'cpld_restart_c12_9deg_intel' [, ]( MB)
+
+PASS -- COMPILE 'atm_dyn32_intel' [02:37, 13:38] ( 1 warnings 536 remarks )
+PASS -- TEST 'control_CubedSphereGrid_intel' [47:07, 02:19](1513 MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'control_CubedSphereGrid_parallel_intel' [, ]( MB)
+FAILED: RUN DID NOT COMPLETE -- TEST 'control_latlon_intel' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'control_wrtGauss_netcdf_parallel_intel' [, ]( MB)
+PASS -- TEST 'control_c48_intel' [49:10, 05:34](1554 MB)
+PASS -- TEST 'control_c48.v2.sfc_intel' [48:17, 05:10](679 MB)
+PASS -- TEST 'control_c48_lnd_iau_intel' [49:10, 05:43](1557 MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'control_c192_intel' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'control_c384_intel' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'control_c384gdas_intel' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'control_stochy_intel' [, ]( MB)
+FAILED: UNABLE TO START TEST -- TEST 'control_stochy_restart_intel' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'control_lndp_intel' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'control_iovr4_gfdlmpv3_intel' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'control_p8_intel' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'control_p8.v2.sfc_intel' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'control_p8_ugwpv1_intel' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'control_p8_ugwpv1_tempo_intel' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'control_p8_ugwpv1_tempo_aerosol_intel' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'control_p8_ugwpv1_tempo_aerosol_hail_intel' [, ]( MB)
+FAILED: UNABLE TO START TEST -- TEST 'control_restart_p8_intel' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'control_noqr_p8_intel' [, ]( MB)
+FAILED: UNABLE TO START TEST -- TEST 'control_restart_noqr_p8_intel' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'control_decomp_p8_intel' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'control_2threads_p8_intel' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'control_p8_lndp_intel' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'control_p8_rrtmgp_intel' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'control_p8_mynn_intel' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'merra2_thompson_intel' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'merra2_hf_thompson_intel' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'regional_control_intel' [, ]( MB)
+FAILED: UNABLE TO START TEST -- TEST 'regional_restart_intel' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'regional_decomp_intel' [, ]( MB)
+PASS -- TEST 'regional_noquilt_intel' [10:10, 04:59](1141 MB)
+PASS -- TEST 'regional_netcdf_parallel_intel' [09:58, 05:01](842 MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'regional_2dwrtdecomp_intel' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'regional_wofs_intel' [, ]( MB)
+
+PASS -- COMPILE 'atm_dyn32_rad32_intel' [01:34, 12:38] ( 1 warnings 517 remarks )
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'control_p8_rrtmgp_rad32_intel' [, ]( MB)
+
+PASS -- COMPILE 'rrfs_intel' [59:28, 10:49] ( 4 warnings 487 remarks )
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'rap_control_intel' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'regional_spp_sppt_shum_skeb_intel' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'rap_decomp_intel' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'rap_2threads_intel' [, ]( MB)
+FAILED: UNABLE TO START TEST -- TEST 'rap_restart_intel' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'rap_sfcdiff_intel' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'rap_sfcdiff_decomp_intel' [, ]( MB)
+FAILED: UNABLE TO START TEST -- TEST 'rap_sfcdiff_restart_intel' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'hrrr_control_intel' [, ]( MB)
+FAILED: RUN DID NOT COMPLETE -- TEST 'hrrr_control_decomp_intel' [, ]( MB)
+FAILED: RUN DID NOT COMPLETE -- TEST 'hrrr_control_2threads_intel' [, ]( MB)
+FAILED: UNABLE TO START TEST -- TEST 'hrrr_control_restart_intel' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'rrfs_v1beta_intel' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'rrfs_v1nssl_intel' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'rrfs_v1nssl_nohailnoccn_intel' [, ]( MB)
+
+PASS -- COMPILE 'csawmg_intel' [13:28, 09:37] ( 1 warnings 440 remarks )
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'control_csawmg_intel' [, ]( MB)
+
+PASS -- COMPILE 'wam_intel' [44:37, 09:33] ( 1 warnings 439 remarks )
+PASS -- TEST 'control_wam_intel' [12:08, 03:23](1599 MB)
+
+PASS -- COMPILE 'atm_debug_dyn32_intel' [49:49, 06:34] ( 442 warnings 618 remarks )
+PASS -- TEST 'control_CubedSphereGrid_debug_intel' [06:48, 02:24](1539 MB)
+PASS -- TEST 'control_wrtGauss_netcdf_parallel_debug_intel' [06:46, 02:27](1541 MB)
+PASS -- TEST 'control_stochy_debug_intel' [09:14, 03:06](742 MB)
+PASS -- TEST 'control_lndp_debug_intel' [07:06, 02:55](748 MB)
+PASS -- TEST 'control_csawmg_debug_intel' [10:33, 04:56](1045 MB)
+PASS -- TEST 'control_diag_debug_intel' [09:16, 02:52](1601 MB)
+PASS -- TEST 'control_debug_p8_intel' [10:14, 03:27](1827 MB)
+PASS -- TEST 'regional_debug_intel' [22:43, 16:54](879 MB)
+PASS -- TEST 'rap_control_debug_intel' [09:54, 04:58](1127 MB)
+PASS -- TEST 'hrrr_control_debug_intel' [09:08, 04:50](1123 MB)
+PASS -- TEST 'hrrr_gf_debug_intel' [10:16, 05:00](1130 MB)
+PASS -- TEST 'hrrr_c3_debug_intel' [10:15, 05:00](1126 MB)
+FAILED: RUN DID NOT COMPLETE -- TEST 'rap_unified_drag_suite_debug_intel' [, ]( MB)
+PASS -- TEST 'rap_diag_debug_intel' [12:48, 05:13](1217 MB)
+PASS -- TEST 'rap_cires_ugwp_debug_intel' [11:13, 05:03](1131 MB)
+PASS -- TEST 'rap_unified_ugwp_debug_intel' [10:10, 05:08](1133 MB)
+PASS -- TEST 'rap_lndp_debug_intel' [11:05, 05:02](1134 MB)
+PASS -- TEST 'rap_progcld_thompson_debug_intel' [10:03, 05:05](1127 MB)
+PASS -- TEST 'rap_noah_debug_intel' [10:12, 05:01](1126 MB)
+PASS -- TEST 'rap_sfcdiff_debug_intel' [09:59, 05:00](1127 MB)
+PASS -- TEST 'rap_noah_sfcdiff_cires_ugwp_debug_intel' [13:04, 07:54](1126 MB)
+PASS -- TEST 'rap_clm_lake_debug_intel' [11:22, 04:58](1131 MB)
+PASS -- TEST 'gnv1_c96_no_nest_debug_intel' [15:01, 08:22](1126 MB)
+
+FAILED: UNABLE TO FINISH COMPILE -- COMPILE 'wam_debug_intel' [, ]
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'control_wam_debug_intel' [, ]( MB)
+
+PASS -- COMPILE 'rrfs_dyn32_phy32_intel' [51:51, 09:29] ( 4 warnings 454 remarks )
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'regional_spp_sppt_shum_skeb_dyn32_phy32_intel' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'rap_control_dyn32_phy32_intel' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'hrrr_control_dyn32_phy32_intel' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'rap_2threads_dyn32_phy32_intel' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'hrrr_control_2threads_dyn32_phy32_intel' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'hrrr_control_decomp_dyn32_phy32_intel' [, ]( MB)
+FAILED: UNABLE TO START TEST -- TEST 'rap_restart_dyn32_phy32_intel' [, ]( MB)
+FAILED: UNABLE TO START TEST -- TEST 'hrrr_control_restart_dyn32_phy32_intel' [, ]( MB)
+PASS -- TEST 'conus13km_control_intel' [11:43, 02:47](985 MB)
+PASS -- TEST 'conus13km_2threads_intel' [09:41, 01:51](1106 MB)
+PASS -- TEST 'conus13km_decomp_intel' [10:46, 02:48](993 MB)
+PASS -- TEST 'conus13km_restart_intel' [11:50, 01:46](874 MB)
+
+PASS -- COMPILE 'rrfs_dyn32_phy32_faster_cdeps_intel' [50:51, 09:32] ( 4 warnings 487 remarks )
+PASS -- TEST 'conus13km_gl_inline_intel' [10:46, 02:06](660 MB)
+
+PASS -- COMPILE 'rrfs_dyn64_phy32_intel' [51:51, 09:40] ( 4 warnings 454 remarks )
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'rap_control_dyn64_phy32_intel' [, ]( MB)
+
+PASS -- COMPILE 'rrfs_dyn32_phy32_debug_intel' [44:37, 03:54] ( 310 warnings 460 remarks )
+PASS -- TEST 'rap_control_debug_dyn32_phy32_intel' [09:13, 04:50](1011 MB)
+PASS -- TEST 'hrrr_control_debug_dyn32_phy32_intel' [10:20, 04:51](1007 MB)
+PASS -- TEST 'conus13km_debug_intel' [30:43, 21:09](1030 MB)
+PASS -- TEST 'conus13km_debug_qr_intel' [30:43, 21:18](741 MB)
+FAILED: RUN DID NOT COMPLETE -- TEST 'conus13km_debug_2threads_intel' [, ]( MB)
+PASS -- TEST 'conus13km_debug_decomp_intel' [29:20, 21:38](1046 MB)
+PASS -- TEST 'conus13km_radar_tten_debug_intel' [29:19, 21:25](1103 MB)
+
+PASS -- COMPILE 'rrfs_dyn64_phy32_debug_intel' [45:38, 03:44] ( 310 warnings 454 remarks )
+PASS -- TEST 'rap_control_dyn64_phy32_debug_intel' [09:22, 04:58](1049 MB)
+
+PASS -- COMPILE 'hafsw_intel' [19:39, 16:22] ( 1 warnings 679 remarks )
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'hafs_regional_atm_intel' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'hafs_regional_atm_gfdlmpv3_intel' [, ]( MB)
+PASS -- TEST 'hafs_regional_atm_thompson_gfdlsf_intel' [09:54, 03:21](1001 MB)
+PASS -- TEST 'hafs_regional_atm_wav_intel' [19:45, 10:04](833 MB)
+PASS -- TEST 'hafs_regional_1nest_atm_intel' [10:55, 04:53](411 MB)
+PASS -- TEST 'hafs_regional_telescopic_2nests_atm_intel' [11:52, 05:40](427 MB)
+PASS -- TEST 'hafs_global_1nest_atm_intel' [07:44, 02:29](332 MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'hafs_global_multiple_4nests_atm_intel' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'hafs_regional_specified_moving_1nest_atm_intel' [, ]( MB)
+PASS -- TEST 'hafs_regional_storm_following_1nest_atm_intel' [10:07, 03:15](447 MB)
+PASS -- TEST 'hafs_global_storm_following_1nest_atm_intel' [06:13, 01:15](366 MB)
+PASS -- TEST 'gnv1_nested_intel' [11:01, 03:17](1643 MB)
+
+PASS -- COMPILE 'hafs_mom6w_intel' [31:03, 18:21] ( 1 warnings 974 remarks )
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'hafs_regional_storm_following_1nest_atm_ocn_wav_mom6_intel' [, ]( MB)
+
+PASS -- COMPILE 'hafs_all_intel' [15:31, 12:32] ( 1 warnings 621 remarks )
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'hafs_regional_docn_intel' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'hafs_regional_docn_oisst_intel' [, ]( MB)
+
+PASS -- COMPILE 'datm_cdeps_intel' [21:37, 11:54] ( 569 remarks )
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'datm_cdeps_control_cfsr_intel' [, ]( MB)
+FAILED: UNABLE TO START TEST -- TEST 'datm_cdeps_restart_cfsr_intel' [, ]( MB)
+FAILED: RUN DID NOT COMPLETE -- TEST 'datm_cdeps_control_gefs_intel' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'datm_cdeps_iau_gefs_intel' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'datm_cdeps_stochy_gefs_intel' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'datm_cdeps_ciceC_cfsr_intel' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'datm_cdeps_mx025_cfsr_intel' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'datm_cdeps_mx025_gefs_intel' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'datm_cdeps_multiple_files_cfsr_intel' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'datm_cdeps_3072x1536_cfsr_intel' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'datm_cdeps_gfs_intel' [, ]( MB)
+
+PASS -- COMPILE 'datm_cdeps_debug_intel' [13:25, 02:47] ( 2 warnings 569 remarks )
+PASS -- TEST 'datm_cdeps_debug_cfsr_intel' [09:13, 05:32](1547 MB)
+
+PASS -- COMPILE 'datm_cdeps_land_intel' [11:21, 01:26] ( 129 remarks )
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'datm_cdeps_lnd_gswp3_intel' [, ]( MB)
+PASS -- TEST 'datm_cdeps_lnd_era5_intel' [06:45, 00:57](404 MB)
+PASS -- TEST 'datm_cdeps_lnd_era5_rst_intel' [05:07, 00:46](404 MB)
+
+PASS -- COMPILE 'atm_ds2s_docn_pcice_intel' [20:44, 13:17] ( 1 warnings 653 remarks )
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'atm_ds2s_docn_pcice_intel' [, ]( MB)
+
+PASS -- COMPILE 'atml_intel' [17:35, 13:02] ( 9 warnings 591 remarks )
+
+PASS -- COMPILE 'atml_debug_intel' [09:21, 05:35] ( 451 warnings 591 remarks )
+
+PASS -- COMPILE 'atmw_intel' [15:33, 12:08] ( 1 warnings 565 remarks )
+PASS -- TEST 'atmwav_control_noaero_p8_intel' [09:53, 02:40](1814 MB)
+
+PASS -- COMPILE 'atmaero_intel' [15:28, 11:37] ( 1 warnings 457 remarks )
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'atmaero_control_p8_intel' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'atmaero_control_p8_rad_intel' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'atmaero_control_p8_rad_micro_intel' [, ]( MB)
+
+PASS -- COMPILE 'atmaq_intel' [14:29, 10:52] ( 1 warnings 643 remarks )
+PASS -- TEST 'regional_atmaq_intel' [33:14, 15:21](2920 MB)
+PASS -- TEST 'regional_atmaq_canopy_intel' [34:24, 19:45](2919 MB)
+
+PASS -- COMPILE 'atmaq_debug_intel' [07:15, 04:04] ( 424 warnings 643 remarks )
+PASS -- TEST 'regional_atmaq_debug_intel' [51:17, 35:03](2936 MB)
+
+PASS -- COMPILE 'atm_fbh_intel' [12:25, 09:12] ( 4 warnings 469 remarks )
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'cpld_regional_atm_fbh_intel' [, ]( MB)
+
+PASS -- COMPILE 'atm_gnu' [09:18, 05:23] ( 39 warnings )
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'control_c48_gnu' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'control_stochy_gnu' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'control_p8_gnu' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'control_p8_ugwpv1_gnu' [, ]( MB)
+
+PASS -- COMPILE 'rrfs_gnu' [09:19, 05:42] ( 39 warnings )
+FAILED: RUN DID NOT COMPLETE -- TEST 'rap_control_gnu' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'rap_decomp_gnu' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'rap_2threads_gnu' [, ]( MB)
+FAILED: UNABLE TO START TEST -- TEST 'rap_restart_gnu' [, ]( MB)
+FAILED: RUN DID NOT COMPLETE -- TEST 'rap_sfcdiff_gnu' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'rap_sfcdiff_decomp_gnu' [, ]( MB)
+FAILED: UNABLE TO START TEST -- TEST 'rap_sfcdiff_restart_gnu' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'hrrr_control_gnu' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'hrrr_control_noqr_gnu' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'hrrr_control_2threads_gnu' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'hrrr_control_decomp_gnu' [, ]( MB)
+FAILED: UNABLE TO START TEST -- TEST 'hrrr_control_restart_gnu' [, ]( MB)
+FAILED: UNABLE TO START TEST -- TEST 'hrrr_control_restart_noqr_gnu' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'rrfs_v1beta_gnu' [, ]( MB)
+
+PASS -- COMPILE 'csawmg_gnu' [10:21, 04:33] ( 39 warnings )
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'control_csawmg_gnu' [, ]( MB)
+
+PASS -- COMPILE 'atm_dyn32_debug_gnu' [18:41, 15:50] ( 42 warnings )
+PASS -- TEST 'control_diag_debug_gnu' [07:51, 01:46](1386 MB)
+PASS -- TEST 'regional_debug_gnu' [13:20, 08:04](774 MB)
+PASS -- TEST 'rap_control_debug_gnu' [07:15, 02:37](970 MB)
+PASS -- TEST 'hrrr_control_debug_gnu' [07:24, 02:35](961 MB)
+PASS -- TEST 'hrrr_gf_debug_gnu' [08:37, 02:37](968 MB)
+PASS -- TEST 'hrrr_c3_debug_gnu' [07:02, 02:39](968 MB)
+PASS -- TEST 'rap_diag_debug_gnu' [09:47, 02:51](1057 MB)
+FAILED: RUN DID NOT COMPLETE -- TEST 'rap_noah_sfcdiff_cires_ugwp_debug_gnu' [, ]( MB)
+PASS -- TEST 'rap_progcld_thompson_debug_gnu' [08:22, 02:40](968 MB)
+PASS -- TEST 'control_stochy_debug_gnu' [07:07, 01:49](597 MB)
+PASS -- TEST 'control_debug_p8_gnu' [08:40, 02:35](1547 MB)
+PASS -- TEST 'rap_clm_lake_debug_gnu' [07:34, 02:38](964 MB)
+PASS -- TEST 'gnv1_c96_no_nest_debug_gnu' [10:20, 04:13](972 MB)
+
+PASS -- COMPILE 'wam_debug_gnu' [06:14, 02:57] ( 39 warnings )
+PASS -- TEST 'control_wam_debug_gnu' [17:18, 06:16](1402 MB)
+
+PASS -- COMPILE 'atm_debug_dyn32_gnu' [10:21, 06:36] ( 39 warnings )
+PASS -- TEST 'control_csawmg_debug_gnu' [11:25, 03:07](833 MB)
+
+PASS -- COMPILE 'rrfs_dyn32_phy32_gnu' [08:16, 04:54] ( 39 warnings )
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'rap_control_dyn32_phy32_gnu' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'hrrr_control_dyn32_phy32_gnu' [, ]( MB)
+FAILED: RUN DID NOT COMPLETE -- TEST 'rap_2threads_dyn32_phy32_gnu' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'hrrr_control_2threads_dyn32_phy32_gnu' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'hrrr_control_decomp_dyn32_phy32_gnu' [, ]( MB)
+FAILED: UNABLE TO START TEST -- TEST 'rap_restart_dyn32_phy32_gnu' [, ]( MB)
+FAILED: UNABLE TO START TEST -- TEST 'hrrr_control_restart_dyn32_phy32_gnu' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'conus13km_control_gnu' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'conus13km_2threads_gnu' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'conus13km_decomp_gnu' [, ]( MB)
+FAILED: UNABLE TO START TEST -- TEST 'conus13km_restart_gnu' [, ]( MB)
+
+PASS -- COMPILE 'atm_dyn64_phy32_gnu' [23:49, 20:34] ( 42 warnings )
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'rap_control_dyn64_phy32_gnu' [, ]( MB)
+
+PASS -- COMPILE 'atm_dyn32_phy32_debug_gnu' [20:46, 15:49] ( 42 warnings )
+PASS -- TEST 'rap_control_debug_dyn32_phy32_gnu' [07:20, 02:35](823 MB)
+PASS -- TEST 'hrrr_control_debug_dyn32_phy32_gnu' [07:47, 02:38](814 MB)
+PASS -- TEST 'conus13km_debug_gnu' [20:17, 10:09](946 MB)
+PASS -- TEST 'conus13km_debug_qr_gnu' [20:00, 09:58](654 MB)
+PASS -- TEST 'conus13km_debug_2threads_gnu' [20:34, 10:20](1057 MB)
+PASS -- TEST 'conus13km_debug_decomp_gnu' [19:38, 10:05](953 MB)
+PASS -- TEST 'conus13km_radar_tten_debug_gnu' [20:27, 10:10](1015 MB)
+
+PASS -- COMPILE 'atm_dyn64_phy32_debug_gnu' [20:46, 15:50] ( 42 warnings )
+PASS -- TEST 'rap_control_dyn64_phy32_debug_gnu' [07:45, 02:43](851 MB)
+
+PASS -- COMPILE 's2sw_32bit_pdlib_gnu' [23:51, 19:13] ( 60 warnings )
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'cpld_control_gfsv17_gnu' [, ]( MB)
+
+PASS -- COMPILE 's2sw_32bit_pdlib_debug_gnu' [07:15, 04:25] ( 1952 warnings )
+PASS -- TEST 'cpld_debug_gfsv17_gnu' [14:42, 07:38](1566 MB)
+
+PASS -- COMPILE 's2s_32bit_sfs_gnu' [21:44, 18:07] ( 60 warnings )
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'cpld_control_sfs_gnu' [, ]( MB)
+
+PASS -- COMPILE 's2s_32bit_sfs_debug_gnu' [09:23, 04:04] ( 1193 warnings )
+PASS -- TEST 'cpld_debug_sfs_gnu' [23:47, 06:44](1818 MB)
+
+PASS -- COMPILE 'datm_cdeps_gnu' [19:39, 15:56] ( 21 warnings )
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'datm_cdeps_control_cfsr_gnu' [, ]( MB)
+
+PASS -- COMPILE 'atm_mpas_dyn32_gnu' [06:14, 03:02] ( 1 warnings )
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'control_gfs_mpas_gnu' [, ]( MB)
+
+PASS -- COMPILE 'atm_mpas_dyn32_debug_gnu' [06:15, 02:30] ( 1 warnings )
+PASS -- TEST 'control_gfs_mpas_debug_gnu' [09:14, 03:53](1114 MB)
+
+SYNOPSIS:
+Starting Date/Time: 20260519 10:24:58
+Ending Date/Time: 20260519 14:57:07
+Total Time: 04h:33m:19s
+Compiles Completed: 48/50
+Tests Completed: 82/227
+Failed Compiles:
+* COMPILE s2swl_intel: FAILED: UNABLE TO FINISH COMPILE
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/compile_s2swl_intel.log
+* COMPILE wam_debug_intel: FAILED: UNABLE TO FINISH COMPILE
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/compile_wam_debug_intel.log
+Failed Tests:
+* TEST cpld_control_gfsv17_intel: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_cpld_control_gfsv17_intel.log
+* TEST cpld_control_gfsv17_iau_intel: FAILED: UNABLE TO START TEST
+-- LOG: N/A
+* TEST cpld_restart_gfsv17_intel: FAILED: UNABLE TO START TEST
+-- LOG: N/A
+* TEST cpld_restart_gfsv17_iau_intel: FAILED: UNABLE TO START TEST
+-- LOG: N/A
+* TEST cpld_mpi_gfsv17_intel: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_cpld_mpi_gfsv17_intel.log
+* TEST cpld_control_p8_intel: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_cpld_control_p8_intel.log
+* TEST cpld_control_p8.v2.sfc_intel: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_cpld_control_p8.v2.sfc_intel.log
+* TEST cpld_restart_p8_intel: FAILED: UNABLE TO START TEST
+-- LOG: N/A
+* TEST cpld_2threads_p8_intel: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_cpld_2threads_p8_intel.log
+* TEST cpld_decomp_p8_intel: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_cpld_decomp_p8_intel.log
+* TEST cpld_mpi_p8_intel: FAILED: RUN DID NOT COMPLETE
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_cpld_mpi_p8_intel.log
+* TEST cpld_control_ciceC_p8_intel: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_cpld_control_ciceC_p8_intel.log
+* TEST cpld_control_noaero_p8_agrid_intel: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_cpld_control_noaero_p8_agrid_intel.log
+* TEST cpld_control_c48_5deg_intel: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_cpld_control_c48_5deg_intel.log
+* TEST cpld_warmstart_c48_5deg_intel: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_cpld_warmstart_c48_5deg_intel.log
+* TEST cpld_restart_c48_5deg_intel: FAILED: UNABLE TO START TEST
+-- LOG: N/A
+* TEST cpld_control_c24_5deg_intel: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_cpld_control_c24_5deg_intel.log
+* TEST cpld_warmstart_c24_5deg_intel: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_cpld_warmstart_c24_5deg_intel.log
+* TEST cpld_restart_c24_5deg_intel: FAILED: UNABLE TO START TEST
+-- LOG: N/A
+* TEST cpld_control_c24_9deg_intel: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_cpld_control_c24_9deg_intel.log
+* TEST cpld_warmstart_c24_9deg_intel: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_cpld_warmstart_c24_9deg_intel.log
+* TEST cpld_restart_c24_9deg_intel: FAILED: UNABLE TO START TEST
+-- LOG: N/A
+* TEST cpld_control_c12_9deg_intel: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_cpld_control_c12_9deg_intel.log
+* TEST cpld_warmstart_c12_9deg_intel: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_cpld_warmstart_c12_9deg_intel.log
+* TEST cpld_restart_c12_9deg_intel: FAILED: UNABLE TO START TEST
+-- LOG: N/A
+* TEST control_CubedSphereGrid_parallel_intel: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_control_CubedSphereGrid_parallel_intel.log
+* TEST control_latlon_intel: FAILED: RUN DID NOT COMPLETE
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_control_latlon_intel.log
+* TEST control_wrtGauss_netcdf_parallel_intel: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_control_wrtGauss_netcdf_parallel_intel.log
+* TEST control_c192_intel: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_control_c192_intel.log
+* TEST control_c384_intel: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_control_c384_intel.log
+* TEST control_c384gdas_intel: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_control_c384gdas_intel.log
+* TEST control_stochy_intel: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_control_stochy_intel.log
+* TEST control_stochy_restart_intel: FAILED: UNABLE TO START TEST
+-- LOG: N/A
+* TEST control_lndp_intel: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_control_lndp_intel.log
+* TEST control_iovr4_gfdlmpv3_intel: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_control_iovr4_gfdlmpv3_intel.log
+* TEST control_p8_intel: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_control_p8_intel.log
+* TEST control_p8.v2.sfc_intel: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_control_p8.v2.sfc_intel.log
+* TEST control_p8_ugwpv1_intel: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_control_p8_ugwpv1_intel.log
+* TEST control_p8_ugwpv1_tempo_intel: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_control_p8_ugwpv1_tempo_intel.log
+* TEST control_p8_ugwpv1_tempo_aerosol_intel: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_control_p8_ugwpv1_tempo_aerosol_intel.log
+* TEST control_p8_ugwpv1_tempo_aerosol_hail_intel: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_control_p8_ugwpv1_tempo_aerosol_hail_intel.log
+* TEST control_restart_p8_intel: FAILED: UNABLE TO START TEST
+-- LOG: N/A
+* TEST control_noqr_p8_intel: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_control_noqr_p8_intel.log
+* TEST control_restart_noqr_p8_intel: FAILED: UNABLE TO START TEST
+-- LOG: N/A
+* TEST control_decomp_p8_intel: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_control_decomp_p8_intel.log
+* TEST control_2threads_p8_intel: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_control_2threads_p8_intel.log
+* TEST control_p8_lndp_intel: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_control_p8_lndp_intel.log
+* TEST control_p8_rrtmgp_intel: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_control_p8_rrtmgp_intel.log
+* TEST control_p8_mynn_intel: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_control_p8_mynn_intel.log
+* TEST merra2_thompson_intel: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_merra2_thompson_intel.log
+* TEST merra2_hf_thompson_intel: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_merra2_hf_thompson_intel.log
+* TEST regional_control_intel: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_regional_control_intel.log
+* TEST regional_restart_intel: FAILED: UNABLE TO START TEST
+-- LOG: N/A
+* TEST regional_decomp_intel: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_regional_decomp_intel.log
+* TEST regional_2dwrtdecomp_intel: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_regional_2dwrtdecomp_intel.log
+* TEST regional_wofs_intel: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_regional_wofs_intel.log
+* TEST control_p8_rrtmgp_rad32_intel: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_control_p8_rrtmgp_rad32_intel.log
+* TEST rap_control_intel: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_rap_control_intel.log
+* TEST regional_spp_sppt_shum_skeb_intel: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_regional_spp_sppt_shum_skeb_intel.log
+* TEST rap_decomp_intel: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_rap_decomp_intel.log
+* TEST rap_2threads_intel: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_rap_2threads_intel.log
+* TEST rap_restart_intel: FAILED: UNABLE TO START TEST
+-- LOG: N/A
+* TEST rap_sfcdiff_intel: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_rap_sfcdiff_intel.log
+* TEST rap_sfcdiff_decomp_intel: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_rap_sfcdiff_decomp_intel.log
+* TEST rap_sfcdiff_restart_intel: FAILED: UNABLE TO START TEST
+-- LOG: N/A
+* TEST hrrr_control_intel: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_hrrr_control_intel.log
+* TEST hrrr_control_decomp_intel: FAILED: RUN DID NOT COMPLETE
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_hrrr_control_decomp_intel.log
+* TEST hrrr_control_2threads_intel: FAILED: RUN DID NOT COMPLETE
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_hrrr_control_2threads_intel.log
+* TEST hrrr_control_restart_intel: FAILED: UNABLE TO START TEST
+-- LOG: N/A
+* TEST rrfs_v1beta_intel: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_rrfs_v1beta_intel.log
+* TEST rrfs_v1nssl_intel: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_rrfs_v1nssl_intel.log
+* TEST rrfs_v1nssl_nohailnoccn_intel: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_rrfs_v1nssl_nohailnoccn_intel.log
+* TEST control_csawmg_intel: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_control_csawmg_intel.log
+* TEST rap_unified_drag_suite_debug_intel: FAILED: RUN DID NOT COMPLETE
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_rap_unified_drag_suite_debug_intel.log
+* TEST regional_spp_sppt_shum_skeb_dyn32_phy32_intel: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_regional_spp_sppt_shum_skeb_dyn32_phy32_intel.log
+* TEST rap_control_dyn32_phy32_intel: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_rap_control_dyn32_phy32_intel.log
+* TEST hrrr_control_dyn32_phy32_intel: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_hrrr_control_dyn32_phy32_intel.log
+* TEST rap_2threads_dyn32_phy32_intel: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_rap_2threads_dyn32_phy32_intel.log
+* TEST hrrr_control_2threads_dyn32_phy32_intel: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_hrrr_control_2threads_dyn32_phy32_intel.log
+* TEST hrrr_control_decomp_dyn32_phy32_intel: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_hrrr_control_decomp_dyn32_phy32_intel.log
+* TEST rap_restart_dyn32_phy32_intel: FAILED: UNABLE TO START TEST
+-- LOG: N/A
+* TEST hrrr_control_restart_dyn32_phy32_intel: FAILED: UNABLE TO START TEST
+-- LOG: N/A
+* TEST rap_control_dyn64_phy32_intel: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_rap_control_dyn64_phy32_intel.log
+* TEST conus13km_debug_2threads_intel: FAILED: RUN DID NOT COMPLETE
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_conus13km_debug_2threads_intel.log
+* TEST hafs_regional_atm_intel: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_hafs_regional_atm_intel.log
+* TEST hafs_regional_atm_gfdlmpv3_intel: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_hafs_regional_atm_gfdlmpv3_intel.log
+* TEST hafs_global_multiple_4nests_atm_intel: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_hafs_global_multiple_4nests_atm_intel.log
+* TEST hafs_regional_specified_moving_1nest_atm_intel: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_hafs_regional_specified_moving_1nest_atm_intel.log
+* TEST hafs_regional_storm_following_1nest_atm_ocn_wav_mom6_intel: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_hafs_regional_storm_following_1nest_atm_ocn_wav_mom6_intel.log
+* TEST hafs_regional_docn_intel: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_hafs_regional_docn_intel.log
+* TEST hafs_regional_docn_oisst_intel: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_hafs_regional_docn_oisst_intel.log
+* TEST datm_cdeps_control_cfsr_intel: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_datm_cdeps_control_cfsr_intel.log
+* TEST datm_cdeps_restart_cfsr_intel: FAILED: UNABLE TO START TEST
+-- LOG: N/A
+* TEST datm_cdeps_control_gefs_intel: FAILED: RUN DID NOT COMPLETE
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_datm_cdeps_control_gefs_intel.log
+* TEST datm_cdeps_iau_gefs_intel: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_datm_cdeps_iau_gefs_intel.log
+* TEST datm_cdeps_stochy_gefs_intel: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_datm_cdeps_stochy_gefs_intel.log
+* TEST datm_cdeps_ciceC_cfsr_intel: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_datm_cdeps_ciceC_cfsr_intel.log
+* TEST datm_cdeps_mx025_cfsr_intel: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_datm_cdeps_mx025_cfsr_intel.log
+* TEST datm_cdeps_mx025_gefs_intel: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_datm_cdeps_mx025_gefs_intel.log
+* TEST datm_cdeps_multiple_files_cfsr_intel: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_datm_cdeps_multiple_files_cfsr_intel.log
+* TEST datm_cdeps_3072x1536_cfsr_intel: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_datm_cdeps_3072x1536_cfsr_intel.log
+* TEST datm_cdeps_gfs_intel: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_datm_cdeps_gfs_intel.log
+* TEST datm_cdeps_lnd_gswp3_intel: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_datm_cdeps_lnd_gswp3_intel.log
+* TEST atm_ds2s_docn_pcice_intel: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_atm_ds2s_docn_pcice_intel.log
+* TEST atmaero_control_p8_intel: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_atmaero_control_p8_intel.log
+* TEST atmaero_control_p8_rad_intel: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_atmaero_control_p8_rad_intel.log
+* TEST atmaero_control_p8_rad_micro_intel: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_atmaero_control_p8_rad_micro_intel.log
+* TEST cpld_regional_atm_fbh_intel: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_cpld_regional_atm_fbh_intel.log
+* TEST control_c48_gnu: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_control_c48_gnu.log
+* TEST control_stochy_gnu: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_control_stochy_gnu.log
+* TEST control_p8_gnu: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_control_p8_gnu.log
+* TEST control_p8_ugwpv1_gnu: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_control_p8_ugwpv1_gnu.log
+* TEST rap_control_gnu: FAILED: RUN DID NOT COMPLETE
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_rap_control_gnu.log
+* TEST rap_decomp_gnu: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_rap_decomp_gnu.log
+* TEST rap_2threads_gnu: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_rap_2threads_gnu.log
+* TEST rap_restart_gnu: FAILED: UNABLE TO START TEST
+-- LOG: N/A
+* TEST rap_sfcdiff_gnu: FAILED: RUN DID NOT COMPLETE
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_rap_sfcdiff_gnu.log
+* TEST rap_sfcdiff_decomp_gnu: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_rap_sfcdiff_decomp_gnu.log
+* TEST rap_sfcdiff_restart_gnu: FAILED: UNABLE TO START TEST
+-- LOG: N/A
+* TEST hrrr_control_gnu: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_hrrr_control_gnu.log
+* TEST hrrr_control_noqr_gnu: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_hrrr_control_noqr_gnu.log
+* TEST hrrr_control_2threads_gnu: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_hrrr_control_2threads_gnu.log
+* TEST hrrr_control_decomp_gnu: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_hrrr_control_decomp_gnu.log
+* TEST hrrr_control_restart_gnu: FAILED: UNABLE TO START TEST
+-- LOG: N/A
+* TEST hrrr_control_restart_noqr_gnu: FAILED: UNABLE TO START TEST
+-- LOG: N/A
+* TEST rrfs_v1beta_gnu: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_rrfs_v1beta_gnu.log
+* TEST control_csawmg_gnu: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_control_csawmg_gnu.log
+* TEST rap_noah_sfcdiff_cires_ugwp_debug_gnu: FAILED: RUN DID NOT COMPLETE
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_rap_noah_sfcdiff_cires_ugwp_debug_gnu.log
+* TEST rap_control_dyn32_phy32_gnu: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_rap_control_dyn32_phy32_gnu.log
+* TEST hrrr_control_dyn32_phy32_gnu: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_hrrr_control_dyn32_phy32_gnu.log
+* TEST rap_2threads_dyn32_phy32_gnu: FAILED: RUN DID NOT COMPLETE
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_rap_2threads_dyn32_phy32_gnu.log
+* TEST hrrr_control_2threads_dyn32_phy32_gnu: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_hrrr_control_2threads_dyn32_phy32_gnu.log
+* TEST hrrr_control_decomp_dyn32_phy32_gnu: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_hrrr_control_decomp_dyn32_phy32_gnu.log
+* TEST rap_restart_dyn32_phy32_gnu: FAILED: UNABLE TO START TEST
+-- LOG: N/A
+* TEST hrrr_control_restart_dyn32_phy32_gnu: FAILED: UNABLE TO START TEST
+-- LOG: N/A
+* TEST conus13km_control_gnu: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_conus13km_control_gnu.log
+* TEST conus13km_2threads_gnu: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_conus13km_2threads_gnu.log
+* TEST conus13km_decomp_gnu: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_conus13km_decomp_gnu.log
+* TEST conus13km_restart_gnu: FAILED: UNABLE TO START TEST
+-- LOG: N/A
+* TEST rap_control_dyn64_phy32_gnu: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_rap_control_dyn64_phy32_gnu.log
+* TEST cpld_control_gfsv17_gnu: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_cpld_control_gfsv17_gnu.log
+* TEST cpld_control_sfs_gnu: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_cpld_control_sfs_gnu.log
+* TEST datm_cdeps_control_cfsr_gnu: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_datm_cdeps_control_cfsr_gnu.log
+* TEST control_gfs_mpas_gnu: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_control_gfs_mpas_gnu.log
+
+NOTES:
+A file 'test_changes.list' was generated with list of all failed tests.
+You can use './rt.sh -c -b test_changes.list' to create baselines for the failed tests.
+If you are using this log as a pull request verification, please commit 'test_changes.list'.
+
+Result: FAILURE
+
+====END OF DERECHO REGRESSION TESTING LOG====
+====START OF DERECHO REGRESSION TESTING LOG====
+
+UFSWM hash used in testing:
+1cc0b253ef070926703fe7e4dc359487fdc095cc
+
+Submodule hashes used in testing:
+ fc153862cfcc01fc4da513a2ff56af0bbd1234e0 AQM (v0.2.0-73-gfc15386)
+ 642e81395472d5887b54f601b60ee607ed39bf09 AQM/src/model/CMAQ (CMAQv5.2.1_07Feb2018-6194-g642e81395)
+ 9f53664ef2e607ad25d6b6c939f2eac9ec818ee6 CDEPS-interface/CDEPS (cdeps0.4.17-432-g9f53664)
+ def9c53b17d6722cc9991ba72ddae8ad2d5d25d9 CICE-interface/CICE (CICE6.0.0-445-gdef9c53)
+ 4954a6f9033f78e5c32bf33780384cbf2d0843e6 CICE-interface/CICE/icepack (Icepack1.1.0-225-g4954a6f)
+ fc8b9140e08465dcb5eab48056d4d5636c0e1716 CMEPS-interface/CMEPS (cmeps_v0.4.1-2335-gfc8b914)
+ 69049ec0c26b3160c3dbe1980b2feb78470a37a6 CMakeModules (v1.0.0-36-g69049ec)
+ 9ff3df9545dd582f415f682d3297e8c6c841e5cb GOCART (sdr_v2.1.2.6-291-g9ff3df9)
+ 513b67312510a15ae178ea5c3eddb0854e41486b LM4-driver (baseline_change_240904-8-g513b673)
+ c61e4e280dbde13af0023b1e86d98296ff65d6a7 LM4-driver/LM4 (land_lad2_2021.02-3-gc61e4e2)
+ 4778b91ffebac913de85bd24abed3839c3545312 MOM6-interface/MOM6 (dev/master/repository_split_2014.10.10-10796-g4778b91ff)
+ c38ddb7ebdd2d58c517b63a99bbdc8e348732db2 MOM6-interface/MOM6/pkg/CVMix-src (c38ddb7)
+ 29e64d652786e1d076a05128c920f394202bfe10 MOM6-interface/MOM6/pkg/GSW-Fortran (29e64d6)
+ 2c7b3bc2a8096f6232020c47507593058795102e NOAHMP-interface/noahmp (v3.7.1-471-g2c7b3bc)
+ 624dbff31d16a8d35bb98b66b7179f2532f73c7a UFSATM (heads/develop)
+ 22bc1a5de8a19996310aedc3482931616cd74a1b UFSATM/ccpp/framework (2025-10-15-dev-5-g22bc1a5)
+ bab5040758c0f1f29a201022ce4c1d3c49844440 UFSATM/ccpp/physics (EP4-2459-gbab50407)
+ c62efd27caa26f660edf24232f33f154e608b77a UFSATM/ccpp/physics/physics/MP/TEMPO/TEMPO (v2.1.3~3)
+ 41c5fcd950fed09b8afe186dede266824eca7fd3 UFSATM/ccpp/physics/physics/Radiation/RRTMGP/rte-rrtmgp (41c5fcd)
+ cce9a5fc4479749f489be24020e5c06c3e4202d4 UFSATM/ccpp/physics/physics/SFC_Layer/MYNN/MYNN (remotes/origin/ccpp/dev)
+ 2382b4f7d8eefa44635b88b6d45ee49255ee294c UFSATM/fv3/atmos_cubed_sphere (201912_public_release-528-g2382b4f)
+ 99890240d93a6b28a75f84c9f7248161797656ae UFSATM/mpas/MPAS-Model (remotes/origin/master-101-g99890240)
+ 7d9597c471470be061ab8853dd62bcd03f15d6aa UFSATM/upp (upp_v10.2.0-354-g7d9597c4)
+-5afd607642ae0fd6a53b137230336386beb47ce6 UFSATM/upp/sorc/libIFI.fd
+-3d35332fe66e3e63a285cc8d96facdf255a33481 UFSATM/upp/sorc/ncep_post.fd/post_gtg.fd
+ dcc9da76c2d32c6ca7a5318a56db033295d9f43c WW3 (6.07.1-531-gdcc9da76)
+ 23a6e57b5bb6b9288a7ff1fbbd20a599e908f718 fire_behavior (v0.2.0-176-g23a6e57)
+ ae192f119b8614b4476a1b04ba55f6fb93e2953d stochastic_physics (ufs-v2.0.0-298-gae192f1)
+
+
+NOTES:
+[Times](Memory) are at the end of each compile/test in format [MM:SS](Size).
+The first time is for the full script (prep+run+finalize).
+The second time is specifically for the run phase.
+Times/Memory will be empty for failed tests.
+
+BASELINE DIRECTORY: /glade/derecho/scratch/epicufsrt/ufs-weather-model/RT//NEMSfv3gfs/develop-20260515
+COMPARISON DIRECTORY: /glade/derecho/scratch/gpetro/FV3_RT/rt_3050
+
+RT.SH OPTIONS USED:
+* (-a) - HPC PROJECT ACCOUNT: NRAL0032
+* (-l) - USE CONFIG FILE: rerun.conf
+* (-e) - USE ECFLOW
+
+PASS -- COMPILE 's2sw_32bit_pdlib_intel' [25:03, 22:20] ( 1 warnings 1070 remarks )
+FAILED: RUN DID NOT COMPLETE -- TEST 'cpld_control_gfsv17_intel' [, ]( MB)
+FAILED: UNABLE TO START TEST -- TEST 'cpld_control_gfsv17_iau_intel' [, ]( MB)
+FAILED: UNABLE TO START TEST -- TEST 'cpld_restart_gfsv17_intel' [, ]( MB)
+FAILED: UNABLE TO START TEST -- TEST 'cpld_restart_gfsv17_iau_intel' [, ]( MB)
+
+PASS -- COMPILE 's2sw_intel' [25:04, 22:11] ( 1 warnings 1071 remarks )
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'cpld_mpi_p8_intel' [, ]( MB)
+
+PASS -- COMPILE 'atm_dyn32_intel' [16:36, 13:36] ( 1 warnings 536 remarks )
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'control_latlon_intel' [, ]( MB)
+
+PASS -- COMPILE 'rrfs_intel' [13:33, 10:42] ( 4 warnings 487 remarks )
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'hrrr_control_decomp_intel' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'hrrr_control_2threads_intel' [, ]( MB)
+
+PASS -- COMPILE 'atm_debug_dyn32_intel' [09:23, 06:31] ( 442 warnings 618 remarks )
+PASS -- TEST 'rap_unified_drag_suite_debug_intel' [09:37, 05:03](1126 MB)
+
+PASS -- COMPILE 'rrfs_dyn32_phy32_debug_intel' [07:18, 03:52] ( 310 warnings 460 remarks )
+PASS -- TEST 'conus13km_debug_2threads_intel' [32:08, 23:05](1148 MB)
+
+PASS -- COMPILE 'datm_cdeps_intel' [15:38, 11:55] ( 569 remarks )
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'datm_cdeps_control_gefs_intel' [, ]( MB)
+
+PASS -- COMPILE 'rrfs_gnu' [09:20, 05:39] ( 39 warnings )
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'rap_control_gnu' [, ]( MB)
+FAILED: UNABLE TO START TEST -- TEST 'rap_restart_gnu' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'rap_sfcdiff_gnu' [, ]( MB)
+FAILED: UNABLE TO START TEST -- TEST 'rap_sfcdiff_restart_gnu' [, ]( MB)
+
+FAILED: UNABLE TO FINISH COMPILE -- COMPILE 'atm_dyn32_debug_gnu' [, ]
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'rap_noah_sfcdiff_cires_ugwp_debug_gnu' [, ]( MB)
+
+PASS -- COMPILE 'rrfs_dyn32_phy32_gnu' [08:22, 04:55] ( 39 warnings )
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'rap_2threads_dyn32_phy32_gnu' [, ]( MB)
+
+PASS -- COMPILE 's2swl_intel' [24:59, 22:04] ( 1 warnings 1092 remarks )
+
+PASS -- COMPILE 'wam_debug_intel' [06:16, 03:40] ( 407 warnings 439 remarks )
+PASS -- TEST 'control_wam_debug_intel' [20:41, 12:37](1632 MB)
+
+SYNOPSIS:
+Starting Date/Time: 20260520 08:24:02
+Ending Date/Time: 20260520 09:27:32
+Total Time: 01h:03m:50s
+Compiles Completed: 11/12
+Tests Completed: 3/18
+Failed Compiles:
+* COMPILE atm_dyn32_debug_gnu: FAILED: UNABLE TO FINISH COMPILE
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/compile_atm_dyn32_debug_gnu.log
+Failed Tests:
+* TEST cpld_control_gfsv17_intel: FAILED: RUN DID NOT COMPLETE
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_cpld_control_gfsv17_intel.log
+* TEST cpld_control_gfsv17_iau_intel: FAILED: UNABLE TO START TEST
+-- LOG: N/A
+* TEST cpld_restart_gfsv17_intel: FAILED: UNABLE TO START TEST
+-- LOG: N/A
+* TEST cpld_restart_gfsv17_iau_intel: FAILED: UNABLE TO START TEST
+-- LOG: N/A
+* TEST cpld_mpi_p8_intel: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_cpld_mpi_p8_intel.log
+* TEST control_latlon_intel: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_control_latlon_intel.log
+* TEST hrrr_control_decomp_intel: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_hrrr_control_decomp_intel.log
+* TEST hrrr_control_2threads_intel: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_hrrr_control_2threads_intel.log
+* TEST datm_cdeps_control_gefs_intel: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_datm_cdeps_control_gefs_intel.log
+* TEST rap_control_gnu: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_rap_control_gnu.log
+* TEST rap_restart_gnu: FAILED: UNABLE TO START TEST
+-- LOG: N/A
+* TEST rap_sfcdiff_gnu: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_rap_sfcdiff_gnu.log
+* TEST rap_sfcdiff_restart_gnu: FAILED: UNABLE TO START TEST
+-- LOG: N/A
+* TEST rap_2threads_dyn32_phy32_gnu: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /glade/derecho/scratch/gpetro/RTs/ufs-wm/pretests/3097-rtrun/tests/logs/log_derecho/run_rap_2threads_dyn32_phy32_gnu.log
+
+NOTES:
+A file 'test_changes.list' was generated with list of all failed tests.
+You can use './rt.sh -c -b test_changes.list' to create baselines for the failed tests.
+If you are using this log as a pull request verification, please commit 'test_changes.list'.
+
+Result: FAILURE
+
+====END OF DERECHO REGRESSION TESTING LOG====
