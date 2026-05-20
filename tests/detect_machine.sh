@@ -55,6 +55,10 @@ case $(hostname -f) in
   derecho7.hsn.de.hpc.ucar.edu) MACHINE_ID=derecho ;; ### derecho7
   derecho8.hsn.de.hpc.ucar.edu) MACHINE_ID=derecho ;; ### derecho8
   
+  ip-*) MACHINE_ID=aws-ec2 ;; ### aws-ec2
+  compute-dy-*) MACHINE_ID=aws-ec2 ;; ### aws-ec2
+  processing-dy-*) MACHINE_ID=aws-ec2 ;; ### aws-ec2
+
   discover3[1-5].prv.cube) MACHINE_ID=discover ;; ### discover31-35
   *) MACHINE_ID=UNKNOWN ;;  # Unknown platform
 esac
@@ -114,6 +118,9 @@ elif [[ -d /gpfs/f6 && -d /ncrc ]]; then
 elif [[ -d /opt/spack-stack && -v SINGULARITY_CONTAINER ]]; then
   # We are in a container
   MACHINE_ID=container
+elif [[ -d /opt/spack-stack && -d /lustre ]]; then
+  # We are on aws-ec2.
+  MACHINE_ID=aws-ec2
 else
   echo WARNING: UNKNOWN PLATFORM 1>&2
 fi
