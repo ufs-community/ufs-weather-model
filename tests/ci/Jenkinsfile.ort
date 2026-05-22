@@ -169,18 +169,6 @@ pipeline {
                   git push sshorigin HEAD:$FORK_BRANCH
                 '''
               } // End of steps 
-              
-              post {
-                always {
-                  sh '''
-                  export GIT_OWNER=$(echo $GIT_URL | cut -d '/' -f4)
-                  export GIT_REPO_NAME=$(echo $GIT_URL | cut -d '/' -f5 | cut -d '.' -f1)
-                  echo "Testing concluded...removing labels for $machine from $GIT_URL"
-                  echo "https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/ursa-ORT"
-                  curl --silent -X DELETE -H "Accept:   application/vnd.github.v3+json" -H "Authorization:   Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/ursa-ORT
-                  '''
-                } // End of always
-              } // End of post
             } // End of stage finalize ursa
           } // End of stages
         } // End of Ursa stage
@@ -299,19 +287,6 @@ pipeline {
                   git push sshorigin HEAD:$FORK_BRANCH
                 '''
               }  // End of steps
-              
-              // Define post-build actions
-              post{
-                always {
-                  sh '''
-                  export GIT_OWNER=$(echo $GIT_URL | cut -d '/' -f4)
-                  export GIT_REPO_NAME=$(echo $GIT_URL | cut -d '/' -f5 | cut -d '.' -f1)
-                  echo "Testing concluded...removing labels for $machine from $GIT_URL"
-                  echo "https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/hercules-ORT"
-                  curl --silent -X DELETE -H "Accept:   application/vnd.github.v3+json" -H "Authorization:   Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/hercules-ORT
-                  '''
-                } // End of always
-              } // End of post
             } // End of stage Finalize Hercules
           } // End of stages
         } // End of stage Hercules
@@ -431,24 +406,26 @@ pipeline {
                   git push sshorigin HEAD:$FORK_BRANCH
                 '''
               } // End of steps
-              
-              post{
-                always {
-                  sh '''
-                  export GIT_OWNER=$(echo $GIT_URL | cut -d '/' -f4)
-                  export GIT_REPO_NAME=$(echo $GIT_URL | cut -d '/' -f5 | cut -d '.' -f1)
-                  echo "Testing concluded...removing labels for $machine from $GIT_URL"
-                  echo "https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/orion-ORT"
-                  curl --silent -X DELETE -H "Accept:   application/vnd.github.v3+json" -H "Authorization:   Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/orion-ORT
-                  '''
-                } // End of always
-              } // End of post
             } // End of stage finalize orion
           } // End of stages
         } // End of stage Orion
       } // End of parallel
           
       post {
+       always {
+                  sh '''
+                  export GIT_OWNER=$(echo $GIT_URL | cut -d '/' -f4)
+                  export GIT_REPO_NAME=$(echo $GIT_URL | cut -d '/' -f5 | cut -d '.' -f1)
+                  echo "Testing concluded...removing labels for $machine from $GIT_URL"
+                  echo "https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/ursa-ORT"
+                  curl --silent -X DELETE -H "Accept:   application/vnd.github.v3+json" -H "Authorization:   Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/ursa-ORT
+                  echo "https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/hercules-ORT"
+                  curl --silent -X DELETE -H "Accept:   application/vnd.github.v3+json" -H "Authorization:   Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/hercules-ORT
+                  echo "https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/orion-ORT"
+                  curl --silent -X DELETE -H "Accept:   application/vnd.github.v3+json" -H "Authorization:   Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/orion-ORT
+                  '''
+        } // End of always
+
         success {
           slackSend (
             channel:   '#jenkins-notifications',   
