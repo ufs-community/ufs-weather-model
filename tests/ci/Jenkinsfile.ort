@@ -410,10 +410,18 @@ pipeline {
           } // End of stages
         } // End of stage Orion
       } // End of parallel
+     } // End of stage Run ORTS in Parallel
           
-      post {
-       always {
-          agent { label 'built-in' }
+     
+     stage('Post'){
+       agent { label 'built-in' }
+          environment {
+            ACCNR = 'epic'
+            NODE_PATH = '/scratch3/NAGAPE/epic/role-epic/'
+            GITHUB_TOKEN = credentials('GithubJenkinsNew')
+          }
+        steps{
+         script{
                   sh '''
                   export GIT_OWNER=$(echo $GIT_URL | cut -d '/' -f4)
                   export GIT_REPO_NAME=$(echo $GIT_URL | cut -d '/' -f5 | cut -d '.' -f1)
@@ -425,8 +433,10 @@ pipeline {
                   echo "https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/orion-ORT"
                   curl --silent -X DELETE -H "Accept:   application/vnd.github.v3+json" -H "Authorization:   Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/orion-ORT
                   '''
-        } // End of always
-
+         } // script
+        } //steps
+      
+      post {
         success {
           slackSend (
             channel:   '#jenkins-notifications',   
@@ -451,6 +461,7 @@ pipeline {
           ) // End of slacksend
         } // End of failure
       } // End of post
-    } // End of stage Run ORT all hosts Parallel
+    } // End of stage Post
+
   } // End of stages
 } // End of pipeline
