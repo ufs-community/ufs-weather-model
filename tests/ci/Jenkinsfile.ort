@@ -413,6 +413,7 @@ pipeline {
           
       post {
        always {
+          agent { label 'built-in' }
                   sh '''
                   export GIT_OWNER=$(echo $GIT_URL | cut -d '/' -f4)
                   export GIT_REPO_NAME=$(echo $GIT_URL | cut -d '/' -f5 | cut -d '.' -f1)
