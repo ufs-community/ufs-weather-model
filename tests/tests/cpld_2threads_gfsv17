@@ -77,9 +77,9 @@ export np2=`expr $CICE_NPROC / 2`
 export CICE_BLCKX=`expr $NX_GLB / $np2`
 export CICE_BLCKY=`expr $NY_GLB / 2`
 
-ESMF_THREADING=false
-THRD=$THRD_cpl_thrd
+export ESMF_THREADING=false
+export THRD=$THRD_cpl_thrd
 
 if [[ ${MACHINE_ID} = orion || ${MACHINE_ID} = wcoss2 ]]; then
-  WLCLK=40
+  export WLCLK=40
 fi
