@@ -8,15 +8,15 @@ export TEST_DESCR="Build UWM with MPAS dynamical core for GFS application"
 
 export CNTL_DIR=control_gfs_mpas_debug
 
-export LIST_FILES="history.2023-03-10_15:00:00.nc \
-      	      	   history.2023-03-10_16:00:00.nc \
-		   history.2023-03-10_17:00:00.nc \
-		   history.2023-03-10_18:00:00.nc"
+export LIST_FILES="history.2023-03-10_16.00.00.nc \
+		   history.2023-03-10_17.00.00.nc \
+		   history.2023-03-10_18.00.00.nc"
 
 export_mpas_gfs
 
 export FHMAX=3
 export OUTPUT_FH="1 -1"
+export RESTART_FH="3 -1"
 
 export ATM_compute_tasks=12
 export FV3_RUN=gfs_mpas_run.IN
@@ -24,3 +24,5 @@ export CCPP_SUITE=MPAS_RRFS
 export INPUT_NML=control_gfs_mpas.nml.IN
 export IC_FILENAME=mpas.gsl.gsl.global.120km.gfs.init.2023-03-10_15.00.00.nc
 export GRID_FILENAME=x1.40962.graph.info.part.
+export STREAM_LIST_HISTORY=stream_list.atmosphere.output
+export STREAM_LIST_RESTART=stream_list.atmosphere.restart
