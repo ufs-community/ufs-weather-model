@@ -191,7 +191,7 @@ if [ $CPLCHM = .true. ]; then
 fi
 
 #CATChem
-if [ $chm_model == "catchem" ]; then
+if [ ${chm_model:-none} == "catchem" ]; then
   _catchem_root=$(readlink -f "${PATHRT}"/../CATChem)
   cp "${_catchem_root}"/tests/Configs/Default/CATChem_emission.yml "${RUNDIR}"
   cp "${_catchem_root}"/tests/Configs/Default/CATChem_new_config.yml "${RUNDIR}"
