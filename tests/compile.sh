@@ -73,6 +73,8 @@ case ${MACHINE_ID} in
       module purge
     elif [[ ${MACHINE_ID} == hercules ]]; then
       module purge
+    elif [[ ${MACHINE_ID} == "aws-ec2" ]]; then
+      module purge
     fi
 
     # Load fv3 module

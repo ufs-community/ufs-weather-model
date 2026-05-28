@@ -52,13 +52,6 @@ function regression_test() {
 	cd tests
 		pwd
 
-      # shellcheck disable=SC2015
-		[[ ${UFS_PLATFORM} =~ clusternoaa ]] && echo "export BL_DATE=20240426" > bl_date.conf || cat bl_date.conf
-
-		mkdir -p logs/
-		BL_DATE=$(cut -d '=' -f2 bl_date.conf)
-		export BL_DATE
-
 		if [[ ${machine} =~ "Hercules" ]]
 		then
 		    echo "Running regression tests on ${machine}"
