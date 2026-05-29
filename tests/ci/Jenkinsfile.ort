@@ -2,7 +2,6 @@ pipeline {
   agent none
   options{
     disableConcurrentBuilds()
-    checkout scm
   }
   stages {
     stage('Run ORTs') {
@@ -13,7 +12,7 @@ pipeline {
             GITHUB_TOKEN = credentials('GithubJenkinsNew')
           }
       steps {
-
+        checkout scm
         script {
           env.CHOICE_NODE = ''
           for (label in pullRequest.labels) {
