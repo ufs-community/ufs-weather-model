@@ -6,7 +6,13 @@ pipeline {
   stages {
     stage('Run ORTs') {
       agent { label 'built-in' }
+          environment {
+            ACCNR = 'epic'
+            NODE_PATH = '/scratch3/NAGAPE/epic/role-epic/'
+            GITHUB_TOKEN = credentials('GithubJenkinsNew')
+          }
       steps {
+        checkout scm
         script {
           env.CHOICE_NODE = ''
           for (label in pullRequest.labels) {
