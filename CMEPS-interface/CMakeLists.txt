@@ -33,12 +33,15 @@ endif()
 ###############################################################################
 
 list(APPEND _ufs_util_files
-  CMEPS/ufs/flux_atmocn_mod.F90
-  CMEPS/ufs/glc_elevclass_mod.F90
+  CMEPS/ufs/flux_atmocn_driver_mod.F90
+  CMEPS/ufs/flux_atmocn_bulk_mod.F90
+  CMEPS/ufs/flux_atmocn_ccpp_mod.F90
   CMEPS/ufs/ufs_kind_mod.F90
-  CMEPS/ufs/perf_mod.F90
+  CMEPS/ufs/ufs_flux_mod.F90
   CMEPS/ufs/ufs_const_mod.F90
+  CMEPS/ufs/perf_mod.F90
   CMEPS/ufs/wtracers_mod.F90
+  CMEPS/ufs/glc_elevclass_mod.F90
   ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/share/shr_orb_mod.F90
   ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/share/shr_const_mod.F90
   ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/share/shr_abort_mod.F90
@@ -148,7 +151,6 @@ if(CMEPS_AOFLUX)
     ### Add extra driver file to the source
     list(APPEND _ufs_util_files
       CMEPS/ufs/ccpp/driver/med_ccpp_driver.F90
-      CMEPS/ufs/flux_atmocn_ccpp_mod.F90
       CMEPS/ufs/ufs_io_mod.F90)
 
     ### Set the sources: type definitions
