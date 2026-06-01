@@ -51,13 +51,9 @@ pipeline {
             curl --silent -X DELETE -H "Accept:   application/vnd.github.v3+json" -H "Authorization:   Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/orion-ORT
             sleep 60
             echo "Checking queue for another copy of this job"
+            echo "https://jenkins.epic.oarcloud.noaa.gov//queue/api/json?tree=items[id,task[name]]"
+            curl -s "https://jenkins.epic.oarcloud.noaa.gov/queue/api/json?tree=items[id,task[name]]"
             '''
-           def queue = jenkins.model.Jenkins.get().getQueue()
-           queue.getItems().each { item ->
-              println "Full Job Path: " + item.task.getFullName()
-              }
-
-
 
         } // End of script block
       } // End of steps
@@ -447,7 +443,7 @@ pipeline {
                   echo "https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/orion-ORT"
                   curl --silent -X DELETE -H "Accept:   application/vnd.github.v3+json" -H "Authorization:   Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/orion-ORT
                   echo "https://jenkins.epic.oarcloud.noaa.gov//queue/api/json?tree=items[id,task[name]]"
-                  curl -s "https://jenkins.epic.oarcloud.noaa.gov//queue/api/json?tree=items[id,task[name]]"
+                  curl -s "https://jenkins.epic.oarcloud.noaa.gov/queue/api/json?tree=items[id,task[name]]"
                   '''
          } // script
         } //steps
