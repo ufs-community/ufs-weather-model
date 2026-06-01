@@ -63,8 +63,7 @@ pipeline {
               expression { 
                 found = null;
                 if (pullRequest && pullRequest.labels) {
-                  for (def i = 0; i < pullRequest.labels.length; i++) {
-                    label = pullRequest.labels[i];
+                  for (label in pullRequest.labels) {
                       if (label && label.includes && label.includes("ursa")) {
                         found = true;
                         break;
@@ -193,8 +192,7 @@ pipeline {
               expression { 
                 found = null;
                 if (pullRequest && pullRequest.labels) {
-                  for (def i = 0; i < pullRequest.labels.length; i++) {
-                    label = pullRequest.labels[i];
+                  for (label in pullRequest.labels) {
                       if (label && label.includes && label.includes("hercules")) {
                         found = true;
                         break;
@@ -325,8 +323,7 @@ pipeline {
               expression { 
                 found = null;
                 if (pullRequest && pullRequest.labels) {
-                  for (def i = 0; i < pullRequest.labels.length; i++) {
-                    label = pullRequest.labels[i];
+                  for (label in pullRequest.labels) {
                       if (label && label.includes && label.includes("orion")) {
                         found = true;
                         break;
