@@ -46,6 +46,47 @@ pipeline {
 */
 
     stage('Run ORT on All Hosts Parallel'){
+
+    stage('Run ORTs') {
+      agent { label 'built-in' }
+          environment {
+            ACCNR = 'epic'
+            NODE_PATH = '/scratch3/NAGAPE/epic/role-epic/'
+            GITHUB_TOKEN = credentials('GithubJenkinsNew')
+          }
+      steps {
+        checkout scm
+        script {
+          env.CHOICE_NODE = ''
+          for (label in pullRequest.labels) {
+            if (label.contains("orion")) {
+              env.CHOICE_NODE+='orion'
+            }  
+            else if (label.contains("hera")) { 
+              env.CHOICE_NODE+='hera'
+            }  
+            else if (label.contains("hercules")) { 
+              env.CHOICE_NODE+='hercules'
+            }  
+            else if (label.contains("gaeac6")) {
+              env.CHOICE_NODE+='gaeac6'
+            } 
+            else if (label.contains("ursa")) {
+              env.CHOICE_NODE+='ursa'
+            }
+            else{
+              env.CHOICE_NODE='none'
+            } 
+          } // End of for loop
+
+          echo "${env.CHOICE_NODE}"
+          
+ 
+        } // End of script block
+      } // End of steps
+    } // End of stage Run ORTS
+
+
       parallel{
         stage('Ursa'){
           agent{ label 'Ursa' }
@@ -59,20 +100,8 @@ pipeline {
           }
           when{ 
             beforeAgent true
-  //          expression { env.CHOICE_NODE.contains("ursa") }
-              expression { 
-                found = null;
-                if (pullRequest && pullRequest.labels) {
-                  for (label in pullRequest.labels) {
-                      if (label && label.includes && label.includes("ursa")) {
-                        found = true;
-                        break;
-                      }
-                    }
-                   }
-                 return found;
-               }
-              } 
+              expression { env.CHOICE_NODE.contains("ursa") }
+          }
           stages{
             stage("regional_control"){
               steps{
@@ -188,19 +217,7 @@ pipeline {
           }
           when{ 
             beforeAgent true
-//            expression { env.CHOICE_NODE.contains("hercules") }
-              expression { 
-                found = null;
-                if (pullRequest && pullRequest.labels) {
-                  for (label in pullRequest.labels) {
-                      if (label && label.includes && label.includes("hercules")) {
-                        found = true;
-                        break;
-                      }
-                    }
-                   }
-                 return found;
-               }
+              expression { env.CHOICE_NODE.contains("hercules") }
           }
           stages{
             stage("regional_control"){
@@ -319,19 +336,7 @@ pipeline {
           }
           when{ 
             beforeAgent true
-//            expression { env.CHOICE_NODE.contains("orion") }
-              expression { 
-                found = null;
-                if (pullRequest && pullRequest.labels) {
-                  for (label in pullRequest.labels) {
-                      if (label && label.includes && label.includes("orion")) {
-                        found = true;
-                        break;
-                      }
-                    }
-                   }
-                 return found;
-              }
+              expression { env.CHOICE_NODE.contains("orion") }
           }
           stages{
             stage("regional_control"){
