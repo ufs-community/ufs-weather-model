@@ -451,8 +451,10 @@ pipeline {
             GITHUB_TOKEN = credentials('GithubJenkinsNew')
           }
         steps{
-         for (label in pullRequest.labels) echo label
          script{
+                  for (label in pullRequest.labels) {
+                    echo label $label
+                    }
                   sh '''
                   export GIT_OWNER=$(echo $GIT_URL | cut -d '/' -f4)
                   export GIT_REPO_NAME=$(echo $GIT_URL | cut -d '/' -f5 | cut -d '.' -f1)
