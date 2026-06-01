@@ -60,7 +60,7 @@ pipeline {
           when{ 
             beforeAgent true
   //          expression { env.CHOICE_NODE.contains("ursa") }
-              expression { for (label in pullRequest.labels) if (label.contains("ursa"))?:null }
+              expression { (for (label in pullRequest.labels) if (label.contains("ursa"))) }
           } 
           stages{
             stage("regional_control"){
