@@ -1,7 +1,7 @@
 # This is a CI workflow for the ufs-weather-model repository that builds the
 # modified UWM for any given PR.
 #
-# Alex Richert, May 2026
+# Alex Richert, Jun 2026
 
 name: Build with CMake
 on: [push,pull_request,workflow_dispatch]
@@ -28,8 +28,9 @@ jobs:
 
     runs-on: ${{ matrix.config.os }}
     # Dependencies are preinstalled in a container image.
-    # For available images, see https://github.com/orgs/NOAA-EMC/packages?tab=packages&q=ufs-weather-model
-    container: ghcr.io/noaa-emc/ci-common-build-cache/ufs-weather-model-ubuntu-24.04-gcc-13-mpich-x@sha256:a7250b7fa7e40b322c082fdebba570b8c449af6b27565f15f5457f736e3020b9
+    # For available images, see https://github.com/orgs/NOAA-EMC/packages?tab=packages&q=ufs-weather-model.
+    # See https://github.com/NOAA-EMC/ci-common-build-cache/#using-container-images for further container usage instructions.
+    container: ghcr.io/noaa-emc/ci-common-build-cache/ufs-weather-model-ubuntu-24.04-gcc-13-mpich-x@sha256:cc9bdafb43d31498fe833c1914d90e32570f8fa9f001e11ca16c4a88417128f8
 
     steps:
 
@@ -60,6 +61,9 @@ jobs:
         ## Run the installation:
         #spack install --only-concrete
         ############################
+        # Prevent possible warnings by removing 'runtime' packages:
+        spack uninstall --force gcc-runtime
+        ###
         export CC=mpicc
         export CXX=mpic++
         export FC=mpif90
