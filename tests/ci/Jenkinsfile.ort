@@ -60,7 +60,7 @@ pipeline {
           when{ 
             beforeAgent true
   //          expression { env.CHOICE_NODE.contains("ursa") }
-              expression { for (label in pullRequest.labels) if (label contains("ursa")) }
+              expression { for (label in pullRequest.labels) if (label.contains("ursa")) }
           } 
           stages{
             stage("regional_control"){
@@ -178,7 +178,7 @@ pipeline {
           when{ 
             beforeAgent true
 //            expression { env.CHOICE_NODE.contains("hercules") }
-              expression { for (label in pullRequest.labels) if (label contains("hercules")) }
+              expression { for (label in pullRequest.labels) if (label.contains("hercules")) }
           }
           stages{
             stage("regional_control"){
@@ -298,7 +298,7 @@ pipeline {
           when{ 
             beforeAgent true
 //            expression { env.CHOICE_NODE.contains("orion") }
-            expression { for (label in pullRequest.labels) if (label contains("orion")) }
+            expression { for (label in pullRequest.labels) if (label.contains("orion")) }
           }
           stages{
             stage("regional_control"){
