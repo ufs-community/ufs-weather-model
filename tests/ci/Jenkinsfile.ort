@@ -60,8 +60,20 @@ pipeline {
           when{ 
             beforeAgent true
   //          expression { env.CHOICE_NODE.contains("ursa") }
-              expression { for (label in pullRequest.labels) if (label.contains("ursa"))  }
-          } 
+              expression { 
+                let found = null;
+                if (pullRequest && pullRequest.labels) {
+                  for (let i = 0; i < pullRequest.labels.length; i++) {
+                    const label = pullRequest.labels[i];
+                      if (label && label.includes && label.includes("ursa")) {
+                       found = true;
+                        break;
+                      }
+                    }
+                   }
+                 return found;
+               }
+              } 
           stages{
             stage("regional_control"){
               steps{
@@ -178,7 +190,20 @@ pipeline {
           when{ 
             beforeAgent true
 //            expression { env.CHOICE_NODE.contains("hercules") }
-              expression { for (label in pullRequest.labels) if (label.contains("hercules")) }
+              expression { 
+                let found = null;
+                if (pullRequest && pullRequest.labels) {
+                  for (let i = 0; i < pullRequest.labels.length; i++) {
+                    const label = pullRequest.labels[i];
+                      if (label && label.includes && label.includes("hercules")) {
+                       found = true;
+                        break;
+                      }
+                    }
+                   }
+                 return found;
+               }
+              }
           }
           stages{
             stage("regional_control"){
@@ -298,7 +323,20 @@ pipeline {
           when{ 
             beforeAgent true
 //            expression { env.CHOICE_NODE.contains("orion") }
-            expression { for (label in pullRequest.labels) if (label.contains("orion")) }
+              expression { 
+                let found = null;
+                if (pullRequest && pullRequest.labels) {
+                  for (let i = 0; i < pullRequest.labels.length; i++) {
+                    const label = pullRequest.labels[i];
+                      if (label && label.includes && label.includes("orion")) {
+                       found = true;
+                        break;
+                      }
+                    }
+                   }
+                 return found;
+               }
+              }
           }
           stages{
             stage("regional_control"){
