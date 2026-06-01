@@ -4,7 +4,7 @@ pipeline {
     disableConcurrentBuilds()
   }
   stages {
-/*
+
     stage('Run ORTs') {
       agent { label 'built-in' }
           environment {
@@ -43,49 +43,9 @@ pipeline {
         } // End of script block
       } // End of steps
     } // End of stage Run ORTS
-*/
+
 
     stage('Run ORT on All Hosts Parallel'){
-
-//    stage('Run ORTs') {
-      agent { label 'built-in' }
-          environment {
-            ACCNR = 'epic'
-            NODE_PATH = '/scratch3/NAGAPE/epic/role-epic/'
-            GITHUB_TOKEN = credentials('GithubJenkinsNew')
-          }
-      steps {
-        checkout scm
-        script {
-          env.CHOICE_NODE = ''
-          for (label in pullRequest.labels) {
-            if (label.contains("orion")) {
-              env.CHOICE_NODE+='orion'
-            }  
-            else if (label.contains("hera")) { 
-              env.CHOICE_NODE+='hera'
-            }  
-            else if (label.contains("hercules")) { 
-              env.CHOICE_NODE+='hercules'
-            }  
-            else if (label.contains("gaeac6")) {
-              env.CHOICE_NODE+='gaeac6'
-            } 
-            else if (label.contains("ursa")) {
-              env.CHOICE_NODE+='ursa'
-            }
-            else{
-              env.CHOICE_NODE='none'
-            } 
-          } // End of for loop
-
-          echo "${env.CHOICE_NODE}"
-          
- 
-        } // End of script block
-      } // End of steps
-//    } // End of stage Run ORTS
-
 
       parallel{
         stage('Ursa'){
