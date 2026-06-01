@@ -60,7 +60,7 @@ pipeline {
           when{ 
             beforeAgent true
   //          expression { env.CHOICE_NODE.contains("ursa") }
-              expression { pullRequest.labels.contains("ursa") }
+              expression { for label in pullRequest.labels if label contains("ursa") }
           } 
           stages{
             stage("regional_control"){
@@ -178,7 +178,7 @@ pipeline {
           when{ 
             beforeAgent true
 //            expression { env.CHOICE_NODE.contains("hercules") }
-              expression { pullRequest.labels.contains("hercules") }
+              expression { for label in pullRequest.labels if label contains("hercules") }
           }
           stages{
             stage("regional_control"){
@@ -298,7 +298,7 @@ pipeline {
           when{ 
             beforeAgent true
 //            expression { env.CHOICE_NODE.contains("orion") }
-            expression { pullRequest.labels.contains("orion") }
+            expression { for label in pullRequest.labels if label contains("orion") }
           }
           stages{
             stage("regional_control"){
@@ -415,7 +415,7 @@ pipeline {
             GITHUB_TOKEN = credentials('GithubJenkinsNew')
           }
         steps{
-         echo pullRequest.labels
+         for label in pullRequest.labels echo label
          script{
                   sh '''
                   export GIT_OWNER=$(echo $GIT_URL | cut -d '/' -f4)
