@@ -427,6 +427,8 @@ pipeline {
                   curl --silent -X DELETE -H "Accept:   application/vnd.github.v3+json" -H "Authorization:   Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/hercules-ORT
                   echo "https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/orion-ORT"
                   curl --silent -X DELETE -H "Accept:   application/vnd.github.v3+json" -H "Authorization:   Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/orion-ORT
+                  echo "https://jenkins.epic.oarcloud.noaa.gov//queue/api/json?tree=items[id,task[name]]"
+                  curl -s "https://jenkins.epic.oarcloud.noaa.gov//queue/api/json?tree=items[id,task[name]]"
                   '''
          } // script
         } //steps
