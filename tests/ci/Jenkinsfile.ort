@@ -4,6 +4,7 @@ pipeline {
     disableConcurrentBuilds()
   }
   stages {
+/*
     stage('Run ORTs') {
       agent { label 'built-in' }
           environment {
@@ -42,6 +43,7 @@ pipeline {
         } // End of script block
       } // End of steps
     } // End of stage Run ORTS
+*/
 
     stage('Run ORT on All Hosts Parallel'){
       parallel{
@@ -57,7 +59,8 @@ pipeline {
           }
           when{ 
             beforeAgent true
-            expression { env.CHOICE_NODE.contains("ursa") }
+  //          expression { env.CHOICE_NODE.contains("ursa") }
+              expression { pullRequest.labels.contains("ursa") }
           } 
           stages{
             stage("regional_control"){
@@ -174,7 +177,8 @@ pipeline {
           }
           when{ 
             beforeAgent true
-            expression { env.CHOICE_NODE.contains("hercules") }
+//            expression { env.CHOICE_NODE.contains("hercules") }
+              expression { pullRequest.labels.contains("hercules") }
           }
           stages{
             stage("regional_control"){
@@ -293,7 +297,8 @@ pipeline {
           }
           when{ 
             beforeAgent true
-            expression { env.CHOICE_NODE.contains("orion") }
+//            expression { env.CHOICE_NODE.contains("orion") }
+            expression { pullRequest.labels.contains("orion") }
           }
           stages{
             stage("regional_control"){
