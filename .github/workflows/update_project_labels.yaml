@@ -194,6 +194,9 @@ jobs:
       - name: atmos_cubed_sphere
         if: contains(github.event.pull_request.labels.*.name, 'A3S')
         run: echo "SUBCOMPONENTS=${SUBCOMPONENTS} A3S" >> $GITHUB_ENV
+      - name: MPAS
+        if: contains(github.event.pull_request.labels.*.name, 'MPAS')
+        run: echo "SUBCOMPONENTS=${SUBCOMPONENTS} MPAS" >> $GITHUB_ENV
       - name: UPP
         if: contains(github.event.pull_request.labels.*.name, 'UPP')
         run: echo "SUBCOMPONENTS=${SUBCOMPONENTS} UPP" >> $GITHUB_ENV
@@ -212,6 +215,12 @@ jobs:
       - name: CICE
         if: contains(github.event.pull_request.labels.*.name, 'CICE')
         run: echo "SUBCOMPONENTS=${SUBCOMPONENTS} CICE" >> $GITHUB_ENV
+      - name: CECE
+        if: contains(github.event.pull_request.labels.*.name, 'CECE')
+        run: echo "SUBCOMPONENTS=${SUBCOMPONENTS} CECE" >> $GITHUB_ENV
+      - name: CATChem
+        if: contains(github.event.pull_request.labels.*.name, 'CATChem')
+        run: echo "SUBCOMPONENTS=${SUBCOMPONENTS} CATChem" >> $GITHUB_ENV
       - name: GOCART
         if: contains(github.event.pull_request.labels.*.name, 'GOC')
         run: echo "SUBCOMPONENTS=${SUBCOMPONENTS} GOC" >> $GITHUB_ENV
@@ -230,6 +239,9 @@ jobs:
       - name: FB
         if: contains(github.event.pull_request.labels.*.name, 'FB')
         run: echo "SUBCOMPONENTS=${SUBCOMPONENTS} FB" >> $GITHUB_ENV
+      - name: CCPP-sub
+        if: contains(github.event.pull_request.labels.*.name, 'CCPP-sub')
+        run: echo "SUBCOMPONENTS=${SUBCOMPONENTS} CCPP-sub" >> $GITHUB_ENV
       - name: Update subcomponents text
         if: ${{ env.SUBCOMPONENTS != '' }}
         uses: nipe0324/update-project-v2-item-field@v2.0.2
