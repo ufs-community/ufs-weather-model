@@ -52,10 +52,8 @@ pipeline {
             sleep 60
             echo "Checking queue for another copy of this job"
             echo "https://jenkins.epic.oarcloud.noaa.gov/queue/api/json?tree=items[id,task[name]]"
+            curl -s "https://jenkins.epic.oarcloud.noaa.gov/queue/api/json
             '''
-         //   output = sh(script:'curl -s "https://jenkins.epic.oarcloud.noaa.gov/queue/api/json?tree=items(id,task(name))"',returnStdout:true).trim()
-            output = httpRequest("https://jenkins.epic.oarcloud.noaa.gov/queue/api/json?tree=items[id,task[name]]")
-            echo $output
 
         } // End of script block
       } // End of steps
