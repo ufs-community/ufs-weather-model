@@ -17,7 +17,6 @@ pipeline {
               expression { pullRequest.labels }
           }
       steps {
-        checkout scm
         script {
           env.CHOICE_NODE = ''
           for (label in pullRequest.labels) {
