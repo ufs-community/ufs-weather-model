@@ -36,9 +36,6 @@ pipeline {
             else if (label.contains("ursa")) {
               env.CHOICE_NODE+='ursa'
             }
-            else{
-              env.CHOICE_NODE='none'
-            } 
           } // End of for loop
 
           echo "${env.CHOICE_NODE}"
@@ -46,7 +43,7 @@ pipeline {
           sh '''
             export GIT_OWNER=$(echo $GIT_URL | cut -d '/' -f4)
             export GIT_REPO_NAME=$(echo $GIT_URL | cut -d '/' -f5 | cut -d '.' -f1)
-            echo "Pre-emptively removing labels for $machine from $GIT_URL"
+            echo "Pre-emptively removing labels from $GIT_URL"
             echo "https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/ursa-ORT"
             curl --silent -X DELETE -H "Accept:   application/vnd.github.v3+json" -H "Authorization:   Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/ursa-ORT
             echo "https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/hercules-ORT"
@@ -429,19 +426,10 @@ pipeline {
           }
         steps{
          script{
-                  for (label in pullRequest.labels) {
-                    echo label $label
-                    }
                   sh '''
                   export GIT_OWNER=$(echo $GIT_URL | cut -d '/' -f4)
                   export GIT_REPO_NAME=$(echo $GIT_URL | cut -d '/' -f5 | cut -d '.' -f1)
-                  echo "Testing concluded..."
-                  echo "https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/ursa-ORT"
-                  curl --silent -X DELETE -H "Accept:   application/vnd.github.v3+json" -H "Authorization:   Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/ursa-ORT
-                  echo "https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/hercules-ORT"
-                  curl --silent -X DELETE -H "Accept:   application/vnd.github.v3+json" -H "Authorization:   Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/hercules-ORT
-                  echo "https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/orion-ORT"
-                  curl --silent -X DELETE -H "Accept:   application/vnd.github.v3+json" -H "Authorization:   Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/orion-ORT
+                  echo "Testing concluded for ${GIT_URL}"
                   '''
          } // script
         } //steps
