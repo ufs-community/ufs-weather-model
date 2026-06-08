@@ -20,6 +20,7 @@ data_path=/scratch3/NAGAPE/epic/role.epic/Aquaplanet
 
 #========================================================
 # initialize module
+# shellcheck disable=SC1091
 . "${LMOD_ROOT}"/lmod/init/bash
 
 # load grads module

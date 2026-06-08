@@ -53,7 +53,7 @@ class GHInterface:
 
 def set_action_from_label(machine, actions, label):
     ''' Match the label that initiates a job with an action in the dict'''
-    # <machine>-<test> i.e. hera-RT
+    # <machine>-<test> i.e. ursa-RT
     logger = logging.getLogger('MATCH_LABEL_WITH_ACTIONS')
     logger.info('Setting action from Label')
     split_label = label.name.split('-')
@@ -73,11 +73,7 @@ def set_action_from_label(machine, actions, label):
     return action_match
 
 def delete_pr_dirs(each_pr, machine):
-    if machine == 'hera':                                                                                     
-        workdir = '/scratch1/NCEPDEV/nems/role.epic/autort/pr'
-    elif machine == 'jet':
-        workdir = '/lfs5/HFIP/hfv3gfs/role.epic/h-nems/autort/pr'
-    elif machine == 'orion':
+    if machine == 'orion':
         workdir = '/work/noaa/epic-ps/role-epic-ps/autort/pr'
     elif machine == 'hercules':
         workdir = '/work/noaa/epic/role-epic/autort/pr'
@@ -107,12 +103,7 @@ def delete_pr_dirs(each_pr, machine):
     
 
 def delete_rt_dirs(in_dir, machine, workdir):
-    if machine == 'hera':                                                                                     
-        rt_dir ='/scratch1/NCEPDEV/stmp4/role.epic/FV3_RT' 
-    elif machine == 'jet':
-        rt_dir ='/lfs5/HFIP/hfv3gfs/role.epic/h-nems/RT_BASELINE/'\
-               f'emc.nemspara/FV3_RT'
-    elif machine == 'orion':
+    if machine == 'orion':
         rt_dir = '/work/noaa/stmp/bcurtis/stmp/bcurtis/FV3_RT'
     elif machine == 'hercules':
         rt_dir = '/work/noaa/stmp/bcurtis/stmp/bcurtis/FV3_RT'
@@ -278,17 +269,7 @@ class Job:
 
 def setup_env():
     hostname = os.getenv('HOSTNAME')
-    if bool(re.match(re.compile('hfe.+'), hostname)):
-        machine = 'hera'
-    elif bool(re.match(re.compile('hecflow.+'), hostname)):
-        machine = 'hera'
-    elif bool(re.match(re.compile('fe.+'), hostname)):
-        machine = 'jet'
-        os.environ['ACCNR'] = 'hfv3gfs'
-    elif bool(re.match(re.compile('tfe.+'), hostname)):
-        machine = 'jet'
-        os.environ['ACCNR'] = 'hfv3gfs'
-    elif bool(re.match(re.compile('Orion-login.+'), hostname)):
+    if bool(re.match(re.compile('Orion-login.+'), hostname)):
         machine = 'orion'
         os.environ['ACCNR'] = 'epic-ps'
     elif bool(re.match(re.compile('Hercules-login.+'), hostname)):

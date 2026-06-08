@@ -9,7 +9,7 @@ def rocoto_create_entries(RTPWD,MACHINE_ID,INPUTDATA_ROOT,INPUTDATA_ROOT_WW3,INP
 
     Args:
         RTPWD (str): Baseline directory
-        MACHINE_ID (str): Machine ID i.e., Hera, GaeaC6, Jet, etc.
+        MACHINE_ID (str): Machine ID i.e., Ursa, GaeaC6, Jet, etc.
         INPUTDATA_ROOT (str): Input data directory
         INPUTDATA_ROOT_WW3 (str): WW3 input data directory
         INPUTDATA_ROOT_BMIC (str): BMIC input data directory
@@ -48,13 +48,13 @@ def rocoto_create_compile_task(MACHINE_ID,COMPILE_ID,ROCOTO_COMPILE_MAXTRIES,MAK
     """Generate and append compile task into Rocoto XML file
 
     Args:
-        MACHINE_ID (str): Machine ID i.e., Hera, GaeaC6, Jet, etc.
+        MACHINE_ID (str): Machine ID i.e., Ursa, GaeaC6, Jet, etc.
         COMPILE_ID (str): Compile identifier e.g., s2swa_intel
         ROCOTO_COMPILE_MAXTRIES (str): Max attempts for compile
         MAKE_OPT (str): Make build options
         ACCNR (str): Account to run the job with
         COMPILE_QUEUE (str): Quality of Service (QOS), i.e., batch, windfall, normal, etc.
-        PARTITION (str): System partition i.e., xjet, c5
+        PARTITION (str): System partition i.e., c5
         ROCOTO_XML (str): Rocoto XML filename to write to
     """
     NATIVE=""
@@ -63,7 +63,6 @@ def rocoto_create_compile_task(MACHINE_ID,COMPILE_ID,ROCOTO_COMPILE_MAXTRIES,MAK
     if ( MACHINE_ID == 'ursa'):  BUILD_WALLTIME="01:00:00"
     if ( MACHINE_ID == 'orion'): BUILD_WALLTIME="01:00:00"
     if ( MACHINE_ID == 'hercules'): BUILD_WALLTIME="01:00:00"
-    if ( MACHINE_ID == 's4' ):   BUILD_WALLTIME="01:00:00"
     if ( MACHINE_ID == 'gaeac6' ): BUILD_WALLTIME="01:00:00"
     compile_task = f"""  <task name="compile_{COMPILE_ID}" maxtries="{ROCOTO_COMPILE_MAXTRIES}">
     <command>&PATHRT;/run_compile.sh &PATHRT; &RUNDIR_ROOT; "{MAKE_OPT}" {COMPILE_ID} 2>&amp;1 | tee &LOG;/compile_{COMPILE_ID}.log</\
@@ -120,7 +119,7 @@ def write_compile_env(SCHEDULER,PARTITION,JOB_NR,COMPILE_QUEUE,RUNDIR_ROOT):
 
     Args:
         SCHEDULER (str): Job scheduler, e.g., pbs, slurm
-        PARTITION (str): System partition, i.e., xjet, c5
+        PARTITION (str): System partition, i.e., c5
         JOB_NR (str): Job number
         COMPILE_QUEUE (str): Quality of Service (QOS), i.e., batch, windfall, normal, etc.
         RUNDIR_ROOT (str): Test run directory
@@ -226,7 +225,7 @@ def make_loghead(ACCNR,MACHINE_ID,RUNDIR_ROOT,RTPWD,REGRESSIONTEST_LOG):
 
     Args:
         ACCNR (str): Account to run the job with
-        MACHINE_ID (str): Machine ID i.e. Hera, GaeaC6, Jet, etc.
+        MACHINE_ID (str): Machine ID i.e. Ursa, GaeaC6,  etc.
         RUNDIR_ROOT (str): Test run directory
         RTPWD (str): Baseline directory
         REGRESSIONTEST_LOG (str): Regression Test log filename

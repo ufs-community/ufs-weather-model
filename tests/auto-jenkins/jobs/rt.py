@@ -23,11 +23,7 @@ def run(job_obj):
 
 def set_directories(job_obj):
     logger = logging.getLogger('RT/SET_DIRECTORIES')
-    if job_obj.machine == 'hera':
-        workdir = '/scratch1/NCEPDEV/nems/role.epic/autort/pr'
-    elif job_obj.machine == 'jet':
-        workdir = '/lfs5/HFIP/hfv3gfs/role.epic/h-nems/autort/pr'
-    elif job_obj.machine == 'orion':
+    if job_obj.machine == 'orion':
         workdir = '/work/noaa/epic-ps/role-epic-ps/autort/tests/auto/pr'
     elif job_obj.machine == 'hercules':
         workdir = '/work/noaa/epic/role-epic/autort/tests/auto/pr'
@@ -45,10 +41,6 @@ def set_directories(job_obj):
 
 def run_regression_test(job_obj, pr_repo_loc):
     logger = logging.getLogger('RT/RUN_REGRESSION_TEST')
-    if job_obj.machine != 'hera':
-        rt_command = [[f'cd tests && /bin/bash --login ./rt.sh -e', pr_repo_loc]]
-    elif job_obj.machine == 'hera':
-        rt_command = [[f'cd tests && /bin/bash --login ./rt.sh -r', pr_repo_loc]]
     job_obj.run_commands(logger, rt_command)
 
 

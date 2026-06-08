@@ -18,17 +18,7 @@ def run(job_obj):
 
 def set_directories(job_obj):
     logger = logging.getLogger('BL/SET_DIRECTORIES')
-    if job_obj.machine == 'hera':
-        workdir = '/scratch1/NCEPDEV/nems/emc.nemspara/autort/pr'
-        blstore = '/scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs'
-        rtbldir = '/scratch1/NCEPDEV/stmp4/emc.nemspara/FV3_RT/'\
-                 f'REGRESSION_TEST_{job_obj.compiler.upper()}'
-    elif job_obj.machine == 'jet':
-        workdir = '/lfs5/HFIP/hfv3gfs/role.epic/h-nems/autort/pr'
-        blstore = '/lfs5/HFIP/hfv3gfs/role.epic/RT/NEMSfv3gfs'
-        rtbldir = '/lfs5/HFIP/hfv3gfs/role.epic/h-nems/RT_BASELINE/'\
-                 f'emc.nemspara/FV3_RT/REGRESSION_TEST_{job_obj.compiler.upper()}'
-    elif job_obj.machine == 'orion':
+    if job_obj.machine == 'orion':
         workdir = '/work/noaa/nems/emc.nemspara/autort/pr'
         blstore = '/work/noaa/nems/emc.nemspara/RT/NEMSfv3gfs'
         rtbldir = '/work/noaa/stmp/bcurtis/stmp/bcurtis/FV3_RT/'\

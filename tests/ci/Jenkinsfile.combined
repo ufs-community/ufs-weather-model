@@ -37,12 +37,7 @@ def generateStage(nodeLabel) {
                        export SSH_ORIGIN=$(curl --silent https://api.github.com/repos/ufs-community/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.repo.ssh_url')
                        export FORK_BRANCH=$(curl --silent https://api.github.com/repos/ufs-community/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.ref')
                          
-                          if [[ $machine =~ "Jet" ]] 
-                          then
-                            echo "Creating baselines on $machine"
-                            export dprefix=/lfs1/NAGAPE/$ACCNR/$USER
-                            ./rt.sh -a ${ACCNR} -c -r -l rt.conf | tee $WORKSPACE/tests/logs/RT-run-$machine.log
-                          elif [[ $machine =~ "Hercules" ]]
+                          if [[ $machine =~ "Hercules" ]]
                           then
                             echo "Creating baselines on $machine"
                             export dprefix=/work2/noaa/$ACCNR/$USER
@@ -175,12 +170,7 @@ def generateStage(nodeLabel) {
                        export SSH_ORIGIN=$(curl --silent https://api.github.com/repos/ufs-community/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.repo.ssh_url')
                        export FORK_BRANCH=$(curl --silent https://api.github.com/repos/ufs-community/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.ref')
 
-                          if [[ $machine =~ "Jet" ]] 
-                          then
-                           echo "Running regression tests on $machine"
-                            export dprefix=/lfs1/NAGAPE/$ACCNR/$USER
-                            ./rt.sh -a ${ACCNR} -r -l rt.conf | tee $WORKSPACE/tests/logs/RT-run-$machine.log
-                          elif [[ $machine =~ "Hercules" ]]
+                          if [[ $machine =~ "Hercules" ]]
                           then
                           echo "Running regression tests on $machine"
                             export dprefix=/work2/noaa/$ACCNR/$USER
@@ -226,19 +216,6 @@ def generateStage(nodeLabel) {
                             cd .. && cd .. && cd ..
 			    cp RegressionTests_gaea.log $WORKSPACE/tests/logs/
 			    cd $WORKSPACE/tests/
-                          elif [[ $machine =~ "Hera" ]]
-                          then
-                           echo "Running regression tests on $machine"
-                             export ACCNR=epic
-                             ./rt.sh -a ${ACCNR} -r -l rt.conf | tee $WORKSPACE/tests/logs/RT-run-$machine.log
-			     cd logs/
-			     cp RegressionTests_hera.log /scratch2/NAGAPE/epic/role.epic/jenkins/workspace
-			     git remote -v
-                             git fetch --no-recurse-submodules origin
-                             git reset FETCH_HEAD --hard
-                             cd .. && cd .. && cd ..
-			     cp RegressionTests_hera.log $WORKSPACE/tests/logs/
-			     cd $WORKSPACE/tests/
 			  elif [[ $machine =~ "Derecho" ]]
                           then
                            echo "Running regression tests on $machine"

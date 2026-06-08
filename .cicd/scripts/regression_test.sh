@@ -36,7 +36,7 @@ TESTS_DIR=${TESTS_DIR:-${UFS_MODEL_DIR}/tests}
 
 pwd
 ls -al .cicd/*
-ls -al ${TESTS_DIR}/rt.sh
+ls -al "${TESTS_DIR}/rt.sh"
 
 function regression_test() {
 	local machine=${1:-${NODE_NAME}}
@@ -51,22 +51,7 @@ function regression_test() {
 	cd tests
 		pwd
 
-		[[ ${UFS_PLATFORM} =~ clusternoaa ]] && echo "export BL_DATE=20240426" > bl_date.conf || cat bl_date.conf
-
-		mkdir -p logs/
-		BL_DATE=$(cut -d '=' -f2 bl_date.conf)
-		export BL_DATE
-
-		if [[ ${machine} =~ "Jet" ]]
-		then
-		    echo "Running regression tests on ${machine}"
-		    export dprefix=/lfs5/NAGAPE/${ACCNR}/${USER}
-		    sed 's|/lfs4/HFIP/${ACCNR}/${USER}|/lfs4/HFIP/hfv3gfs/${USER}|g' -i rt.sh
-		    sed 's|/lfs5/HFIP/${ACCNR}/${USER}|/lfs5/NAGAPE/${ACCNR}/${USER}|g' -i rt.sh
-		    local workflow="-r"
-		    ./rt.sh -a "${ACCNR}" "${workflow}" "${opt}" "${suite}" | tee "${WORKSPACE}/tests/logs/RT-run-${machine}.log"
-		    status=${PIPESTATUS[0]}
-		elif [[ ${machine} =~ "Hercules" ]]
+		if [[ ${machine} =~ "Hercules" ]]
 		then
 		    echo "Running regression tests on ${machine}"
 		    export dprefix=/work2/noaa/${ACCNR}/${USER}
@@ -82,7 +67,7 @@ function regression_test() {
 		    cd .. && cd .. && cd ..
 		    pwd
 		    cp "$(dirname "${WORKSPACE}")/RegressionTests_${machine_id}.log" "${WORKSPACE}/tests/logs/"
-		    cd ${WORKSPACE}/tests/
+		    cd "${WORKSPACE}/tests/"
 		elif [[ ${machine} =~ "Orion" ]]
 		then
 		    echo "Running regression tests on ${machine}"
@@ -103,7 +88,7 @@ function regression_test() {
 		    cd .. && cd .. && cd ..
 		    pwd
 		    cp "$(dirname "${WORKSPACE}")/RegressionTests_${machine_id}.log" "${WORKSPACE}/tests/logs/"
-		    cd ${WORKSPACE}/tests/
+		    cd "${WORKSPACE}/tests/"
 		elif [[ ${machine} =~ "Gaea" ]]
 		then
 		    echo "Running regression tests on ${machine}"
@@ -118,24 +103,7 @@ function regression_test() {
 		    cd .. && cd .. && cd ..
 		    pwd
 		    cp "$(dirname "${WORKSPACE}")/RegressionTests_${machine_id}.log" "${WORKSPACE}/tests/logs/"
-		    cd ${WORKSPACE}/tests/
-		elif [[ ${machine} =~ "Hera" ]]
-		then
-		    echo "Running regression tests on ${machine}"
-		    export ACCNR=epic
-		    sed "s|QUEUE=batch|QUEUE=windfall|g" -i rt.sh
-		    local workflow="-r"
-		    ./rt.sh -a "${ACCNR}" "${workflow}" "${opt}" "${suite}" | tee "${WORKSPACE}/tests/logs/RT-run-${machine}.log"
-		    status=${PIPESTATUS[0]}
-		    cd logs/
-		    cp "RegressionTests_${machine_id}.log" "$(dirname "${WORKSPACE}")" #/scratch2/NAGAPE/epic/role.epic/jenkins/workspace
-		    git remote -v
-		    git fetch --no-recurse-submodules origin
-		    git reset FETCH_HEAD --hard
-		    cd .. && cd .. && cd ..
-		    pwd
-		    cp "$(dirname "${WORKSPACE}")/RegressionTests_${machine_id}.log" "${WORKSPACE}/tests/logs/"
-		    cd ${WORKSPACE}/tests/
+		    cd "${WORKSPACE}/tests/"
 		elif [[ ${machine} =~ "Derecho" ]]
 		then
 		    echo "Running regression tests on ${machine}"
@@ -150,7 +118,7 @@ function regression_test() {
 		    cd .. && cd .. && cd ..
 		    pwd
 		    cp "$(dirname "${WORKSPACE}")/RegressionTests_${machine_id}.log" "${WORKSPACE}/tests/logs/"
-		    cd ${WORKSPACE}/tests/
+		    cd "${WORKSPACE}/tests/"
 		else
 		    echo "Running regression tests on ${machine}"
 		    local workflow="-r"
@@ -158,10 +126,10 @@ function regression_test() {
 		    status=${PIPESTATUS[0]}
 		fi
 
-	cd ${WORKSPACE}
+	cd "${WORKSPACE}"
 
 	echo "Testing concluded for ${machine}. status=${status}"
-	return ${status}
+	return "${status}"
 }
 
 regression_test "${machine}"
