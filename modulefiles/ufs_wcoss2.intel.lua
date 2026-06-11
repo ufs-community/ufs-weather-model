@@ -18,15 +18,31 @@ load(pathJoin("cray-mpich", cray_mpich_ver))
 cmake_ver=os.getenv("cmake_ver") or "3.20.2"
 load(pathJoin("cmake", cmake_ver))
 
+hdf5_ver=os.getenv("hdf5_ver") or "1.14.0"
+load(pathJoin("hdf5-D", hdf5_ver))
+
+netcdf_ver=os.getenv("netcdf_ver") or "4.9.2"
+load(pathJoin("netcdf-D", netcdf_ver))
+
+pio_ver=os.getenv("pio_ver") or "2.5.10"
+load(pathJoin("pio-D", pio_ver))
+
+esmf_ver=os.getenv("esmf_ver") or "8.8.0"
+load(pathJoin("esmf-D", esfm_ver))
+
+fms_ver=os.getenv("fms_ver") or "2024.01"
+load(pathJoin("fms-D", fms_ver))
+
+mapl_ver=os.getenv("mapl_ver") or "2.53.0"
+load(pathJoin("mapl-D", mapl_ver))
+
+pnetcdf_ver=os.getenv("pnetcdf_ver") or "1.12.2"
+load(pathJoin("pnetcdf-D", pnetcdf_ver))
+
 local ufs_modules = {
   {["jasper"]      = "2.0.25"},
   {["zlib"]        = "1.2.11"},
   {["libpng"]      = "1.6.37"},
-  {["hdf5-D"]      = "1.14.0"},
-  {["netcdf-D"]    = "4.9.2"},
-  {["pio-D"]       = "2.5.10"},
-  {["esmf-D"]      = "8.8.0"},
-  {["fms-D"]       = "2024.01"},
   {["bacio"]       = "2.4.1"},
   {["crtm"]        = "2.4.0"},
   {["g2"]          = "3.5.1"},
@@ -35,8 +51,6 @@ local ufs_modules = {
   {["sp"]          = "2.3.3"},
   {["w3emc"]       = "2.12.0"},
   {["gftl-shared"] = "1.6.1"},
-  {["mapl-D"]      = "2.53.0"},
-  {["pnetcdf-D"]   = "1.12.2"},
   {["scotch"]      = "7.0.4"},
   {["zstd"]        = "1.5.0"},
 }
