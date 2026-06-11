@@ -28,7 +28,7 @@ pio_ver=os.getenv("pio_ver") or "2.5.10"
 load(pathJoin("pio-D", pio_ver))
 
 esmf_ver=os.getenv("esmf_ver") or "8.8.0"
-load(pathJoin("esmf-D", esfm_ver))
+load(pathJoin("esmf-D", esmf_ver))
 
 fms_ver=os.getenv("fms_ver") or "2024.01"
 load(pathJoin("fms-D", fms_ver))
