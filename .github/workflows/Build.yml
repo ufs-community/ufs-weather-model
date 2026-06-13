@@ -14,23 +14,24 @@ jobs:
   Spack:
     strategy:
       matrix:
-        config:
-        - {
-            os: "ubuntu-24.04",
-            app: "S2SWA",
-            ccpp_suites: "FV3_GFS_v17_coupled_p8,FV3_GFS_v17_coupled_p8_ugwpv1",
-          }
-        - {
-            os: "ubuntu-24.04",
-            app: "ATM",
-            ccpp_suites: "FV3_GFS_v16,FV3_GFS_v16_flake,FV3_GFS_v16_ras,FV3_GFS_v17_p8,FV3_GFS_v17_p8_ugwpv1",
-          }
+        os: ["ubuntu-24.04"]
+        app: ["S2SWA", "ATM"]
+        compiler:
+          - name: "gcc"
+            container: "ghcr.io/noaa-emc/ci-common-build-cache/ufs-weather-model-ubuntu-24.04-gcc-13-mpich-x@sha256:cc9bdafb43d31498fe833c1914d90e32570f8fa9f001e11ca16c4a88417128f8"
+          - name: "oneapi"
+            container: "ghcr.io/noaa-emc/ci-common-build-cache/ufs-weather-model-ubuntu-24.04-oneapi-2025.3-intel-oneapi-mpi-2021.17@sha256:a8d5845388f64ed95ad19583b03536b68c48c2c2d8166f66269fac92fd2a0751"
+        include:
+          - app: S2SWA
+            ccpp_suites: "FV3_GFS_v17_coupled_p8,FV3_GFS_v17_coupled_p8_ugwpv1"
+          - app: ATM
+            ccpp_suites: "FV3_GFS_v16,FV3_GFS_v16_flake,FV3_GFS_v16_ras,FV3_GFS_v17_p8,FV3_GFS_v17_p8_ugwpv1"
 
-    runs-on: ${{ matrix.config.os }}
+    runs-on: ${{ matrix.os }}
     # Dependencies are preinstalled in a container image.
     # For available images, see https://github.com/orgs/NOAA-EMC/packages?tab=packages&q=ufs-weather-model.
     # See https://github.com/NOAA-EMC/ci-common-build-cache/#using-container-images for further container usage instructions.
-    container: ghcr.io/noaa-emc/ci-common-build-cache/ufs-weather-model-ubuntu-24.04-gcc-13-mpich-x@sha256:cc9bdafb43d31498fe833c1914d90e32570f8fa9f001e11ca16c4a88417128f8
+    container: ${{ matrix.compiler.container }}
 
     steps:
 
@@ -39,6 +40,16 @@ jobs:
       with:
         submodules: recursive
         path: ufs-weather-model
+
+    - name: "Install Intel compilers & MPI"
+      if: ${{ matrix.compiler.name }} == oneapi
+      uses: NOAA-EMC/ci-install-intel-toolkit@develop
+      with:
+        install-classic: false
+        oneapi-version: 2025.3
+        install-mpi: true
+        mpi-version: 2021.17
+        mpi-wrapper-setup: oneapi
 
     - name: "Build UFS Weather Model"
       shell: bash
@@ -62,15 +73,15 @@ jobs:
         #spack install --only-concrete
         ############################
         # Prevent possible warnings by removing 'runtime' packages:
-        spack uninstall --force --yes-to-all gcc-runtime
+        spack uninstall --force --yes-to-all gcc-runtime intel-oneapi-runtime
         ###
         export CC=mpicc
         export CXX=mpic++
         export FC=mpif90
         esmfcmakemoddir=$(spack location --install-dir esmf)/cmake
         cmake -S $GITHUB_WORKSPACE/ufs-weather-model -B build \
-          -DAPP=${{ matrix.config.app }} \
-          -DCCPP_SUITES=${{ matrix.config.ccpp_suites }} \
+          -DAPP=${{ matrix.app }} \
+          -DCCPP_SUITES=${{ matrix.ccpp_suites }} \
           -D32BIT=ON \
           -DUSE_ESMF_STATIC_LIBS=OFF \
           -DCMAKE_MODULE_PATH=$esmfcmakemoddir
