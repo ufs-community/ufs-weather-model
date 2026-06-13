@@ -75,9 +75,9 @@ jobs:
         # Prevent possible warnings by removing 'runtime' packages:
         spack uninstall --force --yes-to-all gcc-runtime intel-oneapi-runtime
         ###
-        export CC=mpicc
-        export CXX=mpic++
-        export FC=mpif90
+        if [ ${{ matrix.compiler.name }} == gcc ]; then
+          export CC=mpicc ; export CXX=mpic++ ; export FC=mpif90
+        fi
         esmfcmakemoddir=$(spack location --install-dir esmf)/cmake
         cmake -S $GITHUB_WORKSPACE/ufs-weather-model -B build \
           -DAPP=${{ matrix.app }} \
