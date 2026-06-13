@@ -73,7 +73,10 @@ jobs:
         #spack install --only-concrete
         ############################
         # Prevent possible warnings by removing 'runtime' packages:
-        spack uninstall --force --yes-to-all gcc-runtime intel-oneapi-runtime
+        spack uninstall --force --yes-to-all gcc-runtime
+        if [ ${{ matrix.compiler.name }} == oneapi ]; then
+          spack uninstall --force --yes-to-all intel-oneapi-runtime
+        fi
         ###
         if [ ${{ matrix.compiler.name }} == gcc ]; then
           export CC=mpicc ; export CXX=mpic++ ; export FC=mpif90
