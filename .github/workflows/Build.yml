@@ -42,7 +42,7 @@ jobs:
         path: ufs-weather-model
 
     - name: "Install Intel compilers & MPI"
-      if: ${{ matrix.compiler.name }} == oneapi
+      if: ${{ matrix.compiler.name == "oneapi" }}
       uses: NOAA-EMC/ci-install-intel-toolkit@develop
       with:
         install-classic: false
