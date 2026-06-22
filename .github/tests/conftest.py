@@ -6,7 +6,7 @@ from scripts.get_data import Log
 def set_env_vars():
    os.environ["BASE_URL"] = "https://api.github.com/repos/ufs-community/ufs-weather-model"
    os.environ["PR_NUM"] = "2882"
-   os.environ["MACHINES"] = "acorn derecho gaeac6 hera hercules orion ursa wcoss2"
+   os.environ["MACHINES"] = "acorn derecho gaeac6 hercules orion ursa wcoss2"
 
 @pytest.fixture
 def herc_log():

@@ -174,11 +174,7 @@ ${GIT_HASHES}
 Submodule hashes used in testing:
 EOF
   cd ..
-  if  [[ ${MACHINE_ID} != hera  ]]; then
-    git submodule status --recursive >> "${REGRESSIONTEST_LOG}"
-  else
-    git submodule status >> "${REGRESSIONTEST_LOG}"
-  fi
+  git submodule status >> "${REGRESSIONTEST_LOG}"
   echo; echo >> "${REGRESSIONTEST_LOG}"
   cd tests
 
@@ -777,28 +773,6 @@ case ${MACHINE_ID} in
     PTMP=${PTMP:-${dprefix}/RT_RUNDIRS}
 
     SCHEDULER="slurm"
-    ;;
-  hera)
-    echo "rt.sh: Setting up hera..."
-    if [[ "${ROCOTO:-false}" == true ]] ; then
-      module load rocoto
-      ROCOTO_SCHEDULER=slurm
-    fi
-
-    if [[ "${ECFLOW:-false}" == true ]] ; then
-      module load ecflow/5.11.4
-    fi
-
-    QUEUE="batch"
-    COMPILE_QUEUE="batch"
-
-    PARTITION=
-    dprefix=${dprefix:-"/scratch3/NCEPDEV/stmp/${USER}"}
-    DISKNM="/scratch3/NAGAPE/epic/role.epic/UFS-WM_RT"
-    STMP="${dprefix}/RT_BASELINE"
-    PTMP="${dprefix}/RT_RUNDIRS"
-
-    SCHEDULER=slurm
     ;;
   ursa)
     echo "rt.sh: Setting up ursa..."

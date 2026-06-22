@@ -51,7 +51,7 @@ class GHInterface:
 
 def set_action_from_label(machine, actions, label):
     ''' Match the label that initiates a job with an action in the dict'''
-    # <machine>-<compiler>-<test> i.e. hera-gnu-RT
+    # <machine>-<compiler>-<test> i.e. ursa-gnu-RT
     logger = logging.getLogger('MATCH_LABEL_WITH_ACTIONS')
     logger.info('Setting action from Label')
     split_label = label.name.split('-')
@@ -210,11 +210,7 @@ class Job:
 
 def setup_env():
     hostname = os.getenv('HOSTNAME')
-    if bool(re.match(re.compile('hfe.+'), hostname)):
-        machine = 'hera'
-    elif bool(re.match(re.compile('hecflow.+'), hostname)):
-        machine = 'hera'
-    elif bool(re.match(re.compile('Orion-login.+'), hostname)):
+    if bool(re.match(re.compile('Orion-login.+'), hostname)):
         machine = 'orion'
     elif bool(re.match(re.compile('chadmin.+'), hostname)):
         machine = 'derecho'

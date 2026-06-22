@@ -32,9 +32,6 @@ case $(hostname -f) in
   gaea6[1-8])          MACHINE_ID=gaeac6 ;; ### gaea61-68
   gaea6[1-8].ncrc.gov) MACHINE_ID=gaeac6 ;; ### gaea61-68
 
-  hfe0[1-9]) MACHINE_ID=hera ;; ### hera01-09
-  hfe1[0-2]) MACHINE_ID=hera ;; ### hera10-12
-  hecflow01) MACHINE_ID=hera ;; ### heraecflow01
   
   ufe01) MACHINE_ID=ursa ;; ### ursa
   ufe02) MACHINE_ID=ursa ;; ### ursa
@@ -92,13 +89,11 @@ elif [[ -d /lfs/h1 && ! -d /lfs/h3 ]]; then
   # We are on NOAA TDS Acorn
   MACHINE_ID=acorn
 elif [[ -d /scratch3 ]]; then
-  # We are on NOAA Hera or Ursa
+  # We are on NOAA Ursa
   mount=$(findmnt -n -o SOURCE /home)   
   if [[ ${mount} =~ "ursa" ]]; then
     # We are on ursa
     MACHINE_ID=ursa
-  elif [[ ${mount} =~ "hera" ]]; then
-    MACHINE_ID=hera
   fi
 elif [[ -d /work ]]; then
   # We are on MSU Orion or Hercules

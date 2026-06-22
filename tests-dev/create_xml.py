@@ -9,7 +9,7 @@ def rocoto_create_entries(RTPWD,MACHINE_ID,INPUTDATA_ROOT,INPUTDATA_ROOT_WW3,INP
 
     Args:
         RTPWD (str): Baseline directory
-        MACHINE_ID (str): Machine ID i.e., Hera, GaeaC6, Jet, etc.
+        MACHINE_ID (str): Machine ID i.e., Ursa, GaeaC6, Jet, etc.
         INPUTDATA_ROOT (str): Input data directory
         INPUTDATA_ROOT_WW3 (str): WW3 input data directory
         INPUTDATA_ROOT_BMIC (str): BMIC input data directory
@@ -48,7 +48,7 @@ def rocoto_create_compile_task(MACHINE_ID,COMPILE_ID,ROCOTO_COMPILE_MAXTRIES,MAK
     """Generate and append compile task into Rocoto XML file
 
     Args:
-        MACHINE_ID (str): Machine ID i.e., Hera, GaeaC6, Jet, etc.
+        MACHINE_ID (str): Machine ID i.e., Ursa, GaeaC6, Jet, etc.
         COMPILE_ID (str): Compile identifier e.g., s2swa_intel
         ROCOTO_COMPILE_MAXTRIES (str): Max attempts for compile
         MAKE_OPT (str): Make build options
@@ -60,7 +60,6 @@ def rocoto_create_compile_task(MACHINE_ID,COMPILE_ID,ROCOTO_COMPILE_MAXTRIES,MAK
     NATIVE=""
     BUILD_CORES="8"
     BUILD_WALLTIME="00:30:00"
-    if ( MACHINE_ID == 'hera'):  BUILD_WALLTIME="01:00:00"
     if ( MACHINE_ID == 'ursa'):  BUILD_WALLTIME="01:00:00"
     if ( MACHINE_ID == 'orion'): BUILD_WALLTIME="01:00:00"
     if ( MACHINE_ID == 'hercules'): BUILD_WALLTIME="01:00:00"
@@ -77,7 +76,7 @@ command>
     <partition>eslogin_c6</partition>
 """
         PARTITION= ""
-    if ( PARTITION != "" and MACHINE_ID != "hera" ):
+    if ( PARTITION != "" ):
             compile_task+=f"""    <partition>{PARTITION}</partition>
 """
     compile_task+=f"""    <nodes>1:ppn={BUILD_CORES}</nodes>
@@ -226,7 +225,7 @@ def make_loghead(ACCNR,MACHINE_ID,RUNDIR_ROOT,RTPWD,REGRESSIONTEST_LOG):
 
     Args:
         ACCNR (str): Account to run the job with
-        MACHINE_ID (str): Machine ID i.e. Hera, GaeaC6,  etc.
+        MACHINE_ID (str): Machine ID i.e. Ursa, GaeaC6,  etc.
         RUNDIR_ROOT (str): Test run directory
         RTPWD (str): Baseline directory
         REGRESSIONTEST_LOG (str): Regression Test log filename

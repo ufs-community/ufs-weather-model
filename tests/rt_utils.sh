@@ -421,9 +421,6 @@ rocoto_create_compile_task() {
   NATIVE=""
   BUILD_CORES=8
   BUILD_WALLTIME="00:30:00"
-  if [[ ${MACHINE_ID} == hera ]]; then
-    BUILD_WALLTIME="01:00:00"
-  fi
   if [[ ${MACHINE_ID} == ursa ]]; then
     BUILD_WALLTIME="01:00:00"
   fi
@@ -463,10 +460,6 @@ EOF
     <partition>eslogin_c6</partition>
 EOF
   elif [[ "${MACHINE_ID}" == ursa ]] ; then
-    cat << EOF >> "${ROCOTO_XML}"
-    <partition>${PARTITION}</partition>
-EOF
-  elif [[ -n "${PARTITION}" || ${MACHINE_ID} != hera ]] ; then
     cat << EOF >> "${ROCOTO_XML}"
     <partition>${PARTITION}</partition>
 EOF
@@ -515,12 +508,6 @@ EOF
     cat << EOF >> "${ROCOTO_XML}"
     <partition>${PARTITION}</partition>
 
-EOF
-
-  elif [[ -n "${PARTITION}" || ${MACHINE_ID} != hera ]] ; then
-    cat << EOF >> "${ROCOTO_XML}"
-      <queue>${QUEUE}</queue>
-      <partition>${PARTITION}</partition>
 EOF
   fi
 
@@ -661,8 +648,6 @@ ecflow_run() {
     elif [[ "${HOST::1}" == "d" ]]; then
       ECF_HOST=ddecflow01
     fi
-  elif [[ ${MACHINE_ID} == hera || ${MACHINE_ID} == ursa ]]; then
-    module load ecflow
   fi
   if [[ -z ${ECF_HOST} || -z ${ECF_PORT} ]]; then
     echo "ERROR: ECF_HOST or ECF_PORT are not set, and rt.sh cannot continue with ECFLOW"
@@ -687,7 +672,7 @@ ecflow_run() {
     save_traps=$(trap)
     trap "" SIGINT  # Ignore INT signal during ecflow startup
     case ${MACHINE_ID} in
-      wcoss2|acorn|hera)
+      wcoss2|acorn|)
         #shellcheck disable=SC2029
         ssh "${ECF_HOST}" "bash -l -c \"module load ecflow && ${ECFLOW_START} -p ${ECF_PORT}\""
         ;;
