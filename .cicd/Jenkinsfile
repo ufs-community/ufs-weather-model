@@ -188,14 +188,14 @@ pipeline {
     post {
         success {
             slackSend (
-                channel: '#jenkins-notifications',
+                channel: '#nos-notifications',
                 color: 'good',
                 message: "*SUCCESS: Build ${env.JOB_NAME} #${env.BUILD_NUMBER}* <${env.BUILD_URL}|Open Build>"
             )
         }
         failure {
             slackSend (
-                channel: '#jenkins-notifications',
+                channel: '#nos-notifications',
                 color: 'danger',
                 message: "*FAILURE: Build ${env.JOB_NAME} #${env.BUILD_NUMBER}*  <${env.BUILD_URL}|Open Build>"
             )
