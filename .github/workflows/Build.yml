@@ -1,0 +1,91 @@
+# This is a CI workflow for the ufs-weather-model repository that builds the
+# modified UWM for any given PR.
+#
+# Alex Richert, Jun 2026
+
+name: Build with CMake
+on: [push,pull_request,workflow_dispatch]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  Spack:
+    strategy:
+      matrix:
+        os: ["ubuntu-24.04"]
+        app: ["S2SWA", "ATM"]
+        compiler:
+          - name: "gcc"
+            container: "ghcr.io/noaa-emc/ci-common-build-cache/ufs-weather-model-ubuntu-24.04-gcc-13-mpich-x@sha256:cc9bdafb43d31498fe833c1914d90e32570f8fa9f001e11ca16c4a88417128f8"
+          - name: "oneapi"
+            container: "ghcr.io/noaa-emc/ci-common-build-cache/ufs-weather-model-ubuntu-24.04-oneapi-2025.3-intel-oneapi-mpi-2021.17@sha256:a8d5845388f64ed95ad19583b03536b68c48c2c2d8166f66269fac92fd2a0751"
+        include:
+          - app: S2SWA
+            ccpp_suites: "FV3_GFS_v17_coupled_p8,FV3_GFS_v17_coupled_p8_ugwpv1"
+          - app: ATM
+            ccpp_suites: "FV3_GFS_v16,FV3_GFS_v16_flake,FV3_GFS_v16_ras,FV3_GFS_v17_p8,FV3_GFS_v17_p8_ugwpv1"
+
+    runs-on: ${{ matrix.os }}
+    # Dependencies are preinstalled in a container image.
+    # For available images, see https://github.com/orgs/NOAA-EMC/packages?tab=packages&q=ufs-weather-model.
+    # See https://github.com/NOAA-EMC/ci-common-build-cache/#using-container-images for further container usage instructions.
+    container: ${{ matrix.compiler.container }}
+
+    steps:
+
+    - name: "Checkout"
+      uses: actions/checkout@v4
+      with:
+        submodules: recursive
+        path: ufs-weather-model
+
+    - name: "Install Intel compilers & MPI"
+      if: matrix.compiler.name == 'oneapi'
+      uses: NOAA-EMC/ci-install-intel-toolkit@develop
+      with:
+        install-classic: false
+        oneapi-version: 2025.3
+        install-mpi: true
+        mpi-version: 2021.17
+        mpi-wrapper-setup: oneapi
+
+    - name: "Build UFS Weather Model"
+      shell: bash
+      run: |
+        set -x
+        . /entrypoint.sh
+        ############################
+        ## Modify Spack installation, if needed
+        ##
+        ## For `swap-package` custom Spack command documentation,
+        ## see https://github.com/NOAA-EMC/spack-helpers#modify-package-spec-swap-package.
+        ## To request a package addition or update , create an issue or PR at
+        ## https://github.com/NOAA-EMC/ci-common-build-cache/.
+        ##
+        ## Configure a different version/build options for a package:
+        #spack swap-package --concretize scotch@7.0.9
+        ## Configure an additional package not already in Spack:
+        #spack add py-scipy
+        #spack concretize --fresh
+        ## Run the installation:
+        #spack install --only-concrete
+        ############################
+        # Prevent possible warnings by removing 'runtime' packages:
+        spack uninstall --force --yes-to-all gcc-runtime
+        if [ ${{ matrix.compiler.name }} == oneapi ]; then
+          spack uninstall --force --yes-to-all intel-oneapi-runtime
+        fi
+        ###
+        if [ ${{ matrix.compiler.name }} == gcc ]; then
+          export CC=mpicc ; export CXX=mpic++ ; export FC=mpif90
+        fi
+        esmfcmakemoddir=$(spack location --install-dir esmf)/cmake
+        cmake -S $GITHUB_WORKSPACE/ufs-weather-model -B build \
+          -DAPP=${{ matrix.app }} \
+          -DCCPP_SUITES=${{ matrix.ccpp_suites }} \
+          -D32BIT=ON \
+          -DUSE_ESMF_STATIC_LIBS=OFF \
+          -DCMAKE_MODULE_PATH=$esmfcmakemoddir
+        cmake --build build --parallel 4
