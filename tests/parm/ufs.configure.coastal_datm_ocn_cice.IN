@@ -7,7 +7,7 @@ logKindFlag:            ESMF_LOGKIND_MULTI
 globalResourceControl:  true
 
 # EARTH #
-EARTH_component_list: ATM OCN WAV MED
+EARTH_component_list: ATM OCN ICE MED
 EARTH_attributes::
   Verbosity = 0
 ::
@@ -19,7 +19,7 @@ MED_omp_num_threads:            @[med_omp_num_threads]
 MED_attributes::
   ATM_model = @[atm_model]
   OCN_model = @[ocn_model]
-  WAV_model = @[wav_model]
+  ICE_model = @[ice_model]
   history_n = 1
   history_option = nhours
   history_ymd = -999
@@ -48,27 +48,20 @@ OCN_attributes::
   OverwriteSlice = true
   meshloc = @[meshloc]
   CouplingConfig = @[coupling_config]
+  write_restart_at_endofrun = .true.
 ::
 
-# WAV #
-WAV_model:                      @[wav_model]
-WAV_petlist_bounds:             @[wav_petlist_bounds]
-WAV_omp_num_threads:            @[wav_omp_num_threads]
-WAV_attributes::
+# ICE #
+ICE_model:                      @[ice_model]
+ICE_petlist_bounds:             @[ice_petlist_bounds]
+ICE_omp_num_threads:            @[ice_omp_num_threads]
+ICE_attributes::
   Verbosity = 0
   DumpFields = false
   ProfileMemory = false
-  mesh_wav = @[wav_mesh] 
-  multigrid = false
-  user_histname = 'false'
-  use_historync = 'true'
-  use_restartnc = 'true'
-  restart_from_binary = 'false'
-  pio_typename = 'pnetcdf'
-  pio_numiotasks = 4
-  pio_stride = -99
-  pio_rearranger = 'box'
-  pio_root = -99
+  OverwriteSlice = true
+  mesh_ice = @[mesh_ice]
+  eps_imesh = 5.0e-1
 ::
 
 # Run Sequence # 
@@ -77,20 +70,19 @@ runSeq::
   MED med_phases_prep_atm
   MED med_phases_prep_ocn_accum
   MED med_phases_prep_ocn_avg
-  MED med_phases_prep_wav_accum
-  MED med_phases_prep_wav_avg
+  MED med_phases_prep_ice
   MED -> ATM :remapMethod=redist
   MED -> OCN :remapMethod=redist
-  MED -> WAV :remapMethod=redist
+  MED -> ICE :remapMethod=redist
   ATM
   OCN
-  WAV
+  ICE
   ATM -> MED :remapMethod=redist
   OCN -> MED :remapMethod=redist
-  WAV -> MED :remapMethod=redist
+  ICE -> MED :remapMethod=redist
   MED med_phases_post_atm
   MED med_phases_post_ocn
-  MED med_phases_post_wav
+  MED med_phases_post_ice
   MED med_phases_history_write
   MED med_phases_restart_write
 @

@@ -1,0 +1,99 @@
+###############################################################################
+#
+# CICE coupled coastal_bering_sea_atm2sch2cice configuration
+#
+###############################################################################
+
+export TEST_DESCR="Compare coastal_bering_sea_atm2sch2cice results with previous trunk version"
+
+export CNTL_DIR=coastal_bering_sea_atm2sch2cice
+
+export LIST_FILES="history/iceh_12h.2019-02-07-43200.nc \
+                   ufs.cpld.datm.r.2019-02-07-43200.nc \
+                   ufs.cpld.docn.r.2019-02-07-43200.nc \
+                   ufs.cpld.cpl.hi.2019-02-07-43200.nc"
+
+# default options
+export_coastal
+
+# model_configure
+export SYEAR=2019
+export SMONTH=12
+export SDAY=03
+export SHOUR=12
+export FHMAX=12
+export FHROT=0
+# not used
+export DT_ATMOS=720
+export RESTART_INTERVAL=0
+export QUILTING=.true.
+export QUILTING_RESTART=.false.
+export WRITE_GROUP=1
+export WRTTASK_PER_GROUP=6
+export ITASKS=1
+export OUTPUT_HISTORY=.true.
+export WRITE_DOPOST=.false.
+export NUM_FILES=2
+export FILENAME_BASE="'atm' 'sfc'"
+export OUTPUT_GRID="'cubed_sphere_grid'"
+export OUTPUT_FILE="'netcdf'"
+export IDEFLATE=0
+export NBITS=0
+export ICHUNK2D=0
+export JCHUNK2D=0
+export ICHUNK3D=0
+export JCHUNK3D=0
+export KCHUNK3D=0
+export IMO=384
+export JMO=190
+export WRITE_NSFLIP=.false.
+export OUTPUT_FH="12 -1"
+export IAU_OFFSET=0
+if [[ " hera orion hercules gaea jet frontera " =~ " ${MACHINE_ID} " ]] ; then
+  ZSTANDARD_LEVEL=5
+fi
+
+# datm
+export DATM_CDEPS=true
+export DATM_IN_CONFIGURE=datm_in.coastal.IN
+export DATM_STREAM_CONFIGURE=datm.streams.coastal.IN
+export atm_datamode="ERA5"
+export MESH_ATM="\"INPUT/ERA5_BerSea_ESMFmesh.nc\""
+export ATM_NX_GLB=203
+export ATM_NY_GLB=75
+export EXPORT_ALL=.true.
+export FILENAME_BASE='era5.'
+export STREAM_VECTORS="null"
+export mapalgo=redist
+export tinterpalgo=linear
+export STREAM_OFFSET=0
+export stream_files="\"INPUT/ERA5_JUL2019_JUN2020.nc\""
+export stream_variables="\"dlwsfc Faxa_lwdn\" \"Pair Sa_pslv\" \"airtmp Sa_t2m\" \"spchmd Sa_q2m\" \"ttlpcp Faxa_rain\" \"wndewd Sa_u10m\" \"wndnwd Sa_v10m\" \"Pair Sa_pbot\" \"airtmp Sa_tbot\" \"spchmd Sa_shum\" \"wndewd Sa_u\" \"wndnwd Sa_v\" \"glbrad Faxa_swdn\""
+export dtlimit=1.5
+
+# datm
+export HURR="Bering"
+export CPL_CONF="atm2sch2cice"
+
+# pes
+export ATM_compute_tasks=18
+export OCN_tasks=230
+export ICE_tasks=230
+
+# configuration
+export MODEL_CONFIGURE=model_configure.IN
+export UFS_CONFIGURE=ufs.configure.coastal_datm_ocn_cice.IN
+export med_model=cmeps
+export atm_model=datm
+export ocn_model=schism
+export ice_model=cice6
+export mesh_ice=INPUT/Grid/mesh.cice.4km.nc
+export coupling_interval_slow_sec=1200
+export RESTART_N=6
+export RUNTYPE=startup
+export CPLMODE=coastal
+export meshloc=element
+export RESTART_FILE_SUFFIX_SECS="${SYEAR}-${SMONTH}-${SDAY}-$(printf "%05d" $(( (${FHROT}+ ${SHOUR})*3600 )))"
+
+# input files
+export FV3_RUN="coastal_datm.IN coastal_schism_run.IN coastal_cice_run.IN"

@@ -5,10 +5,25 @@ if [ ! -d "RESTART" ]; then
   mkdir RESTART
 fi
 
-cp @[INPUTDATA_ROOT]/WW3/$HURR/$CPL_CONF/bound.nc .
-cp @[INPUTDATA_ROOT]/WW3/$HURR/$CPL_CONF/inlet.msh .
+for IFILE in @[INPUTDATA_ROOT]/WW3/$HURR/$CPL_CONF/*.nc; do
+  if [ -f "$IFILE" ]; then
+    cp $IFILE .
+  fi
+done
+
+for IFILE in @[INPUTDATA_ROOT]/WW3/$HURR/$CPL_CONF/*.msh; do
+  if [ -f "$IFILE" ]; then
+    cp $IFILE .
+  fi
+done
+
+for IFILE in @[INPUTDATA_ROOT]/WW3/$HURR/$CPL_CONF/*.list; do
+  if [ -f "$IFILE" ]; then
+    cp $IFILE .
+  fi
+done
+
 cp @[INPUTDATA_ROOT]/WW3/$HURR/$CPL_CONF/ww3_* .
-cp @[INPUTDATA_ROOT]/WW3/$HURR/$CPL_CONF/mesh.shinnecock.cdf5.nc .
 cp @[INPUTDATA_ROOT]/WW3/$HURR/$CPL_CONF/mod_def.* .
 
 if [[ $CPL_CONF == 'ww3' ]]; then

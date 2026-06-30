@@ -82,9 +82,10 @@ fi
 
 # datm
 export DATM_CDEPS=true
+export DATM_IN_CONFIGURE=datm_in.coastal.IN
 export DATM_STREAM_CONFIGURE=datm.streams.coastal.IN
 export atm_datamode="ATMMESH"
-export MESH_ATM="wind_atm_fin_ch_time_vec_ESMFmesh.nc"
+export MESH_ATM="\"INPUT/wind_atm_fin_ch_time_vec_ESMFmesh.nc\""
 export ATM_NX_GLB=101
 export ATM_NY_GLB=101
 export EXPORT_ALL=.true.
@@ -98,7 +99,7 @@ export STREAM_OFFSET=0
 
 # datm/ocean
 export HURR="Ike"
-export CPL_CONF="atm2sch2wav"
+export CPL_CONF="atm2sch2ww3"
 
 # pes
 export ATM_compute_tasks=8
@@ -112,6 +113,7 @@ export med_model=cmeps
 export atm_model=datm
 export ocn_model=schism
 export wav_model=ww3
+export wav_mesh=mesh.shinnecock.cdf5.nc
 export coupling_interval_slow_sec=3600
 export RESTART_N=12
 export RUNTYPE=startup

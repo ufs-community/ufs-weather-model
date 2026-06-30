@@ -1,28 +1,34 @@
 ###############################################################################
 #
-# FVCOM coupled coastal_scituateharbor_atm2fvc configuration
+# SCHISM coupled coastal_sandy_duck_atm2sch configuration
 #
 ###############################################################################
 
-export TEST_DESCR="Compare coastal_scituateharbor_atm2fvc results with previous trunk version"
+export TEST_DESCR="Compare coastal_sandy_duck_atm2sch results with previous trunk version"
 
-export CNTL_DIR=coastal_scituateharbor_atm2fvc
+export CNTL_DIR=coastal_sandy_duck_atm2sch
 
-export LIST_FILES="OUTPUT/sci_0001.nc \
-                   OUTPUT/sci_restart_0001.nc \
-                   sci.cpl.hi.2022-06-22-00000.nc \
-                   sci.cpl.hi.2022-06-23-00000.nc \
-                   sci.cpl.hi.2022-06-24-00000.nc"
+lst=""
+for n in `seq -f "%06g" 0 159`
+do
+  if [ "$n" == "000000" ]; then
+    lst="outputs/schout_${n}_1.nc outputs/schout_${n}_2.nc"
+  else
+    lst="$lst outputs/schout_${n}_1.nc outputs/schout_${n}_2.nc"
+  fi
+done
 
-# deafult options
+export LIST_FILES="${lst} ufs.cpld.cpl.hi.2012-10-27-21600.nc"
+
+# default options
 export_coastal
 
 # model_configure
-export SYEAR=2022
-export SMONTH=06
-export SDAY=21
+export SYEAR=2012
+export SMONTH=10
+export SDAY=27
 export SHOUR=00
-export FHMAX=72
+export FHMAX=6
 export FHROT=0
 # not used
 export DT_ATMOS=720
@@ -59,38 +65,43 @@ export DATM_CDEPS=true
 export DATM_IN_CONFIGURE=datm_in.coastal.IN
 export DATM_STREAM_CONFIGURE=datm.streams.coastal.IN
 export atm_datamode="ATMMESH"
-export MESH_ATM="\"INPUT/sciww3_forcing_STR_ESMFmesh_cdf5.nc\""
-export ATM_NX_GLB=101
-export ATM_NY_GLB=101
+export MESH_ATM="\"INPUT/era5_data_19941012_19941014_rot_fix_SCRIP_ESMF.nc\""
+export ATM_NX_GLB=1440
+export ATM_NY_GLB=721
 export EXPORT_ALL=.true.
 export FILENAME_BASE='atmmesh.'
 export STREAM_VECTORS="null"
-export stream_files="\"INPUT/sciww3_forcing_STR_fixed.nc\""
-export stream_variables="\"uwnd Sa_u10m\" \"vwnd Sa_v10m\" \"P Sa_pslv\""
+export stream_files="\"INPUT/era5_data_30min_obs_wind_rot_fix_filled.nc\""
+export stream_variables="\"u10 Sa_u10m\" \"v10 Sa_v10m\" \"msl Sa_pslv\""
 export mapalgo=redist
 export dtlimit=1.5
 export STREAM_OFFSET=0
 
 # datm/ocean
-export HURR="Sci"
-export CPL_CONF="atm2fvc"
+export HURR="Sandy"
+export CPL_CONF="atm2sch"
 
 # pes
-export ATM_compute_tasks=12
-export OCN_tasks=12
+export ATM_compute_tasks=160
+export OCN_tasks=160
 
 # configuration
 export MODEL_CONFIGURE=model_configure.IN
 export UFS_CONFIGURE=ufs.configure.coastal_datm_ocn.IN
 export med_model=cmeps
+export med_petlist_bounds="0 159"
+export med_omp_num_threads=1
 export atm_model=datm
-export ocn_model=fvcom
-export coupling_interval_slow_sec=3600
-export casename=sci
-export RESTART_N=12
+export atm_petlist_bounds="0 159"
+export atm_omp_num_threads=1
+export ocn_model=schism
+export ocn_petlist_bounds="0 159"
+export ocn_omp_num_threads=1
+export coupling_interval_slow_sec=1800
+export RESTART_N=6
 export RUNTYPE=startup
 export CPLMODE=coastal
 export meshloc=element
+
 # input files
-export FV3_RUN="coastal_datm.IN coastal_fvcom_run.IN"
-export CMP_DATAONLY=true
+export FV3_RUN="coastal_datm.IN coastal_schism_run.IN"
