@@ -152,11 +152,13 @@ contains
   !! @param[in]   prefixtime     optional, if true log filename has time prefix
   !! @param[in]   lastrestart    optional, if present, write the time of the last restart
   !! @param[in]   lastoutput     optional, if present, write the filename written at this FH
+  !! @param[in]   output_dir     optional, if present, write component logs to output directory
   !! @param[out]  rc return code
   !!
   !> @authorDenise.Worthen@noaa.gov
   !> @date 04-14-2025
-  subroutine log_restart_fh(myTime, startTime, complog, prefixtime, lastrestart, lastoutput, rc)
+
+  subroutine log_restart_fh(myTime, startTime, complog, prefixtime, lastrestart, lastoutput, output_dir, rc)
 
     use ESMF,              only : ESMF_SUCCESS, ESMF_MAXSTR, ESMF_Time, ESMF_TimeInterval
     use ESMF,              only : ESMF_TimeGet, ESMF_TimeIntervalGet
@@ -166,7 +168,7 @@ contains
     character(len=*), intent(in)           :: complog
     logical,          intent(in), optional :: prefixtime
     type(ESMF_Time),  intent(in), optional :: lastrestart
-    character(len=*), intent(in), optional :: lastoutput
+    character(len=*), intent(in), optional :: lastoutput, output_dir
     integer,         intent(out)           :: rc
 
     ! local variables
@@ -204,6 +206,15 @@ contains
        write(filename,'(i4.4,2(i2.2),A,3(i2.2),A)') yr, mon, day,'.', hour, minute, sec,'.'//trim(complog)
     else
        write(filename,'(a,i4.4)')'log.'//trim(complog)//'.f',int(fhour)
+    end if
+    if (present(output_dir)) then
+      if (len_trim(output_dir) > 0) then
+         if (output_dir(len_trim(output_dir):len_trim(output_dir)) /= '/') then
+            filename = trim(output_dir)//'/'//trim(filename)
+         else
+            filename = trim(output_dir)//trim(filename)
+         end if
+      end if
     end if
     if (present(lastrestart)) then
        call ESMF_TimeGet(lastrestart, yy=yr, mm=mon, dd=day, h=hour, m=minute, s=sec, rc=rc)
