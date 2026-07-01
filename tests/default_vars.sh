@@ -1345,6 +1345,7 @@ export PRINT_DIFF_PGR=.false.
 # Coupling
 export coupling_interval_fast_sec=0
 export CHOUR=06
+export MOM6_LOG_TO_OUTDIR=.false.
 export MOM6_OUTPUT_DIR=./MOM6_OUTPUT
 export MOM6_RESTART_DIR=./RESTART/
 export MOM6_RESTART_SETTING=n
