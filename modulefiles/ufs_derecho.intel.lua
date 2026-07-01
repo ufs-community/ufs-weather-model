@@ -3,8 +3,8 @@ loads UFS Model prerequisites for NOAA Parallelworks/Intel
 ]])
 
 setenv("LMOD_TMOD_FIND_FIRST","yes")
-prepend_path("MODULEPATH", "/glade/work/epicufsrt/contrib/spack-stack/derecho/spack-stack-1.9.2/envs/ue-oneapi-2024.2.1/install/modulefiles/Core")
-prepend_path("MODULEPATH", "/glade/work/epicufsrt/contrib/spack-stack/derecho/spack-stack-1.9.2/envs/ue-oneapi-2024.2.1/install/modulefiles/cray-mpich/8.1.29-3sepg3g/gcc/12.4.0")
+prepend_path("MODULEPATH", "/glade/work/epicufsrt/contrib/spack-stack/derecho/spack-stack-1.9.2/envs/ue-oneapi-zlib.1.2.13/install/modulefiles/Core")
+prepend_path("MODULEPATH", "/glade/work/epicufsrt/contrib/spack-stack/derecho/spack-stack-1.9.2/envs/ue-oneapi-zlib.1.2.13/install/modulefiles/cray-mpich/8.1.29-3sepg3g/gcc/12.4.0")
 
 unload("ncarcompilers")
 stack_intel_ver=os.getenv("stack_intel_ver") or "2024.2.1"
@@ -24,9 +24,9 @@ load("ufs_common")
 nccmp_ver=os.getenv("nccmp_ver") or "1.9.0.1"
 load(pathJoin("nccmp", nccmp_ver))
 
-setenv("CC", "mpicc")
-setenv("CXX", "mpicxx")
-setenv("FC", "mpif90")
+setenv("CC","cc")
+setenv("CXX","CC")
+setenv("FC","ftn")
 setenv("I_MPI_CC", "icx")
 setenv("I_MPI_CXX", "icpx")
 setenv("I_MPI_F90", "ifort")
