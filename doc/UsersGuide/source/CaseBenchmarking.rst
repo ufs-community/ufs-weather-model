@@ -42,13 +42,8 @@ All times are in seconds. Each value is shown as ``compile / run``.
      - 407 / 265
      - 780 / 333
    * - Tropical Cyclone
-     - N/A
-     - N/A
-     - N/A
-     - N/A
-     - N/A
-
-.. note::
-
-   The Tropical Cyclone case is currently failing, but the issue is being actively
-   investigated.
+     - 456 / 790
+     - 876 / 906
+     - 690 / 637
+     - 495 / 401
+     - 943 / 973
