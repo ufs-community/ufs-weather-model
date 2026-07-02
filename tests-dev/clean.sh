@@ -8,8 +8,8 @@ usage() {
   echo "  -a  clean all"
   echo "  -l  clean links only"
   echo "  -s  clean shell scripts only"
-  echo "  -t  clean tests directory"
-  echo "  -w  clean without trace"
+  echo "  -t  clean tests-dev directory"
+  echo "  -w  clean without trace -- i.e. return tests-dev to original state by removing new files from a run and/or -s sync command"
   echo
   exit 1
 }
