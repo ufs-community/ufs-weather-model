@@ -51,21 +51,22 @@ echo "ACCNR=${ACCNR}"
 export LMOD_SH_DBG_ON=0
 echo "LMOD_VERSION=${LMOD_VERSION}"
 if [[ ${UFS_PLATFORM} = gaea ]] ; then
+   # shellcheck disable=SC1091
 	source /gpfs/f5/epic/scratch/role.epic/contrib/Lmod_init_C5.sh
 	echo "LMOD_VERSION=${LMOD_VERSION}"
 fi
 set +x
-module use ${PWD}/modulefiles >/dev/null 2>&1
-module load ufs_${machine_id}.${UFS_COMPILER} || true
+module use "${PWD}/modulefiles" >/dev/null 2>&1
+module load "ufs_${machine_id}.${UFS_COMPILER}" || true
 [[ ${UFS_PLATFORM} = gaea ]] && module load cmake/3.23.1 || true
 module list
 
 echo "Pipeline Building WM on ${UFS_PLATFORM} ${UFS_COMPILER} with Account=${ACCNR}."
 export CMAKE_FLAGS="-DAPP=ATM -DCCPP_SUITES=FV3_GFS_v16"
 /usr/bin/time -p \
-	-o ${WORKSPACE:-$(pwd)}/${UFS_PLATFORM}-${UFS_COMPILER}-time-wm_build.json \
+	-o "${WORKSPACE:-$(pwd)}"/"${UFS_PLATFORM}-${UFS_COMPILER}-time-wm_build.json" \
 	-f '{\n  "cpu": "%P"\n, "memMax": "%M"\n, "mem": {"text": "%X", "data": "%D", "swaps": "%W", "context": "%c", "waits": "%w"}\n, "pagefaults": {"major": "%F", "minor": "%R"}\n, "filesystem": {"inputs": "%I", "outputs": "%O"}\n, "time": {"real": "%e", "user": "%U", "sys": "%S"}\n}' \
-	./build.sh | tee ${workspace}/${UFS_PLATFORM}-${UFS_COMPILER}-wm_build-log.txt
+	./build.sh | tee "${workspace}/${UFS_PLATFORM}-${UFS_COMPILER}-wm_build-log.txt"
 status=${PIPESTATUS[0]}
 echo "Pipeline Completed WM build on ${UFS_PLATFORM} ${UFS_COMPILER}. status=${status}"
 

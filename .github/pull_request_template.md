@@ -16,6 +16,8 @@
 - [ ] Run the full Intel+GNU RT suite (compared to current baselines), preferably on Ursa (Derecho or Hercules are acceptable alternatives). **Exceptions:** documentation-only PRs, CI-only PRs, etc.
    - [ ] Commit log file w/full results from RT suite run (if applicable).
    - [ ] Verify that `test_changes.list` indicates which tests, if any, are changed by this PR. Commit `test_changes.list`, even if it is empty.
+- [ ] Transparency in the use of generative AI is required by NOAA policy. Was GenAI used in this work?
+   - [ ] [Generative AI tool (insert name, if any)] was used to assist with developing this code. The code has been reviewed, edited, and validated by NWS staff.
 - [ ] Fill out all sections of this template.
 
 ---
@@ -33,15 +35,19 @@ Provide a concise commit message for the UFS WM and any subcomponents; delete un
 ```
 * UFSWM - 
   * AQM - 
+  * CATChem - 
   * CDEPS - 
+  * CECE - 
   * CICE - 
   * CMEPS - 
   * CMakeModules - 
   * UFSATM - 
-    * ccpp-physics - 
-    * atmos_cubed_sphere - 
-  * GOCART - 
-  * HYCOM - 
+    * ccpp-physics -
+      * CCPP submodules (list) - 
+    * atmos_cubed_sphere -
+    * MPAS
+  * GOCART -
+  * LM4 - 
   * MOM6 - 
   * NOAHMP - 
   * WW3 - 
@@ -73,21 +79,26 @@ Example:
 * WW3: NOAA-EMC/WW3#321
 Delete sections that are not needed.
 -->
-* AQM:
-* CDEPS:
-* CICE:
-* CMEPS:
-* CMakeModules:
-* UFSATM:
-  * ccpp-physics:
-  * atmos_cubed_sphere:
-* GOCART:
-* HYCOM:
-* MOM6:
-* NOAHMP:
-* WW3:
-* fire_behavior:
-* stochastic_physics:
+* UFSWM - 
+  * AQM - 
+  * CATChem - 
+  * CDEPS - 
+  * CECE - 
+  * CICE - 
+  * CMEPS - 
+  * CMakeModules - 
+  * UFSATM - 
+    * ccpp-physics -
+      * CCPP submodules (list) - 
+    * atmos_cubed_sphere -
+    * MPAS
+  * GOCART -
+  * LM4 - 
+  * MOM6 - 
+  * NOAHMP - 
+  * WW3 - 
+  * fire_behavior
+  * stochastic_physics - 
 * None
 
 ### UFSWM Blocking Dependencies:
@@ -152,3 +163,8 @@ If there are changes to input data for a test, provide information here. Delete 
   - [ ] Acorn
 - [ ] CI
 - [ ] opnReqTest (complete task if unnecessary)
+
+## Testing Remarks:
+<!-- Lead CM: List (1) testing issues that we are bypassing (e.g., failing CI due to remarks or an early-merged component PR) 
+(2) Issues that have been opened based on testing results (3) any other relevant info -->
+- 
