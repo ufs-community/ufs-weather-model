@@ -752,7 +752,7 @@ The input files containing grid information and the time-varying forcing files f
 
 .. note:: 
 
-   Users can find atmospheric forcing files for use with the Noah-MP land component (LND) in the `Land Data Assimilation (DA) data bucket <https://registry.opendata.aws/noaa-ufs-land-da/>`_. These files provide atmospheric forcing data related to precipitation, solar radiation, longwave radiation, temperature, pressure, winds, humidity, topography, and mesh data. Forcing files for the land component configuration come from the Global Soil Wetness Project Phase 3 (`GSWP3 <https://www.isimip.org/gettingstarted/input-data-bias-adjustment/details/4/>`_) dataset or from the `ECMWF Reanalysis v5 (ERA5) <https://www.ecmwf.int/en/forecasts/dataset/ecmwf-reanalysis-v5>`_ dataset. 
+   Users can find atmospheric forcing files for use with the Noah-MP land component (LND) in the `Land Data Assimilation (DA) data bucket <https://registry.opendata.aws/noaa-ufs-land-da/>`_. These files provide atmospheric forcing data related to precipitation, solar radiation, longwave radiation, temperature, pressure, winds, humidity, topography, and mesh data. Forcing files for the land component configuration come from the Global Soil Wetness Project Phase 3 (`GSWP3 <https://www.isimip.org/gettingstarted/input-data-bias-adjustment/details/4/>`_) dataset or from the `ECMWF Reanalysis v5 (ERA5) <https://www.ecmwf.int/en/forecasts/datasets>`_ dataset. 
 
    See the :ref:`Land DA User's Guide <landda:InputFiles>` or the :ref:`WM LND Input <lnd-in>` section of this page for more information on files used in land configurations of the UFS WM. 
 
