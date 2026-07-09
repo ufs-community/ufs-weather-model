@@ -1351,6 +1351,7 @@ export MOM6_RESTART_DIR=./RESTART/
 export MOM6_RESTART_SETTING=n
 export MOM6_HISTFREQ_N=6
 export CMEPS_LOG_TO_RSTDIR=.false.
+export CICE_LOG_TO_OUTDIR=.false.
 
 # Following not used for standalone
 export USE_CICE_ALB=.false.
