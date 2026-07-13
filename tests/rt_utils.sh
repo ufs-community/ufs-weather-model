@@ -792,7 +792,7 @@ update_test_bl_date() {
   TEST_NAME=$1
   if [[ "${TEST_BL_DATE}" != "${BL_DATE}" ]]; then
     echo "rt_utils.sh: Updating baseline date for ${TEST_ID} from ${TEST_BL_DATE} to ${BL_DATE}"
-    sed -i "s/TEST_BL_DATE=\"${TEST_BL_DATE}\"/TEST_BL_DATE=\"${BL_DATE}\"/" "${PATHRT}/tests/${TEST_NAME}"
+    sed -i "s/TEST_BL_DATE=${TEST_BL_DATE}/TEST_BL_DATE=${BL_DATE}/" "${PATHRT}/tests/${TEST_NAME}"
   fi
 
 }
