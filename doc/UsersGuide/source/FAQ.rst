@@ -633,14 +633,14 @@ Where can I find more information about previous public releases of the UFS Weat
 
 Previous releases of the UFS WM are available, but we recommend using the UFS WM within an application workflow (e.g., `SRW App v3.0.0 <https://github.com/ufs-community/ufs-srweather-app/releases/tag/ufs-srw-v3.0.0>`_ ). Alternatively, users can run the `develop branch <https://github.com/ufs-community/ufs-weather-model>`_ code to check out the latest and greatest features! This code is constantly maintained via regression testing. Users can access information about previous releases of the UFS WM in the User’s Guide for each release:
 
-* `UFS WM User’s Guide <https://ufs-weather-model.readthedocs.io/en/release-public-v3.0.0/>`_ (released with SRW APP v3.0.0)
-* `UFS WM User’s Guide <https://ufs-weather-model.readthedocs.io/en/ufs-srw-v2.2.0-doc/>`_ (released with SRW App v2.2.0)
+* `UFS WM User’s Guide for SRW App v3.0.0 <https://ufs-weather-model.readthedocs.io/en/release-public-v3.0.0/>`_
+* `UFS WM User’s Guide for SRW App v2.2.0 <https://ufs-weather-model.readthedocs.io/en/ufs-srw-v2.2.0-doc/>`_
 
 ======================================================================================================
 What is the most recent public release of the UFS Weather Model? What has been updated in the release?
 ======================================================================================================
 
 The UFS Weather Model (WM) is constantly evolving, and new features are added at a rapid pace. Users can find those features in the develop branch, but documentation is not always available for the latest updates. The UFS WM is tagged frequently for public and operational releases. The `ufs-land-da-v3.0.0 <https://github.com/ufs-community/land-DA_workflow/releases/tag/v3.0.0>`_ tag of the WM is the most recent public release of the UFS WM, which was released as part of the Land Data Assimilation (DA) System v3.0.0. This tag represents a snapshot of a continuously evolving system undergoing open development. Users may also find the `ufs-srw-v3.0.0 <https://github.com/ufs-community/ufs-weather-model/releases/tag/ufs-srw-v3.0.0>`_ tag of the WM useful; the UFS WM was released as part of the UFS Short-Range Weather (SRW) Application v3.0.0 using this tag. 
-Since the UFS WM contains a huge number of components (e.g., dynamical core, physics, ocean coupling, infrastructure), there have been a wide variety of updates since the most recent SRW App and Land DA release tags. Users can peruse the `large number of pull requests <https://github.com/ufs-community/ufs-weather-model/pulls?q=is%3Apr+is%3Aclosed+merged%3A%3E2025-09-25+>`_ in the UFS WM repository to gain a full understanding of the changes to the top-level system. For changes to specific components, users should consult the component repositories. 
+Since the UFS WM contains a huge number of components (e.g., dynamical core, physics, ocean coupling, infrastructure), there have been a wide variety of updates since the most recent SRW App and Land DA release tags. Users can peruse the :wm-repo:`large number of pull requests <pulls?q=is%3Apr+is%3Aclosed+merged%3A%3E2025-09-25+>` in the UFS WM repository to gain a full understanding of the changes to the top-level system. For changes to specific components, users should consult the component repositories. 
 
 
