@@ -3,19 +3,19 @@ loads UFS Model prerequisites on Cactus and Dogwood
 ]])
 
 -- First, look for libraries in "prod" space
-PrgEnv_intel_ver=os.getenv("PrgEnv_intel_ver") or "8.1.0"
+PrgEnv_intel_ver=os.getenv("PrgEnv_intel_ver") or "8.5.0"
 load(pathJoin("PrgEnv-intel", PrgEnv_intel_ver))
 
 intel_ver=os.getenv("intel_ver") or "19.1.3.304"
 load(pathJoin("intel", intel_ver))
 
-craype_ver=os.getenv("craype_ver") or "2.7.13"
+craype_ver=os.getenv("craype_ver") or "2.7.17"
 load(pathJoin("craype", craype_ver))
 
-cray_mpich_ver=os.getenv("cray_mpich_ver") or "8.1.12"
+cray_mpich_ver=os.getenv("cray_mpich_ver") or "8.1.19"
 load(pathJoin("cray-mpich", cray_mpich_ver))
 
-cmake_ver=os.getenv("cmake_ver") or "3.20.2"
+cmake_ver=os.getenv("cmake_ver") or "3.27.9"
 load(pathJoin("cmake", cmake_ver))
 
 hdf5_ver=os.getenv("hdf5_ver") or "1.14.0"
@@ -44,11 +44,11 @@ local ufs_modules = {
   {["zlib"]        = "1.2.11"},
   {["libpng"]      = "1.6.37"},
   {["bacio"]       = "2.4.1"},
-  {["crtm"]        = "2.4.0"},
+  {["crtm"]        = "2.4.0.2"},
   {["g2"]          = "3.5.1"},
-  {["g2tmpl"]      = "1.13.0"},
-  {["ip"]          = "4.0.0"},
-  {["sp"]          = "2.3.3"},
+  {["g2tmpl"]      = "1.17.0"},
+  {["ip"]          = "5.2.0"},
+  {["sp"]          = "2.4.0"},
   {["w3emc"]       = "2.12.0"},
   {["gftl-shared"] = "1.6.1"},
   {["scotch"]      = "7.0.4"},
