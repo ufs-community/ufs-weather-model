@@ -133,6 +133,7 @@ export GFSv17opn=.false.
 export SFS=.false.
 
 export EXCLUSIVE_NODES=.false.
+export MEM_PER_NODE_OPT=""
 
 if [[ ${MACHINE_ID} = wcoss2 || ${MACHINE_ID} = acorn ]]; then
 
@@ -224,7 +225,6 @@ elif [[ ${MACHINE_ID} = hera ]]; then
 elif [[ ${MACHINE_ID} = ursa ]]; then
 
   export TPN=192
-
   export INPES_dflt=3
   export JNPES_dflt=8
   export INPES_thrd=3
