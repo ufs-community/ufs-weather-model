@@ -1,7 +1,7 @@
 #
 #  cpld_debug_sfs test
 #
-source ${PATHRT}/tests/cpld_control_sfs
+source "${PATHRT}"/tests/cpld_control_sfs
 
 export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS system - C192 MX025 - SFS debug test"
 
@@ -55,5 +55,5 @@ export RESTART_INTERVAL="${RESTART_N} -1"
 export MOM6_HISTFREQ_N=2
 
 # CICE frequency
-export CICE_DIAGFREQ=`expr $((FHMAX-$FHROT)) \* 3600 / $DT_CICE`
+export CICE_DIAGFREQ=$(( (FHMAX-FHROT) * 3600 / DT_CICE ))
 export CICE_HISTFREQ_N="0, 0, 2, 0, 1"

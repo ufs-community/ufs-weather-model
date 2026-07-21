@@ -54,8 +54,7 @@ export EXTERNAL_IC=.false.
 export MAKE_NH=.false.
 export MOUNTAIN=.true.
 export NA_INIT=0
-
-export RESTART_FILE_PREFIX="${SYEAR}${SMONTH}${SDAY}.$(printf "%02d" $(( ${SHOUR} + ${FHROT}  )))0000"
+RESTART_FILE_PREFIX=$(set_restart_file_prefix)
 
 export CCPP_SUITE=FV3_RAP_sfcdiff
 export DO_MYNNSFCLAY=.false.

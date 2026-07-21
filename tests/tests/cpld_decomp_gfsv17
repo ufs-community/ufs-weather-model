@@ -2,7 +2,7 @@
 #  cpld_control GFSv17 decomposition test
 #
 
-source ${PATHRT}/tests/cpld_control_gfsv17
+source "${PATHRT}"/tests/cpld_control_gfsv17
 
 export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS-WW3 system - C96MX100 - unst WW3 - decomp test"
 
@@ -68,6 +68,6 @@ export ICE_tasks=$ICE_tasks_cpl_dcmp
 export WAV_tasks=$WAV_tasks_cpl_dcmp
 
 export CICE_NPROC=$ICE_tasks
-export np2=`expr $CICE_NPROC / 2`
-export CICE_BLCKX=`expr $NX_GLB / $np2`
-export CICE_BLCKY=`expr $NY_GLB / 2`
+export np2=$(( CICE_NPROC / 2 ))
+export CICE_BLCKX=$(( NX_GLB / np2 ))
+export CICE_BLCKY=$(( NY_GLB / 2 ))

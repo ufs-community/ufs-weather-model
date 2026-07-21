@@ -1,0 +1,146 @@
+name: UFS Custom Checks
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+    branches: [develop]
+
+defaults:
+  run:
+    shell: bash -eo pipefail {0}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  enforce-standards:
+    name: Enforce Repo Standards
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check for Bash Octal Traps
+        run: |
+          echo "Scanning for potential octal traps in tests/default_vars.sh and tests/tests/*"
+
+          mapfile -d '' CHECK_FILES < <(find tests/default_vars.sh tests/tests -type f -print0)
+          if [[ ${#CHECK_FILES[@]} -eq 0 ]]; then
+            echo "::error::No files found to scan for octal traps."
+            exit 1
+          fi
+
+          # Build the set of zero-padded variables from assignments.
+          # SHOUR is intentionally zero-padded because tests/fv3_conf and tests/parm
+          # templates consume it as a two-character hour token (e.g., 06). Arithmetic
+          # uses of SHOUR are handled explicitly in code (10#... or printf), so SHOUR
+          # is excluded from this generic trap check.
+          PADDED_VARS=$(perl -ne '
+            next if /^\s*#/;
+            if (/^\s*(?:export\s+)?([A-Za-z_][A-Za-z0-9_]*)\s*=\s*(?:"|\047)?0[0-9]+(?:"|\047)?\s*(?:#.*)?$/) {
+              print "$1\n";
+            }
+          ' "${CHECK_FILES[@]}" | sort -u | grep -v '^SHOUR$' || true)
+
+          if [[ -z "${PADDED_VARS}" ]]; then
+            echo "✅ No zero-padded arithmetic candidate variables found (other than SHOUR)."
+            exit 0
+          fi
+
+          PADDED_RE=$(printf '%s\n' "${PADDED_VARS}" | paste -sd'|' -)
+
+          # Flag uses of zero-padded vars in arithmetic contexts unless explicitly protected by 10#.
+          UNPROTECTED=$(PADDED_RE="${PADDED_RE}" perl -ne '
+            our $re;
+            BEGIN { $re = $ENV{PADDED_RE} // q||; }
+            next if $re eq q||;
+            next if /^\s*#/;
+
+            my $line = $_;
+            my $flagged = 0;
+
+            while ($line =~ /\$\(\((.*?)\)\)/g) {
+              my $expr = $1;
+
+              while ($expr =~ /(\$\{?([A-Za-z_][A-Za-z0-9_]*)\}?|\b([A-Za-z_][A-Za-z0-9_]*)\b)/g) {
+                my $tok = $1;
+                my $var = defined($2) ? $2 : $3;
+                next unless defined($var) && $var =~ /^(?:$re)$/;
+
+                my $start = $-[1];
+                my $before = substr($expr, 0, $start);
+
+                # If explicitly prefixed with 10#, this use is safe.
+                next if $before =~ /10#\s*$/;
+
+                # Ignore bare-token submatches that are actually part of $VAR or ${VAR}.
+                if (defined $3) {
+                  my $prev1 = $start > 0 ? substr($expr, $start - 1, 1) : q||;
+                  my $prev2 = $start > 1 ? substr($expr, $start - 2, 2) : q||;
+                  next if $prev1 eq q|$| || $prev2 eq q|${|;
+                }
+
+                $flagged = 1;
+                last;
+              }
+
+              last if $flagged;
+            }
+
+            print "$ARGV:$.:$_" if $flagged;
+          ' "${CHECK_FILES[@]}")
+
+          if [[ -n "${UNPROTECTED}" ]]; then
+            echo "::error::🚨 OCTAL TRAP DETECTED! Zero-padded vars used in arithmetic must be prefixed with 10#."
+            echo "Zero-padded vars under check: ${PADDED_VARS//$'\n'/, }"
+            echo "The following lines are missing 10# protection:"
+            echo "${UNPROTECTED}"
+            exit 1
+          fi
+
+          echo "✅ No unprotected arithmetic uses found for zero-padded vars: ${PADDED_VARS//$'\n'/, }"
+
+      - name: Ban expr in test configuration files
+        run: |
+          echo "Scanning for illegal 'expr' usage in tests/default_vars.sh and tests/tests/*..."
+
+          mapfile -d '' CHECK_FILES < <(find tests/default_vars.sh tests/tests -type f -print0)
+          if [[ ${#CHECK_FILES[@]} -eq 0 ]]; then
+            echo "::error::No files found to scan for expr usage."
+            exit 1
+          fi
+
+          ILLEGAL_EXPR=$(perl -ne 'next if /^\s*#/; print "$ARGV:$.:$_" if /\bexpr\b/' "${CHECK_FILES[@]}")
+
+          if [[ -n "${ILLEGAL_EXPR}" ]]; then
+            echo "::error::🚨 EXPR DETECTED! Do not use 'expr' in tests/default_vars.sh or tests/tests/*."
+            echo "The following lines contain illegal expr usage:"
+            echo "${ILLEGAL_EXPR}"
+            exit 1
+          fi
+
+          echo "✅ No illegal expr usage found!"
+
+      # - name: Ban 'export' in configuration files
+      #   run: |
+      #     echo "Scanning for illegal 'export' declarations in tests/default_vars.sh and tests/tests/*..."
+      #     mapfile -d '' CHECK_FILES < <(find tests/default_vars.sh tests/tests -type f -print0)
+      #
+      #     if [[ ${#CHECK_FILES[@]} -eq 0 ]]; then
+      #       echo "::error::No files found to scan for export declarations."
+      #       exit 1
+      #     fi
+      #
+      #     ILLEGAL_EXPORTS=$(perl -ne 'next if /^\s*#/; print "$ARGV:$.:$_" if /^\s*export\b(?=\s|$)/' "${CHECK_FILES[@]}")
+      #
+      #     if [[ -n "$ILLEGAL_EXPORTS" ]]; then
+      #       echo "::error::🚨 EXPORT DETECTED! Do not use 'export' in tests/default_vars.sh or tests/tests/*."
+      #       echo "The following lines contain illegal exports:"
+      #       echo "$ILLEGAL_EXPORTS"
+      #       exit 1
+      #     else
+      #       echo "✅ No illegal exports found!"
+      #       exit 0
+      #     fi
