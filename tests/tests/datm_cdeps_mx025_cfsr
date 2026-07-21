@@ -2,7 +2,7 @@
 #  DATM_CDEPS_MOM6_CICE_CMEPS_CFSR test
 #
 
-source ${PATHRT}/tests/datm_cdeps_control_cfsr
+source "${PATHRT}"/tests/datm_cdeps_control_cfsr
 
 export TEST_DESCR+=" - 1/4deg ocean+ice"
 
@@ -31,10 +31,10 @@ export ICERES=0.25
 export NX_GLB=1440
 export NY_GLB=1080
 export CICE_NPROC=48
-export np2=`expr $CICE_NPROC / 2`
-export CICE_BLCKX=`expr $NX_GLB / $np2`
-export CICE_BLCKY=`expr $NY_GLB / 2`
-export CICE_DIAGFREQ=`expr $((FHMAX-$FHROT)) \* 3600 / $DT_CICE`
+export np2=$(( CICE_NPROC / 2 ))
+export CICE_BLCKX=$(( NX_GLB / np2 ))
+export CICE_BLCKY=$(( NY_GLB / 2 ))
+export CICE_DIAGFREQ=$(( (FHMAX-FHROT) * 3600 / DT_CICE ))
 
 # resolution dependent files
 export MOM6_INPUT=MOM_input_${OCNRES}.IN
