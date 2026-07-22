@@ -237,8 +237,7 @@ endif()
 ###############################################################################
 if(CATCHEM)
   set(CATCHEM_BUILD_NUOPC ON CACHE BOOL "Enable CATChem NUOPC cap for UFS integration" FORCE)
-  set(CATCHEM_TRACE_NUOPC ON CACHE BOOL "Enable ESMF trace regions in the CATChem NUOPC cap" FORCE)
-  set(CATCHEM_BUILD_TESTING ON CACHE BOOL "Enable CATChem testing framework" FORCE) #tdk: set to off or set default to off and update other scripts
+  set(CATCHEM_TRACE_NUOPC OFF CACHE BOOL "Enable ESMF trace regions in the CATChem NUOPC cap" FORCE)
   add_subdirectory(CATChem)
 endif()
 
@@ -334,11 +333,11 @@ if(JEDI_DRIVER)
   list(APPEND _ufs_defs_private JEDI_DRIVER=ON)
 endif()
 
- if(AQM)
-   add_dependencies(ufs aqm)
-   list(APPEND _ufs_defs_private FRONT_AQM=aqm)
-   list(APPEND _ufs_libs_public aqm)
- endif()
+if(AQM)
+  add_dependencies(ufs aqm)
+  list(APPEND _ufs_defs_private FRONT_AQM=aqm)
+  list(APPEND _ufs_libs_public aqm)
+endif()
 
 if(CATCHEM)
   add_dependencies(ufs cc_nuopc)

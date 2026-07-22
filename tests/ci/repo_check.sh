@@ -95,11 +95,11 @@ paths[fb]='fire_behavior'
 
 # Update w/CECE & CATChem PRs
 urls[cece]='https://github.com/ufs-community/CECE'
-branches[cece]='develop'
+branches[cece]='main'
 paths[cece]='CECE'
 
 urls[catchem]='https://github.com/ufs-community/CATChem'
-branches[catchem]='develop'
+branches[catchem]='main'
 paths[catchem]='CATChem'
 
 
