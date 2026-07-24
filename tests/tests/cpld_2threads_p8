@@ -82,9 +82,9 @@ export ice_omp_num_threads=$ICE_thrds_cpl_thrd
 export wav_omp_num_threads=$WAV_thrds_cpl_thrd
 
 export CICE_NPROC=${ICE_tasks}
-export np2=`expr $CICE_NPROC / 2`
-export CICE_BLCKX=`expr $NX_GLB / $np2`
-export CICE_BLCKY=`expr $NY_GLB / 2`
+export np2=$(( CICE_NPROC / 2 ))
+export CICE_BLCKX=$(( NX_GLB / np2 ))
+export CICE_BLCKY=$(( NY_GLB / 2 ))
 
 export MOM6_TOPOEDITS=ufs.topo_edits_011818.nc
 export MOM6_ALLOW_LANDMASK_CHANGES=True

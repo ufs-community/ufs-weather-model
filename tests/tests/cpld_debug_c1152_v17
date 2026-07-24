@@ -2,7 +2,7 @@
 #  debug c1152 GFSv17 test
 #
 
-source ${PATHRT}/tests/cpld_control_c1152_v17
+source "${PATHRT}"/tests/cpld_control_c1152_v17
 
 export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS-WW3 system - C1152MX025 - debug test"
 
@@ -50,7 +50,7 @@ export LIST_FILES="sfcf000.nc \
 
 export DAYS=0.375
 export FHMAX=9
-export CICE_DIAGFREQ=`expr $((FHMAX-$FHROT)) \* 3600 / $DT_CICE`
+export CICE_DIAGFREQ=$(( (FHMAX-FHROT) * 3600 / DT_CICE ))
 export MOM6_OUTPUT_FH=6
 
 export WLCLK=120

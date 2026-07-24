@@ -65,7 +65,7 @@ export SYEAR=2025
 export SMONTH=01
 export SDAY=01
 export SHOUR=06
-export SECS=`expr $SHOUR \* 3600`
+export SECS=$(( 10#${SHOUR} * 3600 ))
 export FHROT=3
 export MOM6_OUTPUT_FH=6
 
@@ -175,7 +175,7 @@ export DT_INNER=${DT_ATMOS}
 export DT_CICE=${DT_ATMOS}
 export DT_DYNAM_MOM6=900
 export DT_THERM_MOM6=1800
-export CICE_DIAGFREQ=`expr $((FHMAX-$FHROT)) \* 3600 / $DT_CICE`
+export CICE_DIAGFREQ=$(( (FHMAX-FHROT) * 3600 / DT_CICE ))
 export coupling_interval_slow_sec=${DT_THERM_MOM6}
 export coupling_interval_fast_sec=${DT_ATMOS}
 

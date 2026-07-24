@@ -2,7 +2,7 @@
 #  debug gefs test
 #
 
-source ${PATHRT}/tests/cpld_control_gefs
+source "${PATHRT}"/tests/cpld_control_gefs
 
 export TEST_DESCR="Fully coupled FV3-CCPP-GOCART-MOM6-CICE-CMEPS-WW3 system - C384L127 MX025 - debug test"
 
@@ -53,7 +53,7 @@ export LIST_FILES="sfcf003.nc \
 
 export DAYS=0.125
 export FHMAX=3
-export CICE_DIAGFREQ=`expr $((FHMAX-$FHROT)) \* 3600 / $DT_CICE`
+export CICE_DIAGFREQ=$(( (FHMAX-FHROT) * 3600 / DT_CICE ))
 export MOM6_HISTFREQ_N=3
 
 export WLCLK=60

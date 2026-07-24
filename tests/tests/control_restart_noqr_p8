@@ -60,7 +60,7 @@ export OUTPUT_GRID='gaussian_grid'
 export WRITE_DOPOST=.true.
 export QUILTING_RESTART=.false.
 export FHROT=12
-export RESTART_FILE_PREFIX="${SYEAR}${SMONTH}${SDAY}.$(printf "%02d" $(( ${SHOUR} + ${FHROT}  )))0000"
+RESTART_FILE_PREFIX=$(set_restart_file_prefix)
 
 export WARM_START=.true.
 export NGGPS_IC=.false.
