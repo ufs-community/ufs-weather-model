@@ -26,7 +26,6 @@ get_shas () {
 }
 
 
-
 declare -A urls branches paths
 # UPP, ccpp-framework, and gocart are intentionally excluded because they update at a different cadence 
 # and periodically bring in changes. 
