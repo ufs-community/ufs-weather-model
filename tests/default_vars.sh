@@ -133,6 +133,7 @@ export GFSv17opn=.false.
 export SFS=.false.
 
 export EXCLUSIVE_NODES=.false.
+export MEM_PER_NODE_OPT=""
 
 if [[ ${MACHINE_ID} = wcoss2 || ${MACHINE_ID} = acorn ]]; then
 
@@ -224,7 +225,6 @@ elif [[ ${MACHINE_ID} = hera ]]; then
 elif [[ ${MACHINE_ID} = ursa ]]; then
 
   export TPN=192
-
   export INPES_dflt=3
   export JNPES_dflt=8
   export INPES_thrd=3
@@ -389,6 +389,23 @@ export DumpFields="false"
 export MED_history_n=1000000
 export RESTART_FH=" "
 
+function set_restart_file_prefix() {
+ local restart_file_prefix
+ restart_file_prefix=$(date -u +"%Y%m%d.%H0000" -d "${SYEAR}${SMONTH}${SDAY} ${SHOUR} ${FHROT} hours")
+ echo "${restart_file_prefix}"
+}
+
+function set_restart_file_suffix_secs() {
+ local restart_valid_time
+ local restart_secs
+ local restart_file_suffix_secs
+ restart_valid_time=$(date -u +"%Y-%m-%d %H:%M:%S" -d "${SYEAR}${SMONTH}${SDAY} ${SHOUR} ${FHROT} hours")
+ restart_secs=$(( $(date -u -d "${restart_valid_time}" +%-H) * 3600 ))
+ restart_file_suffix_date="$(date -u -d "${restart_valid_time}" +"%Y-%m-%d")"
+ restart_file_suffix_secs="${restart_file_suffix_date}-$(printf "%05d" "${restart_secs}")"
+ echo "${restart_file_suffix_secs}"
+}
+
 export_fv3_v16 ()
 {
 # Add support for v16 test cases. This section
@@ -492,7 +509,7 @@ export_mpas ()
     export SMONTH=10
     export SDAY=03
     export SHOUR=00
-    export SECS=$(( SHOUR*3600 ))
+    export SECS=$(( 10#${SHOUR} * 3600 ))
     export FHMAX=$(( DAYS*24 ))
     export FHCYC=0
     export FHROT=0
@@ -1200,7 +1217,7 @@ export SYEAR=2016
 export SMONTH=10
 export SDAY=03
 export SHOUR=00
-export SECS=$(( SHOUR*3600 ))
+export SECS=$(( 10#${SHOUR} * 3600 ))
 export FHMAX=$(( DAYS*24 ))
 export FHCYC=24
 export FHROT=0
@@ -1520,7 +1537,7 @@ export_ugwpv1() {
 
 # Defaults for the CICE6 model namelist, mx100
 export_cice6() {
-  SECS=$((SHOUR*3600))
+  SECS=$(( 10#${SHOUR} * 3600 ))
   export SECS
   export DT_CICE=${DT_ATMOS}
   export CICE_NPT=999
@@ -2054,7 +2071,7 @@ export_hafs_regional ()
   export SMONTH=08
   export SDAY=29
   export SHOUR=00
-  export SECS=$((SHOUR*3600))
+  export SECS=$(( 10#${SHOUR} * 3600 ))
   export FHMAX=6
   export ENS_NUM=1
   export DT_ATMOS=900

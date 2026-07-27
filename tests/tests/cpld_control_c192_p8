@@ -96,9 +96,9 @@ export ICERES=0.50
 export NX_GLB=720
 export NY_GLB=576
 export CICE_NPROC=$ICE_tasks
-export np2=`expr $CICE_NPROC / 2`
-export CICE_BLCKX=`expr $NX_GLB / $np2`
-export CICE_BLCKY=`expr $NY_GLB / 2`
+export np2=$(( CICE_NPROC / 2 ))
+export CICE_BLCKX=$(( NX_GLB / np2 ))
+export CICE_BLCKY=$(( NY_GLB / 2 ))
 export WW3_DOMAIN=mx${OCNRES}
 export MESH_WAV=mesh.${WW3_DOMAIN}.nc
 export WW3_MODDEF=mod_def.mx${OCNRES}
@@ -109,7 +109,7 @@ export DT_INNER=${DT_ATMOS}
 export DT_CICE=${DT_ATMOS}
 export DT_DYNAM_MOM6=1800
 export DT_THERM_MOM6=3600
-export CICE_DIAGFREQ=`expr $((FHMAX-$FHROT)) \* 3600 / $DT_CICE`
+export CICE_DIAGFREQ=$(( (FHMAX-FHROT) * 3600 / DT_CICE ))
 
 # ufs.configure
 export coupling_interval_slow_sec=${DT_THERM_MOM6}

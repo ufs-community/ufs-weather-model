@@ -2,7 +2,7 @@
 #  DATM_CDEPS_MOM6_CICE_CMEPS_CFSR restart test
 #
 
-source ${PATHRT}/tests/datm_cdeps_control_cfsr
+source "${PATHRT}"/tests/datm_cdeps_control_cfsr
 
 export TEST_DESCR+=" - restart"
 
@@ -10,10 +10,10 @@ export FHMAX=24
 export FHOUT=12
 export WARM_START=.true.
 export FHROT=12
-export RESTART_N=$((FHMAX-$FHROT))
+export RESTART_N=$((FHMAX-FHROT))
 export CICE_RUNTYPE=continue
 export RUNTYPE=continue
 export CICE_USE_RESTART_TIME=.true.
 export MOM6_RESTART_SETTING=r
 export eps_imesh=2.5e-1
-export CICE_DIAGFREQ=`expr $((FHMAX-$FHROT)) \* 3600 / $DT_CICE`
+export CICE_DIAGFREQ=$(( (FHMAX-FHROT) * 3600 / DT_CICE ))

@@ -19,7 +19,7 @@ export SYEAR=2011
 export SMONTH=01
 export SDAY=01
 export SHOUR=06
-export FHMAX=06
+export FHMAX=6
 export FHROT=0
 
 export DATM_IN_CONFIGURE=datm_in.IN
@@ -60,6 +60,5 @@ export snow_albedo_option=2
 export precip_partition_option=1
 export initial_albedo=0.25
 export WARM_START=.true.
-
-export RESTART_FILE_SUFFIX_SECS="${SYEAR}-${SMONTH}-${SDAY}-$(printf "%02d" $(( (${FHROT}+${SHOUR})*3600 )))"
+RESTART_FILE_SUFFIX_SECS=$(set_restart_file_suffix_secs)
 export FV3_RUN="lnd_datm_cdeps_era5.IN noahmp_run.IN"

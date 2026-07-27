@@ -88,7 +88,7 @@ export SMONTH=05
 export SDAY=01
 export SHOUR=00
 export CHOUR=00
-export SECS=`expr $SHOUR \* 3600`
+export SECS=$(( 10#${SHOUR} * 3600 ))
 
 export DOMAINS_STACK_SIZE=16000000
 
@@ -115,9 +115,9 @@ export ICERES=0.25
 export NX_GLB=1440
 export NY_GLB=1080
 export CICE_NPROC=$ICE_tasks
-export np2=`expr $CICE_NPROC / 2`
-export CICE_BLCKX=`expr $NX_GLB / $np2`
-export CICE_BLCKY=`expr $NY_GLB / 2`
+export np2=$(( CICE_NPROC / 2 ))
+export CICE_BLCKX=$(( NX_GLB / np2 ))
+export CICE_BLCKY=$(( NY_GLB / 2 ))
 
 # set component and coupling timesteps
 export DT_ATMOS=600
@@ -125,7 +125,7 @@ export DT_INNER=${DT_ATMOS}
 export DT_CICE=${DT_ATMOS}
 export DT_DYNAM_MOM6=900
 export DT_THERM_MOM6=1800
-export CICE_DIAGFREQ=`expr $((FHMAX-$FHROT)) \* 3600 / $DT_CICE`
+export CICE_DIAGFREQ=$(( (FHMAX-FHROT) * 3600 / DT_CICE ))
 
 # ufs.configure
 export coupling_interval_slow_sec=${DT_THERM_MOM6}

@@ -28,7 +28,7 @@
     ntiles = 6
     npz = @[NPZ]
     dz_min = @[DZ_MIN]
-    ncnst  = 12
+    ncnst  = 13
     psm_bc = @[PSM_BC]
     grid_type = -1
     make_nh = @[MAKE_NH]
@@ -90,6 +90,7 @@
     no_dycore = .false.
     z_tracer = @[Z_TRACER]
     inline_q = @[INLINE_Q]
+    var_grav = .false.
     agrid_vel_rst = .false.
     read_increment = @[READ_INCREMENT]
     res_latlon_dynamics = "fv3_increment.nc"
@@ -107,8 +108,8 @@
 &gfs_physics_nml
     fhzero       = @[FHZERO]
     h2o_phys     = .true.
-    ldiag3d      = .true. 
-    qdiag3d      = .true.
+    ldiag3d      = .false. 
+    qdiag3d      = .false.
     print_diff_pgr= .false.
     fhcyc        = @[FHCYC]
     use_ufo      = .true.

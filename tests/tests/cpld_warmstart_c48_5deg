@@ -68,7 +68,7 @@ export SYEAR=2021
 export SMONTH=03
 export SDAY=23
 export SHOUR=06
-export SECS=`expr $SHOUR \* 3600`
+export SECS=$(( 10#${SHOUR} * 3600 ))
 
 export DAYS=0.25
 export FHMAX=6
@@ -104,7 +104,7 @@ export NX_GLB=72
 export NY_GLB=35
 export CICE_NPROC=$ICE_tasks
 export CICE_DECOMP=slenderX1
-export CICE_BLCKX=`expr $NX_GLB / $CICE_NPROC`
+export CICE_BLCKX=$(( NX_GLB / CICE_NPROC ))
 export CICE_BLCKY=$NY_GLB
 export WW3_DOMAIN=uglo_900km
 export MESH_WAV=mesh.${WW3_DOMAIN}.nc
@@ -115,7 +115,7 @@ export DT_ATMOS=1200
 export DT_CICE=${DT_ATMOS}
 export DT_DYNAM_MOM6=3600
 export DT_THERM_MOM6=3600
-export CICE_DIAGFREQ=`expr $((FHMAX-$FHROT)) \* 3600 / $DT_CICE`
+export CICE_DIAGFREQ=$(( (FHMAX-FHROT) * 3600 / DT_CICE ))
 
 # ufs.configure
 export coupling_interval_slow_sec=${DT_THERM_MOM6}

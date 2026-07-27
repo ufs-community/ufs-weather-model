@@ -27,7 +27,7 @@ export NSTF_NAME='2,0,0,0,0'
 export WRITE_DOPOST=.true.
 export IAER=5111
 export IOVR=3
-export FHROT=06
+export FHROT=6
 export OUTPUT_FH="3 -1"
 
 export WARM_START=.true.
@@ -47,4 +47,4 @@ export STOCHINI=.true.
 export FV3_RUN=control_run.IN
 export CCPP_SUITE=FV3_GFS_v16
 export INPUT_NML=control.nml.IN
-export RESTART_FILE_PREFIX="${SYEAR}${SMONTH}${SDAY}.$(printf "%02d" $(( ${SHOUR} + ${FHROT}  )))0000"
+RESTART_FILE_PREFIX=$(set_restart_file_prefix)
