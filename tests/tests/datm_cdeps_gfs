@@ -2,35 +2,35 @@
 #  DATM_CDEPS_MOM6_CICE_CMEPS_GFS test
 #
 
-export TEST_DESCR="DATM_CDEPS-MOM6-CICE-CMEPS_GFS - control "
+TEST_DESCR="DATM_CDEPS-MOM6-CICE-CMEPS_GFS - control "
 
-export CNTL_DIR=datm_cdeps_gfs
+CNTL_DIR=datm_cdeps_gfs
 
-export LIST_FILES="RESTART/20210323.060000.MOM.res.nc \
-                   RESTART/iced.2021-03-23-21600.nc \
-                   RESTART/DATM_GFS.cpl.r.2021-03-23-21600.nc"
+LIST_FILES="RESTART/20210323.060000.MOM.res.nc \
+            RESTART/iced.2021-03-23-21600.nc \
+            RESTART/DATM_GFS.cpl.r.2021-03-23-21600.nc"
 
 export_datm_cdeps
-export DATM_SRC=GFS
-export FILEBASE_DATM=gfs
-export SYEAR=2021
-export SMONTH=03
-export SDAY=22
-export SHOUR=06
-export SECS=$(( 10#${SHOUR} * 3600 ))
-export IATM=3072
-export JATM=1536
-export ATM_NX_GLB=$IATM
-export ATM_NY_GLB=$JATM
-export ATMRES=${IATM}x${JATM}
-export MESH_ATM=mesh.datm.3072x1536.nc
-export atm_datamode=GEFS
-export CICE_KTHERM=2
-export CICE_TFREEZE_OPTION=mushy
-export RESTART_N=12
-export stream_files="INPUT/gfs.202103.nc"
-export eps_imesh=2.5e-1
-export MOM6_TOPOEDITS=ufs.topo_edits_011818.nc
-export MOM6_ALLOW_LANDMASK_CHANGES=True
+DATM_SRC=GFS
+FILEBASE_DATM=gfs
+SYEAR=2021
+SMONTH=03
+SDAY=22
+SHOUR=06
+SECS=$((10#${SHOUR} * 3600))
+IATM=3072
+JATM=1536
+ATM_NX_GLB=$IATM
+ATM_NY_GLB=$JATM
+ATMRES=${IATM}x${JATM}
+MESH_ATM=mesh.datm.3072x1536.nc
+atm_datamode=GEFS
+CICE_KTHERM=2
+CICE_TFREEZE_OPTION=mushy
+RESTART_N=12
+stream_files="INPUT/gfs.202103.nc"
+eps_imesh=2.5e-1
+MOM6_TOPOEDITS=ufs.topo_edits_011818.nc
+MOM6_ALLOW_LANDMASK_CHANGES=True
 
-export FV3_RUN=cpld_datm_cdeps_gfs.IN
+FV3_RUN=cpld_datm_cdeps_gfs.IN

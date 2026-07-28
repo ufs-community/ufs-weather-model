@@ -5,62 +5,62 @@
 ###############################################################################
 
 source "${PATHRT}"/tests/cpld_control_c1152_v17
-export TEST_DESCR+=" restart"
+TEST_DESCR+=" restart"
 
-export LIST_FILES="sfcf024.nc \
-                   atmf024.nc \
-                   RESTART/20250102.060000.coupler.res \
-                   RESTART/20250102.060000.fv_core.res.nc \
-                   RESTART/20250102.060000.fv_core.res.tile1.nc \
-                   RESTART/20250102.060000.fv_core.res.tile2.nc \
-                   RESTART/20250102.060000.fv_core.res.tile3.nc \
-                   RESTART/20250102.060000.fv_core.res.tile4.nc \
-                   RESTART/20250102.060000.fv_core.res.tile5.nc \
-                   RESTART/20250102.060000.fv_core.res.tile6.nc \
-                   RESTART/20250102.060000.fv_srf_wnd.res.tile1.nc \
-                   RESTART/20250102.060000.fv_srf_wnd.res.tile2.nc \
-                   RESTART/20250102.060000.fv_srf_wnd.res.tile3.nc \
-                   RESTART/20250102.060000.fv_srf_wnd.res.tile4.nc \
-                   RESTART/20250102.060000.fv_srf_wnd.res.tile5.nc \
-                   RESTART/20250102.060000.fv_srf_wnd.res.tile6.nc \
-                   RESTART/20250102.060000.fv_tracer.res.tile1.nc \
-                   RESTART/20250102.060000.fv_tracer.res.tile2.nc \
-                   RESTART/20250102.060000.fv_tracer.res.tile3.nc \
-                   RESTART/20250102.060000.fv_tracer.res.tile4.nc \
-                   RESTART/20250102.060000.fv_tracer.res.tile5.nc \
-                   RESTART/20250102.060000.fv_tracer.res.tile6.nc \
-                   RESTART/20250102.060000.phy_data.tile1.nc \
-                   RESTART/20250102.060000.phy_data.tile2.nc \
-                   RESTART/20250102.060000.phy_data.tile3.nc \
-                   RESTART/20250102.060000.phy_data.tile4.nc \
-                   RESTART/20250102.060000.phy_data.tile5.nc \
-                   RESTART/20250102.060000.phy_data.tile6.nc \
-                   RESTART/20250102.060000.sfc_data.tile1.nc \
-                   RESTART/20250102.060000.sfc_data.tile2.nc \
-                   RESTART/20250102.060000.sfc_data.tile3.nc \
-                   RESTART/20250102.060000.sfc_data.tile4.nc \
-                   RESTART/20250102.060000.sfc_data.tile5.nc \
-                   RESTART/20250102.060000.sfc_data.tile6.nc \
-                   20250102.060000.mom6.res \
-                   ice.restart_file \
-                   ufs.cpld.ww3.r.2025-01-02-21600.nc \
-                   20250102.060000.out_pnt.ww3.nc \
-                   20250102.060000.out_grd.ww3 "
+LIST_FILES="sfcf024.nc \
+            atmf024.nc \
+            RESTART/20250102.060000.coupler.res \
+            RESTART/20250102.060000.fv_core.res.nc \
+            RESTART/20250102.060000.fv_core.res.tile1.nc \
+            RESTART/20250102.060000.fv_core.res.tile2.nc \
+            RESTART/20250102.060000.fv_core.res.tile3.nc \
+            RESTART/20250102.060000.fv_core.res.tile4.nc \
+            RESTART/20250102.060000.fv_core.res.tile5.nc \
+            RESTART/20250102.060000.fv_core.res.tile6.nc \
+            RESTART/20250102.060000.fv_srf_wnd.res.tile1.nc \
+            RESTART/20250102.060000.fv_srf_wnd.res.tile2.nc \
+            RESTART/20250102.060000.fv_srf_wnd.res.tile3.nc \
+            RESTART/20250102.060000.fv_srf_wnd.res.tile4.nc \
+            RESTART/20250102.060000.fv_srf_wnd.res.tile5.nc \
+            RESTART/20250102.060000.fv_srf_wnd.res.tile6.nc \
+            RESTART/20250102.060000.fv_tracer.res.tile1.nc \
+            RESTART/20250102.060000.fv_tracer.res.tile2.nc \
+            RESTART/20250102.060000.fv_tracer.res.tile3.nc \
+            RESTART/20250102.060000.fv_tracer.res.tile4.nc \
+            RESTART/20250102.060000.fv_tracer.res.tile5.nc \
+            RESTART/20250102.060000.fv_tracer.res.tile6.nc \
+            RESTART/20250102.060000.phy_data.tile1.nc \
+            RESTART/20250102.060000.phy_data.tile2.nc \
+            RESTART/20250102.060000.phy_data.tile3.nc \
+            RESTART/20250102.060000.phy_data.tile4.nc \
+            RESTART/20250102.060000.phy_data.tile5.nc \
+            RESTART/20250102.060000.phy_data.tile6.nc \
+            RESTART/20250102.060000.sfc_data.tile1.nc \
+            RESTART/20250102.060000.sfc_data.tile2.nc \
+            RESTART/20250102.060000.sfc_data.tile3.nc \
+            RESTART/20250102.060000.sfc_data.tile4.nc \
+            RESTART/20250102.060000.sfc_data.tile5.nc \
+            RESTART/20250102.060000.sfc_data.tile6.nc \
+            20250102.060000.mom6.res \
+            ice.restart_file \
+            ufs.cpld.ww3.r.2025-01-02-21600.nc \
+            20250102.060000.out_pnt.ww3.nc \
+            20250102.060000.out_grd.ww3 "
 
-export EXCLUSIVE_NODES=.false.
+EXCLUSIVE_NODES=.false.
 
-export FHROT=18 #restart after any IAU
-export RESTART_N=3
-export RESTART_INTERVAL="${RESTART_N} -1"
+FHROT=18 #restart after any IAU
+RESTART_N=3
+RESTART_INTERVAL="${RESTART_N} -1"
 RESTART_FILE_PREFIX=$(set_restart_file_prefix)
 RESTART_FILE_SUFFIX_SECS=$(set_restart_file_suffix_secs)
 echo "RESTART_FILE_PREFIX=$RESTART_FILE_PREFIX"
 echo "RESTART_FILE_SUFFIX_SECS=$RESTART_FILE_SUFFIX_SECS"
-export CICE_DIAGFREQ=$(( (FHMAX-FHROT) * 3600 / DT_CICE ))
+CICE_DIAGFREQ=$(((FHMAX - FHROT) * 3600 / DT_CICE))
 
 #Warm start settings already from base test
 
 #Restart after increments/IAU
-export ODA_INCUPD="False"
-export ODA_INCUPD_UV="False"
-export nccmp_exclude="--exclude=oda_incupd_ncount"
+ODA_INCUPD="False"
+ODA_INCUPD_UV="False"
+nccmp_exclude="--exclude=oda_incupd_ncount"
