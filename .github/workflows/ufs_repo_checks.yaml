@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7.0.1
 
       - name: Check for Bash Octal Traps
         run: |
@@ -123,24 +123,24 @@ jobs:
 
           echo "✅ No illegal expr usage found!"
 
-      # - name: Ban 'export' in configuration files
-      #   run: |
-      #     echo "Scanning for illegal 'export' declarations in tests/default_vars.sh and tests/tests/*..."
-      #     mapfile -d '' CHECK_FILES < <(find tests/default_vars.sh tests/tests -type f -print0)
-      #
-      #     if [[ ${#CHECK_FILES[@]} -eq 0 ]]; then
-      #       echo "::error::No files found to scan for export declarations."
-      #       exit 1
-      #     fi
-      #
-      #     ILLEGAL_EXPORTS=$(perl -ne 'next if /^\s*#/; print "$ARGV:$.:$_" if /^\s*export\b(?=\s|$)/' "${CHECK_FILES[@]}")
-      #
-      #     if [[ -n "$ILLEGAL_EXPORTS" ]]; then
-      #       echo "::error::🚨 EXPORT DETECTED! Do not use 'export' in tests/default_vars.sh or tests/tests/*."
-      #       echo "The following lines contain illegal exports:"
-      #       echo "$ILLEGAL_EXPORTS"
-      #       exit 1
-      #     else
-      #       echo "✅ No illegal exports found!"
-      #       exit 0
-      #     fi
+      - name: Ban 'export' in configuration files
+        run: |
+          echo "Scanning for illegal 'export' declarations in tests/default_vars.sh and tests/tests/*..."
+          mapfile -d '' CHECK_FILES < <(find tests/default_vars.sh tests/tests -type f -print0)
+
+          if [[ ${#CHECK_FILES[@]} -eq 0 ]]; then
+            echo "::error::No files found to scan for export declarations."
+            exit 1
+          fi
+
+          ILLEGAL_EXPORTS=$(perl -ne 'next if /^\s*#/; print "$ARGV:$.:$_" if /^\s*export\b(?=\s|$)/' "${CHECK_FILES[@]}")
+
+          if [[ -n "$ILLEGAL_EXPORTS" ]]; then
+            echo "::error::🚨 EXPORT DETECTED! Do not use 'export' in tests/default_vars.sh or tests/tests/*."
+            echo "The following lines contain illegal exports:"
+            echo "$ILLEGAL_EXPORTS"
+            exit 1
+          else
+            echo "✅ No illegal exports found!"
+            exit 0
+          fi
