@@ -2213,7 +2213,13 @@ export_coastal ()
   export HISTORY_FILE_ON_NATIVE_GRID=.false.
   export QUANTIZE_NSD=0
   export WAV_STANDALONE=.false.
-  
+
+  export CMEPS_PIO_FORMAT='pnetcdf'
+  export CMEPS_PIO_STRIDE=4
+  export CMEPS_PIO_IOTASKS=-99
+  export CMEPS_PIO_REARR='box'
+  export CMEPS_PIO_ROOT=-99
+
   export casename='ufs.cpld'
   export meshloc=element
   export coupling_config=none

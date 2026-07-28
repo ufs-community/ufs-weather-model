@@ -8,20 +8,27 @@ export TEST_DESCR="Compare coastal_bering_sea_atm2sch2cice results with previous
 
 export CNTL_DIR=coastal_bering_sea_atm2sch2cice
 
-export LIST_FILES="history/iceh_12h.2019-02-07-43200.nc \
-                   ufs.cpld.datm.r.2019-02-07-43200.nc \
-                   ufs.cpld.docn.r.2019-02-07-43200.nc \
-                   ufs.cpld.cpl.hi.2019-02-07-43200.nc"
+lst=""
+for n in `seq -f "%06g" 0 479`
+do
+  if [ "$n" == "000000" ]; then
+    lst="outputs/schout_${n}_1.nc"
+  else
+    lst="$lst outputs/schout_${n}_1.nc"
+  fi
+done
+
+export LIST_FILES="${lst} history/iceh_01h.2020-05-01-54000.nc ufs.cpld.cpl.hi.2020-05-01-54000.nc"
 
 # default options
 export_coastal
 
 # model_configure
-export SYEAR=2019
-export SMONTH=12
-export SDAY=03
+export SYEAR=2020
+export SMONTH=05
+export SDAY=01
 export SHOUR=12
-export FHMAX=12
+export FHMAX=3
 export FHROT=0
 # not used
 export DT_ATMOS=720
@@ -59,15 +66,15 @@ export DATM_IN_CONFIGURE=datm_in.coastal.IN
 export DATM_STREAM_CONFIGURE=datm.streams.coastal.IN
 export atm_datamode="ERA5"
 export MESH_ATM="\"INPUT/ERA5_BerSea_ESMFmesh.nc\""
-export ATM_NX_GLB=203
-export ATM_NY_GLB=75
+export ATM_NX_GLB=261
+export ATM_NY_GLB=121
 export EXPORT_ALL=.true.
 export FILENAME_BASE='era5.'
 export STREAM_VECTORS="null"
 export mapalgo=redist
 export tinterpalgo=linear
 export STREAM_OFFSET=0
-export stream_files="\"INPUT/ERA5_JUL2019_JUN2020.nc\""
+export stream_files="\"INPUT/ERA5_JUL2019_JUN2020_kgm2s.nc\""
 export stream_variables="\"dlwsfc Faxa_lwdn\" \"Pair Sa_pslv\" \"airtmp Sa_t2m\" \"spchmd Sa_q2m\" \"ttlpcp Faxa_rain\" \"wndewd Sa_u10m\" \"wndnwd Sa_v10m\" \"Pair Sa_pbot\" \"airtmp Sa_tbot\" \"spchmd Sa_shum\" \"wndewd Sa_u\" \"wndnwd Sa_v\" \"glbrad Faxa_swdn\""
 export dtlimit=1.5
 
@@ -76,9 +83,9 @@ export HURR="Bering"
 export CPL_CONF="atm2sch2cice"
 
 # pes
-export ATM_compute_tasks=18
-export OCN_tasks=230
-export ICE_tasks=230
+export ATM_compute_tasks=80
+export OCN_tasks=480
+export ICE_tasks=80
 
 # configuration
 export MODEL_CONFIGURE=model_configure.IN
@@ -88,7 +95,7 @@ export atm_model=datm
 export ocn_model=schism
 export ice_model=cice6
 export mesh_ice=INPUT/Grid/mesh.cice.4km.nc
-export coupling_interval_slow_sec=1200
+export coupling_interval_slow_sec=180
 export RESTART_N=6
 export RUNTYPE=startup
 export CPLMODE=coastal
