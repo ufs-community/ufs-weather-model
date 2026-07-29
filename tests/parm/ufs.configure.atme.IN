@@ -1,0 +1,41 @@
+#############################################
+####  UFS Run-Time Configuration File  ######
+#############################################
+
+# ESMF #
+logKindFlag:            @[esmf_logkind]
+globalResourceControl:  @[ESMF_THREADING]
+
+# EARTH #
+EARTH_component_list: ATM CECE
+EARTH_attributes::
+  Verbosity = 0
+::
+
+# ATM #
+ATM_model:                      @[atm_model]
+ATM_petlist_bounds:             @[atm_petlist_bounds]
+ATM_omp_num_threads:            @[atm_omp_num_threads]
+ATM_attributes::
+  Verbosity = 0
+  Diagnostic = 0
+::
+
+# CECE #
+CECE_model:                     @[cece_model]
+CECE_petlist_bounds:            @[cece_petlist_bounds]
+CECE_omp_num_threads:           @[cece_omp_num_threads]
+CECE_attributes::
+  Verbosity = 0
+  ConfigFile = @[cece_config_file]
+::
+
+# Run Sequence #
+runSeq::
+  @[coupling_interval_sec]
+    ATM
+    ATM -> CECE
+    CECE
+    CECE -> ATM
+  @
+::
