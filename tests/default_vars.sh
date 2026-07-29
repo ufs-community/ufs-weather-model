@@ -138,7 +138,7 @@ MEM_PER_NODE_OPT=""
 
 # Enable CATChem coupling when true. The CPLCAT collection is a superset of CPLCHM. CPLCHM should
 # always be true if CPLCAT is true.
-export CPLCAT=.false.
+CPLCAT=.false.
 
 if [[ ${MACHINE_ID} = wcoss2 || ${MACHINE_ID} = acorn ]]; then
 
