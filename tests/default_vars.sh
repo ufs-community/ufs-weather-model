@@ -136,6 +136,10 @@ SFS=.false.
 EXCLUSIVE_NODES=.false.
 MEM_PER_NODE_OPT=""
 
+# Enable CATChem coupling when true. The CPLCAT collection is a superset of CPLCHM. CPLCHM should
+# always be true if CPLCAT is true.
+CPLCAT=.false.
+
 if [[ ${MACHINE_ID} = wcoss2 || ${MACHINE_ID} = acorn ]]; then
 
   TPN=128
