@@ -1,12 +1,17 @@
+ciRunningNode = []
 matchedNode = []
 generateBaselineNode = []
 for (label in pullRequest.labels) {
     listOfLabelNodeNames = jenkins.model.Jenkins.instance.nodes.collect {
         node -> node.getLabelString().contains(label) ? node.name : null
+    
+        if (label.startsWith(node.getLabelString() + "-") && label.contains("CI_RUNNING")) {
+           ciRunningNode += node.getLabelString()
+        }
 
         if ((label.matches(node.getLabelString()+"-(.*)"))) {
-            matchedNode += node.getLabelString()
-        }
+           matchedNode += node.getLabelString()
+        }         
 
         if ((label.matches(node.getLabelString()+"(.*)-BL"))) {
             generateBaselineNode += node.getLabelString() 
@@ -14,8 +19,19 @@ for (label in pullRequest.labels) {
     }
 }
 
+matchedNode = matchedNode.unique()
+ciRunningNode = ciRunningNode.unique()
+matchedNode = matchedNode - ciRunningNode
+
 modifiedLabels = matchedNode.collect{"'" + it + "'"} 
 baselineLabels = generateBaselineNode.collect{"'" + it + "'"} 
+
+if (modifiedLabels.isEmpty()) {
+   echo "No new labels. Skipping build."
+   currentBuild.result = 'NOT_BUILT'
+   return // Exits the stage/script early
+}
+
 def generateStage(nodeLabel) {
     return {
         stage("Initialize on ${nodeLabel.replaceAll("'","")}") {
@@ -79,6 +95,7 @@ def generateStage(nodeLabel) {
 
                             echo "Testing concluded...removing labels for $machine from $GIT_URL"
                             echo "https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/{$machine-RT,$machine-BL}"
+                            curl --silent -X DELETE -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/{$machine}-CI_RUNNING
                             curl --silent -X DELETE -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/{$machine-RT,$machine-BL}
                         '''
                         currentBuild.result = 'FAILURE'
@@ -132,6 +149,7 @@ def generateStage(nodeLabel) {
 
 			    echo "Testing concluded...removing label ${label} for ${machine} from ${GIT_URL}"
 			    echo "https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/${machine}-${label}"
+			    curl --silent -X DELETE -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/{$machine}-CI_RUNNING
 			    curl --silent -X DELETE -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/{$machine-RT,$machine-BL}
 			'''
                 }
