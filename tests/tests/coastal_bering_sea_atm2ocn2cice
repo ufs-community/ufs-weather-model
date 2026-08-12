@@ -4,121 +4,121 @@
 #
 ###############################################################################
 
-export TEST_DESCR="Compare coastal_bering_sea_atm2ocn2cice results with previous trunk version"
+TEST_DESCR="Compare coastal_bering_sea_atm2ocn2cice results with previous trunk version"
 
-export CNTL_DIR=coastal_bering_sea_atm2ocn2cice
+CNTL_DIR=coastal_bering_sea_atm2ocn2cice
 
-export LIST_FILES="history/iceh_12h.2019-02-07-43200.nc \
-                   ufs.cpld.datm.r.2019-02-07-43200.nc \
-                   ufs.cpld.docn.r.2019-02-07-43200.nc \
-                   ufs.cpld.cpl.hi.2019-02-07-43200.nc"
+LIST_FILES="history/iceh_12h.2019-02-07-43200.nc \
+            ufs.cpld.datm.r.2019-02-07-43200.nc \
+            ufs.cpld.docn.r.2019-02-07-43200.nc \
+            ufs.cpld.cpl.hi.2019-02-07-43200.nc"
 
 # default options
 export_coastal
 
 # model_configure
-export SYEAR=2019
-export SMONTH=02
-export SDAY=07
-export SHOUR=00
-export FHMAX=12
-export FHROT=0
+SYEAR=2019
+SMONTH=02
+SDAY=07
+SHOUR=00
+FHMAX=12
+FHROT=0
 # not used
-export DT_ATMOS=720
-export RESTART_INTERVAL=0
-export QUILTING=.true.
-export QUILTING_RESTART=.false.
-export WRITE_GROUP=1
-export WRTTASK_PER_GROUP=6
-export ITASKS=1
-export OUTPUT_HISTORY=.true.
-export WRITE_DOPOST=.false.
-export NUM_FILES=2
-export FILENAME_BASE="'atm' 'sfc'"
-export OUTPUT_GRID="'cubed_sphere_grid'"
-export OUTPUT_FILE="'netcdf'"
-export IDEFLATE=0
-export NBITS=0
-export ICHUNK2D=0
-export JCHUNK2D=0
-export ICHUNK3D=0
-export JCHUNK3D=0
-export KCHUNK3D=0
-export IMO=384
-export JMO=190
-export WRITE_NSFLIP=.false.
-export OUTPUT_FH="12 -1"
-export IAU_OFFSET=0
+DT_ATMOS=720
+RESTART_INTERVAL=0
+QUILTING=.true.
+QUILTING_RESTART=.false.
+WRITE_GROUP=1
+WRTTASK_PER_GROUP=6
+ITASKS=1
+OUTPUT_HISTORY=.true.
+WRITE_DOPOST=.false.
+NUM_FILES=2
+FILENAME_BASE="'atm' 'sfc'"
+OUTPUT_GRID="'cubed_sphere_grid'"
+OUTPUT_FILE="'netcdf'"
+IDEFLATE=0
+NBITS=0
+ICHUNK2D=0
+JCHUNK2D=0
+ICHUNK3D=0
+JCHUNK3D=0
+KCHUNK3D=0
+IMO=384
+JMO=190
+WRITE_NSFLIP=.false.
+OUTPUT_FH="12 -1"
+IAU_OFFSET=0
 if [[ " hera orion hercules gaea jet frontera " =~ " ${MACHINE_ID} " ]] ; then
   ZSTANDARD_LEVEL=5
 fi
 
 # datm
-export DATM_CDEPS=true
-export DATM_IN_CONFIGURE=datm_in.coastal.IN
-export DATM_STREAM_CONFIGURE=datm.streams.coastal.multi.IN
-export atm_datamode="ERA5"
-export MESH_ATM="\"INPUT/ERA5_BerSea_ESMFmesh.nc\""
-export ATM_NX_GLB=203
-export ATM_NY_GLB=75
-export EXPORT_ALL=.true.
-export FILENAME_BASE='era5.'
-export STREAM_VECTORS="null"
-export mapalgo01=redist
-export tinterpalgo01=linear
-export STREAM_OFFSET01=-300
-export stream_files01="\"INPUT/ERA5_forcing_201902.nc\""
-export stream_variables01="\"Tair Sa_tbot\" \"Pair Sa_pbot\" \"Qair Sa_shum\" \"Uwind Sa_u\" \"Vwind Sa_v\" \"rain Faxa_rain\" \"lwrad_down Faxa_lwdn\""
-export mapalgo02=redist
-export tinterpalgo02=coszen
-export STREAM_OFFSET02=-1200
-export stream_files02="\"INPUT/ERA5_forcing_201902.nc\""
-export stream_variables02="\"swrad Faxa_swvdr\""
-export mapalgo=redist
-export dtlimit=1.5
+DATM_CDEPS=true
+DATM_IN_CONFIGURE=datm_in.coastal.IN
+DATM_STREAM_CONFIGURE=datm.streams.coastal.multi.IN
+atm_datamode="ERA5"
+MESH_ATM="\"INPUT/ERA5_BerSea_ESMFmesh.nc\""
+ATM_NX_GLB=203
+ATM_NY_GLB=75
+EXPORT_ALL=.true.
+FILENAME_BASE='era5.'
+STREAM_VECTORS="null"
+mapalgo01=redist
+tinterpalgo01=linear
+STREAM_OFFSET01=-300
+stream_files01="\"INPUT/ERA5_forcing_201902.nc\""
+stream_variables01="\"Tair Sa_tbot\" \"Pair Sa_pbot\" \"Qair Sa_shum\" \"Uwind Sa_u\" \"Vwind Sa_v\" \"rain Faxa_rain\" \"lwrad_down Faxa_lwdn\""
+mapalgo02=redist
+tinterpalgo02=coszen
+STREAM_OFFSET02=-1200
+stream_files02="\"INPUT/ERA5_forcing_201902.nc\""
+stream_variables02="\"swrad Faxa_swvdr\""
+mapalgo=redist
+dtlimit=1.5
 
 # docn
-export DOCN_CDEPS=true
-export DOCN_IN_CONFIGURE=docn_in.coastal.IN
-export DOCN_STREAM_CONFIGURE=docn.streams.coastal.IN
-export ocn_datamode="sstdata"
-export MESH_OCN="\"INPUT/Grid/ESMF/mesh.cice.4km.nc\""
-export ocn_nx_global=730
-export ocn_ny_global=478
-export EXPORT_ALL=.true.
-export FILENAME_BASE='sst.'
-export STREAM_VECTORS="null"
-export taxmode=cycle
-export stream_files="\"INPUT/ROMS_2019.nc\""
-export stream_variables="\"qdp Fioo_q\" \"U So_u\" \"V So_v\" \"S So_s\" \"T So_t\" \"dhdy So_dhdy\" \"dhdx So_dhdx\" \"hblt So_h\""
-export mapalgo=redist
-export dtlimit=2.0
-export STREAM_OFFSET=-1200
+DOCN_CDEPS=true
+DOCN_IN_CONFIGURE=docn_in.coastal.IN
+DOCN_STREAM_CONFIGURE=docn.streams.coastal.IN
+ocn_datamode="sstdata"
+MESH_OCN="\"INPUT/Grid/ESMF/mesh.cice.4km.nc\""
+ocn_nx_global=730
+ocn_ny_global=478
+EXPORT_ALL=.true.
+FILENAME_BASE='sst.'
+STREAM_VECTORS="null"
+taxmode=cycle
+stream_files="\"INPUT/ROMS_2019.nc\""
+stream_variables="\"qdp Fioo_q\" \"U So_u\" \"V So_v\" \"S So_s\" \"T So_t\" \"dhdy So_dhdy\" \"dhdx So_dhdx\" \"hblt So_hmix\""
+mapalgo=redist
+dtlimit=2.0
+STREAM_OFFSET=-1200
 
 # datm/docn
-export HURR="Bering"
-export CPL_CONF="atm2ocn2cice"
+HURR="Bering"
+CPL_CONF="atm2ocn2cice"
 
 # pes
-export ATM_compute_tasks=18
-export OCN_tasks=18
-export ICE_tasks=230
+ATM_compute_tasks=18
+OCN_tasks=18
+ICE_tasks=230
 
 # configuration
-export MODEL_CONFIGURE=model_configure.IN
-export UFS_CONFIGURE=ufs.configure.coastal_datm_ocn_cice.IN
-export med_model=cmeps
-export atm_model=datm
-export ocn_model=docn
-export ice_model=cice6
-export mesh_ice=INPUT/Grid/ESMF/mesh.cice.4km.nc
-export coupling_interval_slow_sec=1200
-export RESTART_N=6
-export RUNTYPE=startup
-export CPLMODE=coastal
-export meshloc=element
-export RESTART_FILE_SUFFIX_SECS="${SYEAR}-${SMONTH}-${SDAY}-$(printf "%05d" $(( (${FHROT}+ ${SHOUR})*3600 )))"
+MODEL_CONFIGURE=model_configure.IN
+UFS_CONFIGURE=ufs.configure.coastal_datm_ocn_cice.IN
+med_model=cmeps
+atm_model=datm
+ocn_model=docn
+ice_model=cice6
+mesh_ice=INPUT/Grid/ESMF/mesh.cice.4km.nc
+coupling_interval_slow_sec=1200
+RESTART_N=6
+RUNTYPE=startup
+CPLMODE=coastal
+meshloc=element
+RESTART_FILE_SUFFIX_SECS="${SYEAR}-${SMONTH}-${SDAY}-$(printf "%05d" $(( (${FHROT}+ ${SHOUR})*3600 )))"
 
 # input files
-export FV3_RUN="coastal_datm.IN coastal_docn.IN coastal_cice_run.IN"
-export CMP_DATAONLY=true
+FV3_RUN="coastal_datm.IN coastal_docn.IN coastal_cice_run.IN"
+CMP_DATAONLY=true

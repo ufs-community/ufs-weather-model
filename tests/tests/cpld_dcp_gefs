@@ -2,25 +2,25 @@
 #  decomposition gefs test
 #
 
-source ${PATHRT}/tests/cpld_control_gefs
+source "${PATHRT}"/tests/cpld_control_gefs
 
-export TEST_DESCR="Fully coupled FV3-CCPP-GOCART-MOM6-CICE-CMEPS-WW3 system - C384L127 MX025 - dcp test"
+TEST_DESCR="Fully coupled FV3-CCPP-GOCART-MOM6-CICE-CMEPS-WW3 system - C384L127 MX025 - dcp test"
 
-export INPES=$((INPES/2))
-export JNPES=$((JNPES*2))
+INPES=$((INPES / 2))
+JNPES=$((JNPES * 2))
 
-export OCN_tasks=$((OCN_tasks+10))
-export ICE_tasks=$((ICE_tasks+12))
-export WAV_tasks=$((WAV_tasks+10))
+OCN_tasks=$((OCN_tasks + 10))
+ICE_tasks=$((ICE_tasks + 12))
+WAV_tasks=$((WAV_tasks + 10))
 
-export CICE_NPROC=$ICE_tasks
-export np2=`expr $CICE_NPROC / 2`
-export CICE_BLCKX=`expr $NX_GLB / $np2`
-export CICE_BLCKY=`expr $NY_GLB / 2`
+CICE_NPROC=$ICE_tasks
+np2=$((CICE_NPROC / 2))
+CICE_BLCKX=$((NX_GLB / np2))
+CICE_BLCKY=$((NY_GLB / 2))
 
 if [[ ${MACHINE_ID} = ursa ]]; then
-   WLCLK=60
+  WLCLK=60
 fi
 if [[ $MACHINE_ID = orion ]]; then
-   WLCLK=40
+  WLCLK=40
 fi

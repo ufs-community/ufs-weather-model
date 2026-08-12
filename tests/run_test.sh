@@ -52,9 +52,12 @@ cd "${PATHRT}"
 unset MODEL_CONFIGURE
 unset UFS_CONFIGURE
 
+# shellcheck disable=SC1090
 [[ -e ${RUNDIR_ROOT}/run_test_${TEST_ID}.env ]] && source "${RUNDIR_ROOT}/run_test_${TEST_ID}.env"
 source default_vars.sh
+# shellcheck disable=SC1090
 [[ -e ${RUNDIR_ROOT}/run_test_${TEST_ID}.env ]] && source "${RUNDIR_ROOT}/run_test_${TEST_ID}.env"
+# shellcheck disable=SC1090
 source "tests/${TEST_NAME}"
 
 rm -f "${PATHRT}/fail_test_${TEST_ID}"
@@ -87,63 +90,51 @@ cd "${RUNDIR}"
 # Make configure and run files
 ###############################################################################
 
-# FV3 executable:
-cp "${PATHRT}/fv3_${COMPILE_ID}.exe" "fv3.exe"
+# if this is a dry-run we skip copying the executable and loading modules
+if [[ ${DRY_RUN:-false} == false ]]; then
+  # FV3 executable:
+  cp "${PATHRT}/fv3_${COMPILE_ID}.exe" "fv3.exe"
 
-# modulefile for FV3 prerequisites:
-mkdir -p modulefiles
-if [[ ${MACHINE_ID} == linux ]]; then
-  cp "${PATHRT}/modules.fv3_${COMPILE_ID}" "./modulefiles/modules.fv3"
-else
-  cp "${PATHRT}/modules.fv3_${COMPILE_ID}.lua" "./modulefiles/modules.fv3.lua"
+  # modulefile for FV3 prerequisites:
+  mkdir -p modulefiles
+  if [[ ${MACHINE_ID} == linux ]]; then
+    cp "${PATHRT}/modules.fv3_${COMPILE_ID}" "./modulefiles/modules.fv3"
+  else
+    cp "${PATHRT}/modules.fv3_${COMPILE_ID}.lua" "./modulefiles/modules.fv3.lua"
+  fi
+  cp "${PATHTR}/modulefiles/ufs_common.lua" "./modulefiles/."
+
+  # Get the shell file that loads the "module" command and purges modules:
+  cp "${PATHRT}/module-setup.sh" "module-setup.sh"
+
+  case ${MACHINE_ID} in
+    wcoss2|acorn)
+      module load intel/19.1.3.304
+      module load craype/2.7.13 cray-mpich/8.1.12
+      module load netcdf-D/4.9.2
+      module load pnetcdf-D/1.12.2
+      module load hdf5-D/1.14.0
+      module load nccmp-D/1.9.0.1
+      ;;
+    gaeac5)
+      module use /ncrc/proj/epic/spack-stack/spack-stack-1.6.0/envs/unified-env/install/modulefiles/Core
+      module load stack-intel/2023.2.0 stack-cray-mpich/8.1.28
+      module load nccmp/1.9.0.1
+      ;;
+    gaeac6)
+      module use /ncrc/proj/epic/spack-stack/c6/spack-stack-1.9.2/envs/ue-intel-2023.2.0/install/modulefiles/Core
+      module load stack-intel/2023.2.0 stack-cray-mpich/8.1.30
+      module load nccmp/1.9.0.1
+      #module use modulefiles
+      #module load modules.fv3
+      #module load gcc-native/12.3
+      ;;
+    *)
+      module use modulefiles
+      module load modules.fv3
+      ;;
+  esac
 fi
-cp "${PATHTR}/modulefiles/ufs_common.lua" "./modulefiles/."
-
-# Get the shell file that loads the "module" command and purges modules:
-cp "${PATHRT}/module-setup.sh" "module-setup.sh"
-
-case ${MACHINE_ID} in
-  wcoss2|acorn)
-    module load intel/19.1.3.304
-    module load craype/2.7.13 cray-mpich/8.1.12
-    module load netcdf-D/4.9.2
-    module load pnetcdf-D/1.12.2
-    module load hdf5-D/1.14.0
-    module load nccmp-D/1.9.0.1
-    ;;
-  s4)
-    module use /data/prod/jedi/spack-stack/spack-stack-1.4.1/envs/ufs-pio-2.5.10/install/modulefiles/Core
-    module load stack-intel/2021.5.0 stack-intel-oneapi-mpi/2021.5.0
-    module load miniconda/3.9.12
-    module load nccmp/1.9.0.1
-    ;;
-  noaacloud)
-    echo "No special nccmp load necessary"
-    ;;
-  gaeac5)
-    module use /ncrc/proj/epic/spack-stack/spack-stack-1.6.0/envs/unified-env/install/modulefiles/Core
-    module load stack-intel/2023.2.0 stack-cray-mpich/8.1.28
-    module load nccmp/1.9.0.1
-    ;;
-  gaeac6)
-    module use /ncrc/proj/epic/spack-stack/c6/spack-stack-1.9.2/envs/ue-intel-2023.2.0/install/modulefiles/Core
-    module load stack-intel/2023.2.0 stack-cray-mpich/8.1.30
-    module load nccmp/1.9.0.1
-    #module use modulefiles
-    #module load modules.fv3
-    #module load gcc-native/12.3
-    ;;
-  frontera)
-    module use /work2/01118/tg803972/frontera/spack-stack/spack-stack-1.9.2/envs/unified-env/install/modulefiles/Core
-    module use /work2/01118/tg803972/frontera/spack-stack/spack-stack-1.9.2/envs/unified-env/install/modulefiles/intel-oneapi-mpi/2021.9.0-bwli7xy/intel/23.1.0
-    module load stack-intel/23.1.0 stack-intel-oneapi-mpi/2021.9.0
-    module load nccmp/1.9.0.1
-    ;;
-  *)
-    module use modulefiles
-    module load modules.fv3
-    ;;
-esac
 
 # FV3_RUN could have multiple entry seperated by space
 if [[ -n "${FV3_RUN}" ]]; then
@@ -177,7 +168,7 @@ fi
 if [[ ${DATM_CDEPS} = 'true' ]] || [[ ${FV3} = 'true' ]] || [[ ${S2S} = 'true' ]] || [[ ${MPAS} = 'true' ]]; then
   if [[ ${HAFS} = 'false' ]] || [[ ${FV3} = 'true' && ${HAFS} = 'true' ]]; then
     if [[ ${COASTAL} = 'false' ]]; then
-      atparse < "${PATHRT}"/parm/"${INPUT_NML:-input.nml.IN}" > input.nml
+      atparse < "${PATHRT}/parm/${INPUT_NML:-input.nml.IN}" > input.nml
     fi
   fi
 fi
@@ -276,6 +267,7 @@ if [[ "Q${FIELD_TABLE:-}" != Q ]]; then
   cp "${PATHRT}/parm/field_table/${FIELD_TABLE}" field_table
 fi
 
+if [[ ${DRY_RUN:-false} == false ]]; then
 # fix files
 if [[ ${FV3} == true ]]; then
   cp "${INPUTDATA_ROOT}"/FV3_fix/*.txt .
@@ -286,7 +278,7 @@ if [[ ${FV3} == true ]]; then
     cp "${INPUTDATA_ROOT}"/FV3_fix/*.grb .
   fi
 fi
-
+fi
 # NoahMP table file
 if [[ ${BMIC} == .true. ]]; then
   cp "${PATHRT}/parm/noahmptable-gefs.tbl" noahmptable.tbl
@@ -302,8 +294,15 @@ fi
 # Field Dictionary
 cp "${PATHRT}/parm/fd_ufs.yaml" fd_ufs.yaml
 
-# Set up the run directory
-source ./fv3_run
+if [[ ${DRY_RUN:-false} == false ]]; then
+   # Set up the run directory
+   # shellcheck disable=SC1091
+   source ./fv3_run
+else
+   # we need this because MOM_input is located in INPUT (see below)
+   # which is created in ./fv3_run, which we just skipped
+   mkdir -p INPUT
+fi
 
 if [[ ${CPLWAV} == .true. ]]; then
     if [[ ${GFSv17opn} == .false. ]]; then
@@ -325,7 +324,7 @@ fi
 #TODO: this logic needs to be cleaned up for datm applications w/o
 #ocean or ice
 if [[ ${DATM_CDEPS} = 'true' ]] || [[ ${S2S} = 'true' ]]; then
-  if [[ ${HAFS} = 'false' ]] && [[ ${COASTAL} = 'false' ]] ; then
+  if [[ ${HAFS} = 'false' ]] && [[ ${COASTAL} = 'false' ]]; then
     atparse < "${PATHRT}/parm/ice_in.IN" > ice_in
     atparse < "${PATHRT}/parm/${MOM6_INPUT:-MOM_input_${OCNRES}.IN}" > INPUT/MOM_input
     atparse < "${PATHRT}/parm/diag_table/${DIAG_TABLE:-diag_table_template.IN}" > diag_table
@@ -459,6 +458,10 @@ if [[ "${JOB_SHOULD_FAIL:-NO}" == WHEN_COPYING ]] ; then
     false
 fi
 
+if [[ ${DRY_RUN:-false} == true ]]; then
+  exit 0
+fi
+
 ################################################################################
 # Submit test job
 ################################################################################
@@ -519,7 +522,7 @@ if [[ ${skip_check_results} == false ]]; then
 
       else
         if [[ ${i##*.} == nc* ]] ; then
-          if [[ " orion hercules hera ursa wcoss2 acorn derecho gaeac5 gaeac6 jet s4 noaacloud frontera " =~ ${MACHINE_ID} ]]; then
+          if [[ " orion hercules hera ursa wcoss2 acorn derecho gaeac5 gaeac6 noaacloud " =~ ${MACHINE_ID} ]]; then
             printf "USING NCCMP.." >> "${RT_LOG}"
             printf "USING NCCMP.."
               nccmp_args=(-d -S -q -f -B --Attribute=checksum --warn=format)
@@ -584,8 +587,8 @@ if [[ ${skip_check_results} == false ]]; then
 
   {
   echo
-  grep --text "The total amount of wall time" "${RUNDIR}/out"
-  grep --text "The maximum resident set size" "${RUNDIR}/out"
+  grep "The total amount of wall time" "${RUNDIR}/out"
+  grep "The maximum resident set size" "${RUNDIR}/out"
   echo
   echo "Test ${TEST_ID} ${test_status}"
   echo
@@ -602,8 +605,8 @@ if [[ ${skip_check_results} == false ]]; then
 else
   {
   echo
-  grep --text "The total amount of wall time" "${RUNDIR}/out"
-  grep --text "The maximum resident set size" "${RUNDIR}/out"
+  grep "The total amount of wall time" "${RUNDIR}/out"
+  grep "The maximum resident set size" "${RUNDIR}/out"
   echo
   echo "Test ${TEST_ID} RUN_SUCCESS"
   echo;echo;echo

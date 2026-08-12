@@ -4,71 +4,71 @@
 #
 ###############################################################################
 
-export TEST_DESCR="Compare ike_shinnecock_ww3 results with previous trunk version"
+TEST_DESCR="Compare ike_shinnecock_ww3 results with previous trunk version"
 
-export CNTL_DIR=coastal_ike_shinnecock_ww3
+CNTL_DIR=coastal_ike_shinnecock_ww3
 
-export LIST_FILES="20080905.000000.out_grd.ww3.nc \
-                   20080906.000000.out_grd.ww3.nc \
-                   ufs.cpld.ww3.r.2008-09-05-00000.nc \
-                   ufs.cpld.ww3.r.2008-09-06-00000.nc"
+LIST_FILES="20080905.000000.out_grd.ww3.nc \
+            20080906.000000.out_grd.ww3.nc \
+            ufs.cpld.ww3.r.2008-09-05-00000.nc \
+            ufs.cpld.ww3.r.2008-09-06-00000.nc"
 
 # deafult options
 export_coastal
 
 # model_configure
-export SYEAR=2008
-export SMONTH=09
-export SDAY=04
-export SHOUR=12
-export FHMAX=36
-export FHROT=0
+SYEAR=2008
+SMONTH=09
+SDAY=04
+SHOUR=12
+FHMAX=36
+FHROT=0
 # not used
-export DT_ATMOS=720
-export RESTART_INTERVAL=0
-export QUILTING=.true.
-export QUILTING_RESTART=.false.
-export WRITE_GROUP=1
-export WRTTASK_PER_GROUP=6
-export ITASKS=1
-export OUTPUT_HISTORY=.true.
-export WRITE_DOPOST=.false.
-export NUM_FILES=2
-export FILENAME_BASE="'atm' 'sfc'"
-export OUTPUT_GRID="'cubed_sphere_grid'"
-export OUTPUT_FILE="'netcdf'"
-export IDEFLATE=0
-export NBITS=0
-export ICHUNK2D=0
-export JCHUNK2D=0
-export ICHUNK3D=0
-export JCHUNK3D=0
-export KCHUNK3D=0
-export IMO=384
-export JMO=190
-export WRITE_NSFLIP=.false.
-export OUTPUT_FH="12 -1"
-export IAU_OFFSET=0
+DT_ATMOS=720
+RESTART_INTERVAL=0
+QUILTING=.true.
+QUILTING_RESTART=.false.
+WRITE_GROUP=1
+WRTTASK_PER_GROUP=6
+ITASKS=1
+OUTPUT_HISTORY=.true.
+WRITE_DOPOST=.false.
+NUM_FILES=2
+FILENAME_BASE="'atm' 'sfc'"
+OUTPUT_GRID="'cubed_sphere_grid'"
+OUTPUT_FILE="'netcdf'"
+IDEFLATE=0
+NBITS=0
+ICHUNK2D=0
+JCHUNK2D=0
+ICHUNK3D=0
+JCHUNK3D=0
+KCHUNK3D=0
+IMO=384
+JMO=190
+WRITE_NSFLIP=.false.
+OUTPUT_FH="12 -1"
+IAU_OFFSET=0
 if [[ " hera orion hercules gaea jet frontera " =~ " ${MACHINE_ID} " ]] ; then
   ZSTANDARD_LEVEL=5
 fi
 
 # wav
-export HURR="Ike"
-export CPL_CONF="ww3"
-export WAV_STANDALONE=.true.
+HURR="Ike"
+CPL_CONF="ww3"
+WAV_STANDALONE=.true.
 
 # pes
-export ATM_compute_tasks=0
-export WAV_tasks=12
+ATM_compute_tasks=0
+WAV_tasks=12
 
 # configuration
-export MODEL_CONFIGURE=model_configure.IN
-export UFS_CONFIGURE=ufs.configure.coastal_wav.IN
-export wav_model=ww3
-export wav_petlist_bounds="0 11"
-export wav_omp_num_threads=1
-export wav_mesh=mesh.shinnecock.cdf5.nc
-export coupling_interval_slow_sec=3600
+MODEL_CONFIGURE=model_configure.IN
+UFS_CONFIGURE=ufs.configure.coastal_wav.IN
+wav_model=ww3
+wav_petlist_bounds="0 11"
+wav_omp_num_threads=1
+wav_mesh=mesh.shinnecock.cdf5.nc
+coupling_interval_slow_sec=3600
 # input files
-export FV3_RUN="coastal_ww3_run.IN"
+FV3_RUN="coastal_ww3_run.IN"

@@ -1,0 +1,70 @@
+###############################################################################
+#
+#  FV3_WoFS_v0 test atmosphere only with hi-res 3km
+#
+###############################################################################
+
+TEST_DESCR="Compare FV3_WoFS_v0 hi-res 3km results with previous trunk version"
+
+CNTL_DIR=fv3_regional_wofs_tempo
+
+LIST_FILES="dynf000.nc \
+            dynf006.nc \
+            phyf000.nc \
+            phyf006.nc \
+            PRSLEV.GrbF00 \
+            PRSLEV.GrbF06 \
+            NATLEV.GrbF00 \
+            NATLEV.GrbF06"
+
+export_fv3_v16
+
+FV3_RUN=regional_run.IN
+
+OZ_PHYS_OLD=.false.
+OZ_PHYS_NEW=.true.
+H2O_PHYS=.true.
+RESTART_INTERVAL="0"
+WRITE_DOPOST=.true.
+POSTAPP='lam'
+
+CCPP_SUITE=FV3_WoFS_v0_tempo
+FIELD_TABLE=field_table_thompson_aero_hail_tke
+IMP_PHYSICS=88
+LTAEROSOL=.true.
+LTHAILAWARE=.true.
+DO_SAT_ADJ=.false.
+DIAG_TABLE=diag_table_aerosol.IN
+DIAG_TABLE_ADDITIONAL=diag_additional_hail
+
+INPUT_NML=regional_wofs.nml.IN
+MODEL_CONFIGURE=model_configure_regional.IN
+
+WLCLK=15
+FHMAX=6
+INPES=10
+JNPES=11
+OUTPUT_FH="3 -1"
+WRITE_GROUP=1
+WRTTASK_PER_GROUP=10
+NTILES=1
+
+IMP_PHYSICS=88
+DNATS=0
+DO_SAT_ADJ=.false.
+IALB=1
+IEMS=1
+HYBEDMF=.false.
+DO_MYNNEDMF=.true.
+DO_MYNNSFCLAY=.true.
+DO_DEEP=.false.
+SHAL_CNV=.false.
+IMFSHALCNV=-1
+IMFDEEPCNV=-1
+LSOIL_LSM=4
+NSTF_NAME="2, 1, 0, 0, 0"
+
+if [[ ${MACHINE_ID} = ursa ]]; then
+  EXCLUSIVE_NODES=.true.
+  MEM_PER_NODE_OPT="#SBATCH --mem=300G"
+fi

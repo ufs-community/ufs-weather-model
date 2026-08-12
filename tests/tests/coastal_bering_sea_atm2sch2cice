@@ -4,9 +4,9 @@
 #
 ###############################################################################
 
-export TEST_DESCR="Compare coastal_bering_sea_atm2sch2cice results with previous trunk version"
+TEST_DESCR="Compare coastal_bering_sea_atm2sch2cice results with previous trunk version"
 
-export CNTL_DIR=coastal_bering_sea_atm2sch2cice
+CNTL_DIR=coastal_bering_sea_atm2sch2cice
 
 lst=""
 for n in `seq -f "%06g" 0 479`
@@ -18,90 +18,90 @@ do
   fi
 done
 
-export LIST_FILES="${lst} history/iceh_01h.2020-05-01-54000.nc ufs.cpld.cpl.hi.2020-05-01-54000.nc"
+LIST_FILES="${lst} history/iceh_01h.2020-05-01-54000.nc ufs.cpld.cpl.hi.2020-05-01-54000.nc"
 
 # default options
 export_coastal
 
 # model_configure
-export SYEAR=2020
-export SMONTH=05
-export SDAY=01
-export SHOUR=12
-export FHMAX=3
-export FHROT=0
+SYEAR=2020
+SMONTH=05
+SDAY=01
+SHOUR=12
+FHMAX=3
+FHROT=0
 # not used
-export DT_ATMOS=720
-export RESTART_INTERVAL=0
-export QUILTING=.true.
-export QUILTING_RESTART=.false.
-export WRITE_GROUP=1
-export WRTTASK_PER_GROUP=6
-export ITASKS=1
-export OUTPUT_HISTORY=.true.
-export WRITE_DOPOST=.false.
-export NUM_FILES=2
-export FILENAME_BASE="'atm' 'sfc'"
-export OUTPUT_GRID="'cubed_sphere_grid'"
-export OUTPUT_FILE="'netcdf'"
-export IDEFLATE=0
-export NBITS=0
-export ICHUNK2D=0
-export JCHUNK2D=0
-export ICHUNK3D=0
-export JCHUNK3D=0
-export KCHUNK3D=0
-export IMO=384
-export JMO=190
-export WRITE_NSFLIP=.false.
-export OUTPUT_FH="12 -1"
-export IAU_OFFSET=0
+DT_ATMOS=720
+RESTART_INTERVAL=0
+QUILTING=.true.
+QUILTING_RESTART=.false.
+WRITE_GROUP=1
+WRTTASK_PER_GROUP=6
+ITASKS=1
+OUTPUT_HISTORY=.true.
+WRITE_DOPOST=.false.
+NUM_FILES=2
+FILENAME_BASE="'atm' 'sfc'"
+OUTPUT_GRID="'cubed_sphere_grid'"
+OUTPUT_FILE="'netcdf'"
+IDEFLATE=0
+NBITS=0
+ICHUNK2D=0
+JCHUNK2D=0
+ICHUNK3D=0
+JCHUNK3D=0
+KCHUNK3D=0
+IMO=384
+JMO=190
+WRITE_NSFLIP=.false.
+OUTPUT_FH="12 -1"
+IAU_OFFSET=0
 if [[ " hera orion hercules gaea jet frontera " =~ " ${MACHINE_ID} " ]] ; then
   ZSTANDARD_LEVEL=5
 fi
 
 # datm
-export DATM_CDEPS=true
-export DATM_IN_CONFIGURE=datm_in.coastal.IN
-export DATM_STREAM_CONFIGURE=datm.streams.coastal.IN
-export atm_datamode="ERA5"
-export MESH_ATM="\"INPUT/ERA5_BerSea_ESMFmesh.nc\""
-export ATM_NX_GLB=261
-export ATM_NY_GLB=121
-export EXPORT_ALL=.true.
-export FILENAME_BASE='era5.'
-export STREAM_VECTORS="null"
-export mapalgo=redist
-export tinterpalgo=linear
-export STREAM_OFFSET=0
-export stream_files="\"INPUT/ERA5_JUL2019_JUN2020_kgm2s.nc\""
-export stream_variables="\"dlwsfc Faxa_lwdn\" \"Pair Sa_pslv\" \"airtmp Sa_t2m\" \"spchmd Sa_q2m\" \"ttlpcp Faxa_rain\" \"wndewd Sa_u10m\" \"wndnwd Sa_v10m\" \"Pair Sa_pbot\" \"airtmp Sa_tbot\" \"spchmd Sa_shum\" \"wndewd Sa_u\" \"wndnwd Sa_v\" \"glbrad Faxa_swdn\""
-export dtlimit=1.5
+DATM_CDEPS=true
+DATM_IN_CONFIGURE=datm_in.coastal.IN
+DATM_STREAM_CONFIGURE=datm.streams.coastal.IN
+atm_datamode="ERA5"
+MESH_ATM="\"INPUT/ERA5_BerSea_ESMFmesh.nc\""
+ATM_NX_GLB=261
+ATM_NY_GLB=121
+EXPORT_ALL=.true.
+FILENAME_BASE='era5.'
+STREAM_VECTORS="null"
+mapalgo=redist
+tinterpalgo=linear
+STREAM_OFFSET=0
+stream_files="\"INPUT/ERA5_JUL2019_JUN2020_kgm2s.nc\""
+stream_variables="\"dlwsfc Faxa_lwdn\" \"Pair Sa_pslv\" \"airtmp Sa_t2m\" \"spchmd Sa_q2m\" \"ttlpcp Faxa_rain\" \"wndewd Sa_u10m\" \"wndnwd Sa_v10m\" \"Pair Sa_pbot\" \"airtmp Sa_tbot\" \"spchmd Sa_shum\" \"wndewd Sa_u\" \"wndnwd Sa_v\" \"glbrad Faxa_swdn\""
+dtlimit=1.5
 
 # datm
-export HURR="Bering"
-export CPL_CONF="atm2sch2cice"
+HURR="Bering"
+CPL_CONF="atm2sch2cice"
 
 # pes
-export ATM_compute_tasks=80
-export OCN_tasks=480
-export ICE_tasks=80
+ATM_compute_tasks=80
+OCN_tasks=480
+ICE_tasks=80
 
 # configuration
-export MODEL_CONFIGURE=model_configure.IN
-export UFS_CONFIGURE=ufs.configure.coastal_datm_ocn_cice.IN
-export med_model=cmeps
-export atm_model=datm
-export ocn_model=schism
-export ice_model=cice6
-export mesh_ice=INPUT/Grid/mesh.cice.4km.nc
-export coupling_interval_slow_sec=180
-export RESTART_N=6
-export RUNTYPE=startup
-export CPLMODE=coastal
-export meshloc=element
-export RESTART_FILE_SUFFIX_SECS="${SYEAR}-${SMONTH}-${SDAY}-$(printf "%05d" $(( (${FHROT}+ ${SHOUR})*3600 )))"
+MODEL_CONFIGURE=model_configure.IN
+UFS_CONFIGURE=ufs.configure.coastal_datm_ocn_cice.IN
+med_model=cmeps
+atm_model=datm
+ocn_model=schism
+ice_model=cice6
+mesh_ice=INPUT/Grid/mesh.cice.4km.nc
+coupling_interval_slow_sec=180
+RESTART_N=6
+RUNTYPE=startup
+CPLMODE=coastal
+meshloc=element
+RESTART_FILE_SUFFIX_SECS="${SYEAR}-${SMONTH}-${SDAY}-$(printf "%05d" $(( (${FHROT}+ ${SHOUR})*3600 )))"
 
 # input files
-export FV3_RUN="coastal_datm.IN coastal_schism_run.IN coastal_cice_run.IN"
-export CMP_DATAONLY=true
+FV3_RUN="coastal_datm.IN coastal_schism_run.IN coastal_cice_run.IN"
+CMP_DATAONLY=true

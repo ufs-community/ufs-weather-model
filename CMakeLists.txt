@@ -31,7 +31,6 @@ set(MPAS            OFF CACHE BOOL "Enable MPAS dycore")
 set(AQM             OFF CACHE BOOL "Enable AQM")
 set(UFS_GOCART      OFF CACHE BOOL "Enable GOCART")
 set(MOM6            OFF CACHE BOOL "Enable MOM6")
-set(HYCOM           OFF CACHE BOOL "Enable HYCOM")
 set(CICE6           OFF CACHE BOOL "Enable CICE6")
 set(LM4             OFF CACHE BOOL "Enable LM4")
 set(WW3             OFF CACHE BOOL "Enable WW3")
@@ -46,6 +45,7 @@ set(SCHISM          OFF CACHE BOOL "Enable SCHISM")
 set(ROMS            OFF CACHE BOOL "Enable ROMS")
 set(PAHM            OFF CACHE BOOL "Enable PAHM")
 set(GEOGATE         OFF CACHE BOOL "Enable GeoGate")
+set(WARN_AS_ERROR   OFF CACHE BOOL "Enable compile option to treat warning as error")
 
 # Configure selected application specific components
 message("")
@@ -58,7 +58,6 @@ message("MPAS ............. ${MPAS}")
 message("AQM .............. ${AQM}")
 message("GOCART ........... ${UFS_GOCART}")
 message("MOM6 ............. ${MOM6}")
-message("HYCOM ............ ${HYCOM}")
 message("CICE6 ............ ${CICE6}")
 message("LM4 .............. ${LM4}")
 message("WW3 .............. ${WW3}")
@@ -73,6 +72,7 @@ message("SCHISM ........... ${SCHISM}")
 message("ROMS ............. ${ROMS}")
 message("PAHM ............. ${PAHM}")
 message("GEOGATE .......... ${GEOGATE}")
+message("WARN_AS_ERROR .... ${WARN_AS_ERROR}")
 
 ###############################################################################
 ### Build Options
@@ -278,14 +278,10 @@ if(WW3)
 endif()
 
 ###############################################################################
-### Marine Components [MOM6, HYCOM, CICE6, ADCIRC, SCHISM, ROMS]
+### Marine Components [MOM6, CICE6, ADCIRC, FVCOM, SCHISM, ROMS]
 ###############################################################################
 if(MOM6)
   add_subdirectory(MOM6-interface)
-endif()
-
-if(HYCOM)
-  add_subdirectory(HYCOM-interface)
 endif()
 
 if(CICE6)
@@ -403,12 +399,6 @@ if(MOM6)
   add_dependencies(ufs mom6)
   list(APPEND _ufs_defs_private FRONT_MOM6=mom_cap_mod)
   list(APPEND _ufs_libs_public mom6)
-endif()
-
-if(HYCOM)
-  list(APPEND _ufs_defs_private FRONT_HYCOM=HYCOM_Mod)
-  add_dependencies(ufs hycom)
-  target_link_libraries(ufs PUBLIC hycom)
 endif()
 
 if(CICE6)

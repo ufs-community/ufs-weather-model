@@ -1,0 +1,35 @@
+name: Check for Increased Warnings/Remarks
+
+on:
+  pull_request:
+    branches: [develop]
+  push:
+    branches: ['**']
+  workflow_dispatch:
+
+defaults:
+  run:
+    shell: bash -leo pipefail {0}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env: 
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  MACHINES: "acorn derecho gaeac6 hera hercules orion ursa wcoss2"
+  BASE_URL: https://api.github.com/repos/ufs-community/ufs-weather-model
+  PR_NUM: ${{ github.event.number }}
+
+jobs:
+  check-logs: 
+    runs-on: ubuntu-latest
+    steps: 
+      - name: Checkout feature branch
+        uses: actions/checkout@v6
+      - name: Install dependencies
+        run: |
+          pip install requests mdutils
+      - name: Compare PR head logs with PR base logs
+        run: |
+          python ${{ github.workspace }}/.github/scripts/check_log_warnings_remarks.py >> $GITHUB_STEP_SUMMARY

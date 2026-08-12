@@ -2,24 +2,16 @@
 #  DATM_CDEPS_MOM6_CICE_CMEPS_CFSR debug test
 #
 
-export TEST_DESCR="DATM_CDEPS-MOM6-CICE-CMEPS_CFSR - debug test"
+source "${PATHRT}"/tests/datm_cdeps_control_cfsr
 
-export CNTL_DIR=datm_cdeps_debug_cfsr
+TEST_DESCR+=" - debug test"
 
-export LIST_FILES="RESTART/20111001.060000.MOM.res.nc \
-                   RESTART/iced.2011-10-01-21600.nc \
-                   RESTART/DATM_CFSR.cpl.r.2011-10-01-21600.nc"
+CNTL_DIR=datm_cdeps_debug_cfsr
 
-export_datm_cdeps
-export DATM_SRC=CFSR
-export FILEBASE_DATM=cfsr
-export IATM=1760
-export JATM=880
-export DAYS=0.25
-export FHMAX=6
-export RESTART_N=${FHMAX}
-export eps_imesh=2.5e-1
-export CICE_DIAGFREQ=`expr $((FHMAX-$FHROT)) \* 3600 / $DT_CICE`
-export MOM6_TOPOEDITS=ufs.topo_edits_011818.nc
-export MOM6_ALLOW_LANDMASK_CHANGES=True
-export FV3_RUN=cpld_datm_cdeps.IN
+LIST_FILES="RESTART/20111001.060000.MOM.res.nc \
+            RESTART/iced.2011-10-01-21600.nc \
+            RESTART/DATM_CFSR.cpl.r.2011-10-01-21600.nc"
+
+DAYS=0.25
+FHMAX=6
+RESTART_N=${FHMAX}
