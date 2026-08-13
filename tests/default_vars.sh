@@ -683,6 +683,7 @@ export_gfs_physics() {
   DO_GSL_DRAG_SS=.true.
   DO_GWD_OPT_PSL=.false.
   PSL_GWD_DX_FACTOR=6.0
+  ALPHA_FD=12.0
   DO_GSL_DRAG_TOFD=.false.
   DO_UGWP_V1=.false.
   DO_UGWP_V1_OROG_ONLY=.false.
@@ -1035,6 +1036,7 @@ export_fv3() {
   DO_GSL_DRAG_LS_BL=.false.
   DO_GSL_DRAG_SS=.true.
   DO_GWD_OPT_PSL=.false.
+  ALPHA_FD=12.0
   PSL_GWD_DX_FACTOR=6.0
   DO_GSL_DRAG_TOFD=.false.
   DO_UGWP_V1=.false.
@@ -1428,7 +1430,7 @@ export_ugwpv1() {
   # Add updated damping and timestep variables
   case "${ATMRES}" in
   "C48")
-    if [[ ${default_dt_atmos} = 1 ]]; then export DT_ATMOS=720; fi
+    if [[ ${default_dt_atmos} = 1 ]]; then DT_ATMOS=720; fi
     XR_CNVCLD=.false.
     CDMBGWD="0.071,2.1,1.0,1.0"
     CDMBGWD_GSL="40.0,1.77,1.0,1.0"
@@ -1440,7 +1442,7 @@ export_ugwpv1() {
     FV_SG_ADJ=3600
     ;;
   "C96")
-    if [[ ${default_dt_atmos} = 1 ]]; then export DT_ATMOS=720; fi
+    if [[ ${default_dt_atmos} = 1 ]]; then DT_ATMOS=720; fi
     XR_CNVCLD=.false.
     CDMBGWD="0.14,1.8,1.0,1.0"
     CDMBGWD_GSL="20.0,2.5,1.0,1.0"
@@ -1452,7 +1454,7 @@ export_ugwpv1() {
     FV_SG_ADJ=1800
     ;;
   "C192")
-    if [[ ${default_dt_atmos} = 1 ]]; then export DT_ATMOS=600; fi
+    if [[ ${default_dt_atmos} = 1 ]]; then DT_ATMOS=600; fi
     XR_CNVCLD=.true.
     CDMBGWD="0.23,1.5,1.0,1.0"
     CDMBGWD_GSL="5.0,5.0,1.0,1.0"
@@ -1464,7 +1466,7 @@ export_ugwpv1() {
     FV_SG_ADJ=1800
     ;;
   "C384")
-    if [[ ${default_dt_atmos} = 1 ]]; then export DT_ATMOS=300; fi
+    if [[ ${default_dt_atmos} = 1 ]]; then DT_ATMOS=300; fi
     XR_CNVCLD=.true.
     CDMBGWD="1.1,0.72,1.0,1.0"
     CDMBGWD_GSL="5.0,5.0,1.0,1.0"
@@ -1476,7 +1478,7 @@ export_ugwpv1() {
     FV_SG_ADJ=900
     ;;
   "C768")
-    if [[ ${default_dt_atmos} = 1 ]]; then export DT_ATMOS=150; fi
+    if [[ ${default_dt_atmos} = 1 ]]; then DT_ATMOS=150; fi
     XR_CNVCLD=.true.
     CDMBGWD="4.0,0.15,1.0,1.0"
     CDMBGWD_GSL="2.5,7.5,1.0,1.0"
@@ -1488,7 +1490,7 @@ export_ugwpv1() {
     FV_SG_ADJ=450
     ;;
   "C1152")
-    if [[ ${default_dt_atmos} = 1 ]]; then export DT_ATMOS=150; fi
+    if [[ ${default_dt_atmos} = 1 ]]; then DT_ATMOS=150; fi
     XR_CNVCLD=.true.
     CDMBGWD="4.0,0.10,1.0,1.0"
     CDMBGWD_GSL="1.67,8.8,1.0,1.0"
@@ -1500,7 +1502,7 @@ export_ugwpv1() {
     FV_SG_ADJ=450
     ;;
   "C3072")
-    if [[ ${default_dt_atmos} = 1 ]]; then export DT_ATMOS=90; fi
+    if [[ ${default_dt_atmos} = 1 ]]; then DT_ATMOS=90; fi
     XR_CNVCLD=.true.
     CDMBGWD="4.0,0.05,1.0,1.0"
     CDMBGWD_GSL="0.625,14.1,1.0,1.0"
@@ -1517,7 +1519,7 @@ export_ugwpv1() {
     ;;
   esac
 
-  if [[ ${DO_GSL_DRAG_SS} = .true. ]]; then export CDMBGWD=${CDMBGWD_GSL}; fi
+  if [[ ${DO_GSL_DRAG_SS} = .true. ]]; then CDMBGWD=${CDMBGWD_GSL}; fi
   if [[ ${SEDI_SEMI} = .false. ]]; then
     DT_INNER=$((DT_ATMOS / 2))
   else
@@ -1576,6 +1578,26 @@ export_cice6() {
   CICE_FRAZIL_FWSALT=.true.
   CICE_KTHERM=2
   CICE_TFREEZE_OPTION=mushy
+  CICE_TR_POND_TOPO=.false.
+  CICE_RESTART_POND_TOPO=.false.
+  CICE_TR_SNOW=.false.
+  CICE_CONDUCT='MU71'
+  CICE_AHMAX=0.3
+  CICE_R_ICE=0.
+  CICE_R_PND=0.
+  CICE_R_SNW=1.5
+  CICE_DT_MLT=1.5
+  CICE_RSNW_MLT=1500.
+  CICE_HS0=0.
+  CICE_HS1=0.03
+  CICE_DPSCALE=1.e-3
+  CICE_RFRACMIN=0.15
+  CICE_RFRACMAX=1.
+  CICE_PNDASPECT=0.8
+  CICE_SNWREDIST='none'
+  CICE_SNWGRAIN=.false.
+  CICE_EMISSIVITY=0.95
+  CICE_FBOT_XFER_TYPE='constant'
   # SlenderX2
   CICE_NPROC=${ICE_tasks}
   np2=$((CICE_NPROC / 2))
@@ -1961,6 +1983,7 @@ export_datm_cdeps() {
   MOM6_USE_WAVES=False
   WW3_DOMAIN=''
 
+  
   # Set CMEPS component defaults
   export_cmeps
   # vector remapping
