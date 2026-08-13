@@ -19,7 +19,7 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMakeModules/Modules)
 ###############################################################################
 
 # Valid applications and choices
-list(APPEND VALID_APPS ATM ATMAERO ATMAQ ATMW ATMWM ATML ATMF ATMMPAS LND LND-LM4 S2S S2SL S2SA S2SW S2SWA S2SWL S2SWAL ATM_DS2S ATM_DS2S-PCICE HAFS HAFSW HAFS-MOM6 HAFS-MOM6W HAFS-ALL NG-GODAS)
+list(APPEND VALID_APPS ATM ATMAERO ATMAQ ATMW ATMWM ATML ATMF ATMMPAS LND LND-LM4 S2S S2SL S2SA S2SW S2SWA S2SWL S2SWAL ATM_DS2S ATM_DS2S-PCICE HAFS HAFSW HAFS-MOM6 HAFS-MOM6W HAFS-ALL NG-GODAS CATCHEM)
 set(APP NONE CACHE BOOL "Application Name")
 if(NOT (APP IN_LIST VALID_APPS))
   message(FATAL_ERROR "${APP} is not a valid application.\nValid Applications are: ${VALID_APPS}")
@@ -39,6 +39,7 @@ set(CMEPS           OFF CACHE BOOL "Enable CMEPS")
 set(CDEPS           OFF CACHE BOOL "Enable CDEPS")
 set(NOAHMP          OFF CACHE BOOL "Enable NOAHMP")
 set(FIRE_BEHAVIOR   OFF CACHE BOOL "Enable Fire Behavior")
+set(CATCHEM         OFF CACHE BOOL "Enable CATChem")
 set(WARN_AS_ERROR   OFF CACHE BOOL "Enable compile option to treat warning as error")
 
 # Configure selected application specific components
@@ -59,6 +60,7 @@ message("STOCH_PHYS ....... ${STOCH_PHYS}")
 message("CDEPS ............ ${CDEPS}")
 message("CMEPS ............ ${CMEPS}")
 message("NOAHMP ........... ${NOAHMP}")
+message("CATCHEM .......... ${CATCHEM}")
 message("FIRE_BEHAVIOR .... ${FIRE_BEHAVIOR}")
 message("WARN_AS_ERROR .... ${WARN_AS_ERROR}")
 
@@ -173,7 +175,7 @@ if(FMS)
   elseif (APP MATCHES "^(S2S|S2SA|S2SL|S2SW|S2SWL|S2SWA|S2SWAL|ATM_DS2S|ATM_DS2S-PCICE|NG-GODAS|HAFS-MOM6|HAFS-MOM6W)$")
     add_library(fms ALIAS FMS::fms_r8)
   endif()
-  if(APP MATCHES "^(ATM|ATMAERO|ATMAQ|ATMWM|ATMW|ATML|ATMF|ATMMPAS|ATML-LM4|LND-LM4|HAFS|HAFS-ALL)$")
+  if(APP MATCHES "^(ATM|ATMAERO|ATMAQ|ATMWM|ATMW|ATML|ATMF|ATMMPAS|ATML-LM4|LND-LM4|HAFS|HAFS-ALL|CATCHEM)$")
     if(32BIT)
       add_library(fms ALIAS FMS::fms_r4)
     else()
@@ -228,6 +230,16 @@ endif()
 ###############################################################################
 if(AQM)
   add_subdirectory(AQM)
+endif()
+
+###############################################################################
+### CATCHEM
+###############################################################################
+if(CATCHEM)
+  set(CATCHEM_BUILD_NUOPC ON CACHE BOOL "Enable CATChem NUOPC cap for UFS integration" FORCE)
+  set(CATCHEM_TRACE_NUOPC OFF CACHE BOOL "Enable ESMF trace regions in the CATChem NUOPC cap" FORCE)
+  set(CATCHEM_BUILD_TESTING OFF CACHE BOOL "Enable CATChem testing framework" FORCE)
+  add_subdirectory(CATChem)
 endif()
 
 ###############################################################################
@@ -326,6 +338,12 @@ if(AQM)
   add_dependencies(ufs aqm)
   list(APPEND _ufs_defs_private FRONT_AQM=aqm)
   list(APPEND _ufs_libs_public aqm)
+endif()
+
+if(CATCHEM)
+  add_dependencies(ufs cc_nuopc)
+  list(APPEND _ufs_defs_private FRONT_CATCHEM=cc_nuopc)
+  list(APPEND _ufs_libs_public cc_nuopc)
 endif()
 
 if(UFS_GOCART)

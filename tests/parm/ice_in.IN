@@ -84,8 +84,8 @@
     restart_FY   = .false.
     tr_lvl       = .true.
     restart_lvl  = .false.
-    tr_pond_topo = .false.
-    restart_pond_topo = .false.
+    tr_pond_topo = @[CICE_TR_POND_TOPO]
+    restart_pond_topo = @[CICE_RESTART_POND_TOPO]
     tr_pond_lvl  = @[CICE_TR_POND_LVL]
     restart_pond_lvl  = @[CICE_RESTART_POND_LVL]
     tr_pond_sealvl = .false.
@@ -94,12 +94,13 @@
     restart_aero = .false.
     tr_fsd       = .false.
     restart_fsd  = .false.
+    tr_snow      = @[CICE_TR_SNOW]
 /
 
 &thermo_nml
     kitd              = 1
     ktherm            = @[CICE_KTHERM]
-    conduct           = 'MU71'
+    conduct           = '@[CICE_CONDUCT]'
     a_rapid_mode      =  0.5e-3
     Rac_rapid_mode    =    10.0
     aspect_rapid_mode =     1.0
@@ -139,29 +140,36 @@
     albicei         = 0.36
     albsnowv        = 0.98
     albsnowi        = 0.70
-    ahmax           = 0.3
-    R_ice           = 0.
-    R_pnd           = 0.
-    R_snw           = 1.5
-    dT_mlt          = 1.5
-    rsnw_mlt        = 1500.
+    ahmax           = @[CICE_AHMAX]
+    R_ice           = @[CICE_R_ICE]
+    R_pnd           = @[CICE_R_PND]
+    R_snw           = @[CICE_R_SNW]
+    dT_mlt          = @[CICE_DT_MLT]
+    rsnw_mlt        = @[CICE_RSNW_MLT]
     kalg            = 0.0
     sw_redist       = .true.
 /
 
 &ponds_nml
     hp1             = 0.01
-    hs0             = 0.
-    hs1             = 0.03
-    dpscale         = 1.e-3
+    hs0             = @[CICE_HS0]
+    hs1             = @[CICE_HS1]
+    dpscale         = @[CICE_DPSCALE]
     frzpnd          = 'hlid'
-    rfracmin        = 0.15
-    rfracmax        = 1.
-    pndaspect       = 0.8
+    rfracmin        = @[CICE_RFRACMIN]
+    rfracmax        = @[CICE_RFRACMAX]
+    pndaspect       = @[CICE_PNDASPECT]
 /
 
 &snow_nml
-    snwredist       = 'none'
+    snwredist       = '@[CICE_SNWREDIST]'
+    rhosnew         = 100.
+    rhosmin         = 100.
+    rhosmax         = 450.
+    windmin         = 10.
+    drhosdwind      = 27.3
+    snwlvlfac       = 0.3
+    snwgrain        = @[CICE_SNWGRAIN]
 /
 
 &forcing_nml
@@ -172,8 +180,8 @@
     highfreq        = .false.
     natmiter        = 5
     ustar_min       = 0.0005
-    emissivity      = 0.95
-    fbot_xfer_type  = 'constant'
+    emissivity      = @[CICE_EMISSIVITY]
+    fbot_xfer_type  = '@[CICE_FBOT_XFER_TYPE]'
     update_ocn_f    = @[CICE_FRAZIL_FWSALT]
     l_mpond_fresh   = .false.
     tfrz_option     = '@[CICE_TFREEZE_OPTION]'

@@ -1,12 +1,12 @@
 ###############################################################################
 #
-#  global control test with prognostic aerosols: GFSv17 P8 FV3-GOCART at C96L127
+#  global control test for CATChem prognostic aerosols and interactive chemistry
 #
 ###############################################################################
 
 TEST_DESCR="Compare global results for prognostic aerosols with previous trunk version"
 
-CNTL_DIR=atmaero_control_p8
+CNTL_DIR=catchem_control
 
 LIST_FILES="sfcf000.nc \
             sfcf024.nc \
@@ -16,7 +16,6 @@ LIST_FILES="sfcf000.nc \
             GFSFLX.GrbF24 \
             GFSPRS.GrbF00 \
             GFSPRS.GrbF24 \
-            gocart.inst_aod.20210323_0600z.nc4 \
             RESTART/20210323.060000.coupler.res \
             RESTART/20210323.060000.fv_core.res.nc \
             RESTART/20210323.060000.fv_core.res.tile1.nc \
@@ -52,6 +51,7 @@ LIST_FILES="sfcf000.nc \
 
 export_fv3
 export_tiled
+
 NPZ=127
 NPZP=128
 DT_ATMOS=720
@@ -67,10 +67,11 @@ WRITE_DOPOST=.true.
 
 CPL=.true.
 CPLCHM=.true.
+CPLCAT=.true.
 UFS_CONFIGURE=ufs.configure.atmaero.IN
 
 atm_model='fv3'
-chm_model='gocart'
+chm_model='catchem'
 coupling_interval_sec=${DT_ATMOS}
 
 INPES=${INPES_atmaero}
@@ -180,4 +181,3 @@ SATMEDMF=.true.
 if [[ $MACHINE_ID = gaeac6 ]]; then
   TPN=96
 fi
-TEST_BL_DATE=20260429
