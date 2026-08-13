@@ -11,7 +11,7 @@ die() { echo "$@" >&2; exit 1; }
 usage() {
   set +x #No reason to print out a bunch of echo statements here
   echo
-  echo "Usage: $0 -a <account> | -b <file> | -c | -d | -e | -h | -k | -l <file> | -m | -n <name> | -o | -r | -v | -w | -x"
+  echo "Usage: $0 -a <account> | -b <file> | -c | -d | -e | -f | -h | -k | -l <file> | -m | -n <name> | -o | -r | -v | -w | -x"
   echo
   echo "  -a  <account> to use on for HPC queue"
   echo "  -b  create new baselines only for tests listed in <file>"
@@ -619,7 +619,7 @@ export STOP_ECFLOW_AT_END=false
 export DRY_RUN=false
 ACCNR=${ACCNR:-""}
 
-while getopts ":a:b:cl:mn:dwkreovhx" opt; do
+while getopts ":a:b:cl:mn:dwkreovhxf" opt; do
   case ${opt} in
     a)
       ACCNR=${OPTARG}
