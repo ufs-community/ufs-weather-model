@@ -110,73 +110,119 @@ if(CMEPS_AOFLUX)
   ### If UFSATM is available build CCPP host model under CMEPS too
   if(EXISTS ${UFSATM_PATH})
     ### Print out information
-    message("UFSATM_PATH = ${UFSATM_PATH}")
-    message("Compiling CMEPS with CCPP support.")
+    message(STATUS "UFSATM_PATH = ${UFSATM_PATH}")
+    message(STATUS "Compiling CMEPS with CCPP support.")
 
-    ### Set environment variable for UFSATM directory, used by config file
-    set(ENV{UFSATM_PATH} ${UFSATM_PATH})
+    #------------------------------------------------------------------------------
+    # BEGIN call to CCPP Framework
+    #------------------------------------------------------------------------------
+    set(PARENT_DIR "UFSATM")
+    include(${UFSATM_PATH}/cmake/ccpp_capgen.cmake)
 
-    ### Set suite file that needs to be compiled
-    set(_ccpp_suites_arg "--suites=FV3_sfc_ocean")
+    #------------------------------------------------------------------------------
+    # Physics scheme metadata/fortran files (CCPP Physics)
+    #------------------------------------------------------------------------------
+    set(SCHEME_FILES_DIR "${CMAKE_SOURCE_DIR}/UFSATM/ccpp/physics/physics")
 
-    ### Set options for ccpp_prebuild.py
-    if(DEBUG)
-      ### Enable debugging features in auto-generated physics caps
-      set(_ccpp_debug_arg "--debug")
-      ### Enable verbose output from ccpp_prebuild.py
-      set(_ccpp_verbose_arg "--verbose")
-    endif()
+    set(SCHEME_METADATA_FILES
+       "${SCHEME_FILES_DIR}/SFC_Models/Ocean/UFS/sfc_ocean.meta"
+       "${SCHEME_FILES_DIR}/SFC_Layer/UFS/sfc_diff.meta"
+       "${SCHEME_FILES_DIR}/Interstitials/UFS_SCM_NEPTUNE/GFS_surface_loop_control_part1.meta"
+       "${SCHEME_FILES_DIR}/Interstitials/UFS_SCM_NEPTUNE/GFS_surface_loop_control_part2.meta"
+       "${SCHEME_FILES_DIR}/Interstitials/UFS_SCM_NEPTUNE/GFS_surface_composites_pre.meta"
+       "${SCHEME_FILES_DIR}/Interstitials/UFS_SCM_NEPTUNE/GFS_surface_composites_post.meta"
+       "${SCHEME_FILES_DIR}/SFC_Layer/UFS/sfc_diag.meta"
+     )
 
-    ### Trigger ccpp_prebuild.py script to connect host model with CCPP physics
-    message("Calling CCPP code generator (ccpp_prebuild.py) for suites ${_ccpp_suites_arg} ...")
-    execute_process(
-                    COMMAND ${Python_EXECUTABLE}
-                    "${UFSATM_PATH}/ccpp/framework/scripts/ccpp_prebuild.py"
-                    "--config=CMEPS/ufs/ccpp/config/ccpp_prebuild_config.py"
-                    "--builddir=${CMAKE_CURRENT_BINARY_DIR}"
-                    "--namespace=med"
-                    ${_ccpp_suites_arg}
-                    ${_ccpp_debug_arg}
-                    ${_ccpp_verbose_arg}
-                    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-                    OUTPUT_FILE ${CMAKE_CURRENT_BINARY_DIR}/ccpp_prebuild.out
-                    ERROR_FILE  ${CMAKE_CURRENT_BINARY_DIR}/ccpp_prebuild.err
-                    RESULT_VARIABLE return_code)
+    # Create list of scheme source files from metadata files
+    ccpp_source_files(SCHEME_FORTRAN_FILES ${SCHEME_METADATA_FILES})
+    message(STATUS "${SCHEME_METADATA_FILES} --> ${SCHEME_FORTRAN_FILES}")
 
-    ### Check return code from CCPP prebuild.py
-    if(return_code EQUAL 0)
-      message (STATUS "CCPP prebuild step completed successfully")
-    else(return_code EQUAL 0)
-      message (FATAL_ERROR "CCPP prebuild step failed, check ${CMAKE_CURRENT_BINARY_DIR}/ccpp_prebuild.{out,err}")
-    endif(return_code EQUAL 0)
+    #------------------------------------------------------------------------------
+    # Host-model metadata/fortran files (CMEPS)
+    #------------------------------------------------------------------------------
+    set(HOST "cmeps")
+    set(HOST_FILES_DIR "${CMAKE_SOURCE_DIR}/CMEPS-interface/CMEPS/ufs/ccpp")
+
+    set(HOST_METADATA_FILES
+       "${HOST_FILES_DIR}/data/MED_typedefs.meta"
+       "${HOST_FILES_DIR}/data/MED_data.meta"
+       "${HOST_FILES_DIR}/driver/med_ccpp_driver.meta"
+       "${SCHEME_FILES_DIR}/hooks/physcons.meta"
+    )
+
+    # Create list of host source files from metadata files
+    ccpp_source_files(HOST_FORTRAN_FILES ${HOST_METADATA_FILES})
+    message(STATUS "${HOST_METADATA_FILES} --> ${HOST_FORTRAN_FILES}")
+
+    #------------------------------------------------------------------------------
+    # Define Suite Definition Files (CMEPS)
+    #------------------------------------------------------------------------------
+    set(SUITE_FILES_DIR "${CMAKE_SOURCE_DIR}/CMEPS-interface/CMEPS/ufs/ccpp/suites")
+
+    set(SUITE_FILES
+       "${SUITE_FILES_DIR}/suite_FV3_sfc_ocean.xml"
+    )
+
+    #------------------------------------------------------------------------------
+    # Set output directory for CCPP files.
+    #------------------------------------------------------------------------------
+    #set(OUTPUT_ROOT "${CMAKE_SOURCE_DIR}/CMEPS-interface/CMEPS/ufs/ccpp")
+    set(OUTPUT_ROOT "${CMAKE_CURRENT_BINARY_DIR}/ccpp")
+
+    set(CCPP_VERBOSITY "2" CACHE STRING "Verbosity level of output (default: 0)")
+
+    #------------------------------------------------------------------------------
+    # Run ccpp_validator
+    #------------------------------------------------------------------------------
+    ccpp_validator(VERBOSITY      ${CCPP_VERBOSITY}
+                   SOURCE_FILES   ${SCHEME_FORTRAN_FILES}
+                   METADATA_FILES ${SCHEME_METADATA_FILES}
+                   TYPE "SCHEME")
+
+    ccpp_validator(VERBOSITY      ${CCPP_VERBOSITY}
+                   SOURCE_FILES   ${HOST_FORTRAN_FILES}
+	           METADATA_FILES ${HOST_METADATA_FILES}
+                   TYPE "HOST")
+
+    #------------------------------------------------------------------------------
+    # Call Capgen
+    #------------------------------------------------------------------------------
+    ccpp_capgen(VERBOSITY    ${CCPP_VERBOSITY}
+                HOSTFILES    ${HOST_METADATA_FILES}
+                SCHEMEFILES  ${SCHEME_METADATA_FILES}
+                SUITES       ${SUITE_FILES}
+                HOST_NAME    ${HOST}
+                OUTPUT_ROOT "${OUTPUT_ROOT}"
+                KIND_SPECS  "${CCPP_KINDS}")
+
+    #------------------------------------------------------------------------------
+    # Retrieve the list of Fortran files required for test host from datatable.xml;
+    # this includes capgen-generated files and dependencies inferred from metadata
+    #------------------------------------------------------------------------------
+    ccpp_datafile(DATATABLE "${OUTPUT_ROOT}/datatable.xml"
+                  REPORT_NAME "--dependencies")
+    set(CAPGEN_DEPENDENCIES ${CCPP_FILES})
+    ccpp_datafile(DATATABLE "${OUTPUT_ROOT}/datatable.xml"
+                   REPORT_NAME "--scheme-files")
+    set(SCHEME_FORTRAN_FILES ${CCPP_FILES})
+    ccpp_datafile(DATATABLE "${OUTPUT_ROOT}/datatable.xml"
+                  REPORT_NAME "--capgen-files")
+    set(CAPGEN_FILES ${CCPP_FILES})
+
+    message(STATUS "List of capgen dependencies: ${CAPGEN_DEPENDENCIES}")
+    message(STATUS "List of filtered scheme files: ${SCHEME_FORTRAN_FILES}")
+    message(STATUS "List of capgen-generated files: ${CAPGEN_FILES}")
+
+    message(STATUS "CCPP Framework step complete")
+
+    #------------------------------------------------------------------------------
+    # END call to CCPP Framework
+    #------------------------------------------------------------------------------
 
     ### Add extra driver file to the source
     list(APPEND _ufs_util_files
-      CMEPS/ufs/ccpp/driver/med_ccpp_driver.F90
       CMEPS/ufs/ufs_io_mod.F90)
-
-    ### Set the sources: type definitions
-    include(${CMAKE_CURRENT_BINARY_DIR}/physics/CCPP_TYPEDEFS.cmake)
-    foreach(typedef_module ${TYPEDEFS})
-      list(APPEND MODULES_F90 ${CMAKE_CURRENT_BINARY_DIR}/${typedef_module})
-    endforeach()
-
-    ### Set the sources: physics schemes
-    include(${CMAKE_CURRENT_BINARY_DIR}/physics/CCPP_SCHEMES.cmake)
-
-    ### Set the sources: static API
-    include(${CMAKE_CURRENT_BINARY_DIR}/physics/CCPP_STATIC_API.cmake)
-
-    ### Set the sources: cap
-    include(${CMAKE_CURRENT_BINARY_DIR}/physics/CCPP_CAPS.cmake)
-
-    ### Generate list of Fortran modules from defined sources
-    foreach(source_f90 ${CAPS} ${API})
-      get_filename_component(tmp_source_f90 ${source_f90} NAME)
-      string(REGEX REPLACE ".F90" ".mod" tmp_module_f90 ${tmp_source_f90})
-      string(TOLOWER ${tmp_module_f90} module_f90)
-      list(APPEND MODULES_F90 ${CMAKE_CURRENT_BINARY_DIR}/${module_f90})
-    endforeach()
 
     ### Add special CPP flag for CMEPS/CCPP support
     add_definitions(-DUFS_AOFLUX)
@@ -191,7 +237,7 @@ endif()
 ###############################################################################
 
 ### Create target library
-add_library(cmeps STATIC ${_ufs_util_files} ${_mediator_files} ${SCHEMES} ${CAPS} ${API})
+add_library(cmeps STATIC ${_ufs_util_files} ${_mediator_files} ${SCHEME_FORTRAN_FILES} ${CAPGEN_DEPENDENCIES} ${SCHEME_FORTRAN_FILES} ${HOST_FORTRAN_FILES} ${CAPGEN_FILES})
 
 ### Set PUBLIC interfaces on the library
 set_target_properties(cmeps PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod)
