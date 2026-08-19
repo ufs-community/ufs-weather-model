@@ -1,0 +1,183 @@
+###############################################################################
+#
+#  global control test for CATChem prognostic aerosols and interactive chemistry
+#
+###############################################################################
+
+TEST_DESCR="Compare global results for prognostic aerosols with previous trunk version"
+
+CNTL_DIR=catchem_control
+
+LIST_FILES="sfcf000.nc \
+            sfcf024.nc \
+            atmf000.nc \
+            atmf024.nc \
+            GFSFLX.GrbF00 \
+            GFSFLX.GrbF24 \
+            GFSPRS.GrbF00 \
+            GFSPRS.GrbF24 \
+            RESTART/20210323.060000.coupler.res \
+            RESTART/20210323.060000.fv_core.res.nc \
+            RESTART/20210323.060000.fv_core.res.tile1.nc \
+            RESTART/20210323.060000.fv_core.res.tile2.nc \
+            RESTART/20210323.060000.fv_core.res.tile3.nc \
+            RESTART/20210323.060000.fv_core.res.tile4.nc \
+            RESTART/20210323.060000.fv_core.res.tile5.nc \
+            RESTART/20210323.060000.fv_core.res.tile6.nc \
+            RESTART/20210323.060000.fv_srf_wnd.res.tile1.nc \
+            RESTART/20210323.060000.fv_srf_wnd.res.tile2.nc \
+            RESTART/20210323.060000.fv_srf_wnd.res.tile3.nc \
+            RESTART/20210323.060000.fv_srf_wnd.res.tile4.nc \
+            RESTART/20210323.060000.fv_srf_wnd.res.tile5.nc \
+            RESTART/20210323.060000.fv_srf_wnd.res.tile6.nc \
+            RESTART/20210323.060000.fv_tracer.res.tile1.nc \
+            RESTART/20210323.060000.fv_tracer.res.tile2.nc \
+            RESTART/20210323.060000.fv_tracer.res.tile3.nc \
+            RESTART/20210323.060000.fv_tracer.res.tile4.nc \
+            RESTART/20210323.060000.fv_tracer.res.tile5.nc \
+            RESTART/20210323.060000.fv_tracer.res.tile6.nc \
+            RESTART/20210323.060000.phy_data.tile1.nc \
+            RESTART/20210323.060000.phy_data.tile2.nc \
+            RESTART/20210323.060000.phy_data.tile3.nc \
+            RESTART/20210323.060000.phy_data.tile4.nc \
+            RESTART/20210323.060000.phy_data.tile5.nc \
+            RESTART/20210323.060000.phy_data.tile6.nc \
+            RESTART/20210323.060000.sfc_data.tile1.nc \
+            RESTART/20210323.060000.sfc_data.tile2.nc \
+            RESTART/20210323.060000.sfc_data.tile3.nc \
+            RESTART/20210323.060000.sfc_data.tile4.nc \
+            RESTART/20210323.060000.sfc_data.tile5.nc \
+            RESTART/20210323.060000.sfc_data.tile6.nc"
+
+export_fv3
+export_tiled
+
+NPZ=127
+NPZP=128
+DT_ATMOS=720
+DT_INNER=${DT_ATMOS}
+SYEAR=2021
+SMONTH=03
+SDAY=22
+SHOUR=06
+RESTART_INTERVAL='12 -1'
+OUTPUT_GRID='gaussian_grid'
+NSTF_NAME='2,0,0,0,0'
+WRITE_DOPOST=.true.
+
+CPL=.true.
+CPLCHM=.true.
+CPLCAT=.true.
+UFS_CONFIGURE=ufs.configure.atmaero.IN
+
+atm_model='fv3'
+chm_model='catchem'
+coupling_interval_sec=${DT_ATMOS}
+
+INPES=${INPES_atmaero}
+JNPES=${JNPES_atmaero}
+WRTTASK_PER_GROUP=${WPG_atmaero}
+
+# default resources
+DOMAINS_STACK_SIZE=8000000
+
+IALB=2
+IEMS=2
+IOPT_DVEG=4
+IOPT_CRS=2
+IOPT_RAD=3
+IOPT_ALB=1
+IOPT_STC=3
+IOPT_SFC=3
+IOPT_TRS=2
+IOPT_DIAG=2
+
+D2_BG_K1=0.20
+D2_BG_K2=0.04
+PSM_BC=1
+DDDMP=0.1
+
+# Merra2 Aerosols & NSST
+USE_MERRA2=.true.
+IAER=1011
+NSTF_NAME=2,0,0,0,0
+
+LHEATSTRG=.false.
+LSEASPRAY=.true.
+
+# UGWP1
+GWD_OPT=2
+DO_UGWP_V1=.false.
+KNOB_UGWP_VERSION=0
+KNOB_UGWP_NSLOPE=1
+DO_UGWP_V0=.true.
+DO_GSL_DRAG_LS_BL=.false.
+DO_GSL_DRAG_SS=.true.
+DO_GSL_DRAG_TOFD=.false.
+DO_UGWP_V1_OROG_ONLY=.false.
+DO_UGWP_V0_NST_ONLY=.false.
+LDIAG_UGWP=.false.
+
+# CA
+DO_CA=.true.
+CA_SGS=.true.
+CA_GLOBAL=.false.
+NCA=1
+NCELLS=5
+NLIVES=12
+NTHRESH=18
+NSEED=1
+NFRACSEED=0.5
+CA_TRIGGER=.true.
+NSPINUP=1
+ISEED_CA=12345
+
+TILEDFIX=.true.
+FNALBC="'C96.snowfree_albedo.tileX.nc'"
+FNALBC2="'C96.facsf.tileX.nc'"
+FNTG3C="'C96.substrate_temperature.tileX.nc'"
+FNVEGC="'C96.vegetation_greenness.tileX.nc'"
+FNVETC="'C96.vegetation_type.tileX.nc'"
+FNSOTC="'C96.soil_type.tileX.nc'"
+FNSOCC="'C96.soil_color.tileX.nc'"
+FNSMCC=${FNSMCC_control}
+FNMSKH=${FNMSKH_control}
+FNVMNC="'C96.vegetation_greenness.tileX.nc'"
+FNVMXC="'C96.vegetation_greenness.tileX.nc'"
+FNSLPC="'C96.slope_type.tileX.nc'"
+FNABSC="'C96.maximum_snow_albedo.tileX.nc'"
+FSICL=0
+FSICS=0
+
+IMP_PHYSICS=8
+LGFDLMPRAD=.false.
+DO_SAT_ADJ=.false.
+DNATS=2
+DZ_MIN=6
+
+#required for NML.IN sharing
+MIN_SEAICE=0.15
+FRAC_GRID=.true.
+MOM6_OUTPUT_DIR=./MOM6_OUTPUT
+MOM6_RESTART_DIR=./RESTART/
+MOM6_RESTART_SETTING=n
+# Following not used for standalone)
+USE_CICE_ALB=.false.
+
+WRITE_NSFLIP=.true.
+
+FV3_RUN=control_run.IN
+CCPP_SUITE=FV3_GFS_v17_p8
+FIELD_TABLE=field_table_thompson_noaero_tke_GOCART
+DIAG_TABLE=diag_table_cpld.IN
+INPUT_NML=global_control.nml.IN
+
+# RRTMGP
+DO_RRTMGP=.false.
+DOGP_LWSCAT=.true.
+
+SATMEDMF=.true.
+
+if [[ $MACHINE_ID = gaeac6 ]]; then
+  TPN=96
+fi

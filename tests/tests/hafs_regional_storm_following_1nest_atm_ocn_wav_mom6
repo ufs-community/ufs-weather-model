@@ -4,154 +4,154 @@
 #
 ###############################################################################
 
-export TEST_DESCR="Compare HAFS regional with 1 storm-following moving nest and fv3-mom6-ww3 coupled results with previous trunk version"
+TEST_DESCR="Compare HAFS regional with 1 storm-following moving nest and fv3-mom6-ww3 coupled results with previous trunk version"
 
-export CNTL_DIR=hafs_regional_storm_following_1nest_atm_ocn_wav_mom6
+CNTL_DIR=hafs_regional_storm_following_1nest_atm_ocn_wav_mom6
 
-export LIST_FILES="atmf003.nc \
-                   sfcf003.nc \
-                   atm.nest02.f003.nc \
-                   sfc.nest02.f003.nc \
-                   RESTART/20200825.150000.MOM.res.nc \
-                   RESTART/20200825.150000.MOM.res_1.nc \
-                   20200825.150000.out_grd.ww3 \
-                   20200825.150000.out_pnt.ww3.nc"
+LIST_FILES="atmf003.nc \
+            sfcf003.nc \
+            atm.nest02.f003.nc \
+            sfc.nest02.f003.nc \
+            RESTART/20200825.150000.MOM.res.nc \
+            RESTART/20200825.150000.MOM.res_1.nc \
+            20200825.150000.out_grd.ww3 \
+            20200825.150000.out_pnt.ww3.nc"
 
 export_fv3
 export_hafs
 export_hafs_regional
 
-export HAFS=true
-export FHMAX=3
-export RESTART_N=${FHMAX}
-export DT_ATMOS=180
-export ZSTANDARD_LEVEL=5
-export OUTPUT_FH='3 -1'
-export OUTPUT_FILE="'netcdf' 'netcdf'"
-export SDAY=25
-export SHOUR=12
-export SMONTH=08
-export SYEAR=2020
-export WRTTASK_PER_GROUP=60
+HAFS=true
+FHMAX=3
+RESTART_N=${FHMAX}
+DT_ATMOS=180
+ZSTANDARD_LEVEL=5
+OUTPUT_FH='3 -1'
+OUTPUT_FILE="'netcdf' 'netcdf'"
+SDAY=25
+SHOUR=12
+SMONTH=08
+SYEAR=2020
+WRTTASK_PER_GROUP=60
 
-export OUTPUT_GRID='rotated_latlon'
-export CEN_LON=-86.3
-export CEN_LAT=23.3
-export LON1=-45.00
-export LAT1=-40.00
-export LON2=45.00
-export LAT2=40.00
-export DLON=0.25
-export DLAT=0.25
+OUTPUT_GRID='rotated_latlon'
+CEN_LON=-86.3
+CEN_LAT=23.3
+LON1=-45.00
+LAT1=-40.00
+LON2=45.00
+LAT2=40.00
+DLON=0.25
+DLAT=0.25
 
-export OUTPUT_GRID_2='rotated_latlon'
-export CEN_LON_2=-86.3
-export CEN_LAT_2=23.3
-export LON1_2=-45.00
-export LAT1_2=-40.00
-export LON2_2=45.00
-export LAT2_2=40.00
-export DLON_2=0.1
-export DLAT_2=0.1
+OUTPUT_GRID_2='rotated_latlon'
+CEN_LON_2=-86.3
+CEN_LAT_2=23.3
+LON1_2=-45.00
+LAT1_2=-40.00
+LON2_2=45.00
+LAT2_2=40.00
+DLON_2=0.1
+DLAT_2=0.1
 
-export BLOCKSIZE=${BLOCKSIZE:-24}
-export CCPP_SUITE=FV3_HAFS_v1_gfdlmp_tedmf_nonsst
-export DEFLATE_LEVEL=-1
-export INPES=6
-export JNPES=10
-export NPX=241
-export NPY=241
-export NPZ=64
-export NPZP=$(($NPZ + 1))
-export K_SPLIT=4
-export N_SPLIT=5
-export NWAT=6
-export NA_INIT=1
-export EXTERNAL_IC=.true.
-export NGGPS_IC=.true.
-export MOUNTAIN=.false.
-export WARM_START=.false.
-export TARGET_LAT="23.3"
-export TARGET_LON="-86.3"
-export STRETCH_FAC=1.0001
-export REGIONAL=.true.
-export BC_UPDATE_INTERVAL=3
-export NROWS_BLEND=10
-export FULL_ZS_FILTER=.false.
-export N_ZS_FILTER=0
+BLOCKSIZE=${BLOCKSIZE:-24}
+CCPP_SUITE=FV3_HAFS_v1_gfdlmp_tedmf_nonsst
+DEFLATE_LEVEL=-1
+INPES=6
+JNPES=10
+NPX=241
+NPY=241
+NPZ=64
+NPZP=$((NPZ + 1))
+K_SPLIT=4
+N_SPLIT=5
+NWAT=6
+NA_INIT=1
+EXTERNAL_IC=.true.
+NGGPS_IC=.true.
+MOUNTAIN=.false.
+WARM_START=.false.
+TARGET_LAT="23.3"
+TARGET_LON="-86.3"
+STRETCH_FAC=1.0001
+REGIONAL=.true.
+BC_UPDATE_INTERVAL=3
+NROWS_BLEND=10
+FULL_ZS_FILTER=.false.
+N_ZS_FILTER=0
 
-export GRID_PES="60,60"
-export TILE_COARSE="0,1"
-export NUM_TILE_TOP=1
-export NEST_REFINE="0,3"
-export NEST_IOFFSETS="999,61"
-export NEST_JOFFSETS="999,61"
-export IS_MOVING_NEST=".false.,.true."
-export VORTEX_TRACKER="0,7"
-export NTRACK="0,5"
-export MOVE_CD_X="0,0"
-export MOVE_CD_Y="0,0"
+GRID_PES="60,60"
+TILE_COARSE="0,1"
+NUM_TILE_TOP=1
+NEST_REFINE="0,3"
+NEST_IOFFSETS="999,61"
+NEST_JOFFSETS="999,61"
+IS_MOVING_NEST=".false.,.true."
+VORTEX_TRACKER="0,7"
+NTRACK="0,5"
+MOVE_CD_X="0,0"
+MOVE_CD_Y="0,0"
 
-export INPES_NEST02=6
-export JNPES_NEST02=10
-export NPX_NEST02=361
-export NPY_NEST02=361
-export K_SPLIT_NEST02=4
-export N_SPLIT_NEST02=5
+INPES_NEST02=6
+JNPES_NEST02=10
+NPX_NEST02=361
+NPY_NEST02=361
+K_SPLIT_NEST02=4
+N_SPLIT_NEST02=5
 
-export FHCYC=0
-export FHSWR=1800
-export FHLWR=1800
-export NSTF_NAME=0,0,0,0,0
-export CPLFLX=.true.
-export CPLOCN2ATM=.true.
-export USE_OCEANUV=.true.
-export CPLWAV=.true.
-export CPLWAV2ATM=.false.
-export CPL_IMP_MRG=.true.
+FHCYC=0
+FHSWR=1800
+FHLWR=1800
+NSTF_NAME=0,0,0,0,0
+CPLFLX=.true.
+CPLOCN2ATM=.true.
+USE_OCEANUV=.true.
+CPLWAV=.true.
+CPLWAV2ATM=.false.
+CPL_IMP_MRG=.true.
 
 # ufs.configure
-export med_model=cmeps
-export CAP_DBUG_FLAG=0
-export RESTART_N=${FHMAX}
-export CPLMODE=hafs
-export RUNTYPE=startup
-export USE_COLDSTART=false
+med_model=cmeps
+CAP_DBUG_FLAG=0
+RESTART_N=${FHMAX}
+CPLMODE=hafs
+RUNTYPE=startup
+USE_COLDSTART=false
 
-export CDEPS_DOCN=false
+CDEPS_DOCN=false
 
-export atm_model=fv3
-export ocn_model=mom6
-export wav_model=ww3
+atm_model=fv3
+ocn_model=mom6
+wav_model=ww3
 
-ATM_compute_tasks=$(( INPES*JNPES + INPES_NEST02*JNPES_NEST02 ))
+ATM_compute_tasks=$((INPES * JNPES + INPES_NEST02 * JNPES_NEST02))
 OCN_tasks=60
 WAV_tasks=60
 
-export atm_omp_num_threads=2
-export med_omp_num_threads=2
-export ocn_omp_num_threads=2
-export wav_omp_num_threads=2
+atm_omp_num_threads=2
+med_omp_num_threads=2
+ocn_omp_num_threads=2
+wav_omp_num_threads=2
 
-export coupling_interval_sec=360
-export MESH_ATM=unset
-export MESH_OCN=INPUT/mom6_mesh.nc
+coupling_interval_sec=360
+MESH_ATM=unset
+MESH_OCN=INPUT/mom6_mesh.nc
 
-export CDEPS_INLINE=true
-export INLINE_MESH_ATM="INPUT/gfs_mesh.nc"
-export INLINE_STREAM_FILES_ATM="INPUT/gfs_forcings.nc"
-export INLINE_MESH_OCN="INPUT/gfs_mesh.nc"
-export INLINE_STREAM_FILES_OCN="INPUT/gfs_forcings.nc"
-export STREAM_OFFSET=0
+CDEPS_INLINE=true
+INLINE_MESH_ATM="INPUT/gfs_mesh.nc"
+INLINE_STREAM_FILES_ATM="INPUT/gfs_forcings.nc"
+INLINE_MESH_OCN="INPUT/gfs_mesh.nc"
+INLINE_STREAM_FILES_OCN="INPUT/gfs_forcings.nc"
+STREAM_OFFSET=0
 
-export MOM6_HISTFREQ_N=3
-export MOM6_OUTPUT_DIR=./
+MOM6_HISTFREQ_N=3
+MOM6_OUTPUT_DIR=./
 
-export FIELD_TABLE=field_table_hafs
-export DIAG_TABLE=diag_table_hafs_template.IN
-export INPUT_NML=input_regional_hafs.nml.IN
-export INPUT_NEST02_NML=input_nest_hafs.nml.IN
-export MODEL_CONFIGURE=model_configure_hafs.IN
-export UFS_CONFIGURE=ufs.configure.hafs_atm_ocn_wav_mom6.IN
-export CDEPS_INLINE_CONFIGURE=stream.config_mom6.IN
-export FV3_RUN="hafs_fv3_run.IN hafs_ww3_run.IN"
+FIELD_TABLE=field_table_hafs
+DIAG_TABLE=diag_table_hafs_template.IN
+INPUT_NML=input_regional_hafs.nml.IN
+INPUT_NEST02_NML=input_nest_hafs.nml.IN
+MODEL_CONFIGURE=model_configure_hafs.IN
+UFS_CONFIGURE=ufs.configure.hafs_atm_ocn_wav_mom6.IN
+CDEPS_INLINE_CONFIGURE=stream.config_mom6.IN
+FV3_RUN="hafs_fv3_run.IN hafs_ww3_run.IN"

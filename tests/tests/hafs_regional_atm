@@ -4,93 +4,93 @@
 #
 ###############################################################################
 
-export TEST_DESCR="Compare HAFS regional atmosphere only results with previous trunk version"
+TEST_DESCR="Compare HAFS regional atmosphere only results with previous trunk version"
 
-export CNTL_DIR=hafs_regional_atm
+CNTL_DIR=hafs_regional_atm
 
-export LIST_FILES="atmf006.nc \
-                   sfcf006.nc \
-                   HURPRS.GrbF06"
+LIST_FILES="atmf006.nc \
+            sfcf006.nc \
+            HURPRS.GrbF06"
 
 export_fv3
 export_hafs
 
-export HAFS=true
-export FHMAX=6
-export RESTART_N=${FHMAX}
-export atm_omp_num_threads=2
-export DT_ATMOS=180
-export ZSTANDARD_LEVEL=5
-export OUTPUT_FH='3 -1'
-export OUTPUT_FILE="'netcdf' 'netcdf'"
-export SDAY=29
-export SHOUR=00
-export SMONTH=08
-export SYEAR=2019
-export WRTTASK_PER_GROUP=60
-export WRITE_DOPOST=.true.
-export POSTAPP='hafs'
+HAFS=true
+FHMAX=6
+RESTART_N=${FHMAX}
+atm_omp_num_threads=2
+DT_ATMOS=180
+ZSTANDARD_LEVEL=5
+OUTPUT_FH='3 -1'
+OUTPUT_FILE="'netcdf' 'netcdf'"
+SDAY=29
+SHOUR=00
+SMONTH=08
+SYEAR=2019
+WRTTASK_PER_GROUP=60
+WRITE_DOPOST=.true.
+POSTAPP='hafs'
 
-export OUTPUT_GRID='regional_latlon'
-export CEN_LON=-62.0
-export CEN_LAT=22.0
-export LON1=-116.90
-export LAT1=-14.45
-export LON2=-7.10
-export LAT2=58.45
-export DLON=0.1
-export DLAT=0.1
+OUTPUT_GRID='regional_latlon'
+CEN_LON=-62.0
+CEN_LAT=22.0
+LON1=-116.90
+LAT1=-14.45
+LON2=-7.10
+LAT2=58.45
+DLON=0.1
+DLAT=0.1
 
-export BLOCKSIZE=40
-export CCPP_SUITE=FV3_HAFS_v1_gfdlmp_tedmf
-export DEFLATE_LEVEL=-1
-export INPES=20
-export JNPES=12
-export NPX=721
-export NPY=601
-export NPZ=91
-export NPZP=$(($NPZ + 1))
-export K_SPLIT=2
-export N_SPLIT=5
-export NWAT=6
-export NA_INIT=1
-export EXTERNAL_IC=.true.
-export NGGPS_IC=.true.
-export MOUNTAIN=.false.
-export WARM_START=.false.
-export TARGET_LAT="22.0"
-export TARGET_LON="-62.0"
-export STRETCH_FAC=1.0001
-export REGIONAL=.true.
-export BC_UPDATE_INTERVAL=3
-export NROWS_BLEND=10
-export FULL_ZS_FILTER=.false.
-export N_ZS_FILTER=0
+BLOCKSIZE=40
+CCPP_SUITE=FV3_HAFS_v1_gfdlmp_tedmf
+DEFLATE_LEVEL=-1
+INPES=20
+JNPES=12
+NPX=721
+NPY=601
+NPZ=91
+NPZP=$((NPZ + 1))
+K_SPLIT=2
+N_SPLIT=5
+NWAT=6
+NA_INIT=1
+EXTERNAL_IC=.true.
+NGGPS_IC=.true.
+MOUNTAIN=.false.
+WARM_START=.false.
+TARGET_LAT="22.0"
+TARGET_LON="-62.0"
+STRETCH_FAC=1.0001
+REGIONAL=.true.
+BC_UPDATE_INTERVAL=3
+NROWS_BLEND=10
+FULL_ZS_FILTER=.false.
+N_ZS_FILTER=0
 
-export GRID_PES="240"
-export TILE_COARSE="0"
-export NUM_TILE_TOP=1
-export NEST_REFINE="0"
-export NEST_IOFFSETS="999"
-export NEST_JOFFSETS="999"
+GRID_PES="240"
+TILE_COARSE="0"
+NUM_TILE_TOP=1
+NEST_REFINE="0"
+NEST_IOFFSETS="999"
+NEST_JOFFSETS="999"
 
-export FHCYC=0
-export FHSWR=1800
-export FHLWR=1800
-export NSTF_NAME=2,0,0,0,0
-export CPLFLX=.false.
-export CPLOCN2ATM=.true.
-export CPLWAV=.false.
-export CPLWAV2ATM=.false.
-export CPL_IMP_MRG=.false.
+FHCYC=0
+FHSWR=1800
+FHLWR=1800
+NSTF_NAME=2,0,0,0,0
+CPLFLX=.false.
+CPLOCN2ATM=.true.
+CPLWAV=.false.
+CPLWAV2ATM=.false.
+CPL_IMP_MRG=.false.
 
-export CMEPS=false
-export RUNTYPE=startup
-export USE_COLDSTART=false
+CMEPS=false
+RUNTYPE=startup
+USE_COLDSTART=false
 
-export FIELD_TABLE=field_table_hafs
-export DIAG_TABLE=diag_table_hafs_template.IN
-export INPUT_NML=input_regional_hafs.nml.IN
-export MODEL_CONFIGURE=model_configure_hafs.IN
-export UFS_CONFIGURE=ufs.configure.hafs_atm.IN
-export FV3_RUN=hafs_fv3_run.IN
+FIELD_TABLE=field_table_hafs
+DIAG_TABLE=diag_table_hafs_template.IN
+INPUT_NML=input_regional_hafs.nml.IN
+MODEL_CONFIGURE=model_configure_hafs.IN
+UFS_CONFIGURE=ufs.configure.hafs_atm.IN
+FV3_RUN=hafs_fv3_run.IN

@@ -2,33 +2,21 @@
 #  cpld_control GFSv17 restart test with IAU
 #
 
-source ${PATHRT}/tests/cpld_control_gfsv17_iau
-export TEST_DESCR+=" restart"
+source "${PATHRT}"/tests/cpld_control_gfsv17_iau
+TEST_DESCR+=" restart"
 
-export FHROT=18 #restart after any IAU
-export RESTART_N=3
-export RESTART_INTERVAL="${RESTART_N} -1"
-RESTHOUR=$(( ${FHROT} + ${SHOUR} ))
-RESTSDAY=$SDAY
-echo "RESTHOUR=$RESTHOUR,RESTSDAY=$RESTSDAY"
-if [[ $RESTHOUR -ge 24 ]]; then
-  echo "compute resthour"
-  RESTHOUR=$(( ${FHROT} + ${SHOUR} - 24 ))
-  echo "compute restday"
-  RESTSDAY=$(( ${SDAY} + 1 ))
-fi
-echo "2RESTHOUR=$RESTHOUR,RESTSDAY=$RESTSDAY"
-RESTSEC=$(( ${RESTHOUR} * 3600 ))
-echo "RESTHOUR=$RESTHOUR,RESTSDAY=$RESTSDAY,RESTSEC=$RESTSEC"
-export RESTART_FILE_PREFIX="${SYEAR}${SMONTH}${RESTSDAY}.$(printf "%02d" ${RESTHOUR})0000"
-export RESTART_FILE_SUFFIX_SECS="${SYEAR}-${SMONTH}-${RESTSDAY}-$(printf "%05d" ${RESTSEC})"
+FHROT=18 #restart after any IAU
+RESTART_N=3
+RESTART_INTERVAL="${RESTART_N} -1"
+RESTART_FILE_PREFIX=$(set_restart_file_prefix)
+RESTART_FILE_SUFFIX_SECS=$(set_restart_file_suffix_secs)
 echo "RESTART_FILE_PREFIX=$RESTART_FILE_PREFIX"
 echo "RESTART_FILE_SUFFIX_SECS=$RESTART_FILE_SUFFIX_SECS"
-export CICE_DIAGFREQ=`expr $((FHMAX-FHROT)) \* 3600 / $DT_CICE`
+CICE_DIAGFREQ=$(((FHMAX - FHROT) * 3600 / DT_CICE))
 
 #Warm start settings already from base test
 
 #Restart after increments/IAU
-export ODA_INCUPD="False"
-export ODA_INCUPD_UV="False"
-export nccmp_exclude="--exclude=oda_incupd_ncount"
+ODA_INCUPD="False"
+ODA_INCUPD_UV="False"
+nccmp_exclude="--exclude=oda_incupd_ncount"

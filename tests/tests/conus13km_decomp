@@ -7,25 +7,25 @@
 # This configuration is supposed to match the rrfs_dev1 parallel, so
 # do not change the namelist without checking the current parallel.
 
-export TEST_DESCR="HRRR physics on 13km domain, different PEs"
+TEST_DESCR="HRRR physics on 13km domain, different PEs"
 
-export CNTL_DIR=conus13km_control
+CNTL_DIR=conus13km_control
 
-export LIST_FILES="sfcf000.nc \
-                   sfcf001.nc \
-                   sfcf002.nc \
-                   atmf000.nc \
-                   atmf001.nc \
-                   atmf002.nc"
+LIST_FILES="sfcf000.nc \
+            sfcf001.nc \
+            sfcf002.nc \
+            atmf000.nc \
+            atmf001.nc \
+            atmf002.nc"
 
 export_hrrr_conus13km
-export RESTART_INTERVAL=1
-export INPES=8
-export JNPES=10
-export QUILTING_RESTART=.false.
-export USE_MERRA2=.true.
-export ZSTANDARD_LEVEL=5
+RESTART_INTERVAL=1
+INPES=8
+JNPES=10
+QUILTING_RESTART=.false.
+USE_MERRA2=.true.
+ZSTANDARD_LEVEL=5
 
 if [[ ${MACHINE_ID} = ursa ]]; then
-   export EXCLUSIVE_NODES=.true.
-fi 
+  EXCLUSIVE_NODES=.true.
+fi

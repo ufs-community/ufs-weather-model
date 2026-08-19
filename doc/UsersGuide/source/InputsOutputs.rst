@@ -1731,7 +1731,7 @@ There are four SDFs currently supported for the UFS Short Range Weather App conf
    * ``suite_FV3_HRRR.xml``
    * ``suite_FV3_WoFS_v0.xml``
 
-Detailed descriptions of the supported suites can be found with the `CCPP v6.0.0 Scientific Documentation <https://dtcenter.ucar.edu/GMTB/v6.0.0/sci_doc/index.html>`__.
+Detailed descriptions of the supported suites can be found in the `CCPP v7.0.0 Scientific Documentation <https://ncar.github.io/ccpp-physics/V7/>`__.
 
 .. _datm.streams-file:
 
@@ -1859,7 +1859,7 @@ Namelist file ``input.nml``
 
 The atmosphere model reads many parameters from a Fortran namelist file, named ``input.nml``. This file contains several Fortran namelist records, some of which are always required, others of which are only used when selected physics options are chosen:
 
-   * The `CCPP Scientific Documentation <https://dtcenter.ucar.edu/GMTB/v6.0.0/sci_doc/>`__ provides an in-depth description of the namelist settings. Information describing the various physics-related namelist records can be viewed `here <https://dtcenter.ucar.edu/GMTB/v6.0.0/sci_doc/_c_c_p_psuite_nml_desp.html>`__. 
+   * The `CCPP Scientific Documentation <https://ncar.github.io/ccpp-physics/V7/>`__ provides an in-depth description of the namelist settings. Information describing the various physics-related namelist records can be viewed `here <https://ncar.github.io/ccpp-physics/V7/_c_c_p_psuite_nml_desp.html>`__. 
    * The `Stochastic Physics Documentation <https://stochastic-physics.readthedocs.io/en/latest/namelist_options.html>`__ describes the stochastic physics namelist records. 
    * The `FV3 Dynamical Core Technical Documentation <https://noaa-emc.github.io/FV3_Dycore_ufs-v2.0.0/html/index.html>`__ describes some of the other namelist records (dynamics, grid, etc). 
    * The namelist section ``&interpolator_nml`` is not used in this release, and any modifications to it will have no effect on the model results.
