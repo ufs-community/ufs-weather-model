@@ -492,6 +492,26 @@ else
   fi
 
 fi
+if [[ "${RTPWD_NEW_BASELINE}" == true ]] ; then
+  RTPWD=${NEW_BASELINE}
+else
+  # RTPWD=${RTPWD:-${DISKNM}/NEMSfv3gfs/develop-${BL_DATE}}
+  RTPWD=${RTPWD:-${DISKNM}/NEMSfv3gfs/develop-${TEST_BL_DATE}}
+fi
+
+if [[ "${CREATE_BASELINE}" == false ]] ; then
+  EMPTY_CHECK=$(find "${RTPWD}/" -type d -prune -empty)
+  if [[ ! -d "${RTPWD}" ]] ; then
+    echo "Baseline directory does not exist:"
+    echo "   ${RTPWD}"
+    exit 1
+  elif [[ -n ${EMPTY_CHECK} ]] ; then
+    echo "Baseline directory is empty:"
+    echo "   ${RTPWD}"
+    exit 1
+  fi
+fi
+
 skip_check_results=${skip_check_results:-false}
 if [[ ${skip_check_results} == false ]]; then
 
@@ -607,6 +627,9 @@ if [[ ${skip_check_results} == false ]]; then
 
   if [[ ${test_status} = 'FAIL' ]]; then
     echo "${TEST_ID} failed in check_result" >> "${PATHRT}/fail_test_${TEST_ID}"
+    if [[ ${FINAL_TESTING} = true ]]; then
+      update_test_bl_date "${TEST_NAME}"
+    fi
     write_fail_test
   fi
 

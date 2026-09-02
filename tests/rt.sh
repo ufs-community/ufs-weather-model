@@ -11,13 +11,14 @@ die() { echo "$@" >&2; exit 1; }
 usage() {
   set +x #No reason to print out a bunch of echo statements here
   echo
-  echo "Usage: $0 -a <account> | -b <file> | -c | -d | -e | -h | -k | -l <file> | -m | -n <name> | -o | -r | -v | -w | -x"
+  echo "Usage: $0 -a <account> | -b <file> | -c | -d | -e | -f | -h | -k | -l <file> | -m | -n <name> | -o | -r | -v | -w | -x"
   echo
   echo "  -a  <account> to use on for HPC queue"
   echo "  -b  create new baselines only for tests listed in <file>"
   echo "  -c  create new baseline results"
   echo "  -d  delete run directories that are not used by other tests"
   echo "  -e  use ecFlow workflow manager"
+  echo "  -f  final testing; generates test_changes.list."
   echo "  -h  display this help"
   echo "  -k  keep run directory after rt.sh is completed"
   echo "  -l  runs test specified in <file>"
@@ -32,6 +33,17 @@ usage() {
 }
 
 [[ $# -eq 0 ]] && usage
+
+skip_test_work() {
+  RUNDIR=${RUNDIR_ROOT}/${TEST_ID}${RT_SUFFIX}
+  if [[ ${CREATE_BASELINE} == true && ${NEW_BASELINES_FILE} != '' ]]; then
+    if [[ -d "${NEW_BASELINE}/${TEST_ID}${RT_SUFFIX}" ]]; then
+      echo "Directory ${NEW_BASELINE}/${TEST_ID}${RT_SUFFIX} already exists. Skipping linking it to new baseline."
+    else
+      ln -s "${RUNDIR}" "${NEW_BASELINE}/"
+    fi
+  fi
+}
 
 update_rtconf() {
   echo "rt.sh: Checking & Updating test configuration..."
@@ -191,7 +203,7 @@ The first time is for the full script (prep+run+finalize).
 The second time is specifically for the run phase.
 Times/Memory will be empty for failed tests.
 
-BASELINE DIRECTORY: ${RTPWD}
+BASELINE DIRECTORY: ${DISKNM}/NEMSfv3gfs
 COMPARISON DIRECTORY: ${RUNDIR_ROOT}
 
 RT.SH OPTIONS USED:
@@ -210,10 +222,13 @@ EOF
   [[ ${ROCOTO} == true ]] && echo "* (-r) - USE ROCOTO" >> "${REGRESSIONTEST_LOG}"
   [[ ${ECFLOW} == true ]] && echo "* (-e) - USE ECFLOW" >> "${REGRESSIONTEST_LOG}"
   [[ ${RTVERBOSE} == true ]] && echo "* (-v) - VERBOSE OUTPUT" >> "${REGRESSIONTEST_LOG}"
+  [[ ${FINAL_TESTING} == true ]] && echo "* (-f) - FINAL TESTING" >> "${REGRESSIONTEST_LOG}"
 
-
-  [[ -f "${TEST_CHANGES_LOG}" ]] && rm "${TEST_CHANGES_LOG}"
-  touch "${TEST_CHANGES_LOG}"
+  if [[ ${FINAL_TESTING} == true ]]; then
+    [[ -f "${TEST_CHANGES_LOG}" ]] && rm "${TEST_CHANGES_LOG}"
+    touch "${TEST_CHANGES_LOG}"
+  fi
+  
   while read -r line; do
     line="${line#"${line%%[![:space:]]*}"}"
     [[ -n "${line}" ]] || continue
@@ -433,17 +448,19 @@ EOF
   fi
 
   # WRITE FAILED_TEST_ID LIST TO TEST_CHANGES_LOG
-  if [[ "${#FAILED_TESTS[@]}" -ne "0" ]]; then
-    for item in "${FAILED_TEST_ID[@]}"; do
-      echo "${item}" >> "${TEST_CHANGES_LOG}"
-    done
+  if [[ "${FINAL_TESTING}" == true ]]; then
+    if [[ "${#FAILED_TESTS[@]}" -ne "0" ]]; then
+      for item in "${FAILED_TEST_ID[@]}"; do
+        echo "${item}" >> "${TEST_CHANGES_LOG}"
+      done
+    fi
   fi
 
   if [[ "${#FAILED_COMPILES[@]}" -eq "0" && "${#FAILED_TESTS[@]}" -eq "0" ]]; then
     cat << EOF >> "${REGRESSIONTEST_LOG}"
 
 NOTES:
-A file '${TEST_CHANGES_LOG}' was generated but is empty.
+If a file '${TEST_CHANGES_LOG}' was generated, it will be empty.
 If you are using this log as a pull request verification, please commit '${TEST_CHANGES_LOG}'.
 
 Result: SUCCESS
@@ -460,7 +477,7 @@ EOF
     cat << EOF >> "${REGRESSIONTEST_LOG}"
 
 NOTES:
-A file '${TEST_CHANGES_LOG}' was generated with list of all failed tests.
+If a file '${TEST_CHANGES_LOG}' was generated it will contain a list of all failed tests.
 You can use './rt.sh -c -b test_changes.list' to create baselines for the failed tests.
 If you are using this log as a pull request verification, please commit '${TEST_CHANGES_LOG}'.
 
@@ -596,12 +613,13 @@ NEW_BASELINES_FILE=''
 DEFINE_CONF_FILE=false
 RUN_SINGLE_TEST=false
 RTVERBOSE=false
+FINAL_TESTING=false
 export RTVERBOSE
 export STOP_ECFLOW_AT_END=false
 export DRY_RUN=false
 ACCNR=${ACCNR:-""}
 
-while getopts ":a:b:cl:mn:dwkreovhx" opt; do
+while getopts ":a:b:cl:mn:dwkreovhxf" opt; do
   case ${opt} in
     a)
       ACCNR=${OPTARG}
@@ -638,6 +656,9 @@ while getopts ":a:b:cl:mn:dwkreovhx" opt; do
       if [[ "${SRT_COMPILER}" != "intel" ]] && [[ "${SRT_COMPILER}" != "intelllvm" ]] && [[ "${SRT_COMPILER}" != "gnu" ]]; then
         die "COMPILER MUST BE 'intel' OR 'intelllvm' OR 'gnu'"
       fi
+      ;;
+    f)
+      FINAL_TESTING=true
       ;;
     d)
       export delete_rundir=true
@@ -839,7 +860,8 @@ case ${MACHINE_ID} in
     if [[ "${ACCNR}" == 'epic' ]] ; then
       dprefix="/scratch4/NAGAPE/epic/${USER}/stmp"
     fi
-    DISKNM="/scratch4/NAGAPE/epic/role-epic/UFS-WM_RT"
+    # DISKNM="/scratch4/NAGAPE/epic/role-epic/UFS-WM_RT"
+    DISKNM="/scratch4/NCEPDEV/nems/Brian.Curtis/UFS-WM_RT"
     STMP="${STMP:-${dprefix}/RT_BASELINE}"
     PTMP="${PTMP:-${dprefix}/RT_RUNDIRS}"
 
@@ -982,24 +1004,25 @@ fi
 
 source bl_date.conf
 
-if [[ "${RTPWD_NEW_BASELINE}" == true ]] ; then
-  RTPWD=${NEW_BASELINE}
-else
-  RTPWD=${RTPWD:-${DISKNM}/NEMSfv3gfs/develop-${BL_DATE}}
-fi
+# if [[ "${RTPWD_NEW_BASELINE}" == true ]] ; then
+#   RTPWD=${NEW_BASELINE}
+# else
+#   # RTPWD=${RTPWD:-${DISKNM}/NEMSfv3gfs/develop-${BL_DATE}}
+#   RTPWD=${RTPWD:-${DISKNM}/NEMSfv3gfs/develop-${BL_DATE}}
+# fi
 
-if [[ "${CREATE_BASELINE}" == false ]] ; then
-  EMPTY_CHECK=$(find "${RTPWD}/" -type d -prune -empty)
-  if [[ ! -d "${RTPWD}" ]] ; then
-    echo "Baseline directory does not exist:"
-    echo "   ${RTPWD}"
-    exit 1
-  elif [[ -n ${EMPTY_CHECK} ]] ; then
-    echo "Baseline directory is empty:"
-    echo "   ${RTPWD}"
-    exit 1
-  fi
-fi
+# if [[ "${CREATE_BASELINE}" == false ]] ; then
+#   EMPTY_CHECK=$(find "${RTPWD}/" -type d -prune -empty)
+#   if [[ ! -d "${RTPWD}" ]] ; then
+#     echo "Baseline directory does not exist:"
+#     echo "   ${RTPWD}"
+#     exit 1
+#   elif [[ -n ${EMPTY_CHECK} ]] ; then
+#     echo "Baseline directory is empty:"
+#     echo "   ${RTPWD}"
+#     exit 1
+#   fi
+# fi
 
 INPUTDATA_ROOT=${INPUTDATA_ROOT:-${DISKNM}/NEMSfv3gfs/input-data-20260617}
 INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT}/WW3_input_data_20250807
@@ -1073,7 +1096,8 @@ if [[ ${ROCOTO} == true ]]; then
   <!ENTITY PATHRT         "${PATHRT}">
   <!ENTITY LOG            "${LOG_DIR}">
   <!ENTITY PATHTR         "${PATHTR}">
-  <!ENTITY RTPWD          "${RTPWD}">
+  <!ENTITY RTPWD_NEW_BASELINE "${RTPWD_NEW_BASELINE}">
+  <!ENTITY DISKNM         "${DISKNM}">
   <!ENTITY INPUTDATA_ROOT "${INPUTDATA_ROOT}">
   <!ENTITY INPUTDATA_ROOT_WW3 "${INPUTDATA_ROOT_WW3}">
   <!ENTITY RUNDIR_ROOT    "${RUNDIR_ROOT}">
@@ -1211,15 +1235,29 @@ while read -r line || [[ -n "${line}" ]]; do
     fi
 
     export TEST_ID=${TEST_NAME}_${RT_COMPILER}
-
     [[ -e "tests/${TEST_NAME}" ]] || die "run test file tests/${TEST_NAME} does not exist"
-    [[ ${CREATE_BASELINE} == true && ${CB} != *baseline* ]] && continue
+    if [[ ${CREATE_BASELINE} == true && ${CB} != *baseline* ]]; then
+      skip_test_work
+      continue
+    fi
+    # [[ ${CREATE_BASELINE} == true && ${CB} != *baseline* ]] && continue
 
+    
     if [[ ${MACHINES} != '' ]]; then
       if [[ ${MACHINES} == -* ]]; then
-        [[ ${MACHINES} =~ ${MACHINE_ID} ]] && continue
+        if [[ ${MACHINES} =~ ${MACHINE_ID} ]]; then
+          skip_test_work
+          continue
+        fi
+        # [[ ${MACHINES} =~ ${MACHINE_ID} ]] && continue
+
       elif [[ ${MACHINES} == +* ]]; then
-        [[ ${MACHINES} =~ ${MACHINE_ID} ]] || continue
+        if ! [[ ${MACHINES} =~ ${MACHINE_ID} ]]; then
+          skip_test_work
+          continue
+        fi
+        # [[ ${MACHINES} =~ ${MACHINE_ID} ]] || continue 
+
       else
         echo "MACHINES=|${MACHINES}|"
         die "MACHINES spec must be either an empty string or start with either '+' or '-'"
@@ -1268,17 +1306,20 @@ EOF
 export TEST_ID=${TEST_ID}
 export MACHINE_ID=${MACHINE_ID}
 export RT_COMPILER=${RT_COMPILER}
-export RTPWD=${RTPWD}
+export RTPWD_NEW_BASELINE=${RTPWD_NEW_BASELINE}
 export INPUTDATA_ROOT=${INPUTDATA_ROOT}
 export INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT_WW3}
 export INPUTDATA_LM4=${INPUTDATA_LM4}
 export INPUTDATA_GFSv17opn=${INPUTDATA_GFSv17opn}
 export PATHRT=${PATHRT}
 export PATHTR=${PATHTR}
+export DISKNM=${DISKNM}
 export NEW_BASELINE=${NEW_BASELINE}
+export NEW_BASELINES_FILE=${NEW_BASELINES_FILE}
 export CREATE_BASELINE=${CREATE_BASELINE}
 export RT_SUFFIX=${RT_SUFFIX}
 export BL_SUFFIX=${BL_SUFFIX}
+export BL_DATE=${BL_DATE}
 export SCHEDULER=${SCHEDULER}
 export ACCNR=${ACCNR}
 export QUEUE=${QUEUE}
@@ -1331,13 +1372,13 @@ if [[ ${ECFLOW} == true ]]; then
 fi
 
 # IF -c AND -b; LINK VERIFIED BASELINES TO NEW_BASELINE
-if [[ ${CREATE_BASELINE} == true && ${NEW_BASELINES_FILE} != '' ]]; then
-  for dir in "${RTPWD}"/*/; do
-    dir=${dir%*/}
-    [[ -d "${NEW_BASELINE}/${dir##*/}" ]] && continue
-    ln -s "${dir%*/}" "${NEW_BASELINE}/"
-  done
-fi
+# if [[ ${CREATE_BASELINE} == true && ${NEW_BASELINES_FILE} != '' ]]; then
+#   for dir in "${RTPWD}"/*/; do
+#     dir=${dir%*/}
+#     [[ -d "${NEW_BASELINE}/${dir##*/}" ]] && continue
+#     ln -s "${dir%*/}" "${NEW_BASELINE}/"
+#   done
+# fi
 
 if [[ ${DRY_RUN} == true ]]; then
   echo "Successful dry run"
