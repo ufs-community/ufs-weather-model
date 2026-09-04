@@ -19,23 +19,14 @@ pipeline {
       steps {
         script {
           env.CHOICE_NODE = ''
-          
           for (label in pullRequest.labels) {
-            if (label.contains("orion")) {
-              env.CHOICE_NODE+='orion'
-            }  
-            else if (label.contains("hera")) { 
-              env.CHOICE_NODE+='hera'
-            }  
-            else if (label.contains("hercules")) { 
-              env.CHOICE_NODE+='hercules'
-            }  
-            else if (label.contains("gaeac6")) {
-              env.CHOICE_NODE+='gaeac6'
-            } 
-            else if (label.contains("ursa")) {
-              env.CHOICE_NODE+='ursa'
-            }
+              listOfLabelNodeNames = jenkins.model.Jenkins.instance.nodes.collect {
+                  node -> node.getLabelString().contains(label) ? node.name : null
+                  if ((label.matches(node.getLabelString()+"(.*)-ORT"))) {
+                     env.CHOICE_NODE+= node.getLabelString()
+                  }
+           }
+          
           } // End of for loop
 
           echo "${env.CHOICE_NODE}"
