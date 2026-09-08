@@ -330,7 +330,7 @@ pipeline {
                   ''',
                   returnStatus: true
                 ) // exitCode
-                echo "Ursa regional_control exit code: ${exitCode}"
+                echo "Hercules regional_control exit code: ${exitCode}"
                 if (exitCode == 0) {
                   echo "Pipeline continuing normally."
                   region_result = 'SUCCESS'
@@ -362,7 +362,7 @@ pipeline {
 
                   git submodule update --init --recursive
                   cd tests/fv3_conf
-                  sed 's/#SBATCH --time=.*/#SBATCH --time=02:00:00/g' -i fv3_slurm.IN_ursa
+                  sed 's/#SBATCH --time=.*/#SBATCH --time=02:00:00/g' -i fv3_slurm.IN_hercules
                   cd ..
                   export ACCNR=epic
                   export GIT_OWNER=$(echo $GIT_URL | cut -d '/' -f4)
