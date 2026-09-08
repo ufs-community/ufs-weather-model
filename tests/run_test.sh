@@ -369,6 +369,16 @@ if [[ ${CICE_PRESCRIBED} = 'true' ]]; then
   atparse < "${PATHRT}"/parm/ice_in.IN > ice_in
 fi
 
+if [[ -n "${CICE_NML_OVERRIDES:-}" ]]; then
+    for opt_file in ${CICE_NML_OVERRIDES}; do
+        if [[ -f "${opt_file}" ]]; then
+            "${PATHRT}"/parm/CICE_override.sh ice_in < "${opt_file}"
+        else
+            echo "WARNING: CICE_NML_OVERRIDE file not found: ${opt_file}"
+        fi
+    done
+fi
+
 if [[ ${CDEPS_INLINE} = 'true' ]]; then
   atparse < "${PATHRT}/parm/${CDEPS_INLINE_CONFIGURE:-stream.config.IN}" > stream.config
 fi

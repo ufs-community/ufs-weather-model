@@ -28,9 +28,9 @@ get_shas () {
 
 
 declare -A urls branches paths
-# UPP, ccpp-framework, and gocart are intentionally excluded because they update at a different cadence 
+# UPP, ccpp-framework, rrtmgp, and gocart are intentionally excluded because they update at a different cadence 
 # and periodically bring in changes. 
-submodules="base ufsatm mom6 cice ww3 stoch cmeps cdeps cmake ccpp_physics aqm noahmp cubed_sphere lm4 fb catchem" # Add cece once available; not adding mpas; it is currently one commit behind seemingly on purpose.
+submodules="base ufsatm mom6 cice ww3 stoch cmeps cdeps cmake ccpp_physics aqm noahmp cubed_sphere lm4 fb catchem c3 tempo mynn" # Add cece once available; not adding mpas yet; it is currently one commit behind seemingly on purpose.
 
 urls[base]='https://github.com/ufs-community/ufs-weather-model'
 branches[base]='develop'
@@ -71,6 +71,22 @@ paths[cmake]='CMakeModules'
 urls[ccpp_physics]='https://github.com/ufs-community/ccpp-physics'
 branches[ccpp_physics]='ufs/dev'
 paths[ccpp_physics]='UFSATM/ccpp/physics'
+
+urls[c3]='https://github.com/ufs-community/c3'
+branches[c3]='main'
+paths[c3]='UFSATM/ccpp/physics/physics/CONV/C3'
+
+urls[tempo]='https://github.com/NCAR/TEMPO'
+branches[tempo]='main'
+paths[tempo]='UFSATM/ccpp/physics/physics/MP/TEMPO/tempo_v3'
+
+urls[mynn]='https://github.com/NCAR/MYNN-SFC'
+branches[mynn]='ccpp/dev'
+paths[mynn]='UFSATM/ccpp/physics/physics/SFC_Layer/MYNN/MYNN'
+
+urls[rrtmgp]='https://github.com/NCAR/rte-rrtmgp'
+branches[rrtmgp]='main'
+paths[rrtmgp]='UFSATM/ccpp/physics/physics/Radiation/RRTMGP/rte-rrtmgp'
 
 urls[aqm]='https://github.com/NOAA-EMC/AQM'
 branches[aqm]='develop'

@@ -1613,6 +1613,10 @@ export_cice6() {
 
   #To modify aice on restart, "adjust_aice"
   CICE_RESTART_MOD='none'
+
+  #Minimum (thermo)dynamic ice thresholds
+  CICE_DYN_AREA_MIN=0.001d0
+  CICE_DYN_MASS_MIN=0.01d0
 }
 
 # Defaults for the MOM6 model namelist, mx100
