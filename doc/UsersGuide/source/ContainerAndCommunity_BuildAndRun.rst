@@ -121,15 +121,26 @@ The following table lists the container software and the module load command on 
    * - Gaea-C6
      - ``apptainer``
      - none required
-   * - Hercules / Orion
+   * - Hercules/Orion
      - ``singularity``
      - ``module load singularity``
+   * -
+     - ``apptainer`` (*)
+     - ``module load spack-managed-x86-64_v3/v1.0 apptainer``
    * - Derecho
      - ``apptainer``
      - ``module load apptainer``
    * - NOAA Cloud (AWS/Azure)
      - ``singularity``
      - none required
+
+(*) - The ``apptainer`` module on Hercules/Orion is a Spack-managed
+install that loads a separate environment, which may not combine well
+with other system modules. The ``apptainer`` enables certain container
+build features
+that are otherwise limited in ``singularity`` module by security
+constraints. The ``singularity`` module could further be used for compile
+and runtime environments.
 
 .. note::
 
@@ -272,15 +283,15 @@ The Intel oneAPI software cannot be distributed inside Docker Hub images due to 
 
    .. code-block:: console
 
-      singularity build -B </top_dir> [-B </bind_add>] --sandbox --fix-perms \
-          rocky9-oneapi2024.2-ss192 \
+      singularity build --sandbox --fix-perms  rocky9-oneapi2024.2-ss192 \
           docker://noaaepic/rocky9-oneapi2024.2-spack-stack:v1.9.2-ufs-wm-env
 
 #. Copy the helper scripts out of the sandbox:
 
    .. code-block:: console
 
-      singularity exec rocky9-oneapi2024.2-ss192 cp /opt/*.sh .
+      singularity exec rocky9-oneapi2024.2-ss192 cp /opt/intel-sandbox.sh .
+      singularity exec rocky9-oneapi2024.2-ss192 cp /opt/compilers_cp.sh .
 
    The scripts ``intel-sandbox.sh`` and ``compilers_cp.sh`` retrieve and reinstall the
    Intel compiler and MPI components.
@@ -308,8 +319,7 @@ The Intel oneAPI software cannot be distributed inside Docker Hub images due to 
 
    .. code-block:: console
 
-      singularity build -B </top-level-dir> --fix-perms \
-          rocky9-oneapi2024.2-ss192.sif rocky9-oneapi2024.2-ss192
+      singularity build --fix-perms rocky9-oneapi2024.2-ss192.sif rocky9-oneapi2024.2-ss192
 
 .. _container-rt-binddirs:
 
