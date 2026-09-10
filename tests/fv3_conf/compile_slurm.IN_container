@@ -1,0 +1,71 @@
+#!/bin/bash
+#SBATCH -e err
+#SBATCH -o out
+#SBATCH --account=@[ACCNR]
+#SBATCH --qos=@[QUEUE]
+#SBATCH --partition=@[PARTITION]
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=@[TPN]
+#SBATCH --exclusive
+#SBATCH --time=120
+#SBATCH --job-name="@[JBNME]"
+
+set -eu
+[[ "${RTVERBOSE:-false}" == true ]] && set -x
+date_s_start=$(date +%s)
+date_start=$(date)
+echo -n "${date_s_start}," > job_timestamp.txt
+echo "Compile started: ${date_start}"
+
+# Load the host-side runtime module (makes apptainer/singularity and host MPI available).
+module use "@[PATHTR]/modulefiles"
+module load ufs_container.runtime
+
+# Locate the container runtime on the host.
+if command -v apptainer &>/dev/null; then
+  CONTAINERBIN=apptainer
+elif command -v singularity &>/dev/null; then
+  CONTAINERBIN=singularity
+else
+  echo "ERROR: neither apptainer nor singularity found on this host" >&2
+  exit 1
+fi
+
+# Build bind-mount flags from the comma-separated CONTAINER_BIND list.
+BIND_FLAGS=""
+if [[ -n "@[CONTAINER_BIND]" ]]; then
+  IFS=',' read -r -a _bind_dirs <<< "@[CONTAINER_BIND]"
+  for _dir in "${_bind_dirs[@]}"; do
+    BIND_FLAGS="${BIND_FLAGS} -B ${_dir}"
+  done
+fi
+
+# Pass RTVERBOSE into the container (--cleanenv strips the host environment).
+CONTAINER="${CONTAINERBIN^^}"
+export "${CONTAINER}_SHELL=/bin/bash"
+export "${CONTAINER}ENV_RTVERBOSE=${RTVERBOSE:-false}"
+
+# Write the compile script that will run inside the container.
+# @[...] tokens are substituted by atparse before this job card runs.
+# module-setup.sh and modulefiles/ are staged into the compile RUNDIR by run_compile.sh.
+cat > container_compile.sh << 'COMPILE_EOF'
+#!/bin/bash
+set -e
+[[ "${RTVERBOSE:-false}" == true ]] && set -x
+MACHINE_ID=container
+source ${PWD}/module-setup.sh
+module use ${PWD}/modulefiles
+module load modules.fv3
+module list
+"@[PATHRT]/compile.sh" "container" "@[MAKE_OPT]" "@[COMPILE_ID]" "@[RT_COMPILER]"
+COMPILE_EOF
+chmod u+x container_compile.sh
+
+# Execute the compile inside the container.
+# -e (--cleanenv) ensures a clean environment inside the container.
+${CONTAINERBIN} exec -e ${BIND_FLAGS} "@[CONTAINER_IMG]" "${PWD}/container_compile.sh"
+
+date_end=$(date)
+echo "Compile ended: ${date_end}"
+date_s_end=$(date +%s)
+echo -n "${date_s_end}," >> job_timestamp.txt

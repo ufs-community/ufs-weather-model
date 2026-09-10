@@ -16,6 +16,14 @@ The prerequisite software libraries for building the WM already exist in a centr
 systems, so users may skip directly to :ref:`getting the data <GetData>` and downloading the code. 
 On other systems, users will need to build the prerequisite libraries using :term:`spack-stack`.
 
+.. note::
+
+   For instructions on using software containers or a native community software stack to
+   build and run the UFS Weather Model, see :numref:`Chapter %s <container-rt-tests>`.
+   The container workflow provides a portable, reproducible software environment and
+   does not require a site-specific software stack. The community platform workflow
+   (``-p`` flag) supports systems where a native software stack is already available.
+
 =======================
 Prerequisite Libraries
 =======================
@@ -145,9 +153,25 @@ Compiling the model will take place within the ``ufs-weather-model`` directory c
 Building the Weather Model
 ==========================
 
-.. note:: 
+The most straightforward way to run the UFS WM on NOAA Tier 1 platforms is to use the
+regression testing (RT) framework. The RT framework is designed for these officially
+supported systems: it loads modulefiles, builds (compiles) the desired WM
+configuration, and runs the test(s), comparing results against baselines maintained on
+each platform. Users can create new tests or modify existing tests to correspond to the
+WM configuration(s) they wish to run.
 
-   The most straightforward way to run the UFS WM is to use the regression testing (RT) framework. The RT framework will load modulefiles, build (compile) the desired WM configuration, and run the test(s). Users can create new tests or modify existing tests to correspond to the WM configuration(s) they wish to run. This section is provided for those who do not want to use the RT framework to run the WM. However, most users should skip to :numref:`Section %s <rt-config>` to learn more about RT configuration or :numref:`Section %s <run-wm>` to build/run the WM with the RT framework. 
+This section is provided for those who do not want to use the RT framework to build and
+run the WM directly. Most users on Tier 1 platforms should instead skip to
+:numref:`Section %s <rt-config>` to learn more about RT configuration, or to
+:numref:`Section %s <run-wm>` to build/run the WM with the RT framework.
+
+Users on other (non-Tier 1) platforms, or anyone who wants a portable, containerized
+build environment, can instead use the community build-and-run workflow described in
+:numref:`Chapter %s <container-rt-tests>`. That workflow follows a logic similar to
+the RT framework, and reuses some of the same scripts and test definitions, but its
+goal is different: it confirms that the WM has been ported, built, and run
+successfully on the user's own platform, rather than reproducing the
+baseline-comparison capability maintained on Tier 1.
 
 ----------------------------
 Loading the Required Modules

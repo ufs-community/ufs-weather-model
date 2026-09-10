@@ -1,6 +1,7 @@
 #!/bin/bash
-set -eux
+set -eu
 set -o pipefail
+[[ "${RTVERBOSE:-false}" == true ]] && set -x
 
 echo "PID=$$"
 SECONDS=0
@@ -99,14 +100,29 @@ if [[ ${DRY_RUN:-false} == false ]]; then
   mkdir -p modulefiles
   if [[ ${MACHINE_ID} == linux ]]; then
     cp "${PATHRT}/modules.fv3_${COMPILE_ID}" "./modulefiles/modules.fv3"
+  elif [[ ${MACHINE_ID} == container ]]; then
+    # Host-side runtime modulefile — loaded on the host before the container launches.
+    cp "${PATHTR}/modulefiles/ufs_container.runtime.lua"  "./modulefiles/modules.fv3.runtime.lua"
+    # Inside-container build/run modulefile — loaded by fv3_container_run.sh inside the container.
+    if [[ -f "${PATHRT}/modules.fv3_${COMPILE_ID}.lua" ]]; then
+      cp "${PATHRT}/modules.fv3_${COMPILE_ID}.lua"                "./modulefiles/modules.fv3.lua"
+    elif [[ -f "${PATHTR}/modulefiles/ufs_container.${RT_COMPILER}.lua" ]]; then
+      cp "${PATHTR}/modulefiles/ufs_container.${RT_COMPILER}.lua"  "./modulefiles/modules.fv3.lua"
+    else
+      echo "ERROR: no inside-container build module found for COMPILE_ID=${COMPILE_ID}" >&2
+      echo "       Provide ${PATHRT}/modules.fv3_${COMPILE_ID}.lua" >&2
+      echo "       or ${PATHTR}/modulefiles/ufs_container.${RT_COMPILER}.lua" >&2
+      exit 1
+    fi
   else
     cp "${PATHRT}/modules.fv3_${COMPILE_ID}.lua" "./modulefiles/modules.fv3.lua"
   fi
+  
   cp "${PATHTR}/modulefiles/ufs_common.lua" "./modulefiles/."
-
+  
   # Get the shell file that loads the "module" command and purges modules:
   cp "${PATHRT}/module-setup.sh" "module-setup.sh"
-
+  
   case ${MACHINE_ID} in
     wcoss2|acorn)
       module load intel/19.1.3.304
@@ -128,6 +144,10 @@ if [[ ${DRY_RUN:-false} == false ]]; then
       #module use modulefiles
       #module load modules.fv3
       #module load gcc-native/12.3
+      ;;
+    container)
+      module use modulefiles
+      module load modules.fv3.runtime
       ;;
     *)
       module use modulefiles
@@ -474,9 +494,72 @@ fi
 # Submit test job
 ################################################################################
 export OMP_ENV=${OMP_ENV:-""}
-if [[ ${SCHEDULER} = 'none' ]]; then
+if [[ ${SCHEDULER:-none} = 'none' ]]; then
   ulimit -s unlimited
-  if [[ ${CI_TEST} = 'true' ]]; then
+  if [[ ${MACHINE_ID} = 'container' ]]; then
+    MPI_LAUNCH=${MPI_LAUNCH:-mpirun}
+    # Locate container runtime on the host.
+    if command -v apptainer &>/dev/null; then
+      CONTAINERBIN=apptainer
+    elif command -v singularity &>/dev/null; then
+      CONTAINERBIN=singularity
+    else
+      echo "ERROR: neither apptainer nor singularity found on this host" >&2
+      exit 1
+    fi
+    BIND_FLAGS=""
+    if [[ -n "${CONTAINER_BIND:-}" ]]; then
+      IFS=',' read -r -a _bind_dirs <<< "${CONTAINER_BIND}"
+      for _dir in "${_bind_dirs[@]}"; do
+        BIND_FLAGS="${BIND_FLAGS} -B ${_dir}"
+      done
+    fi
+    # Pass runtime environment into the container via APPTAINER/SINGULARITY ENV_ variables.
+    CONTAINER="${CONTAINERBIN^^}"  # APPTAINER or SINGULARITY
+    export "${CONTAINER}_SHELL=/bin/bash"
+    export "${CONTAINER}ENV_FI_PROVIDER=tcp"
+    if [[ "${RT_COMPILER}" == intel ]]; then
+      [[ -n "${FI_PROVIDER_PATH:-}" ]] && export "${CONTAINER}ENV_FI_PROVIDER_PATH=${FI_PROVIDER_PATH}"
+    elif [[ "${RT_COMPILER}" == gnu ]]; then
+      export "${CONTAINER}ENV_PMIX_MCA_gds=hash"
+      export "${CONTAINER}ENV_PMIX_MCA_psec=native"
+      export "${CONTAINER}ENV_OMPI_MCA_btl=^openib"
+      if ip link show eth0 &>/dev/null; then
+        export "${CONTAINER}ENV_OMPI_MCA_btl_tcp_if_include=eth0"
+        export "${CONTAINER}ENV_OMPI_MCA_oob_tcp_if_include=eth0"
+      fi
+      export "${CONTAINER}ENV_OMPI_MCA_pml=ob1"
+      export "${CONTAINER}ENV_OMPI_MCA_btl_vader_single_copy_mechanism=none"
+      export "${CONTAINER}ENV_OMPI_MCA_mca_base_component_show_load_errors=0"
+    fi
+    echo "NOTE: running ${TASKS} MPI tasks interactively inside container via ${MPI_LAUNCH}"
+    # Unquoted heredoc: ${COMPILE_ID}, ${MPI_LAUNCH}, and ${TASKS} are baked in at write time.
+    cat > fv3_container_run.sh << RUN_EOF
+#!/bin/bash
+set -e
+MACHINE_ID=container
+source ${PWD}/module-setup.sh
+module purge
+module use ${PWD}/modulefiles
+module load modules.fv3
+module list
+${MPI_LAUNCH} -n ${TASKS} ./fv3.exe
+RUN_EOF
+    chmod u+x fv3_container_run.sh
+    redirect_out_err ${CONTAINERBIN} exec "${BIND_FLAGS}" "${CONTAINER_IMG}" "${PWD}/fv3_container_run.sh"
+  elif [[ "${COMMUNITY_PLATFORM:-false}" == true ]]; then
+    MPI_LAUNCH=${MPI_LAUNCH:-mpirun}
+    echo "NOTE: running ${TASKS} MPI tasks on community platform via ${MPI_LAUNCH}"
+    cat > fv3_run.sh << RUN_EOF
+#!/bin/bash
+set -e
+module use "${PWD}/modulefiles"
+module load modules.fv3
+${MPI_LAUNCH} -n ${TASKS} ./fv3.exe
+RUN_EOF
+    chmod u+x fv3_run.sh
+    redirect_out_err bash "${PWD}/fv3_run.sh"
+  elif [[ ${CI_TEST} = 'true' ]]; then
     eval "${OMP_ENV}" redirect_out_err mpiexec -n "${TASKS}" ./fv3.exe
   else
     redirect_out_err mpiexec -n "${TASKS}" ./fv3.exe
@@ -484,7 +567,7 @@ if [[ ${SCHEDULER} = 'none' ]]; then
 
 else
 
-  if [[ ${ROCOTO} = 'false' ]]; then
+  if [[ ${ROCOTO} = 'false' && ${ECFLOW:-false} = 'false' ]]; then
     submit_and_wait job_card
   else
     chmod u+x job_card
@@ -513,8 +596,8 @@ if [[ ${skip_check_results} == false ]]; then
     # --- regression test comparison
     #
     for i in ${LIST_FILES} ; do
-      printf %s " Comparing ${i} ....." >> "${RT_LOG}"
-      printf %s " Comparing ${i} ....."
+      echo " Comparing ${i} ....." >> "${RT_LOG}"
+      echo " Comparing ${i} ....."
 
       if [[ ! -f ${RUNDIR}/${i} ]] ; then
 
@@ -531,26 +614,26 @@ if [[ ${skip_check_results} == false ]]; then
       else
         if [[ ${i##*.} == nc* ]] ; then
           if [[ " orion hercules hera ursa wcoss2 acorn derecho gaeac5 gaeac6 noaacloud " =~ ${MACHINE_ID} ]]; then
-            printf "USING NCCMP.." >> "${RT_LOG}"
-            printf "USING NCCMP.."
+            echo "USING NCCMP.." >> "${RT_LOG}"
+            echo "USING NCCMP.."
               nccmp_args=(-d -S -q -f -B --Attribute=checksum --warn=format)
               if [[ ${CMP_DATAONLY} == false ]]; then nccmp_args+=("-g"); fi
               if [[ -n "${nccmp_exclude// }" ]]; then nccmp_args+=("${nccmp_exclude}"); fi
               if [[ -n "${nccmp_exclude_attr// }" ]]; then nccmp_args+=("${nccmp_exclude_attr}"); fi
               nccmp "${nccmp_args[@]}" "${RTPWD}/${CNTL_DIR}_${RT_COMPILER}/${i}" "${RUNDIR}/${i}" > "${i}_nccmp.log" 2>&1 && d=$? || d=$?
               if [[ ${d} -ne 0 && ${d} -ne 1 ]]; then
-                printf "....ERROR" >> "${RT_LOG}"
-                printf "....ERROR"
+                echo "....ERROR" >> "${RT_LOG}"
+                echo "....ERROR"
                 test_status='FAIL'
               fi
           fi
         else
-          printf "USING CMP.." >> "${RT_LOG}"
-          printf "USING CMP.."
+          echo "USING CMP.." >> "${RT_LOG}"
+          echo "USING CMP.."
           cmp "${RTPWD}/${CNTL_DIR}_${RT_COMPILER}/${i}" "${RUNDIR}/${i}" >/dev/null 2>&1 && d=$? || d=$?
           if [[ ${d} -eq 2 ]]; then
-            printf "....ERROR" >> "${RT_LOG}"
-            printf "....ERROR"
+            echo "....ERROR" >> "${RT_LOG}"
+            echo "....ERROR"
             test_status='FAIL'
           fi
 
@@ -577,8 +660,8 @@ if [[ ${skip_check_results} == false ]]; then
     echo;echo "Moving baseline ${TEST_ID} files ...." >> "${RT_LOG}"
 
     for i in ${LIST_FILES} ; do
-      printf %s " Moving ${i} ....."
-      printf %s " Moving ${i} ....."   >> "${RT_LOG}"
+      echo " Moving ${i} ....."
+      echo " Moving ${i} ....."   >> "${RT_LOG}"
       if [[ -f ${RUNDIR}/${i} ]] ; then
         mkdir -p "${NEW_BASELINE}/${CNTL_DIR}_${RT_COMPILER}/$(dirname "${i}")"
         cp "${RUNDIR}/${i}" "${NEW_BASELINE}/${CNTL_DIR}_${RT_COMPILER}/${i}"
@@ -621,7 +704,7 @@ else
   } >> "${RT_LOG}"
 fi
 
-if [[ ${SCHEDULER} != 'none' ]]; then
+if [[ ${SCHEDULER:-none} != 'none' ]]; then
   cat "${RUNDIR}/job_timestamp.txt" >> "${LOG_DIR}/${JBNME}_timestamp.txt"
 fi
 

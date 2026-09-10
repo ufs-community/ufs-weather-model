@@ -329,7 +329,7 @@ submit_and_wait() {
           set +e
           exit_status=$( qstat "${jobid}" -x -f | grep Exit_status | awk '{print $3}')
           set -e
-          if [[ ${exit_status} != 0 ]]; then
+          if [[ "${exit_status:-0}" != "0" ]]; then
             status='FAILED'
           fi
         fi
