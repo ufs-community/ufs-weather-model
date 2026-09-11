@@ -499,9 +499,9 @@ export_mpas_stochy ()
     export MPAS_DO_SPPT=.false.
     export MPAS_DO_SKEB=.false
     export MPAS_SPPTINT=0
-    export MPAS_SPPT_1=0.0
-    export MPAS_SPPT_2=0.0
-    export MPAS_SPPT_3=0.0
+    export MPAS_SPPT_1=0.1
+    export MPAS_SPPT_2=0.1
+    export MPAS_SPPT_3=0.1
     export MPAS_SPPT_TAU_1=21600.
     export MPAS_SPPT_TAU_2=86400.
     export MPAS_SPPT_TAU_3=21600.
