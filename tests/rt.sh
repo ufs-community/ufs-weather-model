@@ -799,6 +799,21 @@ case ${MACHINE_ID} in
     PTMP="/lfs/h2/emc/ptmp"
     SCHEDULER="pbs"
     ;;
+  wcoss3)
+    echo "rt.sh: Setting up wcoss3..."
+    if [[ "${ECFLOW:-false}" == true ]] ; then
+      module load ecflow
+    fi
+    QUEUE="compute"
+    COMPILE_QUEUE="compute"
+    PARTITION="compute"
+    dprefix=${dprefix:-"/home/${USER}"}
+    DISKNM="/lfs"
+    STMP="${dprefix}/RT_BASELINE"
+    PTMP="${dprefix}/RT_RUNDIRS"
+    SCHEDULER="slurm"
+  ;;
+
   gaeac5)
     echo "rt.sh: Setting up gaea c5..."
     if [[ "${ROCOTO:-false}" == true ]] ; then

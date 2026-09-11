@@ -116,6 +116,10 @@ if [[ ${DRY_RUN:-false} == false ]]; then
       module load hdf5-D/1.14.0
       module load nccmp-D/1.9.0.1
       ;;
+    wcoss3)
+      module use /lfs/work/alexander_richert/stack/spack-stack/envs/nco-sci-oneapi-2026.1.0/modules_flat/Core
+      source /opt/intel/oneapi/compiler/2026.1/env/vars.sh
+      source /opt/intel/oneapi/mpi/2021.18/env/vars.sh
     gaeac5)
       module use /ncrc/proj/epic/spack-stack/spack-stack-1.6.0/envs/unified-env/install/modulefiles/Core
       module load stack-intel/2023.2.0 stack-cray-mpich/8.1.28

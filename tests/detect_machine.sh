@@ -60,6 +60,9 @@ case $(hostname -f) in
   processing-dy-*) MACHINE_ID=aws-ec2 ;; ### aws-ec2
 
   discover3[1-5].prv.cube) MACHINE_ID=discover ;; ### discover31-35
+
+  wcoss3-login-*.internal) MACHINE_ID=wcoss3 ;; ### nimbus
+
   *) MACHINE_ID=UNKNOWN ;;  # Unknown platform
 esac
 
@@ -78,12 +81,10 @@ if [[ -d /opt/spack-stack && -v SINGULARITY_CONTAINER ]]; then
   # We are in a container
   MACHINE_ID=container
 fi
-
 # If MACHINE_ID is no longer UNKNNOWN, return it
 if [[ "${MACHINE_ID}" != "UNKNOWN" ]]; then
   return
 fi
-
 # Try searching based on paths since hostname may not match on compute nodes
 if [[ -d /lfs/h3 ]]; then
   # We are on NOAA Cactus or Dogwood
