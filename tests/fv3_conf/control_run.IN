@@ -183,3 +183,12 @@ if [ $CPLCHM = .true. ]; then
   cp      ${PATHRT}/parm/gocart/*.rc .
   ln -sf  @[INPUTDATA_ROOT]/GOCART/p8/ExtData .
 fi
+
+#CATChem
+if [ ${chm_model:-none} == "catchem" ]; then
+  _catchem_root=$(readlink -f "${PATHRT}"/../CATChem)
+  cp "${_catchem_root}"/tests/Configs/Default/CATChem_emission.yml "${RUNDIR}"
+  cp "${_catchem_root}"/tests/Configs/Default/CATChem_new_config.yml "${RUNDIR}"
+  cp "${_catchem_root}"/tests/Configs/Default/CATChem_species.yml "${RUNDIR}"
+  cp "${_catchem_root}"/drivers/nuopc/CATChem_field_mapping.yml "${RUNDIR}"
+fi

@@ -1,12 +1,17 @@
+ciRunningNode = []
 matchedNode = []
 generateBaselineNode = []
 for (label in pullRequest.labels) {
     listOfLabelNodeNames = jenkins.model.Jenkins.instance.nodes.collect {
         node -> node.getLabelString().contains(label) ? node.name : null
+    
+        if (label.startsWith(node.getLabelString() + "-") && label.contains("CI_RUNNING")) {
+           ciRunningNode += node.getLabelString()
+        }
 
         if ((label.matches(node.getLabelString()+"-(.*)"))) {
-            matchedNode += node.getLabelString()
-        }
+           matchedNode += node.getLabelString()
+        }         
 
         if ((label.matches(node.getLabelString()+"(.*)-BL"))) {
             generateBaselineNode += node.getLabelString() 
@@ -14,8 +19,19 @@ for (label in pullRequest.labels) {
     }
 }
 
+matchedNode = matchedNode.unique()
+ciRunningNode = ciRunningNode.unique()
+matchedNode = matchedNode - ciRunningNode
+
 modifiedLabels = matchedNode.collect{"'" + it + "'"} 
 baselineLabels = generateBaselineNode.collect{"'" + it + "'"} 
+
+if (modifiedLabels.isEmpty()) {
+   echo "No new labels. Skipping build."
+   currentBuild.result = 'NOT_BUILT'
+   return // Exits the stage/script early
+}
+
 def generateStage(nodeLabel) {
     return {
         stage("Initialize on ${nodeLabel.replaceAll("'","")}") {
@@ -30,6 +46,20 @@ def generateStage(nodeLabel) {
 			echo "nodeLabel=${nodeLabel} NODE_NAME=${NODE_NAME} UFS_PLATFORM=${UFS_PLATFORM} UFS_COMPILER=${env.UFS_COMPILER}"
                         sh 'bash --login "${WORKSPACE}/.cicd/scripts/wm_init.sh"'
                         sh "STAGE_NAME='${env.STAGE_NAME}' " + 'bash --login "${WORKSPACE}/.cicd/scripts/disk_usage.sh"'
+
+                        sh '''
+                           GIT_OWNER=$(echo "$GIT_URL" | cut -d '/' -f4)
+                           GIT_REPO_NAME=$(echo "$GIT_URL" | cut -d '/' -f5 | cut -d '.' -f1)
+                           UFS_PLATFORM=${UFS_PLATFORM:-${NODE_NAME,,}}
+                           echo "$GIT_OWNER"
+                           echo "GIT_REPO_NAME"
+                           echo "$CHANGE_ID"
+                           
+
+                           echo "https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/${UFS_PLATFORM}-CI_RUNNING"
+                           curl --silent -X POST -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/"${GIT_OWNER}"/"${GIT_REPO_NAME}"/issues/"${CHANGE_ID}"/labels -d '{"labels":["'"$UFS_PLATFORM"'-CI_RUNNING"]}'
+
+                        '''
 			s3Upload consoleLogLevel: 'INFO', dontSetBuildResultOnFailure: false, dontWaitForConcurrentBuildCompletion: false, entries: [[bucket: 'noaa-epic-prod-jenkins-artifacts', excludedFile: '', flatten: false, gzipFiles: false, keepForever: false, managedArtifacts: true, noUploadOnFailure: false, selectedRegion: 'us-east-1', showDirectlyInBrowser: false, sourceFile: "${UFS_PLATFORM}-*-time-wm_init.json", storageClass: 'STANDARD', uploadFromSlave: false, useServerSideEncryption: false]], pluginFailureResultConstraint: 'FAILURE', profileName: 'main', userMetadata: []
 			s3Upload consoleLogLevel: 'INFO', dontSetBuildResultOnFailure: false, dontWaitForConcurrentBuildCompletion: false, entries: [[bucket: 'noaa-epic-prod-jenkins-artifacts', excludedFile: '', flatten: false, gzipFiles: false, keepForever: false, managedArtifacts: true, noUploadOnFailure: false, selectedRegion: 'us-east-1', showDirectlyInBrowser: false, sourceFile: "${UFS_PLATFORM}-*-disk-usageInit*.csv", storageClass: 'STANDARD', uploadFromSlave: false, useServerSideEncryption: false]], pluginFailureResultConstraint: 'FAILURE', profileName: 'main', userMetadata: []
 		}
@@ -79,6 +109,7 @@ def generateStage(nodeLabel) {
 
                             echo "Testing concluded...removing labels for $machine from $GIT_URL"
                             echo "https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/{$machine-RT,$machine-BL}"
+                            curl --silent -X DELETE -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/{$machine}-CI_RUNNING
                             curl --silent -X DELETE -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/{$machine-RT,$machine-BL}
                         '''
                         currentBuild.result = 'FAILURE'
@@ -132,6 +163,7 @@ def generateStage(nodeLabel) {
 
 			    echo "Testing concluded...removing label ${label} for ${machine} from ${GIT_URL}"
 			    echo "https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/${machine}-${label}"
+			    curl --silent -X DELETE -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/{$machine}-CI_RUNNING
 			    curl --silent -X DELETE -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/{$machine-RT,$machine-BL}
 			'''
                 }

@@ -16,8 +16,10 @@
 - [ ] Run the full Intel+GNU RT suite (compared to current baselines), preferably on Ursa (Derecho or Hercules are acceptable alternatives). **Exceptions:** documentation-only PRs, CI-only PRs, etc.
    - [ ] Commit log file w/full results from RT suite run (if applicable).
    - [ ] Verify that `test_changes.list` indicates which tests, if any, are changed by this PR. Commit `test_changes.list`, even if it is empty.
-- [ ] Transparency in the use of generative AI is required by NOAA policy. Was GenAI used in this work?
-   - [ ] [Generative AI tool (insert name, if any)] was used to assist with developing this code. The code has been reviewed, edited, and validated by NWS staff.
+- Transparency in the use of generative AI is required by NOAA policy. Was GenAI used in this work?
+   - [ ] No.
+   - [ ] Yes. [Generative AI tool (insert name, if any)] was used to assist with developing this code. 
+     - [ ] The code has been reviewed, edited, and validated by NWS staff. (Note: If the code has not yet been reviewed by NWS staff, leave unchecked, and OMD CMs will review as part of the PR review process.)
 - [ ] Fill out all sections of this template.
 
 ---
