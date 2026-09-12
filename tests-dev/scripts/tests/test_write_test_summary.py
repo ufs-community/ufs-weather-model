@@ -38,17 +38,16 @@ def test_add_legend():
    predicted_text = "\nTest Summary for PR #2882\n=========================\n\n\n" + "<h4>Key:</h4>\n\n" + \
    f"&nbsp;&nbsp;&nbsp;&nbsp;✅ = NORMAL memory: Memory falls within two standard deviations of the mean.\n\n" + \
    f"&nbsp;&nbsp;&nbsp;&nbsp;⚠️ = Memory WARNING: Memory is greater than two standard deviations above the mean.\n\n" + \
-   f"&nbsp;&nbsp;&nbsp;&nbsp;❌ = Memory FAIL: For the past 2+ PRs, memory has been greater than two standard deviations above the mean.\n\n" + \
+   f"&nbsp;&nbsp;&nbsp;&nbsp;❌ = Memory FAIL: For the past 3+ PRs, memory has been greater than two standard deviations above the mean.\n\n" + \
    f"&nbsp;&nbsp;&nbsp;&nbsp;N/A = Test does not run on this machine.\n\n\n"
    assert html_builder.get_mdFile().get_md_text() == predicted_text
 
 def test_build_content(set_env_vars,monkeypatch,sample_runtime_results, actual_passes_per_test, actual_passes_per_machine):
 
    set_env_vars
-   monkeypatch.setenv("RUNTIME_RESULTS", "runtime_results.json")
+   monkeypatch.setenv("RUNTIME_RESULTS", "data/runtime_results.json")
    html_builder = HTMLBuilder()
    content = html_builder.build_content("runtime").sort_index()
-   print(content)
 
    # Create comparison DataFrame from fixtures
    sample_runtime_results["Passing"] = actual_passes_per_test
@@ -64,7 +63,7 @@ def test_write_content(monkeypatch, set_env_vars, sample_runtime_results_complet
    
    # Set up and test write_content() method
    set_env_vars
-   monkeypatch.setenv("RUNTIME_RESULTS", "runtime_results.json")
+   monkeypatch.setenv("RUNTIME_RESULTS", "data/runtime_results.json")
    monkeypatch.setenv("MACHINES", "hercules orion ursa")
    html_builder = HTMLBuilder()
    results = pd.DataFrame.from_dict(sample_runtime_results_complete).fillna("N/A").sort_index()
@@ -83,8 +82,9 @@ def test_create_summary(set_env_vars, monkeypatch, failing_results_table):
    """
    
    set_env_vars
-   monkeypatch.setenv("RUNTIME_RESULTS", "runtime_results.json")
+   monkeypatch.setenv("RUNTIME_RESULTS", "data/sample_runtime_results.json")
    monkeypatch.setenv("MACHINES", "hercules orion ursa")
+
    html_builder = HTMLBuilder()
    html_builder.categories = ["runtime"] # Only create summary for runtime to simplify testing
    html_builder.create_summary()
@@ -94,11 +94,15 @@ def test_create_summary(set_env_vars, monkeypatch, failing_results_table):
                   "<details><summary><h3>RUNTIME Results Summary</h3></summary>\n" + \
                   "\n\n\n\n<h4>Key:</h4>\n\n" + "&nbsp;&nbsp;&nbsp;&nbsp;✅ = NORMAL runtime: Runtime falls within two standard deviations of the mean.\n\n" + \
                   "&nbsp;&nbsp;&nbsp;&nbsp;⚠️ = Runtime WARNING: Runtime is greater than two standard deviations above the mean.\n\n" + \
-                  "&nbsp;&nbsp;&nbsp;&nbsp;❌ = Runtime FAIL: For the past 2+ PRs, runtime has been greater than two standard deviations above the mean.\n\n" + \
+                  "&nbsp;&nbsp;&nbsp;&nbsp;❌ = Runtime FAIL: For the past 3+ PRs, runtime has been greater than two standard deviations above the mean.\n\n" + \
                   "&nbsp;&nbsp;&nbsp;&nbsp;N/A = Test does not run on this machine.\n\n\n\n" + \
-                  f"|Test|hercules|orion|ursa|Passing|\n" + "| :---: | :---: | :---: | :---: | :---: |\n|"
+                  "|Test|hercules|orion|ursa|Passing|\n" + "| :---: | :---: | :---: | :---: | :---: |\n|"
    
    table_contents = table_header + failing_results_table + "\n\n\n</details>"
+
+   print(f"ACTUAL RESULTS: {html_builder.get_mdFile().get_md_text()}")
+
+   print(f"EXPECTED RESULTS: {table_contents}")
 
    assert html_builder.get_mdFile().get_md_text() == table_contents
 
