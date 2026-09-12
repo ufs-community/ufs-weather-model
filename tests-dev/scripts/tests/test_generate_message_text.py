@@ -142,5 +142,6 @@ def test_main(set_env_vars,monkeypatch):
    mdFile = main()
    print(mdFile)
 
-   assert mdFile #.isinstance(mdutils.mdutils.MdUtils)
+   assert mdFile
+   assert isinstance(mdFile, MdUtils)
 
