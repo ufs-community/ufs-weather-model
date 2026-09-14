@@ -808,7 +808,7 @@ case ${MACHINE_ID} in
     COMPILE_QUEUE="compute"
     PARTITION="compute"
     dprefix=${dprefix:-"/home/${USER}"}
-    DISKNM="/lfs"
+    DISKNM="/work/data"
     STMP="${dprefix}/RT_BASELINE"
     PTMP="${dprefix}/RT_RUNDIRS"
     SCHEDULER="slurm"

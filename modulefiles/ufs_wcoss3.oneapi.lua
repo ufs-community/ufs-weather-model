@@ -15,6 +15,7 @@ prepend_path("MODULEPATH", "/lfs/work/alexander_richert/stack/spack-stack/envs/n
 load("python")
 load("python-venv/1.0")
 load("py-pyyaml/6.0.3")
+load("openblas/0.3.33")
 load("ufs_common_wcoss3")
 
 -- Additional WCOSS3 stack modules from the flat Core tree.

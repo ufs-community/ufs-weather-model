@@ -102,7 +102,11 @@ if [[ ${DRY_RUN:-false} == false ]]; then
   else
     cp "${PATHRT}/modules.fv3_${COMPILE_ID}.lua" "./modulefiles/modules.fv3.lua"
   fi
-  cp "${PATHTR}/modulefiles/ufs_common.lua" "./modulefiles/."
+  if [[ ${MACHINE_ID} == wcoss3 ]]; then
+    cp "${PATHTR}/modulefiles/ufs_common_wcoss3.lua" "./modulefiles/."    
+  else
+    cp "${PATHTR}/modulefiles/ufs_common.lua" "./modulefiles/."
+  fi
 
   # Get the shell file that loads the "module" command and purges modules:
   cp "${PATHRT}/module-setup.sh" "module-setup.sh"
@@ -118,8 +122,9 @@ if [[ ${DRY_RUN:-false} == false ]]; then
       ;;
     wcoss3)
       module use /lfs/work/alexander_richert/stack/spack-stack/envs/nco-sci-oneapi-2026.1.0/modules_flat/Core
-      source /opt/intel/oneapi/compiler/2026.1/env/vars.sh
-      source /opt/intel/oneapi/mpi/2021.18/env/vars.sh
+      module use modulefiles
+      module load modules.fv3
+      ;;
     gaeac5)
       module use /ncrc/proj/epic/spack-stack/spack-stack-1.6.0/envs/unified-env/install/modulefiles/Core
       module load stack-intel/2023.2.0 stack-cray-mpich/8.1.28

@@ -1,15 +1,12 @@
 #!/bin/sh
 #SBATCH -e err
 #SBATCH -o out
-#SBATCH --account=@[ACCNR]
-#SBATCH --qos=@[QUEUE]
 #SBATCH --partition=@[PARTITION]
 #SBATCH --nodes=@[NODES]
 #SBATCH --ntasks-per-node=@[TPN]
 #SBATCH --cpus-per-task=1
 #SBATCH --time=@[WLCLK]
 #SBATCH --job-name="@[JBNME]"
-@[EXCLUSIVE_NODES_OPT]
 
 set -eux
 echo -n " $( date +%s )," > job_timestamp.txt
