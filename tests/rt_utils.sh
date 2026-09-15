@@ -340,7 +340,15 @@ submit_and_wait() {
           job_running=true
         else
           job_running=false
-          job_info=$( sacct -n -j "${jobid}" --format=JobID,state%20,Jobname%128 | grep "^${jobid}" | grep "${JBNME}" )
+          #job_info=$( sacct -n -j "${jobid}" --format=JobID,state%20,Jobname%128 | grep "^${jobid}" | grep "${JBNME}" )
+          #NIMBUS EAE hack  FIXME
+          #if [[ -z ${job_info} ]]; then
+          if [[ $( cat job_exit_status ) == 0 ]]; then
+            job_info="${jobid} COMPLETED ${JBNME}"
+          else
+            job_info="${jobid} FAILED ${JBNME}"
+          fi
+          #fi
         fi
         # Getting the status letter from scheduler info
         status=$( grep "${jobid}" <<< "${job_info}" )

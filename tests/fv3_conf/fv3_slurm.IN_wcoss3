@@ -9,6 +9,8 @@
 #SBATCH --job-name="@[JBNME]"
 
 set -eux
+#Hack for NIMBUS EAE until sacct is active
+trap 'echo $? > job_exit_status' EXIT
 echo -n " $( date +%s )," > job_timestamp.txt
 
 set +x
