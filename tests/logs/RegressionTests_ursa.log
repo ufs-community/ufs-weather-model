@@ -468,3 +468,51 @@ If you are using this log as a pull request verification, please commit 'test_ch
 Result: FAILURE
 
 ====END OF URSA REGRESSION TESTING LOG====
+
+RT.SH OPTIONS USED:
+* (-a) - HPC PROJECT ACCOUNT: nems
+* (-s) - RUN TESTS FROM FILE: test_changes.list
+* (-e) - USE ECFLOW
+
+PASS -- COMPILE 's2sw_32bit_pdlib_debug_intel' [04:10, 03:00] ( 252 warnings 1336 remarks )
+PASS -- TEST 'cpld_debug_gfsv17_intel' [17:46, 13:14](2085 MB)
+
+PASS -- COMPILE 's2sw_pdlib_intel' [15:10, 13:56] ( 1036 remarks )
+PASS -- TEST 'cpld_warmstart_c48_5deg_intel' [03:38, 01:21](3028 MB)
+PASS -- TEST 'cpld_restart_c48_5deg_intel' [03:30, 00:50](2469 MB)
+
+PASS -- COMPILE 'datm_cdeps_debug_intelllvm' [04:10, 02:36]
+FAILED: MISSING BASELINE -- TEST 'datm_gefs_init_stochy_intelllvm' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'datm_gfs_icethermo_intelllvm' [, ]( MB)
+
+PASS -- COMPILE 'rrfs_gnu' [04:10, 02:21]
+PASS -- TEST 'rap_sfcdiff_decomp_gnu' [07:34, 03:32](893 MB)
+PASS -- TEST 'hrrr_control_gnu' [07:35, 03:26](892 MB)
+PASS -- TEST 'hrrr_control_restart_gnu' [03:19, 01:47](588 MB)
+
+SYNOPSIS:
+Starting Date/Time: 20260915 04:27:15
+Ending Date/Time: 20260915 04:51:50
+Total Time: 00h:24m:44s
+Compiles Completed: 4/4
+Tests Completed: 6/8
+
+LOGPATH: /scratch3/NCEPDEV/nems/Nick.Szapiro/tasks/marine_RTs/uwm_datm_marine_config/tests/logs/log_ursa
+  * Compile logs located at: compile_<compile_name>_<compiler>.log
+  * Test logs located at: run_<test_name>_<compiler>.log
+
+
+*** FAILED TESTS ***
+
+MISSING BASELINE
+
+  * datm_gefs_init_stochy intelllvm
+  * datm_gfs_icethermo intelllvm
+
+
+NOTES:
+A file 'test_changes.list' was generated with list of all failed tests.
+You can use './rt.sh -c -s test_changes.list' to create baselines for the failed tests.
+If you are using this log as a pull request verification, please commit 'test_changes.list'.
+
+Result: FAILURE
