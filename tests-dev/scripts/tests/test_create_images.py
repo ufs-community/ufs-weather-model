@@ -162,7 +162,7 @@ def test_load_data_fail(set_env_vars, category, caplog):
 
 @pytest.mark.run_manual
 @pytest.mark.parametrize('category', ['runtime', 'memory'])
-def test_plot_results(set_env_vars, test_data_subset, category, most_recent_commits):
+def test_plot_results(set_env_vars, metrics_subset, category, most_recent_commits):
    """
    Check that plotting runs error-free and generates expected files. 
    """
@@ -170,7 +170,7 @@ def test_plot_results(set_env_vars, test_data_subset, category, most_recent_comm
    # Delete files in plots dir first?
    set_env_vars
    plot_manager = PlotManager(category)
-   plot_manager.metrics = test_data_subset[category]
+   plot_manager.metrics = metrics_subset[category]
    plot_manager.hashes = ['900ef4d3', '9827d29d', 'f6ca8234', '5d0ff3d6', 'ae18d62a', 'cdca1f0c', 'e202ff3e', '1e549b4e', '55bfaafe', '5eaf8148', '369cead91c98eb5c72da81ff78925250dad08903']
    plot_manager.plot_results()
 
@@ -180,9 +180,7 @@ def test_plot_results(set_env_vars, test_data_subset, category, most_recent_comm
                 'regional_control_intel', 'rap_control_dyn32_phy32_gnu', 'control_p8_intel',]
 
    for test in tests:
-      print(test)
       filepath = Path(f"plots/{test}_{category}.png")
-      print(filepath)
       assert filepath.is_file(), f"File not found: {filepath}"
 
 @pytest.mark.run_manual

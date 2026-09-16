@@ -217,7 +217,10 @@ class Log():
       third_to_last = self.repo_commits[2]
       recent_hashes = [last, second_to_last, third_to_last]
 
-      previous_logs = {test: {hash: values[hash] for hash in recent_hashes if hash in values} for test, values in data.items()}
+      previous_logs = {test: {hash: values[hash] for hash in recent_hashes if hash in values} 
+                       for test, values in data.items()}
+
+      
 
       for test in current_log:
          try:
