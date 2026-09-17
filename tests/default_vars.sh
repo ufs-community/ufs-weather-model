@@ -392,130 +392,131 @@ DumpFields="false"
 MED_history_n=1000000
 RESTART_FH=" "
 
+# shellcheck disable=2329
 export_mpas ()
 {
     export_gfs_physics
     # ufs.configure defaults
-    export UFS_CONFIGURE=ufs.configure.atm.IN
-    export atm_model=mpas
+    UFS_CONFIGURE=ufs.configure.atm.IN
+    atm_model=mpas
 
     #
-    export MPAS=true
-    export FV3=false
-    export S2S=false
-    export HAFS=false
-    export AQM=false
-    export FIRE_BEHAVIOR=false
-    export DATM_CDEPS=false
-    export DOCN_CDEPS=false
-    export DICE_CDEPS=false
-    export CICE_PRESCRIBED=false
-    export CDEPS_INLINE=false
-    export POSTAPP='global'
-    export USE_MERRA2=.true.
-    export NESTED=.false.
-    export BLOCKSIZE=32
-    export CHKSUM_DEBUG=.false.
-    export DYCORE_ONLY=.false
+    MPAS=true
+    FV3=false
+    S2S=false
+    HAFS=false
+    AQM=false
+    FIRE_BEHAVIOR=false
+    DATM_CDEPS=false
+    DOCN_CDEPS=false
+    DICE_CDEPS=false
+    CICE_PRESCRIBED=false
+    CDEPS_INLINE=false
+    POSTAPP='global'
+    USE_MERRA2=.true.
+    NESTED=.false.
+    BLOCKSIZE=32
+    CHKSUM_DEBUG=.false.
+    DYCORE_ONLY=.false
 
     # MPAS dynamical core defaults for RRFS
-    export MPAS_RESOLUTION=120
+    MPAS_RESOLUTION=120
 
-    export ATM_compute_tasks=4
+    ATM_compute_tasks=4
 
     #DJS2025 START: We don't need this for MPAS, but to setup the tests we do. CLEAN THIS UP!!!
     #Set defaults if ATMRES and DT_ATMOS are not set
-    export ATMRES=${ATMRES:-"C96"}
-    export DT_ATMOS=${DT_ATMOS:-"1800"}
+    ATMRES=${ATMRES:-"C96"}
+    DT_ATMOS=${DT_ATMOS:-"1800"}
 
-    export DAYS=1
-    export ENS_NUM=1
-    export SYEAR=2016
-    export SMONTH=10
-    export SDAY=03
-    export SHOUR=00
-    export SECS=$(( SHOUR*3600 ))
-    export FHMAX=$(( DAYS*24 ))
-    export FHCYC=0
-    export FHROT=0
-    export LDIAG3D=.false.
-    export QDIAG3D=.false.
-    export PRINT_DIFF_PGR=.false.
-    export MAX_OUTPUT_FIELDS=310
-    export UPDATE_FULL_OMEGA=.false.
-    export FHZERO=6
-    export FHCYC=0
-    export CPLWAV=.false.
-    export CPLCHM=.false.
-    export CPLWAV2ATM=.false.
+    DAYS=1
+    ENS_NUM=1
+    SYEAR=2016
+    SMONTH=10
+    SDAY=03
+    SHOUR=00
+    SECS=$(( SHOUR*3600 ))
+    FHMAX=$(( DAYS*24 ))
+    FHCYC=0
+    FHROT=0
+    LDIAG3D=.false.
+    QDIAG3D=.false.
+    PRINT_DIFF_PGR=.false.
+    MAX_OUTPUT_FIELDS=310
+    UPDATE_FULL_OMEGA=.false.
+    FHZERO=6
+    FHCYC=0
+    CPLWAV=.false.
+    CPLCHM=.false.
+    CPLWAV2ATM=.false.
 
     #DT_INNER=(Time step)/2
-    export DT_INNER_c96=360
-    export DT_INNER_c192=300
-    export DT_INNER_c384=150
-    export DT_INNER_c768=75
+    DT_INNER_c96=360
+    DT_INNER_c192=300
+    DT_INNER_c384=150
+    DT_INNER_c768=75
 
     if [[ ${DT_ATMOS} = 1800 ]]; then
-	export default_dt_atmos=1
-	export DT_INNER=${DT_INNER_c96}
+     default_dt_atmos=1
+     DT_INNER=${DT_INNER_c96}
     else
-	export default_dt_atmos=0
-	export DT_INNER=${DT_ATMOS}
+     default_dt_atmos=0
+     DT_INNER=${DT_ATMOS}
     fi
     #DJS2025 END:
 
     # DJS2025: This is needed by rt_utils.sh, but not applicable to MPAS forecasts yet...
-    export NTILES=1
-    export QUILTING=.false.
-    export QUILTING_RESTART=.false.
+    NTILES=1
+    QUILTING=.false.
+    QUILTING_RESTART=.false.
 
     # stochastic phsyics (NOT USED in MPAS yet)
-    export DO_SPPT=.false.
-    export DO_SHUM=.false.
-    export DO_SKEB=.false.
-    export LNDP_TYPE=0
-    export N_VAR_LNDP=0
+    DO_SPPT=.false.
+    DO_SHUM=.false.
+    DO_SKEB=.false.
+    LNDP_TYPE=0
+    N_VAR_LNDP=0
 
-    export INPES=${INPES_dflt}
-    export JNPES=${JNPES_dflt}
+    INPES=${INPES_dflt}
+    JNPES=${JNPES_dflt}
 
     # DJS2025: Needed for mpasatm_configure
-    export RESTART_INTERVAL=0
-    export ITASKS=1
-    export OUTPUT_HISTORY=.true.
-    export HISTORY_FILE_ON_NATIVE_GRID=.true.
-    export NUM_FILES=2
-    export FV3ATM_OUTPUT_DIR="./"
-    export FILENAME_BASE="'atm' 'sfc'"
-    export OUTPUT_GRID="'mpas'"
-    export OUTPUT_FILE="'netcdf'"
-    export ZSTANDARD_LEVEL=0
+    RESTART_INTERVAL=0
+    ITASKS=1
+    OUTPUT_HISTORY=.true.
+    HISTORY_FILE_ON_NATIVE_GRID=.true.
+    NUM_FILES=2
+    FV3ATM_OUTPUT_DIR="./"
+    FILENAME_BASE="'atm' 'sfc'"
+    OUTPUT_GRID="'mpas'"
+    OUTPUT_FILE="'netcdf'"
+    ZSTANDARD_LEVEL=0
 
-    export DOMAINS_STACK_SIZE=3000000
+    DOMAINS_STACK_SIZE=3000000
 }
 
 export_mpas_stochy ()
 {
-    export MPAS_DO_SPPT=.false.
-    export MPAS_DO_SKEB=.false
-    export MPAS_SPPTINT=0
-    export MPAS_SPPT_1=0.1
-    export MPAS_SPPT_2=0.1
-    export MPAS_SPPT_3=0.1
-    export MPAS_SPPT_TAU_1=21600.
-    export MPAS_SPPT_TAU_2=86400.
-    export MPAS_SPPT_TAU_3=21600.
-    export MPAS_SPPT_LSCALE_1=500000.
-    export MPAS_SPPT_LSCALE_2=1000000.
-    export MPAS_SPPT_LSCALE_3=2000000.
-    export MPAS_SPPT_LOGIT=.true.
-    export MPAS_SPPT_SFCLIMIT=.true.
-    export MPAS_ISEED_SPPT1='2026010112001'
-    export MPAS_ISEED_SPPT2='0'
-    export MPAS_ISEED_SPPT3='0'
-    export MPAS_SPPT_HGT_TOP2=15000
-    export MPAS_SPPT_HGT_TOP1=27000
-    export MPAS_STOCHINI=.false.
+    MPAS_DO_SPPT=.false.
+    MPAS_DO_SKEB=.false
+    MPAS_SPPTINT=0
+    MPAS_SPPT_1=0.1
+    MPAS_SPPT_2=0.1
+    MPAS_SPPT_3=0.1
+    MPAS_SPPT_TAU_1=21600.
+    MPAS_SPPT_TAU_2=86400.
+    MPAS_SPPT_TAU_3=21600.
+    MPAS_SPPT_LSCALE_1=500000.
+    MPAS_SPPT_LSCALE_2=1000000.
+    MPAS_SPPT_LSCALE_3=2000000.
+    MPAS_SPPT_LOGIT=.true.
+    MPAS_SPPT_SFCLIMIT=.true.
+    MPAS_ISEED_SPPT1='2026010112001'
+    MPAS_ISEED_SPPT2='0'
+    MPAS_ISEED_SPPT3='0'
+    MPAS_SPPT_HGT_TOP2=15000
+    MPAS_SPPT_HGT_TOP1=27000
+    MPAS_STOCHINI=.false.
 
 }
 
