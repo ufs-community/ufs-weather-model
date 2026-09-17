@@ -13,7 +13,7 @@
  -->
 - [ ] This PR addresses a relevant WM issue (if not, create an issue). 
 - [ ] All subcomponent pull requests (if any) have been reviewed by their code managers.
-- [ ] Run the full Intel+GNU RT suite (compared to current baselines), preferably on Ursa (Derecho or Hercules are acceptable alternatives). **Exceptions:** documentation-only PRs, CI-only PRs, etc.
+- [ ] Run the full Intel+GNU RT suite (compared to current baselines), preferably on Ursa (Hercules is also an acceptable alternative). **Exceptions:** documentation-only PRs, CI-only PRs, etc.
    - [ ] Commit log file w/full results from RT suite run (if applicable).
    - [ ] Verify that `test_changes.list` indicates which tests, if any, are changed by this PR. Commit `test_changes.list`, even if it is empty.
 - Transparency in the use of generative AI is required by NOAA policy. Was GenAI used in this work?
@@ -158,7 +158,6 @@ If there are changes to input data for a test, provide information here. Delete 
   - [ ] Orion
   - [ ] Hercules
   - [ ] GaeaC6
-  - [ ] Derecho
   - [ ] Ursa
 - WCOSS2
   - [ ] Dogwood/Cactus
