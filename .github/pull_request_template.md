@@ -140,6 +140,11 @@ If there are changes to input data for a test, provide information here. Delete 
 - [ ] PR adds input data.
 - [ ] PR changes existing input data.
 
+### Subcomponent Branch Changes
+Does this PR change which subcomponent branch will be used in the UFS WM? 
+- [ ] Yes --> Update `tests/ci/repo_check.sh` to point the CI to the new branch.
+- [ ] No
+
 ### Library Changes/Upgrades:
 <!-- Library updates take time. Provide library and version information here, and delete what is not needed. 
 ** SPECIAL INSTRUCTIONS **
