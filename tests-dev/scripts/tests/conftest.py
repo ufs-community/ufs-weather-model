@@ -364,22 +364,22 @@ def hercules_sample_historical_log_data():
 @pytest.fixture
 def hercules_current_pr_data():
    sample_data = {
-      'cpld_control_p8_mixedmode_intel': {841,2160},
-      'cpld_control_gefs_intel': {1439,3117},
-      'cpld_control_noaero_p8_agrid_intel': {314,2131},
-      'control_c48_intel': {395,1713},
-      'control_p8_intel': {545,1903},
-      'control_restart_p8_intel': {107,1211},
-      'control_c48_gnu': {462,1584},
-      'control_p8_gnu': {233,1551},
-      'control_debug_p8_gnu': {77,1533},
-      'hrrr_control_intel': {211,1075},
-      'hrrr_control_gnu': {635,944},
-      'atmaero_control_p8_intel': {260,2015},
-      'regional_atmaq_intel': {833,2938},
-      'hafs_regional_docn_intel': {301,1089},
-      'datm_cdeps_control_cfsr_intel': {167,1863},
-      'datm_cdeps_control_cfsr_gnu': {164,1605}
+      'cpld_control_p8_mixedmode_intel': [841,2160],
+      'cpld_control_gefs_intel': [1439,3117],
+      'cpld_control_noaero_p8_agrid_intel': [314,2131],
+      'control_c48_intel': [395,1713],
+      'control_p8_intel': [545,1903],
+      'control_restart_p8_intel': [107,1211],
+      'control_c48_gnu': [462,1584],
+      'control_p8_gnu': [233,1551],
+      'control_debug_p8_gnu': [77,1533],
+      'hrrr_control_intel': [211,1075],
+      'hrrr_control_gnu': [635,944],
+      'atmaero_control_p8_intel': [260,2015],
+      'regional_atmaq_intel': [833,2938],
+      'hafs_regional_docn_intel': [301,1089],
+      'datm_cdeps_control_cfsr_intel': [167,1863],
+      'datm_cdeps_control_cfsr_gnu': [164,1605]
    }
 
    return sample_data
@@ -433,120 +433,6 @@ def hercules_mean_std():
    }
 
    return stats
-
-@pytest.fixture
-def stats_dict_snippet():
-
-   stats_dict = {
-      "hercules": {
-        "cpld_control_p8_mixedmode_intel": [
-            599.0,
-            150.68643,
-            2162.7,
-            3.87427
-        ],
-        "cpld_dcp_gefs_intel": [
-            1205.2,
-            255.34635,
-            3158.9,
-            4.67868
-        ],
-        "cpld_control_gfsv17_intel": [
-            1101.3,
-            148.83686,
-            2030.5,
-            3.69459
-        ],
-        "cpld_control_gfsv17_iau_intel": [
-            1132.8,
-            35.47901,
-            2337.3,
-            9.01166
-        ],
-        "cpld_restart_gfsv17_intel": [
-            433.1,
-            26.89033,
-            1352.2,
-            8.07217
-        ],
-        "cpld_restart_gfsv17_iau_intel": [
-            566.9,
-            147.44657,
-            2214.2,
-            5.82752
-        ],
-        "cpld_mpi_gfsv17_intel": [
-            1123.1,
-            22.9715,
-            1929.5,
-            2.33452
-        ],
-        "cpld_control_sfs_intel": [
-            1135.8,
-            214.16013,
-            1991.6,
-            4.84149
-        ]
-      },
-      "orion": {
-        "cpld_control_p8_gnu": [
-            615.2,
-            26.21374,
-            1723.9,
-            5.64712
-        ],
-        "cpld_control_nowave_noaero_p8_gnu": [
-            585.0,
-            192.60789,
-            1629.6,
-            9.14549
-        ],
-        "cpld_debug_p8_gnu": [
-            407.8,
-            127.7449,
-            1731.8,
-            8.50647
-        ],
-        "cpld_control_pdlib_p8_gnu": [
-            953.0,
-            244.45981,
-            1594.6,
-            9.17824
-        ],
-        "cpld_debug_pdlib_p8_gnu": [
-            561.3,
-            22.42788,
-            1606.0,
-            5.36656
-        ],
-        "control_gfs_mpas_gnu": [
-            36.5,
-            4.20119,
-            6404.7,
-            4.49555
-        ],
-        "datm_cdeps_control_cfsr_gnu": [
-            174.9,
-            20.50098,
-            1605.3,
-            1.18743
-        ],
-        "cpld_control_gefs_intel": [
-            1147.4,
-            234.53622,
-            3127.3,
-            7.72075
-        ],
-        "cpld_restart_gefs_intel": [
-            386.6,
-            105.43263,
-            2823.3,
-            3.79605
-        ]
-      }
-   }
-
-   return stats_dict
 
 @pytest.fixture
 def sample_memory_results(): 
