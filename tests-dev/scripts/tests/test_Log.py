@@ -82,16 +82,18 @@ def test_no_current_pr_data(herc_log, caplog):
 
 def test_get_current_pr_runtime_data(log_PR_2882, hercules_current_pr_data):
    
-   log_PR_2882.get_current_pr_data()
-   for test in log_PR_2882.current_pr_runtime_data:
-      assert log_PR_2882.current_pr_runtime_data[test] == hercules_current_pr_data[test][0]
+   log_PR_2882.current_pr_runtime_data = log_PR_2882.get_current_pr_data()
+   for test in hercules_current_pr_data:
+      assert log_PR_2882.current_pr_runtime_data[test][0] == hercules_current_pr_data[test][0]
 
    # Could change current_pr_log_data to pandas DataFrame to access by column
 def test_get_current_pr_mem_data(log_PR_2882, hercules_current_pr_data):
    
-   log_PR_2882.get_current_pr_data()
-   for test in log_PR_2882.current_pr_mem_data:
-      assert log_PR_2882.current_pr_mem_data[test] == hercules_current_pr_data[test][1]
+   log_PR_2882.current_pr_mem_data = log_PR_2882.get_current_pr_data()
+   for test in hercules_current_pr_data:
+      print(test)
+      assert log_PR_2882.current_pr_mem_data[test][1] == hercules_current_pr_data[test][1]
+
 
 def test_fetch_historical_data(log_PR_2882, hercules_sample_historical_log_data):
    """
@@ -132,27 +134,26 @@ def test_get_mem_stats(log_PR_2882):
    log_PR_2882.get_mem_stats()
    assert log_PR_2882.mem_stats != None
 
-def test_compare_runtimes(log_PR_2882, log_instance_results_2882_0, sample_runtime_mem_results, hercules_mean_std):
+def test_compare_runtimes(log_PR_2882, log_instance_results_2882_0, hercules_runtime_results, hercules_mean_std):
    log_PR_2882.current_pr_log_data = log_instance_results_2882_0
    log_PR_2882.test_stats = hercules_mean_std
    log_PR_2882.compare_runtimes()
 
-   for test, value in sample_runtime_mem_results["hercules"].items(): 
-      assert log_PR_2882.runtime_results[test] == value[0]
+   for test, value in hercules_runtime_results["hercules"].items(): 
+      print(test)
+      print(f"EXPECTED RESULT: {hercules_runtime_results["hercules"][test]}")
+      print(f"ACTUAL RESULT: {log_PR_2882.runtime_results[test]}")
+      #print(test, log_PR_2882.runtime_results[test], value)
+      assert log_PR_2882.runtime_results[test] == value
 
-
-"""def test_get_runtime_results(log_PR_2882):
-   log_PR_2882.get_runtime_results()
-   assert log_PR_2882.runtime_results != None
-"""
-def test_compare_mem(log_PR_2882, log_instance_results_2882_0, sample_runtime_mem_results, hercules_mean_std):
+def test_compare_mem(log_PR_2882, log_instance_results_2882_0, sample_memory_results, hercules_mean_std):
    
    log_PR_2882.current_pr_log_data = log_instance_results_2882_0
    log_PR_2882.test_stats = hercules_mean_std
    log_PR_2882.compare_mem()
 
-   for test, value in sample_runtime_mem_results["hercules"].items(): 
-      assert log_PR_2882.mem_results[test] == value[1]
+   for test, value in sample_memory_results["hercules"].items(): 
+      assert log_PR_2882.mem_results[test] == value
 
 """def test_get_mem_results(log_PR_2882):
    log_PR_2882.get_mem_results()

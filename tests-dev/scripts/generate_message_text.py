@@ -52,7 +52,7 @@ class MessageManager(Manager):
       """
       fail = '❌'
       self.results[category].update(self.organize_data_by_test(data))
-
+      
       matching = {}
       for test, result in self.results[category].items(): 
          for machine, is_fail in result.items():
@@ -86,7 +86,7 @@ def main():
    for category in message_manager.categories: 
       message_manager.contents[category].update(message_manager.load_json_from_file(os.environ.get(f"{category.upper()}_RESULTS")))
       message_manager.create_message_content(message_manager.contents[category], category)
-
+      
    return message_manager.create_md_file()
 
 

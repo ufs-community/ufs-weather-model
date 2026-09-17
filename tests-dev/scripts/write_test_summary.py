@@ -43,7 +43,7 @@ class HTMLBuilder(Manager):
 
       results = self._count_passes_per_test(results)
       results = pd.concat([results, self._count_passes_per_machine(results)])
-      
+
       return results
 
    def write_content(self,data,category):
@@ -124,7 +124,7 @@ class HTMLBuilder(Manager):
 
          # Write the content to a file
          self.write_content(data,category)
-   
+
 def main(): # pragma: no cover
 
    html_builder = HTMLBuilder()

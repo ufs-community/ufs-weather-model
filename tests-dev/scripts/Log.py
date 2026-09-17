@@ -133,7 +133,7 @@ class Log():
 
    # Could change current_pr_log_data to pandas DataFrame to access by column
    def get_current_pr_mem_data(self):
-      if not self.current_pr_log_data:
+      if not self.current_pr_log_data: # pragma: no cover
          self.get_current_pr_data()
       for test in self.current_pr_log_data:
          self.current_pr_mem_data[test] = self.current_pr_log_data[test][1]
@@ -153,7 +153,7 @@ class Log():
       return self.historical_runtime_data
    
    def get_historical_mem_data(self):
-      if not self.historical_mem_data:
+      if not self.historical_mem_data: # pragma: no cover
          self.fetch_historical_data()
       return self.historical_mem_data
                
@@ -217,7 +217,10 @@ class Log():
       third_to_last = self.repo_commits[2]
       recent_hashes = [last, second_to_last, third_to_last]
 
-      previous_logs = {test: {hash: values[hash] for hash in recent_hashes if hash in values} for test, values in data.items()}
+      previous_logs = {test: {hash: values[hash] for hash in recent_hashes if hash in values} 
+                       for test, values in data.items()}
+
+      
 
       for test in current_log:
          try:

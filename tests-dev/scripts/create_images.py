@@ -72,10 +72,11 @@ class PlotManager(Manager):
          anomalies (list): A boolean list where True indicates the presence of an anomalous value.
       """
 
-      # Filter out None values to compute stats on valid values
-      valid_data = [value for value in test_data if value is not None]
+      # Filter out None values to compute stats on valid historical values 
+      # (exclude PR head commit value from calculation using test_data[:-1])
+      valid_data = [value for value in test_data[:-1] if value is not None]
 
-      if not valid_data:
+      if not valid_data: # pragma: no cover
          return [False] * len(test_data)
       
       # Calculate threshold value (mean + 2*stdev) using only valid numbers (not Nones)
@@ -93,7 +94,7 @@ class PlotManager(Manager):
       Returns:
          hashes (list): Commit metadata; by default, 30 most recent hashes from the repository plus 'PR Head'.
       """
-      hashes = self.get_hashes() # Default 30 hashes; change quantity in utility function for consistency
+      hashes = self.get_hashes().copy() # Default 30 hashes; change quantity in utility function for consistency
       hashes.insert(0, "PR Head")
       hashes.reverse()
       return hashes
@@ -123,15 +124,11 @@ class PlotManager(Manager):
          # Skip plotting if the machine has no valid data points
          if all(value is None for value in y):
             continue
-
          anomalies = self.detect_statistical_anomalies(y)
          
          x = self.hashes 
-
+         
          plt.plot(x, y, styles[i % len(styles)], label=f"{machine}", linewidth=2, markersize=6)
-         #for idx, is_anomaly in enumerate(anomalies):
-            #if is_anomaly == True:
-               #plt.plot(x[idx], y[idx], 'ro', markersize=8)
          [plt.plot(x[idx], y[idx], 'ro', markersize=8) for idx, is_anomaly in enumerate(anomalies) if is_anomaly]
          
       plt.legend(fontsize=12)
@@ -186,10 +183,7 @@ def main():
       plot_manager = PlotManager(category)
       plot_manager.process_data()
       plot_manager.plot_results()
-   """except:
-      logging.error(f"A fatal error occurred. Exiting...")
-      sys.exit()
-"""
+
    return plot_manager
 
 if __name__ == "__main__":

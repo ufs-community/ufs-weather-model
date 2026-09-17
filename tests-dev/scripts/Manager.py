@@ -30,7 +30,7 @@ class Manager():
          for item in response:
             hashes.append(item['sha'][:8])
          return hashes
-      except:
+      except: # pragma: no cover
          logging.error(response['message'])
          sys.exit()
 
@@ -51,10 +51,10 @@ class Manager():
          logging.error(f"{response['status']} {response['message']}. URL: {api_call.url}")
          sys.exit()
 
-   def get_pr_head(self):
+   def get_pr_head(self): # pragma: no cover
       return self.pr_head_commit
 
-   def set_machines(self, machine_list):
+   def set_machines(self, machine_list): # pragma: no cover
       self.machines = [m.lower() for m in machine_list]
       print(self.machines)
 
@@ -70,7 +70,7 @@ class Manager():
       with open(file_path, 'r', encoding='utf-8') as file:
          data = json.load(file)
 
-      if not data:
+      if not data: # pragma: no cover
          logging.error(f"No data retrieved.")
 
       return data

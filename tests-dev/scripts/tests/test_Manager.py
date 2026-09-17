@@ -20,6 +20,15 @@ def test_init_manager(set_env_vars):
    assert len(manager.get_hashes()) == 30
    assert manager.pr_head_commit == "369cead91c98eb5c72da81ff78925250dad08903"
 
+def test_set_pr_head_error(set_env_vars, monkeypatch, caplog):
+
+   set_env_vars
+   monkeypatch.setenv("PR_NUM", "-1")
+   with pytest.raises(SystemExit) as error:
+      manager = Manager()
+
+   assert caplog.messages[0] == "404 Not Found. URL: https://api.github.com/repos/ufs-community/ufs-weather-model/pulls/-1"
+
 def test_set_machines(monkeypatch):
    machines = "Larry Moe Curly"
    monkeypatch.setenv("MACHINES", machines)
