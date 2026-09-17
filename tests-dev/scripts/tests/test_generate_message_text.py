@@ -137,8 +137,8 @@ def test_create_md_file(set_env_vars,message_content,expected_messages):
 def test_main(set_env_vars,monkeypatch):
 
    set_env_vars
-   monkeypatch.setenv("RUNTIME_RESULTS", "/Users/gpetro/wm-warn/tests-dev/scripts/tests/data/runtime_results.json")
-   monkeypatch.setenv("MEMORY_RESULTS", "/Users/gpetro/wm-warn/tests-dev/scripts/tests/data/memory_results.json")
+   monkeypatch.setenv("RUNTIME_RESULTS", "/Users/gpetro/wm-warn/tests-dev/scripts/tests/data/sample_runtime_results.json")
+   monkeypatch.setenv("MEMORY_RESULTS", "/Users/gpetro/wm-warn/tests-dev/scripts/tests/data/sample_memory_results.json")
    mdFile = main()
    print(mdFile)
 

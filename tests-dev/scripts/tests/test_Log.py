@@ -82,16 +82,18 @@ def test_no_current_pr_data(herc_log, caplog):
 
 def test_get_current_pr_runtime_data(log_PR_2882, hercules_current_pr_data):
    
-   log_PR_2882.get_current_pr_data()
-   for test in log_PR_2882.current_pr_runtime_data:
-      assert log_PR_2882.current_pr_runtime_data[test] == hercules_current_pr_data[test][0]
+   log_PR_2882.current_pr_runtime_data = log_PR_2882.get_current_pr_data()
+   for test in hercules_current_pr_data:
+      assert log_PR_2882.current_pr_runtime_data[test][0] == hercules_current_pr_data[test][0]
 
    # Could change current_pr_log_data to pandas DataFrame to access by column
 def test_get_current_pr_mem_data(log_PR_2882, hercules_current_pr_data):
    
-   log_PR_2882.get_current_pr_data()
-   for test in log_PR_2882.current_pr_mem_data:
-      assert log_PR_2882.current_pr_mem_data[test] == hercules_current_pr_data[test][1]
+   log_PR_2882.current_pr_mem_data = log_PR_2882.get_current_pr_data()
+   for test in hercules_current_pr_data:
+      print(test)
+      assert log_PR_2882.current_pr_mem_data[test][1] == hercules_current_pr_data[test][1]
+
 
 def test_fetch_historical_data(log_PR_2882, hercules_sample_historical_log_data):
    """

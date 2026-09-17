@@ -45,7 +45,7 @@ def test_add_legend():
 def test_build_content(set_env_vars,monkeypatch,sample_runtime_results, actual_passes_per_test, actual_passes_per_machine):
 
    set_env_vars
-   monkeypatch.setenv("RUNTIME_RESULTS", "data/runtime_results.json")
+   monkeypatch.setenv("RUNTIME_RESULTS", "data/sample_runtime_results.json")
    html_builder = HTMLBuilder()
    content = html_builder.build_content("runtime").sort_index()
 
@@ -63,7 +63,7 @@ def test_write_content(monkeypatch, set_env_vars, sample_runtime_results_complet
    
    # Set up and test write_content() method
    set_env_vars
-   monkeypatch.setenv("RUNTIME_RESULTS", "data/runtime_results.json")
+   monkeypatch.setenv("RUNTIME_RESULTS", "data/sample_runtime_results.json")
    monkeypatch.setenv("MACHINES", "hercules orion ursa")
    html_builder = HTMLBuilder()
    results = pd.DataFrame.from_dict(sample_runtime_results_complete).fillna("N/A").sort_index()

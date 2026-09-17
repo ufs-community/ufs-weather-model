@@ -19,6 +19,7 @@ def test_initialize_PlotManager(category):
    assert plot_manager.category == category
 
 def test_get_runtime_test_names(set_env_vars, sample_runtime_results):
+   """Compare test names extracted from sample_runtime_results via get_test_names() to the expected list of test names."""
 
    set_env_vars
    plot_manager = PlotManager('runtime')
@@ -162,7 +163,7 @@ def test_load_data_fail(set_env_vars, category, caplog):
 
 @pytest.mark.run_manual
 @pytest.mark.parametrize('category', ['runtime', 'memory'])
-def test_plot_results(set_env_vars, metrics_subset, category, most_recent_commits):
+def test_plot_results(set_env_vars, metrics_subset, category):
    """
    Check that plotting runs error-free and generates expected files. 
    """

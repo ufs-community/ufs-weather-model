@@ -76,7 +76,7 @@ class PlotManager(Manager):
       # (exclude PR head commit value from calculation using test_data[:-1])
       valid_data = [value for value in test_data[:-1] if value is not None]
 
-      if not valid_data:
+      if not valid_data: # pragma: no cover
          return [False] * len(test_data)
       
       # Calculate threshold value (mean + 2*stdev) using only valid numbers (not Nones)
