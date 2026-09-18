@@ -166,7 +166,6 @@ Does this PR change which subcomponent branch will be used in the UFS WM?
   - [ ] Ursa
 - WCOSS2
   - [ ] Dogwood/Cactus
-  - [ ] Acorn
 - [ ] CI
 - [ ] opnReqTest (complete task if unnecessary)
 
