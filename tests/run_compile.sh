@@ -69,8 +69,10 @@ rm -rf "${RUNDIR}"
 mkdir -p "${RUNDIR}"
 cd "${RUNDIR}"
 
-# Stage module files for container mode.
-if [[ ${MACHINE_ID} = container ]]; then
+# Stage module files for container mode -- either community.sh's own
+# MACHINE_ID=container, or rt.sh's "-p" on a real Tier 1 host (MACHINE_ID
+# stays the real host there; CONTAINER_IMG being set is the container signal).
+if [[ ${MACHINE_ID} = container || -n ${CONTAINER_IMG:-} ]]; then
     mkdir -p modulefiles
     if [[ -f "${PATHTR}/modulefiles/ufs_container.${RT_COMPILER}.lua" ]]; then
         cp "${PATHTR}/modulefiles/ufs_container.${RT_COMPILER}.lua" "modulefiles/modules.fv3.lua"

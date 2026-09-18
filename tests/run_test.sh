@@ -100,7 +100,7 @@ if [[ ${DRY_RUN:-false} == false ]]; then
   mkdir -p modulefiles
   if [[ ${MACHINE_ID} == linux ]]; then
     cp "${PATHRT}/modules.fv3_${COMPILE_ID}" "./modulefiles/modules.fv3"
-  elif [[ ${MACHINE_ID} == container ]]; then
+  elif [[ ${MACHINE_ID} == container || -n ${CONTAINER_IMG:-} ]]; then
     # Host-side runtime modulefile — loaded on the host before the container launches.
     cp "${PATHTR}/modulefiles/ufs_container.runtime.lua"  "./modulefiles/modules.fv3.runtime.lua"
     # Inside-container build/run modulefile — loaded by fv3_container_run.sh inside the container.
@@ -123,7 +123,15 @@ if [[ ${DRY_RUN:-false} == false ]]; then
   # Get the shell file that loads the "module" command and purges modules:
   cp "${PATHRT}/module-setup.sh" "module-setup.sh"
   
-  case ${MACHINE_ID} in
+  # A container image requested on a real Tier 1 host (rt.sh "-p") stages the
+  # same modulefiles community.sh's own MACHINE_ID=container does (see
+  # above); route it to that same "container)" arm here too, without
+  # touching MACHINE_ID itself (still needed, unmodified, for the job-card
+  # template lookup further below).
+  host_side_machine_id=${MACHINE_ID}
+  [[ -n ${CONTAINER_IMG:-} ]] && host_side_machine_id=container
+
+  case ${host_side_machine_id} in
     wcoss2|acorn)
       module load intel/19.1.3.304
       module load craype/2.7.13 cray-mpich/8.1.12

@@ -1,27 +1,30 @@
 -- ufs_container.runtime.lua
 -- Host-side runtime module for container-based UFS-WM regression tests.
 --
--- This file is loaded on the HOST (not inside the container) when the test
--- job card runs.  Use it to load any host modules that must be present before
--- launching apptainer/singularity, such as:
---   * the apptainer or singularity module itself (if not in PATH by default)
---   * a host MPI module that srun/mpirun needs
---   * any other system modules required at submission time
---
--- Platform-specific examples are shown below (all commented out).
--- Uncomment and adapt the lines appropriate for your system.
+-- This file is loaded on the HOST (not inside the container) before
+-- apptainer/singularity is invoked, from within each Tier 1 platform's own
+-- native job-card template ("module use .../modulefiles; module load
+-- ufs_container.runtime") whenever a container image was requested. Which
+-- container runtime module (if any) is needed depends on the platform the
+-- job is actually running on -- identified via the MACHINE_ID environment
+-- variable the calling job script already exports for its own use.
 
--- -- Orion / Hercules — load the singularity module.
--- load("singularity")
+local host = os.getenv("MACHINE_ID") or ""
 
--- -- Gaea-c6 (GFDL) — apptainer is in PATH by default; no module needed.
-
--- -- Derecho (NCAR) — load apptainer, host GNU compilers, and host OpenMPI
--- load("apptainer")
--- load("gcc/14.3.0")
--- load("openmpi/5.0.9")
-
--- -- NOAA cloud — singularity is in PATH by default; no module needed
-
--- -- Generic placeholder: load host MPI if needed for srun
--- load("openmpi")
+if (host == "hercules" or host == "orion") then
+  -- Hercules / Orion: apptainer/singularity is only available via modules.
+  load("singularity")
+elseif (host == "derecho") then
+  -- Derecho (NCAR): apptainer is only available via modules.
+  load("apptainer")
+elseif (host == "container") then
+  -- community.sh's own generic platform (MACHINE_ID=container), targeting
+  -- one fixed, site-configured cluster rather than a specific Tier 1 host
+  -- above. Placeholder -- uncomment and adapt for your system, e.g.:
+  -- load("apptainer")
+  -- load("singularity")
+  -- load("openmpi")
+end
+-- Gaea-c6, Ursa, NOAA Cloud: apptainer/singularity is already in PATH by
+-- default -- nothing to load. Likewise when MACHINE_ID is otherwise
+-- unrecognized or unset.

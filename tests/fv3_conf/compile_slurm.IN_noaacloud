@@ -12,7 +12,51 @@ set -eux
 echo -n " $( date +%s )," >  job_timestamp.txt
 echo "Compile started:  " `date`
 
-@[PATHRT]/compile.sh @[MACHINE_ID] "@[MAKE_OPT]" @[COMPILE_ID]
+if [[ -n "@[CONTAINER_IMG]" ]]; then
+  # Build inside the container staged on this platform (rt.sh -p).
+  MACHINE_ID=@[MACHINE_ID]
+  source ./module-setup.sh
+  module use "@[PATHTR]/modulefiles"
+  module load ufs_container.runtime
+
+  if command -v apptainer &>/dev/null; then
+    CONTAINERBIN=apptainer
+  elif command -v singularity &>/dev/null; then
+    CONTAINERBIN=singularity
+  else
+    echo "ERROR: neither apptainer nor singularity found on this host" >&2
+    exit 1
+  fi
+
+  BIND_FLAGS=""
+  if [[ -n "@[CONTAINER_BIND]" ]]; then
+    IFS=',' read -r -a _bind_dirs <<< "@[CONTAINER_BIND]"
+    for _dir in "${_bind_dirs[@]}"; do
+      BIND_FLAGS="${BIND_FLAGS} -B ${_dir}"
+    done
+  fi
+
+  CONTAINER="${CONTAINERBIN^^}"
+  export "${CONTAINER}_SHELL=/bin/bash"
+  export "${CONTAINER}ENV_RTVERBOSE=${RTVERBOSE:-false}"
+
+  cat > container_compile.sh << 'COMPILE_EOF'
+#!/bin/bash
+set -e
+[[ "${RTVERBOSE:-false}" == true ]] && set -x
+MACHINE_ID=container
+source ${PWD}/module-setup.sh
+module use ${PWD}/modulefiles
+module load modules.fv3
+module list
+"@[PATHRT]/compile.sh" "container" "@[MAKE_OPT]" "@[COMPILE_ID]" "@[RT_COMPILER]"
+COMPILE_EOF
+  chmod u+x container_compile.sh
+
+  ${CONTAINERBIN} exec -e ${BIND_FLAGS} "@[CONTAINER_IMG]" "${PWD}/container_compile.sh"
+else
+  @[PATHRT]/compile.sh @[MACHINE_ID] "@[MAKE_OPT]" @[COMPILE_ID]
+fi
 
 echo "Compile ended:    " `date`
 echo -n " $( date +%s )," >> job_timestamp.txt

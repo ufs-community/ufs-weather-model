@@ -11,7 +11,7 @@ die() { echo "$@" >&2; exit 1; }
 usage() {
   set +x #No reason to print out a bunch of echo statements here
   echo
-  echo "Usage: $0 -a <account> | -b <file> | -c | -d | -e | -h | -k | -l <file> | -m | -n <name> | -o | -r | -v | -w | -x"
+  echo "Usage: $0 -a <account> | -b <file> | -c | -d | -e | -h | -k | -l <file> | -m | -n <name> | -o | -p | -r | -v | -w | -x"
   echo
   echo "  -a  <account> to use on for HPC queue"
   echo "  -b  create new baselines only for tests listed in <file>"
@@ -24,6 +24,9 @@ usage() {
   echo "  -m  compare against new baseline results"
   echo "  -n  run single test <name>"
   echo "  -o  compile only, skip tests"
+  echo "  -p  build and run inside the GNU/Intel container staged on this Tier 1"
+  echo "      platform (compiler taken from each COMPILE line); container"
+  echo "      baselines and logs are kept separate from the native-stack ones"
   echo "  -r  use Rocoto workflow manager"
   echo "  -v  verbose output"
   echo "  -w  for weekly_test, skip comparing baseline results"
@@ -84,14 +87,8 @@ update_rtconf() {
       MACHINES=$(sed -e 's/^ *//' -e 's/ *$//' <<< "${MACHINES}")
       RT_COMPILER_IN=$(cut -d'|' -f3 <<< "${line}")
       RT_COMPILER_IN=$(sed -e 's/^ *//' -e 's/ *$//' <<< "${RT_COMPILER_IN}")
-      if [[ ${MACHINES} == '' ]]; then
-        compile_line=${line}
-        COMPILE_LINE_USED=false
-      elif [[ ${MACHINES} == -* ]]; then
-        [[ ${MACHINES} =~ ${MACHINE_ID} ]] || compile_line=${line}; COMPILE_LINE_USED=false
-      elif [[ ${MACHINES} == +* ]]; then
-        [[ ${MACHINES} =~ ${MACHINE_ID} ]] && compile_line=${line}; COMPILE_LINE_USED=false
-      fi
+      machines_allow_run "${MACHINES}" && compile_line=${line}
+      COMPILE_LINE_USED=false
 
     fi
 
@@ -101,13 +98,7 @@ update_rtconf() {
       tmp_test=$(sed -e 's/^ *//' -e 's/ *$//' <<< "${tmp_test}")
       MACHINES=$(cut -d'|' -f3 <<< "${line}")
       MACHINES=$(sed -e 's/^ *//' -e 's/ *$//' <<< "${MACHINES}")
-      if [[ ${MACHINES} == '' ]]; then
-        to_run_test=true
-      elif [[ ${MACHINES} == -* ]]; then
-        [[ ${MACHINES} =~ ${MACHINE_ID} ]] || to_run_test=true
-      elif [[ ${MACHINES} == +* ]]; then
-        [[ ${MACHINES} =~ ${MACHINE_ID} ]] && to_run_test=true
-      fi
+      machines_allow_run "${MACHINES}" && to_run_test=true
       if [[ ${to_run_test} == true ]]; then
         TEST_IDX=$(set -e; find_match "${tmp_test} ${RT_COMPILER_IN}" "${TEST_WITH_COMPILE[@]}")
 
@@ -204,6 +195,7 @@ EOF
   [[ ${RTPWD_NEW_BASELINE} == true ]] && echo "* (-m) - COMPARE AGAINST CREATED BASELINES" >> "${REGRESSIONTEST_LOG}"
   [[ ${RUN_SINGLE_TEST} == true ]] && echo "* (-n) - RUN SINGLE TEST: ${SINGLE_OPTS}" >> "${REGRESSIONTEST_LOG}"
   [[ ${COMPILE_ONLY} == true ]]&& echo "* (-o) - COMPILE ONLY, SKIP TESTS" >> "${REGRESSIONTEST_LOG}"
+  [[ ${CONTAINER_USE} == true ]] && echo "* (-p) - CONTAINER MODE ON ${MACHINE_ID} (baselines: ${RTPWD})" >> "${REGRESSIONTEST_LOG}"
   [[ ${delete_rundir} == true ]] && echo "* (-d) - DELETE RUN DIRECTORY" >> "${REGRESSIONTEST_LOG}"
   [[ ${skip_check_results} == true ]] && echo "* (-w) - SKIP RESULTS CHECK" >> "${REGRESSIONTEST_LOG}"
   [[ ${KEEP_RUNDIR} == true ]] && echo "* (-k) - KEEP RUN DIRECTORY" >> "${REGRESSIONTEST_LOG}"
@@ -235,12 +227,13 @@ EOF
 
       COMPILE_ID=${COMPILE_NAME}_${COMPILER}
 
-      if [[ ${CMACHINES} == '' ]]; then
-        valid_compile=true
-      elif [[ ${CMACHINES} == -* ]]; then
-        [[ ${CMACHINES} =~ ${MACHINE_ID} ]] || valid_compile=true
-      elif [[ ${CMACHINES} == +* ]]; then
-        [[ ${CMACHINES} =~ ${MACHINE_ID} ]] && valid_compile=true
+      machines_allow_run "${CMACHINES}" && valid_compile=true
+
+      # -p: a compile skipped for lack of a staged container image is omitted
+      # from the tally, like a "-machine" filtered line.
+      if [[ ${CONTAINER_USE} == true && ${valid_compile} == true ]]; then
+        RT_COMPILER=${COMPILER}
+        resolve_container_image || valid_compile=false
       fi
 
       if [[ ${valid_compile} == true ]]; then
@@ -319,12 +312,13 @@ EOF
       GEN_BASELINE=$(cut -d '|' -f4 <<< "${line}")
       GEN_BASELINE=$(sed -e 's/^ *//' -e 's/ *$//' <<< "${GEN_BASELINE}")
 
-      if [[ ${RMACHINES} == '' ]]; then
-        valid_test=true
-      elif [[ ${RMACHINES} == -* ]]; then
-        [[ ${RMACHINES} =~ ${MACHINE_ID} ]] || valid_test=true
-      elif [[ ${RMACHINES} == +* ]]; then
-        [[ ${RMACHINES} =~ ${MACHINE_ID} ]] && valid_test=true
+      machines_allow_run "${RMACHINES}" && valid_test=true
+
+      # -p: a test skipped for lack of a staged container image is omitted from
+      # the tally, like a "-machine" filtered line.
+      if [[ ${CONTAINER_USE} == true && ${valid_test} == true ]]; then
+        RT_COMPILER=${COMPILER}
+        resolve_container_image || valid_test=false
       fi
 
       if [[ ${valid_test} == true ]]; then
@@ -473,6 +467,91 @@ EOF
 
 }
 
+# Whether a COMPILE/RUN line's MACHINES field (item 5 for COMPILE, item 3 for
+# RUN) lets that line be considered right now, given the real ${MACHINE_ID}
+# and whether -p (container mode, CONTAINER_USE) is active.
+#
+# The token "+container" (its own "+", not a bare word) may appear anywhere
+# in a MACHINES field -- standalone ("+container"), or appended after a real
+# host list ("+ hera hercules ursa derecho +container", "- noaacloud
+# +container") -- as an independent, additive tag marking that specific test
+# as part of the container test set. It must carry its own "+"; a bare
+# "container" (no "+") is deliberately NOT recognized, because folding it
+# into a "-"-prefixed list would read as "also excluded on container", the
+# opposite of what the tag means.
+#   - Container operation (CONTAINER_USE=true): a line is considered if and
+#     only if "+container" is present, regardless of any host names also
+#     listed (per-host/per-compiler container availability is a separate,
+#     later check -- see resolve_container_image).
+#   - Normal operation (CONTAINER_USE=false): "+container" is irrelevant and
+#     is stripped out first; whatever host list (if any) is left behind is
+#     evaluated exactly as rt.conf always has -- "" matches every host,
+#     "+ hosts..." only those hosts, "- hosts..." all but those. So adding
+#     "+container" to an existing line's MACHINES field never changes that
+#     line's native behavior.
+# MACHINE_ID itself is untouched either way, so paths/scheduler/workflow-
+# manager selection for the real host are unaffected by any of this.
+machines_allow_run() {
+  local machines=$1
+  local has_container_tag=false
+  [[ ${machines} == *+container* ]] && has_container_tag=true
+
+  if [[ ${CONTAINER_USE} == true ]]; then
+    [[ ${has_container_tag} == true ]] && return 0 || return 1
+  fi
+
+  local native_machines=${machines//+container/}
+  native_machines=$(sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' <<< "${native_machines}")
+  # A field that becomes bare "+" or "-" once "+container" is removed had no
+  # real host names in it -- that's the same as an unrestricted empty field.
+  [[ ${native_machines} == '+' || ${native_machines} == '-' ]] && native_machines=''
+
+  [[ ${native_machines} == '' ]] && return 0
+  if [[ ${native_machines} == -* ]]; then
+    [[ ${native_machines} =~ ${MACHINE_ID} ]] && return 1 || return 0
+  elif [[ ${native_machines} == +* ]]; then
+    [[ ${native_machines} =~ ${MACHINE_ID} ]] && return 0 || return 1
+  else
+    echo "MACHINES=|${machines}|" >&2
+    die "MACHINES spec must be either an empty string or start with either '+' or '-'"
+  fi
+}
+
+# For -p (container) runs: build the full path to the container image for the
+# current ${RT_COMPILER} into RT_CONTAINER_IMG, as
+#   ${CONTAINER_PATH}/${CONTAINER_IMG_INTEL}   or   ${CONTAINER_PATH}/${CONTAINER_IMG_GNU}
+# CONTAINER_PATH (per machine) and CONTAINER_IMG_INTEL/_GNU (the shared
+# filenames, same on every platform) are both set before the main loop calls
+# this -- CONTAINER_PATH by the machine "case" block, the filenames above it.
+#   return 0 : an image is configured and usable (image + modulefiles verified)
+#   return 1 : no image staged for this compiler on this machine -- caller skips
+#              the COMPILE/RUN line (or dies, when -n forced a single test)
+resolve_container_image() {
+  RT_CONTAINER_IMG=''
+  local img_name=''
+  case ${RT_COMPILER} in
+    intel) img_name=${CONTAINER_IMG_INTEL} ;;
+    gnu)   img_name=${CONTAINER_IMG_GNU} ;;
+    *)     die "resolve_container_image: unexpected RT_COMPILER='${RT_COMPILER}'" ;;
+  esac
+
+  [[ -n ${CONTAINER_PATH} && -n ${img_name} ]] || return 1
+  RT_CONTAINER_IMG=${CONTAINER_PATH}/${img_name}
+
+  # A dry run only reports what would happen; skip the on-disk checks so it can
+  # be exercised from anywhere (the image lives on the target Tier 1 host).
+  [[ ${DRY_RUN} == true ]] && return 0
+
+  # A missing *.sif here just means this compiler isn't staged on this
+  # platform yet -- skip gracefully, same as an unset CONTAINER_PATH/img_name.
+  [[ -f ${RT_CONTAINER_IMG} ]] || return 1
+  [[ -f ${PATHTR}/modulefiles/ufs_container.${RT_COMPILER}.lua ]] \
+    || die "modulefiles/ufs_container.${RT_COMPILER}.lua not found under ${PATHTR}"
+  [[ -f ${PATHTR}/modulefiles/ufs_container.runtime.lua ]] \
+    || die "modulefiles/ufs_container.runtime.lua not found under ${PATHTR}"
+  return 0
+}
+
 create_or_run_compile_task() {
   cat << EOF > "${RUNDIR_ROOT}/compile_${COMPILE_ID}.env"
 export COMPILE_ID=${COMPILE_ID}
@@ -490,6 +569,14 @@ export REGRESSIONTEST_LOG=${REGRESSIONTEST_LOG}
 export LOG_DIR=${LOG_DIR}
 export RTVERBOSE=${RTVERBOSE}
 EOF
+
+  if [[ ${CONTAINER_USE} == true ]]; then
+    cat << EOF >> "${RUNDIR_ROOT}/compile_${COMPILE_ID}.env"
+export CONTAINER_IMG=${RT_CONTAINER_IMG}
+export CONTAINER_BIND=${CONTAINER_BIND_DIRS}
+export TPN=${CONTAINER_TPN}
+EOF
+  fi
 
   if [[ ${ROCOTO} == true ]]; then
     rocoto_create_compile_task
@@ -601,7 +688,34 @@ export STOP_ECFLOW_AT_END=false
 export DRY_RUN=false
 ACCNR=${ACCNR:-""}
 
-while getopts ":a:b:cl:mn:dwkreovhx" opt; do
+# -p : build and run inside the GNU/Intel container staged on this Tier 1 host.
+# CONTAINER_SUFFIX ("_container" when -p is used, empty otherwise) is appended to
+# the baseline roots and log paths so container results never collide with the
+# native-stack ones.
+CONTAINER_USE=false
+CONTAINER_SUFFIX=''
+
+# Container image *filenames* -- the same on nearly every Tier 1 platform, except 
+# for some variations for GNU-based containers related to container's MPI plugin
+# compatibility with the host system. A container is portable; only the staging
+# directory differs by host). Override a name of the container for 
+# a specific platform if needed (e.g., for Derecho), in the "case ${MACHINE_ID}"
+# construct further below. 
+CONTAINER_IMG_INTEL='rocky9-oneapi2024.2-ss192.sif'
+CONTAINER_IMG_GNU='rocky9-gcc13-ss192-ompi416.sif'   
+# Per-Tier-1-machine container settings; each machine "case" arm below sets
+# these (or leaves them empty where nothing has been staged on that host yet).
+# CONTAINER_PATH is the host directory containing the *.sif images (combined
+# with CONTAINER_IMG_INTEL/_GNU above to form the full path -- see
+# resolve_container_image()); CONTAINER_BIND_DIRS is the comma-separated
+# list of host dirs to bind-mount; CONTAINER_TPN is that host's MPI
+# tasks-per-node.
+CONTAINER_PATH=''
+CONTAINER_BIND_DIRS=''
+CONTAINER_TPN=''
+RT_CONTAINER_IMG=''   # image for the compiler of the COMPILE/RUN line in hand
+
+while getopts ":a:b:cl:mn:dwkpreovhx" opt; do
   case ${opt} in
     a)
       ACCNR=${OPTARG}
@@ -619,6 +733,10 @@ while getopts ":a:b:cl:mn:dwkreovhx" opt; do
       ;;
     o)
       COMPILE_ONLY=true
+      ;;
+    p)
+      CONTAINER_USE=true
+      CONTAINER_SUFFIX='_container'
       ;;
     m)
       # redefine RTPWD to point to newly created baseline outputs
@@ -732,6 +850,11 @@ case ${MACHINE_ID} in
     STMP="/lfs/h2/emc/ptmp"
     PTMP="/lfs/h2/emc/ptmp"
     SCHEDULER="pbs"
+
+    # -p container option: no container image staged on wcoss2/acorn yet
+    # CONTAINER_PATH=                 # directory holding the *.sif images
+    # CONTAINER_BIND_DIRS=         # comma-separated host dirs to bind
+    # CONTAINER_TPN=128
     ;;
   gaeac5)
     echo "rt.sh: Setting up gaea c5..."
@@ -763,6 +886,11 @@ case ${MACHINE_ID} in
     PTMP=${PTMP:-${dprefix}/RT_RUNDIRS}
 
     SCHEDULER="slurm"
+
+    # -p container option: no container image staged on gaea c5/no longer supported
+    # CONTAINER_PATH=                 # directory holding the *.sif images
+    # CONTAINER_BIND_DIRS=         # comma-separated host dirs to bind
+    # CONTAINER_TPN=128
     ;;
   gaeac6)
     echo "rt.sh: Setting up gaea c6..."
@@ -794,6 +922,11 @@ case ${MACHINE_ID} in
     PTMP=${PTMP:-${dprefix}/RT_RUNDIRS}
 
     SCHEDULER="slurm"
+
+    # -p container option: no container image staged on this platform yet
+    CONTAINER_PATH=/gpfs/f6/bil-fire8/world-shared/containers   # directory holding the *.sif images
+    CONTAINER_BIND_DIRS="/gpfs,/ncrc/home2"                  # comma-separated host dirs to bind
+    CONTAINER_TPN=192
     ;;
   hera)
     echo "rt.sh: Setting up hera..."
@@ -816,6 +949,11 @@ case ${MACHINE_ID} in
     PTMP="${dprefix}/RT_RUNDIRS"
 
     SCHEDULER=slurm
+
+    # -p container option: no container image staged on hera/ no longer supported
+    # CONTAINER_PATH=                 # directory holding the *.sif images
+    # CONTAINER_BIND_DIRS=         # comma-separated host dirs to bind
+    # CONTAINER_TPN=40
     ;;
   ursa)
     echo "rt.sh: Setting up ursa..."
@@ -844,6 +982,11 @@ case ${MACHINE_ID} in
     PTMP="${PTMP:-${dprefix}/RT_RUNDIRS}"
 
     SCHEDULER=slurm
+
+    # -p container option: no container image staged on this platform yet
+    CONTAINER_PATH=/scratch3/NCEPDEV/nems/role.epic/containers     # directory holding the *.sif images
+    CONTAINER_BIND_DIRS="/scratch3,/scratch4"                   # comma-separated host dirs to bind
+    CONTAINER_TPN=192
 
     ;;
   orion)
@@ -874,6 +1017,11 @@ case ${MACHINE_ID} in
 
     cp fv3_conf/fv3_slurm.IN_orion fv3_conf/fv3_slurm.IN
     cp fv3_conf/compile_slurm.IN_orion fv3_conf/compile_slurm.IN
+
+    # -p container option: no container image staged on this platform yet
+    CONTAINER_PATH=/work/noaa/epic/role-epic/contrib/containers   # directory holding the *.sif images
+    CONTAINER_BIND_DIRS="/work,/work2,/local"                  # comma-separated host dirs to bind
+    CONTAINER_TPN=40
     ;;
   hercules)
     echo "rt.sh: Setting up hercules..."
@@ -901,6 +1049,11 @@ case ${MACHINE_ID} in
     SCHEDULER="slurm"
     cp fv3_conf/fv3_slurm.IN_hercules fv3_conf/fv3_slurm.IN
     cp fv3_conf/compile_slurm.IN_hercules fv3_conf/compile_slurm.IN
+
+    # -p container option
+    CONTAINER_PATH=/work/noaa/epic/role-epic/contrib/containers
+    CONTAINER_BIND_DIRS="/work,/work2,/local"
+    CONTAINER_TPN=80
     ;;
   derecho)
     echo "rt.sh: Setting up derecho..."
@@ -932,6 +1085,12 @@ case ${MACHINE_ID} in
     if [[ "${ROCOTO:-false}" == true ]] ; then
       ROCOTO_SCHEDULER="pbspro"
     fi
+
+    # -p container option: still work in progress, but the image is staged on derecho and can be used for testing
+    CONTAINER_IMG_GNU="rocky9-gcc13-ss192-ompi507.sif"   
+    CONTAINER_PATH=/glade/work/epicufsrt/contrib/containers  # directory holding the *.sif images
+    CONTAINER_BIND_DIRS="/glade"                                # comma-separated host dirs to bind
+    CONTAINER_TPN=128
     ;;
   noaacloud)
     echo "rt.sh: Setting up noaacloud..."
@@ -951,15 +1110,30 @@ case ${MACHINE_ID} in
     STMP="${dprefix}/stmp4"
     PTMP="${dprefix}/stmp2"
     SCHEDULER="slurm"
+
+    # -p container option: no container image staged on this platform yet
+    CONTAINER_PATH=/contrib/EPIC/containers     # directory holding the *.sif images
+    CONTAINER_BIND_DIRS="/contrib,/lustre"   # comma-separated host dirs to bind
+    CONTAINER_TPN=36                            # may need to be specified for different cloud platforms
     ;;
   *)
     die "Unknown machine ID, please edit detect_machine.sh file"
     ;;
 esac
 
+# -p is only meaningful on a recognized Tier 1 host (the "*)" above already
+# rejects UNKNOWN). Warn early if this host has no container images staged at
+# all -- every container COMPILE/RUN would then be skipped.
+if [[ ${CONTAINER_USE} == true && -z ${CONTAINER_PATH} ]]; then
+  echo "rt.sh: WARNING -- no container images are staged for ${MACHINE_ID};"
+  echo "                 all container tests will be skipped."
+fi
+
 mkdir -p "${STMP}/${USER}"
 
-NEW_BASELINE=${STMP}/${USER}/FV3_RT/REGRESSION_TEST
+# CONTAINER_SUFFIX is "_container" only when -p is used, so container baselines
+# and logs land in their own directory, next to the native-stack ones.
+NEW_BASELINE=${STMP}/${USER}/FV3_RT/REGRESSION_TEST${CONTAINER_SUFFIX:-}
 
 # Overwrite default RUNDIR_ROOT if environment variable RUNDIR_ROOT is set
 RUNDIR_ROOT=${RUNDIR_ROOT:-${PTMP}/${USER}/FV3_RT}/rt_$$
@@ -985,7 +1159,7 @@ source bl_date.conf
 if [[ "${RTPWD_NEW_BASELINE}" == true ]] ; then
   RTPWD=${NEW_BASELINE}
 else
-  RTPWD=${RTPWD:-${DISKNM}/NEMSfv3gfs/develop-${BL_DATE}}
+  RTPWD=${RTPWD:-${DISKNM}/NEMSfv3gfs/develop-${BL_DATE}${CONTAINER_SUFFIX:-}}
 fi
 
 if [[ "${CREATE_BASELINE}" == false ]] ; then
@@ -1021,9 +1195,9 @@ if [[ ${CREATE_BASELINE} == true ]]; then
 fi
 
 if [[ ${skip_check_results} == true ]]; then
-  REGRESSIONTEST_LOG=${PATHRT}/logs/RegressionTests_weekly_${MACHINE_ID}.log
+  REGRESSIONTEST_LOG=${PATHRT}/logs/RegressionTests_weekly_${MACHINE_ID}${CONTAINER_SUFFIX:-}.log
 else
-  REGRESSIONTEST_LOG=${PATHRT}/logs/RegressionTests_${MACHINE_ID}.log
+  REGRESSIONTEST_LOG=${PATHRT}/logs/RegressionTests_${MACHINE_ID}${CONTAINER_SUFFIX:-}.log
 fi
 
 [ -f "${REGRESSIONTEST_LOG}" ] && cp "${REGRESSIONTEST_LOG}" "${REGRESSIONTEST_LOG}.bak"
@@ -1037,7 +1211,7 @@ source default_vars.sh
 COMPILE_COUNTER=0
 rm -f fail_test* fail_compile*
 
-LOG_DIR=${PATHRT}/logs/log_${MACHINE_ID}
+LOG_DIR=${PATHRT}/logs/log_${MACHINE_ID}${CONTAINER_SUFFIX:-}
 export LOG_DIR
 
 rm -rf "${LOG_DIR}"
@@ -1172,15 +1346,13 @@ while read -r line || [[ -n "${line}" ]]; do
 
     [[ ${CREATE_BASELINE} == true && ${CB} != *fv3* ]] && continue
 
-    if [[ ${MACHINES} != '' ]]; then
-      if [[ ${MACHINES} == -* ]]; then
-        [[ ${MACHINES} =~ ${MACHINE_ID} ]] && continue
-      elif [[ ${MACHINES} == +* ]]; then
-        [[ ${MACHINES} =~ ${MACHINE_ID} ]] || continue
-      else
-        echo "MACHINES=|${MACHINES}|"
-        die "MACHINES spec must be either an empty string or start with either '+' or '-'"
-      fi
+    machines_allow_run "${MACHINES}" || continue
+
+    # -p: skip this compile if no container image is staged for its compiler
+    if [[ ${CONTAINER_USE} == true ]] && ! resolve_container_image; then
+      [[ ${RUN_SINGLE_TEST} == true ]] && die "No ${RT_COMPILER} container image staged on ${MACHINE_ID} for -n test"
+      echo "rt.sh: SKIP compile ${COMPILE_ID} -- no ${RT_COMPILER} container image staged on ${MACHINE_ID}"
+      continue
     fi
 
     [[ ${DRY_RUN} == true ]] && continue
@@ -1215,15 +1387,12 @@ while read -r line || [[ -n "${line}" ]]; do
     [[ -e "tests/${TEST_NAME}" ]] || die "run test file tests/${TEST_NAME} does not exist"
     [[ ${CREATE_BASELINE} == true && ${CB} != *baseline* ]] && continue
 
-    if [[ ${MACHINES} != '' ]]; then
-      if [[ ${MACHINES} == -* ]]; then
-        [[ ${MACHINES} =~ ${MACHINE_ID} ]] && continue
-      elif [[ ${MACHINES} == +* ]]; then
-        [[ ${MACHINES} =~ ${MACHINE_ID} ]] || continue
-      else
-        echo "MACHINES=|${MACHINES}|"
-        die "MACHINES spec must be either an empty string or start with either '+' or '-'"
-      fi
+    machines_allow_run "${MACHINES}" || continue
+
+    # -p: skip this test if no container image is staged for its compiler
+    if [[ ${CONTAINER_USE} == true ]] && ! resolve_container_image; then
+      echo "rt.sh: SKIP test ${TEST_ID} -- no ${RT_COMPILER} container image staged on ${MACHINE_ID}"
+      continue
     fi
 
     COMPILE_METATASK_NAME=${COMPILE_ID}
@@ -1294,6 +1463,14 @@ export delete_rundir=${delete_rundir}
 export WLCLK=${WLCLK}
 export DRY_RUN=${DRY_RUN}
 EOF
+
+      if [[ ${CONTAINER_USE} == true ]]; then
+        cat << EOF >> "${RUNDIR_ROOT}/run_test_${TEST_ID}.env"
+export CONTAINER_IMG=${RT_CONTAINER_IMG}
+export CONTAINER_BIND=${CONTAINER_BIND_DIRS}
+export TPN=${CONTAINER_TPN}
+EOF
+      fi
 
       if [[ ${ROCOTO} == true ]]; then
         rocoto_create_run_task

@@ -17,8 +17,10 @@ echo -n " $( date +%s )," >  job_timestamp.txt
 set +x
 MACHINE_ID=gaeac6
 source ./module-setup.sh
-module use --prepend $PWD/modulefiles
-module load modules.fv3
+if [[ -z "@[CONTAINER_IMG]" ]]; then
+  module use --prepend $PWD/modulefiles
+  module load modules.fv3
+fi
 module list
 set -x
 
@@ -44,7 +46,73 @@ if [ "${JOB_SHOULD_FAIL:-NO}" = WHEN_RUNNING ] ; then
     false
 fi
 
-srun --label -n @[TASKS] ./fv3.exe
+if [[ -n "@[CONTAINER_IMG]" ]]; then
+  # Run inside the container staged on this platform (rt.sh -p).
+  module use "@[PATHTR]/modulefiles"
+  module load ufs_container.runtime
+
+  if command -v apptainer &>/dev/null; then
+    CONTAINERBIN=apptainer
+  elif command -v singularity &>/dev/null; then
+    CONTAINERBIN=singularity
+  else
+    echo "ERROR: neither apptainer nor singularity found on this host" >&2
+    exit 1
+  fi
+
+  BIND_FLAGS=""
+  if [[ -n "@[CONTAINER_BIND]" ]]; then
+    IFS=',' read -r -a _bind_dirs <<< "@[CONTAINER_BIND]"
+    for _dir in "${_bind_dirs[@]}"; do
+      BIND_FLAGS="${BIND_FLAGS} -B ${_dir}"
+    done
+  fi
+
+  CONTAINER="${CONTAINERBIN^^}"
+  export "${CONTAINER}_SHELL=/bin/bash"
+  export "${CONTAINER}ENV_FI_PROVIDER=tcp"
+  export "${CONTAINER}ENV_RTVERBOSE=${RTVERBOSE:-false}"
+  if [[ "@[RT_COMPILER]" == intel ]]; then
+    [[ -n "${FI_PROVIDER_PATH:-}" ]] && export "${CONTAINER}ENV_FI_PROVIDER_PATH=${FI_PROVIDER_PATH}"
+  elif [[ "@[RT_COMPILER]" == gnu ]]; then
+    export "${CONTAINER}ENV_PMIX_MCA_gds=hash"
+    export "${CONTAINER}ENV_PMIX_MCA_psec=native"
+    export "${CONTAINER}ENV_OMPI_MCA_btl=^openib"
+    if ip link show eth0 &>/dev/null; then
+      export "${CONTAINER}ENV_OMPI_MCA_btl_tcp_if_include=eth0"
+      export "${CONTAINER}ENV_OMPI_MCA_oob_tcp_if_include=eth0"
+    fi
+    export "${CONTAINER}ENV_OMPI_MCA_pml=ob1"
+    export "${CONTAINER}ENV_OMPI_MCA_btl_vader_single_copy_mechanism=none"
+    export "${CONTAINER}ENV_OMPI_MCA_mca_base_component_show_load_errors=0"
+  fi
+
+  # Select the PMI plugin matching this container's OpenMPI build.
+  CONTAINER_PMI="--mpi=pmi2"
+  case "@[CONTAINER_IMG]" in
+    *ompi507*) CONTAINER_PMI="--mpi=pmix" ;;
+    *ompi416*) CONTAINER_PMI="--mpi=pmi2" ;;
+  esac
+
+  cat > fv3_container_run.sh << 'RUN_EOF'
+#!/bin/bash
+set -e
+[[ "${RTVERBOSE:-false}" == true ]] && set -x
+MACHINE_ID=container
+source ${PWD}/module-setup.sh
+module purge
+module use ${PWD}/modulefiles
+module load modules.fv3
+module list
+exec "$@"
+RUN_EOF
+  chmod u+x fv3_container_run.sh
+
+  srun ${CONTAINER_PMI} --label -n @[TASKS] \
+    ${CONTAINERBIN} exec ${BIND_FLAGS} "@[CONTAINER_IMG]" "${PWD}/fv3_container_run.sh" ./fv3.exe
+else
+  srun --label -n @[TASKS] ./fv3.exe
+fi
 
 echo "Model ended:    " `date`
 echo -n " $( date +%s )," >> job_timestamp.txt
