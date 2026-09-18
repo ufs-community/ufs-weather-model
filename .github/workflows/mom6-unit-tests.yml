@@ -1,0 +1,86 @@
+name: MOM6 Interface Unit Tests
+
+on:
+  pull_request:
+    paths:
+      - "MOM6-interface/**"
+      - "CMakeLists.txt"
+      - "cmake/**"
+      - ".github/workflows/mom6-unit-tests.yml"
+  push:
+    paths:
+      - "MOM6-interface/**"
+      - "CMakeLists.txt"
+      - "cmake/**"
+      - ".github/workflows/mom6-unit-tests.yml"
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  mom6-unit-tests:
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    container: ghcr.io/noaa-emc/ci-common-build-cache/ufs-weather-model-ubuntu-24.04-gcc-13-mpich-x@sha256:cc9bdafb43d31498fe833c1914d90e32570f8fa9f001e11ca16c4a88417128f8
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          path: ufs-weather-model
+
+      - name: Install Doxygen
+        shell: bash
+        run: |
+          set -euxo pipefail
+          apt-get update && apt-get install -y doxygen graphviz
+      - name: Configure
+        shell: bash
+        run: |
+          set -euxo pipefail
+          . /entrypoint.sh
+          spack uninstall --force --yes-to-all gcc-runtime
+          export CC=mpicc
+          export CXX=mpic++
+          export FC=mpif90
+          esmfcmakemoddir=$(spack location --install-dir esmf)/cmake
+          cmake -S "$GITHUB_WORKSPACE/ufs-weather-model" -B build \
+            -DAPP=NG-GODAS \
+            -DENABLE_UNIT_TESTS=ON \
+            -DUSE_ESMF_STATIC_LIBS=OFF \
+            -D32BIT=ON \
+            -DCMAKE_MODULE_PATH="$esmfcmakemoddir"
+
+      - name: Build MOM6 Unit Test Target
+        shell: bash
+        run: |
+          set -euxo pipefail
+          . /entrypoint.sh
+          cmake --build build --target mom6_unit_tests --parallel 4
+
+      - name: Run MOM6 Unit Tests
+        shell: bash
+        run: |
+          set -euxo pipefail
+          . /entrypoint.sh
+          ctest --test-dir build/MOM6-interface -V
+
+      - name: Build Doxygen Documentation
+        shell: bash
+        if: always() # Build docs even if the unit tests fail
+        run: |
+          set -euxo pipefail
+          . /entrypoint.sh
+          cmake --build build --target feature_docs
+
+      - name: Upload Documentation Artifact
+        uses: actions/upload-artifact@v4
+        if: always() # Ensure artifact uploads even if a previous step failed
+        with:
+          name: mom6-feature-docs
+          path: build/MOM6-interface/unit-tests/docs_output/html/
+          retention-days: 14

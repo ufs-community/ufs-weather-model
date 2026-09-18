@@ -1,0 +1,36 @@
+# docs/Doxyfile.in
+
+PROJECT_NAME           = "MOM6 Outputlog Feature & Unit Tests"
+
+# Point exactly to your docs, the unit tests dir, and the 3 specific feature files
+INPUT                  = @CMAKE_CURRENT_SOURCE_DIR@/../docs \
+                         @CMAKE_CURRENT_SOURCE_DIR@/../unit-tests \
+                         @CMAKE_CURRENT_SOURCE_DIR@/../MOM6/config_src/drivers/nuopc_cap/mom_cap_outputlog.F90 \
+                         @CMAKE_CURRENT_SOURCE_DIR@/../MOM6/config_src/drivers/nuopc_cap/mom_outputlog_methods.F90
+
+# Force Doxygen to pick up Fortran and Markdown files
+FILE_PATTERNS          = *.F90 *.f90 *.md
+
+IMAGE_PATH             = @CMAKE_CURRENT_SOURCE_DIR@/../docs/images
+USE_MDFILE_AS_MAINPAGE = @CMAKE_CURRENT_SOURCE_DIR@/../docs/feature_guide.md
+OUTPUT_DIRECTORY       = @CMAKE_CURRENT_BINARY_DIR@/docs_output
+HTML_EXTRA_STYLESHEET  = @CMAKE_CURRENT_SOURCE_DIR@/../docs/custom.css
+
+OPTIMIZE_FOR_FORTRAN   = YES
+EXTRACT_ALL            = YES
+RECURSIVE              = YES
+EXTRACT_PRIVATE        = YES
+SHOW_USED_FILES        = NO
+
+# Handle Fortran #ifdef macros
+ENABLE_PREPROCESSING   = YES
+MACRO_EXPANSION        = YES
+SEARCH_INCLUDES        = YES
+
+ALIASES += "mom6_nuopc_url=https://github.com/NOAA-EMC/MOM6/blob/9b0576b47f8d464c70b12eb28763463644a37de4/config_src/drivers/nuopc_cap"
+
+# Turn warnings into fatal build errors
+WARN_AS_ERROR        = YES
+WARNINGS             = YES
+WARN_IF_UNDOCUMENTED = YES
+EXTRACT_ALL          = NO
