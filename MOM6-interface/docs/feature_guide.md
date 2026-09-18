@@ -18,17 +18,10 @@ characteristics of the file at creation, the criteria to declare a
 file complete is defined.
 
 The file state will be checked at each succeeding ModelAdvance until
-the appropriate completion criteria is met. The criteria used are
-either:
-
-1. the unlimited dimension in the file is greater than zero,
-2. when the unlimited dimension is greater than zero and the filesize
-is larger than the initial size.
-
-When a file is determined to be complete, a log file is recorded
-containing the forecast hour, the valid time, the name of the output
-file and the last completed restart file. The log file can then be
-used by any related workflow
+the appropriate completion criteria is met. When a file is determined
+to be complete, a log file is recorded containing the forecast hour,
+the valid time, the name of the output file and the last completed restart
+file. The log file can then be used by any related workflow
 (e.g. [global-workflow](https://github.com/NOAA-EMC/global-workflow)).
 
 To illustrate the concepts implemented in the output logging feature,
