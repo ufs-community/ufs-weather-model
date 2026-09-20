@@ -187,13 +187,13 @@ while IFS= read -r line || [[ -n "${line}" ]]; do
         MACHINE_ID=$(trim "${f1:-container}")
         RT_COMPILER=$(trim "${f2:-}")
         CONTAINER_IMG=$(trim "${f3:-}")
-        CONTAINER_BIND=$(trim "${f4:-}")
+        CONTAINER_BIND_DIRS=$(trim "${f4:-}")
         header_lines_read=1
         if [[ "${RTVERBOSE}" == true ]]; then
             echo "MACHINE_ID=${MACHINE_ID}"
             echo "RT_COMPILER=${RT_COMPILER}"
             echo "CONTAINER_IMG=${CONTAINER_IMG}"
-            echo "BIND_DIRS=${CONTAINER_BIND}"
+            echo "BIND_DIRS=${CONTAINER_BIND_DIRS}"
         fi
         continue
     fi
@@ -285,7 +285,7 @@ echo "Configuration summary:"
 echo "  MACHINE_ID:     ${MACHINE_ID}"
 echo "  RT_COMPILER:    ${RT_COMPILER}"
 [[ -n "${CONTAINER_IMG}" ]]       && echo "  CONTAINER_IMG:  ${CONTAINER_IMG}"
-[[ -n "${CONTAINER_BIND}" ]]      && echo "  BIND_DIRS:      ${CONTAINER_BIND}"
+[[ -n "${CONTAINER_BIND_DIRS}" ]] && echo "  BIND_DIRS:      ${CONTAINER_BIND_DIRS}"
 echo "  TPN:            ${TPN}"
 [[ -n "${SCHEDULER}" ]]           && echo "  SCHEDULER:      ${SCHEDULER}"
 [[ -n "${ACCNR}" ]]               && echo "  ACCNR:          ${ACCNR}"
@@ -388,9 +388,21 @@ fi
 # Export variables used by run_compile.sh, run_test.sh, and atparse
 ###############################################################################
 
+# Resolve CONTAINER_BIND_DIRS (the comma-separated BIND_DIRS config field) into
+# the actual apptainer/singularity "-B dir" flags once, here, instead of
+# leaving every consumer (run_compile.sh, run_test.sh, the *_container
+# job-card templates) to parse the comma list on its own.
+CONTAINER_BIND_FLAGS=''
+if [[ -n ${CONTAINER_BIND_DIRS} ]]; then
+    IFS=',' read -r -a _container_bind_dirs <<< "${CONTAINER_BIND_DIRS}"
+    for _dir in "${_container_bind_dirs[@]}"; do
+        CONTAINER_BIND_FLAGS="${CONTAINER_BIND_FLAGS} -B ${_dir}"
+    done
+fi
+
 export MACHINE_ID
 export COMMUNITY_PLATFORM
-export RT_COMPILER TPN CONTAINER_IMG CONTAINER_BIND
+export RT_COMPILER TPN CONTAINER_IMG CONTAINER_BIND_FLAGS
 export SCHEDULER ROCOTO ECFLOW ACCNR PARTITION QUEUE MPI_LAUNCH
 export INPUTDATA_ROOT INPUTDATA_ROOT_WW3 INPUTDATA_LM4 INPUTDATA_GFSv17opn
 export PATHRT PATHTR RUNDIR_ROOT LOG_DIR
@@ -478,7 +490,7 @@ export PARTITION=${PARTITION}
 export QUEUE=${QUEUE}
 export TPN=${TPN}
 export CONTAINER_IMG=${CONTAINER_IMG}
-export CONTAINER_BIND=${CONTAINER_BIND}
+export CONTAINER_BIND_FLAGS="${CONTAINER_BIND_FLAGS}"
 export COMMUNITY_PLATFORM=${COMMUNITY_PLATFORM}
 export MPI_LAUNCH=${MPI_LAUNCH}
 export RTVERBOSE=${RTVERBOSE}
@@ -559,7 +571,7 @@ export PARTITION=${PARTITION}
 export QUEUE=${QUEUE}
 export TPN=${TPN}
 export CONTAINER_IMG=${CONTAINER_IMG}
-export CONTAINER_BIND=${CONTAINER_BIND}
+export CONTAINER_BIND_FLAGS="${CONTAINER_BIND_FLAGS}"
 export COMMUNITY_PLATFORM=${COMMUNITY_PLATFORM}
 export MPI_LAUNCH=${MPI_LAUNCH}
 export INPUTDATA_ROOT=${INPUTDATA_ROOT}

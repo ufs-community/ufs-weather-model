@@ -87,8 +87,14 @@ update_rtconf() {
       MACHINES=$(sed -e 's/^ *//' -e 's/ *$//' <<< "${MACHINES}")
       RT_COMPILER_IN=$(cut -d'|' -f3 <<< "${line}")
       RT_COMPILER_IN=$(sed -e 's/^ *//' -e 's/ *$//' <<< "${RT_COMPILER_IN}")
-      machines_allow_run "${MACHINES}" && compile_line=${line}
-      COMPILE_LINE_USED=false
+      if [[ ${MACHINES} == '' ]]; then
+        compile_line=${line}
+        COMPILE_LINE_USED=false
+      elif [[ ${MACHINES} == -* ]]; then
+        [[ ${MACHINES} =~ ${MACHINE_ID} ]] || compile_line=${line}; COMPILE_LINE_USED=false
+      elif [[ ${MACHINES} == +* ]]; then
+        [[ ${MACHINES} =~ ${MACHINE_ID} ]] && compile_line=${line}; COMPILE_LINE_USED=false
+      fi
 
     fi
 
@@ -98,7 +104,13 @@ update_rtconf() {
       tmp_test=$(sed -e 's/^ *//' -e 's/ *$//' <<< "${tmp_test}")
       MACHINES=$(cut -d'|' -f3 <<< "${line}")
       MACHINES=$(sed -e 's/^ *//' -e 's/ *$//' <<< "${MACHINES}")
-      machines_allow_run "${MACHINES}" && to_run_test=true
+      if [[ ${MACHINES} == '' ]]; then
+        to_run_test=true
+      elif [[ ${MACHINES} == -* ]]; then
+        [[ ${MACHINES} =~ ${MACHINE_ID} ]] || to_run_test=true
+      elif [[ ${MACHINES} == +* ]]; then
+        [[ ${MACHINES} =~ ${MACHINE_ID} ]] && to_run_test=true
+      fi
       if [[ ${to_run_test} == true ]]; then
         TEST_IDX=$(set -e; find_match "${tmp_test} ${RT_COMPILER_IN}" "${TEST_WITH_COMPILE[@]}")
 
@@ -195,7 +207,7 @@ EOF
   [[ ${RTPWD_NEW_BASELINE} == true ]] && echo "* (-m) - COMPARE AGAINST CREATED BASELINES" >> "${REGRESSIONTEST_LOG}"
   [[ ${RUN_SINGLE_TEST} == true ]] && echo "* (-n) - RUN SINGLE TEST: ${SINGLE_OPTS}" >> "${REGRESSIONTEST_LOG}"
   [[ ${COMPILE_ONLY} == true ]]&& echo "* (-o) - COMPILE ONLY, SKIP TESTS" >> "${REGRESSIONTEST_LOG}"
-  [[ ${CONTAINER_USE} == true ]] && echo "* (-p) - CONTAINER MODE ON ${MACHINE_ID} (baselines: ${RTPWD})" >> "${REGRESSIONTEST_LOG}"
+  [[ ${CONTAINER_USED} == true ]] && echo "* (-p) - CONTAINER MODE ON ${MACHINE_ID} (baselines: ${RTPWD})" >> "${REGRESSIONTEST_LOG}"
   [[ ${delete_rundir} == true ]] && echo "* (-d) - DELETE RUN DIRECTORY" >> "${REGRESSIONTEST_LOG}"
   [[ ${skip_check_results} == true ]] && echo "* (-w) - SKIP RESULTS CHECK" >> "${REGRESSIONTEST_LOG}"
   [[ ${KEEP_RUNDIR} == true ]] && echo "* (-k) - KEEP RUN DIRECTORY" >> "${REGRESSIONTEST_LOG}"
@@ -227,11 +239,17 @@ EOF
 
       COMPILE_ID=${COMPILE_NAME}_${COMPILER}
 
-      machines_allow_run "${CMACHINES}" && valid_compile=true
+      if [[ ${CMACHINES} == '' ]]; then
+        valid_compile=true
+      elif [[ ${CMACHINES} == -* ]]; then
+        [[ ${CMACHINES} =~ ${MACHINE_ID} ]] || valid_compile=true
+      elif [[ ${CMACHINES} == +* ]]; then
+        [[ ${CMACHINES} =~ ${MACHINE_ID} ]] && valid_compile=true
+      fi
 
       # -p: a compile skipped for lack of a staged container image is omitted
       # from the tally, like a "-machine" filtered line.
-      if [[ ${CONTAINER_USE} == true && ${valid_compile} == true ]]; then
+      if [[ ${CONTAINER_USED} == true && ${valid_compile} == true ]]; then
         RT_COMPILER=${COMPILER}
         resolve_container_image || valid_compile=false
       fi
@@ -312,11 +330,17 @@ EOF
       GEN_BASELINE=$(cut -d '|' -f4 <<< "${line}")
       GEN_BASELINE=$(sed -e 's/^ *//' -e 's/ *$//' <<< "${GEN_BASELINE}")
 
-      machines_allow_run "${RMACHINES}" && valid_test=true
+      if [[ ${RMACHINES} == '' ]]; then
+        valid_test=true
+      elif [[ ${RMACHINES} == -* ]]; then
+        [[ ${RMACHINES} =~ ${MACHINE_ID} ]] || valid_test=true
+      elif [[ ${RMACHINES} == +* ]]; then
+        [[ ${RMACHINES} =~ ${MACHINE_ID} ]] && valid_test=true
+      fi
 
       # -p: a test skipped for lack of a staged container image is omitted from
       # the tally, like a "-machine" filtered line.
-      if [[ ${CONTAINER_USE} == true && ${valid_test} == true ]]; then
+      if [[ ${CONTAINER_USED} == true && ${valid_test} == true ]]; then
         RT_COMPILER=${COMPILER}
         resolve_container_image || valid_test=false
       fi
@@ -467,56 +491,6 @@ EOF
 
 }
 
-# Whether a COMPILE/RUN line's MACHINES field (item 5 for COMPILE, item 3 for
-# RUN) lets that line be considered right now, given the real ${MACHINE_ID}
-# and whether -p (container mode, CONTAINER_USE) is active.
-#
-# The token "+container" (its own "+", not a bare word) may appear anywhere
-# in a MACHINES field -- standalone ("+container"), or appended after a real
-# host list ("+ hera hercules ursa derecho +container", "- noaacloud
-# +container") -- as an independent, additive tag marking that specific test
-# as part of the container test set. It must carry its own "+"; a bare
-# "container" (no "+") is deliberately NOT recognized, because folding it
-# into a "-"-prefixed list would read as "also excluded on container", the
-# opposite of what the tag means.
-#   - Container operation (CONTAINER_USE=true): a line is considered if and
-#     only if "+container" is present, regardless of any host names also
-#     listed (per-host/per-compiler container availability is a separate,
-#     later check -- see resolve_container_image).
-#   - Normal operation (CONTAINER_USE=false): "+container" is irrelevant and
-#     is stripped out first; whatever host list (if any) is left behind is
-#     evaluated exactly as rt.conf always has -- "" matches every host,
-#     "+ hosts..." only those hosts, "- hosts..." all but those. So adding
-#     "+container" to an existing line's MACHINES field never changes that
-#     line's native behavior.
-# MACHINE_ID itself is untouched either way, so paths/scheduler/workflow-
-# manager selection for the real host are unaffected by any of this.
-machines_allow_run() {
-  local machines=$1
-  local has_container_tag=false
-  [[ ${machines} == *+container* ]] && has_container_tag=true
-
-  if [[ ${CONTAINER_USE} == true ]]; then
-    [[ ${has_container_tag} == true ]] && return 0 || return 1
-  fi
-
-  local native_machines=${machines//+container/}
-  native_machines=$(sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' <<< "${native_machines}")
-  # A field that becomes bare "+" or "-" once "+container" is removed had no
-  # real host names in it -- that's the same as an unrestricted empty field.
-  [[ ${native_machines} == '+' || ${native_machines} == '-' ]] && native_machines=''
-
-  [[ ${native_machines} == '' ]] && return 0
-  if [[ ${native_machines} == -* ]]; then
-    [[ ${native_machines} =~ ${MACHINE_ID} ]] && return 1 || return 0
-  elif [[ ${native_machines} == +* ]]; then
-    [[ ${native_machines} =~ ${MACHINE_ID} ]] && return 0 || return 1
-  else
-    echo "MACHINES=|${machines}|" >&2
-    die "MACHINES spec must be either an empty string or start with either '+' or '-'"
-  fi
-}
-
 # For -p (container) runs: build the full path to the container image for the
 # current ${RT_COMPILER} into RT_CONTAINER_IMG, as
 #   ${CONTAINER_PATH}/${CONTAINER_IMG_INTEL}   or   ${CONTAINER_PATH}/${CONTAINER_IMG_GNU}
@@ -553,9 +527,12 @@ resolve_container_image() {
 }
 
 create_or_run_compile_task() {
+  local job_machine_id=${MACHINE_ID}
+  [[ ${CONTAINER_USED} == true ]] && job_machine_id=container
+
   cat << EOF > "${RUNDIR_ROOT}/compile_${COMPILE_ID}.env"
 export COMPILE_ID=${COMPILE_ID}
-export MACHINE_ID=${MACHINE_ID}
+export MACHINE_ID=${job_machine_id}
 export RT_COMPILER=${RT_COMPILER}
 export PATHRT=${PATHRT}
 export PATHTR=${PATHTR}
@@ -568,13 +545,13 @@ export ECFLOW=${ECFLOW}
 export REGRESSIONTEST_LOG=${REGRESSIONTEST_LOG}
 export LOG_DIR=${LOG_DIR}
 export RTVERBOSE=${RTVERBOSE}
-export CONTAINER_IMG=${RT_CONTAINER_IMG}
-export CONTAINER_BIND_FLAGS="${CONTAINER_BIND_FLAGS}"
 EOF
 
-  if [[ ${CONTAINER_USE} == true ]]; then
+  if [[ ${CONTAINER_USED} == true ]]; then
     cat << EOF >> "${RUNDIR_ROOT}/compile_${COMPILE_ID}.env"
-export TPN=${CONTAINER_TPN:-}
+export CONTAINER_IMG=${RT_CONTAINER_IMG}
+export CONTAINER_BIND=${CONTAINER_BIND_DEFAULT}
+export TPN=${CONTAINER_TPN}
 EOF
   fi
 
@@ -692,7 +669,7 @@ ACCNR=${ACCNR:-""}
 # CONTAINER_SUFFIX ("_container" when -p is used, empty otherwise) is appended to
 # the baseline roots and log paths so container results never collide with the
 # native-stack ones.
-CONTAINER_USE=false
+CONTAINER_USED=false
 CONTAINER_SUFFIX=''
 
 # Container image *filenames* -- the same on nearly every Tier 1 platform, except 
@@ -707,11 +684,11 @@ CONTAINER_IMG_GNU='rocky9-gcc13-ss192-ompi416.sif'
 # these (or leaves them empty where nothing has been staged on that host yet).
 # CONTAINER_PATH is the host directory containing the *.sif images (combined
 # with CONTAINER_IMG_INTEL/_GNU above to form the full path -- see
-# resolve_container_image()); CONTAINER_BIND_DIRS is the comma-separated
+# resolve_container_image()); CONTAINER_BIND_DEFAULT is the comma-separated
 # list of host dirs to bind-mount; CONTAINER_TPN is that host's MPI
 # tasks-per-node.
 CONTAINER_PATH=''
-CONTAINER_BIND_DIRS=''
+CONTAINER_BIND_DEFAULT=''
 CONTAINER_TPN=''
 RT_CONTAINER_IMG=''   # image for the compiler of the COMPILE/RUN line in hand
 
@@ -735,7 +712,7 @@ while getopts ":a:b:cl:mn:dwkpreovhx" opt; do
       COMPILE_ONLY=true
       ;;
     p)
-      CONTAINER_USE=true
+      CONTAINER_USED=true
       CONTAINER_SUFFIX='_container'
       ;;
     m)
@@ -853,7 +830,7 @@ case ${MACHINE_ID} in
 
     # -p container option: no container image staged on wcoss2/acorn yet
     # CONTAINER_PATH=                 # directory holding the *.sif images
-    # CONTAINER_BIND_DIRS=         # comma-separated host dirs to bind
+    # CONTAINER_BIND_DEFAULT=         # comma-separated host dirs to bind
     # CONTAINER_TPN=128
     ;;
   gaeac5)
@@ -889,7 +866,7 @@ case ${MACHINE_ID} in
 
     # -p container option: no container image staged on gaea c5/no longer supported
     # CONTAINER_PATH=                 # directory holding the *.sif images
-    # CONTAINER_BIND_DIRS=         # comma-separated host dirs to bind
+    # CONTAINER_BIND_DEFAULT=         # comma-separated host dirs to bind
     # CONTAINER_TPN=128
     ;;
   gaeac6)
@@ -925,7 +902,7 @@ case ${MACHINE_ID} in
 
     # -p container option: no container image staged on this platform yet
     CONTAINER_PATH=/gpfs/f6/bil-fire8/world-shared/containers   # directory holding the *.sif images
-    CONTAINER_BIND_DIRS="/gpfs,/ncrc/home2"                  # comma-separated host dirs to bind
+    CONTAINER_BIND_DEFAULT="/gpfs,/ncrc/home2"                  # comma-separated host dirs to bind
     CONTAINER_TPN=192
     ;;
   hera)
@@ -952,7 +929,7 @@ case ${MACHINE_ID} in
 
     # -p container option: no container image staged on hera/ no longer supported
     # CONTAINER_PATH=                 # directory holding the *.sif images
-    # CONTAINER_BIND_DIRS=         # comma-separated host dirs to bind
+    # CONTAINER_BIND_DEFAULT=         # comma-separated host dirs to bind
     # CONTAINER_TPN=40
     ;;
   ursa)
@@ -985,7 +962,7 @@ case ${MACHINE_ID} in
 
     # -p container option: no container image staged on this platform yet
     CONTAINER_PATH=/scratch3/NCEPDEV/nems/role.epic/containers     # directory holding the *.sif images
-    CONTAINER_BIND_DIRS="/scratch3,/scratch4"                   # comma-separated host dirs to bind
+    CONTAINER_BIND_DEFAULT="/scratch3,/scratch4"                   # comma-separated host dirs to bind
     CONTAINER_TPN=192
 
     ;;
@@ -1020,7 +997,7 @@ case ${MACHINE_ID} in
 
     # -p container option: no container image staged on this platform yet
     CONTAINER_PATH=/work/noaa/epic/role-epic/contrib/containers   # directory holding the *.sif images
-    CONTAINER_BIND_DIRS="/work,/work2,/local"                  # comma-separated host dirs to bind
+    CONTAINER_BIND_DEFAULT="/work,/work2,/local"                  # comma-separated host dirs to bind
     CONTAINER_TPN=40
     ;;
   hercules)
@@ -1052,7 +1029,7 @@ case ${MACHINE_ID} in
 
     # -p container option
     CONTAINER_PATH=/work/noaa/epic/role-epic/contrib/containers
-    CONTAINER_BIND_DIRS="/work,/work2,/local"
+    CONTAINER_BIND_DEFAULT="/work,/work2,/local"
     CONTAINER_TPN=80
     ;;
   derecho)
@@ -1089,7 +1066,7 @@ case ${MACHINE_ID} in
     # -p container option: still work in progress, but the image is staged on derecho and can be used for testing
     CONTAINER_IMG_GNU="rocky9-gcc13-ss192-ompi507.sif"   
     CONTAINER_PATH=/glade/work/epicufsrt/contrib/containers  # directory holding the *.sif images
-    CONTAINER_BIND_DIRS="/glade"                                # comma-separated host dirs to bind
+    CONTAINER_BIND_DEFAULT="/glade"                                # comma-separated host dirs to bind
     CONTAINER_TPN=128
     ;;
   noaacloud)
@@ -1113,7 +1090,7 @@ case ${MACHINE_ID} in
 
     # -p container option: no container image staged on this platform yet
     CONTAINER_PATH=/contrib/EPIC/containers     # directory holding the *.sif images
-    CONTAINER_BIND_DIRS="/contrib,/lustre"   # comma-separated host dirs to bind
+    CONTAINER_BIND_DEFAULT="/contrib,/lustre"   # comma-separated host dirs to bind
     CONTAINER_TPN=36                            # may need to be specified for different cloud platforms
     ;;
   *)
@@ -1124,22 +1101,9 @@ esac
 # -p is only meaningful on a recognized Tier 1 host (the "*)" above already
 # rejects UNKNOWN). Warn early if this host has no container images staged at
 # all -- every container COMPILE/RUN would then be skipped.
-if [[ ${CONTAINER_USE} == true && -z ${CONTAINER_PATH} ]]; then
+if [[ ${CONTAINER_USED} == true && -z ${CONTAINER_PATH} ]]; then
   echo "rt.sh: WARNING -- no container images are staged for ${MACHINE_ID};"
   echo "                 all container tests will be skipped."
-fi
-
-# Resolve CONTAINER_BIND_DIRS (this host's comma-separated bind-dir list) into
-# the actual apptainer/singularity "-B dir" flags once, here, instead of
-# leaving every consumer (the native job-card templates, run_test.sh) to parse
-# the comma list on its own. CONTAINER_BIND_DIRS is fixed for the whole
-# rt.sh run (set once above, per host), so this only needs to happen once.
-CONTAINER_BIND_FLAGS=''
-if [[ -n ${CONTAINER_BIND_DIRS} ]]; then
-  IFS=',' read -r -a _container_bind_dirs <<< "${CONTAINER_BIND_DIRS}"
-  for _dir in "${_container_bind_dirs[@]}"; do
-    CONTAINER_BIND_FLAGS="${CONTAINER_BIND_FLAGS} -B ${_dir}"
-  done
 fi
 
 mkdir -p "${STMP}/${USER}"
@@ -1189,7 +1153,7 @@ if [[ "${CREATE_BASELINE}" == false ]] ; then
 fi
 
 INPUTDATA_ROOT=${INPUTDATA_ROOT:-${DISKNM}/NEMSfv3gfs/input-data-20260617}
-INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT}/WW3_input_data_20260811
+INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT}/WW3_input_data_20250807
 INPUTDATA_LM4=${INPUTDATA_LM4:-${INPUTDATA_ROOT}/LM4_input_data}
 INPUTDATA_GFSv17opn=${INPUTDATA_GFSv17opn:-${DISKNM}/NEMSfv3gfs/GFSv17opn_20251014}
 
@@ -1359,10 +1323,19 @@ while read -r line || [[ -n "${line}" ]]; do
 
     [[ ${CREATE_BASELINE} == true && ${CB} != *fv3* ]] && continue
 
-    machines_allow_run "${MACHINES}" || continue
+    if [[ ${MACHINES} != '' ]]; then
+      if [[ ${MACHINES} == -* ]]; then
+        [[ ${MACHINES} =~ ${MACHINE_ID} ]] && continue
+      elif [[ ${MACHINES} == +* ]]; then
+        [[ ${MACHINES} =~ ${MACHINE_ID} ]] || continue
+      else
+        echo "MACHINES=|${MACHINES}|"
+        die "MACHINES spec must be either an empty string or start with either '+' or '-'"
+      fi
+    fi
 
     # -p: skip this compile if no container image is staged for its compiler
-    if [[ ${CONTAINER_USE} == true ]] && ! resolve_container_image; then
+    if [[ ${CONTAINER_USED} == true ]] && ! resolve_container_image; then
       [[ ${RUN_SINGLE_TEST} == true ]] && die "No ${RT_COMPILER} container image staged on ${MACHINE_ID} for -n test"
       echo "rt.sh: SKIP compile ${COMPILE_ID} -- no ${RT_COMPILER} container image staged on ${MACHINE_ID}"
       continue
@@ -1400,10 +1373,19 @@ while read -r line || [[ -n "${line}" ]]; do
     [[ -e "tests/${TEST_NAME}" ]] || die "run test file tests/${TEST_NAME} does not exist"
     [[ ${CREATE_BASELINE} == true && ${CB} != *baseline* ]] && continue
 
-    machines_allow_run "${MACHINES}" || continue
+    if [[ ${MACHINES} != '' ]]; then
+      if [[ ${MACHINES} == -* ]]; then
+        [[ ${MACHINES} =~ ${MACHINE_ID} ]] && continue
+      elif [[ ${MACHINES} == +* ]]; then
+        [[ ${MACHINES} =~ ${MACHINE_ID} ]] || continue
+      else
+        echo "MACHINES=|${MACHINES}|"
+        die "MACHINES spec must be either an empty string or start with either '+' or '-'"
+      fi
+    fi
 
     # -p: skip this test if no container image is staged for its compiler
-    if [[ ${CONTAINER_USE} == true ]] && ! resolve_container_image; then
+    if [[ ${CONTAINER_USED} == true ]] && ! resolve_container_image; then
       echo "rt.sh: SKIP test ${TEST_ID} -- no ${RT_COMPILER} container image staged on ${MACHINE_ID}"
       continue
     fi
@@ -1446,9 +1428,12 @@ EOF
           PPN=$((PPN + 1))
       fi
 
+      run_machine_id=${MACHINE_ID}
+      [[ ${CONTAINER_USED} == true ]] && run_machine_id=container
+
       cat << EOF > "${RUNDIR_ROOT}/run_test_${TEST_ID}.env"
 export TEST_ID=${TEST_ID}
-export MACHINE_ID=${MACHINE_ID}
+export MACHINE_ID=${run_machine_id}
 export RT_COMPILER=${RT_COMPILER}
 export RTPWD=${RTPWD}
 export INPUTDATA_ROOT=${INPUTDATA_ROOT}
@@ -1475,13 +1460,13 @@ export RTVERBOSE=${RTVERBOSE}
 export delete_rundir=${delete_rundir}
 export WLCLK=${WLCLK}
 export DRY_RUN=${DRY_RUN}
-export CONTAINER_IMG=${RT_CONTAINER_IMG}
-export CONTAINER_BIND_FLAGS="${CONTAINER_BIND_FLAGS}"
 EOF
 
-      if [[ ${CONTAINER_USE} == true ]]; then
+      if [[ ${CONTAINER_USED} == true ]]; then
         cat << EOF >> "${RUNDIR_ROOT}/run_test_${TEST_ID}.env"
-export TPN=${CONTAINER_TPN:-}
+export CONTAINER_IMG=${RT_CONTAINER_IMG}
+export CONTAINER_BIND=${CONTAINER_BIND_DEFAULT}
+export TPN=${CONTAINER_TPN}
 EOF
       fi
 

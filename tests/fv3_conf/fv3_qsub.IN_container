@@ -43,14 +43,7 @@ else
   echo "ERROR: neither apptainer nor singularity found on this host" >&2; exit 1
 fi
 
-# Build bind-mount flags from the comma-separated CONTAINER_BIND list.
-BIND_FLAGS=""
-if [[ -n "@[CONTAINER_BIND]" ]]; then
-  IFS=',' read -r -a _bind_dirs <<< "@[CONTAINER_BIND]"
-  for _dir in "${_bind_dirs[@]}"; do
-    BIND_FLAGS="${BIND_FLAGS} -B ${_dir}"
-  done
-fi
+BIND_FLAGS="@[CONTAINER_BIND_FLAGS]"
 
 # Pass runtime environment into the container via APPTAINER/SINGULARITY ENV_ variables.
 # Variables named ${CONTAINER}ENV_* on the host are automatically propagated into the

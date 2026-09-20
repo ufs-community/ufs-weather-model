@@ -515,13 +515,7 @@ if [[ ${SCHEDULER:-none} = 'none' ]]; then
       echo "ERROR: neither apptainer nor singularity found on this host" >&2
       exit 1
     fi
-    BIND_FLAGS=""
-    if [[ -n "${CONTAINER_BIND:-}" ]]; then
-      IFS=',' read -r -a _bind_dirs <<< "${CONTAINER_BIND}"
-      for _dir in "${_bind_dirs[@]}"; do
-        BIND_FLAGS="${BIND_FLAGS} -B ${_dir}"
-      done
-    fi
+    BIND_FLAGS="${CONTAINER_BIND_FLAGS:-}"
     # Pass runtime environment into the container via APPTAINER/SINGULARITY ENV_ variables.
     CONTAINER="${CONTAINERBIN^^}"  # APPTAINER or SINGULARITY
     export "${CONTAINER}_SHELL=/bin/bash"
@@ -554,7 +548,7 @@ module list
 ${MPI_LAUNCH} -n ${TASKS} ./fv3.exe
 RUN_EOF
     chmod u+x fv3_container_run.sh
-    redirect_out_err ${CONTAINERBIN} exec "${BIND_FLAGS}" "${CONTAINER_IMG}" "${PWD}/fv3_container_run.sh"
+    redirect_out_err ${CONTAINERBIN} exec ${BIND_FLAGS} "${CONTAINER_IMG}" "${PWD}/fv3_container_run.sh"
   elif [[ "${COMMUNITY_PLATFORM:-false}" == true ]]; then
     MPI_LAUNCH=${MPI_LAUNCH:-mpirun}
     echo "NOTE: running ${TASKS} MPI tasks on community platform via ${MPI_LAUNCH}"
@@ -619,13 +613,9 @@ if [[ ${skip_check_results} == false ]]; then
         echo "ERROR: neither apptainer nor singularity found on this host" >&2
         exit 1
       fi
-      BIND_FLAGS=""
-      if [[ -n "${CONTAINER_BIND:-}" ]]; then
-        IFS=',' read -r -a _bind_dirs <<< "${CONTAINER_BIND}"
-        for _dir in "${_bind_dirs[@]}"; do
-          BIND_FLAGS="${BIND_FLAGS} -B ${_dir}"
-        done
-      fi
+      # Both rt.sh's "-p" and community.sh resolve this host's bind dirs into
+      # flags once, up front (CONTAINER_BIND_FLAGS) -- nothing left to parse.
+      BIND_FLAGS="${CONTAINER_BIND_FLAGS:-}"
     fi
 
     for i in ${LIST_FILES} ; do
@@ -659,6 +649,8 @@ if [[ ${skip_check_results} == false ]]; then
                 # run the comparison, all in one "bash -c" so the module
                 # environment and the nccmp call share a shell.
                 "${CONTAINERBIN}" exec ${BIND_FLAGS} "${CONTAINER_IMG}" bash -c "
+                  set -e
+                  MACHINE_ID=container
                   source ${PWD}/module-setup.sh
                   module purge
                   module use ${PWD}/modulefiles
