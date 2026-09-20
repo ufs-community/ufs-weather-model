@@ -603,6 +603,31 @@ if [[ ${skip_check_results} == false ]]; then
     #
     # --- regression test comparison
     #
+
+    # A container image ("-p" on a real Tier 1 host, or community.sh's own
+    # MACHINE_ID=container) means nccmp lives inside the container, loaded by
+    # the same modules.fv3.lua already staged in ./modulefiles for the
+    # compile/run steps -- it is not available in the host shell. Resolve the
+    # container runtime and bind flags once, up front, the same way the
+    # interactive MACHINE_ID=container run path does.
+    if [[ -n ${CONTAINER_IMG:-} ]]; then
+      if command -v apptainer &>/dev/null; then
+        CONTAINERBIN=apptainer
+      elif command -v singularity &>/dev/null; then
+        CONTAINERBIN=singularity
+      else
+        echo "ERROR: neither apptainer nor singularity found on this host" >&2
+        exit 1
+      fi
+      BIND_FLAGS=""
+      if [[ -n "${CONTAINER_BIND:-}" ]]; then
+        IFS=',' read -r -a _bind_dirs <<< "${CONTAINER_BIND}"
+        for _dir in "${_bind_dirs[@]}"; do
+          BIND_FLAGS="${BIND_FLAGS} -B ${_dir}"
+        done
+      fi
+    fi
+
     for i in ${LIST_FILES} ; do
       echo " Comparing ${i} ....." >> "${RT_LOG}"
       echo " Comparing ${i} ....."
@@ -628,7 +653,21 @@ if [[ ${skip_check_results} == false ]]; then
               if [[ ${CMP_DATAONLY} == false ]]; then nccmp_args+=("-g"); fi
               if [[ -n "${nccmp_exclude// }" ]]; then nccmp_args+=("${nccmp_exclude}"); fi
               if [[ -n "${nccmp_exclude_attr// }" ]]; then nccmp_args+=("${nccmp_exclude_attr}"); fi
-              nccmp "${nccmp_args[@]}" "${RTPWD}/${CNTL_DIR}_${RT_COMPILER}/${i}" "${RUNDIR}/${i}" > "${i}_nccmp.log" 2>&1 && d=$? || d=$?
+              if [[ -n ${CONTAINER_IMG:-} ]]; then
+                # nccmp only exists inside the container -- start it, initialize
+                # Lmod, load the same modules.fv3 staged for compile/run, then
+                # run the comparison, all in one "bash -c" so the module
+                # environment and the nccmp call share a shell.
+                "${CONTAINERBIN}" exec ${BIND_FLAGS} "${CONTAINER_IMG}" bash -c "
+                  source ${PWD}/module-setup.sh
+                  module purge
+                  module use ${PWD}/modulefiles
+                  module load modules.fv3
+                  nccmp ${nccmp_args[*]} '${RTPWD}/${CNTL_DIR}_${RT_COMPILER}/${i}' '${RUNDIR}/${i}'
+                " > "${i}_nccmp.log" 2>&1 && d=$? || d=$?
+              else
+                nccmp "${nccmp_args[@]}" "${RTPWD}/${CNTL_DIR}_${RT_COMPILER}/${i}" "${RUNDIR}/${i}" > "${i}_nccmp.log" 2>&1 && d=$? || d=$?
+              fi
               if [[ ${d} -ne 0 && ${d} -ne 1 ]]; then
                 echo "....ERROR" >> "${RT_LOG}"
                 echo "....ERROR"
