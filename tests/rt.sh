@@ -229,8 +229,6 @@ EOF
 
       machines_allow_run "${CMACHINES}" && valid_compile=true
 
-      # -p: a compile skipped for lack of a staged container image is omitted
-      # from the tally, like a "-machine" filtered line.
       if [[ ${CONTAINER_USE} == true && ${valid_compile} == true ]]; then
         RT_COMPILER=${COMPILER}
         resolve_container_image || valid_compile=false
@@ -314,8 +312,6 @@ EOF
 
       machines_allow_run "${RMACHINES}" && valid_test=true
 
-      # -p: a test skipped for lack of a staged container image is omitted from
-      # the tally, like a "-machine" filtered line.
       if [[ ${CONTAINER_USE} == true && ${valid_test} == true ]]; then
         RT_COMPILER=${COMPILER}
         resolve_container_image || valid_test=false
@@ -467,43 +463,24 @@ EOF
 
 }
 
-# Whether a COMPILE/RUN line's MACHINES field (item 5 for COMPILE, item 3 for
-# RUN) lets that line be considered right now, given the real ${MACHINE_ID}
-# and whether -p (container mode, CONTAINER_USE) is active.
-#
-# The token "+container" (its own "+", not a bare word) may appear anywhere
-# in a MACHINES field -- standalone ("+container"), or appended after a real
-# host list ("+ hera hercules ursa derecho +container", "- noaacloud
-# +container") -- as an independent, additive tag marking that specific test
-# as part of the container test set. It must carry its own "+"; a bare
-# "container" (no "+") is deliberately NOT recognized, because folding it
-# into a "-"-prefixed list would read as "also excluded on container", the
-# opposite of what the tag means.
-#   - Container operation (CONTAINER_USE=true): a line is considered if and
-#     only if "+container" is present, regardless of any host names also
-#     listed (per-host/per-compiler container availability is a separate,
-#     later check -- see resolve_container_image).
-#   - Normal operation (CONTAINER_USE=false): "+container" is irrelevant and
-#     is stripped out first; whatever host list (if any) is left behind is
-#     evaluated exactly as rt.conf always has -- "" matches every host,
-#     "+ hosts..." only those hosts, "- hosts..." all but those. So adding
-#     "+container" to an existing line's MACHINES field never changes that
-#     line's native behavior.
-# MACHINE_ID itself is untouched either way, so paths/scheduler/workflow-
-# manager selection for the real host are unaffected by any of this.
+# Whether a COMPILE/RUN line's MACHINES field allows it under the real
+# MACHINE_ID and the current -p/CONTAINER_USE state. "+container"/"-container"
+# explicitly mark a line to run (or not run) a containerized compile/test task
+# on the current Tier 1 platform.
 machines_allow_run() {
   local machines=$1
   local has_container_tag=false
+  local has_no_container_tag=false
   [[ ${machines} == *+container* ]] && has_container_tag=true
+  [[ ${machines} == *-container* ]] && has_no_container_tag=true
 
   if [[ ${CONTAINER_USE} == true ]]; then
-    [[ ${has_container_tag} == true ]] && return 0 || return 1
+    [[ ${has_container_tag} == true && ${has_no_container_tag} == false ]] && return 0 || return 1
   fi
 
   local native_machines=${machines//+container/}
+  native_machines=${native_machines//-container/}
   native_machines=$(sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' <<< "${native_machines}")
-  # A field that becomes bare "+" or "-" once "+container" is removed had no
-  # real host names in it -- that's the same as an unrestricted empty field.
   [[ ${native_machines} == '+' || ${native_machines} == '-' ]] && native_machines=''
 
   [[ ${native_machines} == '' ]] && return 0
@@ -517,15 +494,8 @@ machines_allow_run() {
   fi
 }
 
-# For -p (container) runs: build the full path to the container image for the
-# current ${RT_COMPILER} into RT_CONTAINER_IMG, as
-#   ${CONTAINER_PATH}/${CONTAINER_IMG_INTEL}   or   ${CONTAINER_PATH}/${CONTAINER_IMG_GNU}
-# CONTAINER_PATH (per machine) and CONTAINER_IMG_INTEL/_GNU (the shared
-# filenames, same on every platform) are both set before the main loop calls
-# this -- CONTAINER_PATH by the machine "case" block, the filenames above it.
-#   return 0 : an image is configured and usable (image + modulefiles verified)
-#   return 1 : no image staged for this compiler on this machine -- caller skips
-#              the COMPILE/RUN line (or dies, when -n forced a single test)
+# Resolves RT_CONTAINER_IMG for the current RT_COMPILER; returns 1 if no
+# image is staged for this machine/compiler (caller skips the line).
 resolve_container_image() {
   RT_CONTAINER_IMG=''
   local img_name=''
@@ -538,12 +508,8 @@ resolve_container_image() {
   [[ -n ${CONTAINER_PATH} && -n ${img_name} ]] || return 1
   RT_CONTAINER_IMG=${CONTAINER_PATH}/${img_name}
 
-  # A dry run only reports what would happen; skip the on-disk checks so it can
-  # be exercised from anywhere (the image lives on the target Tier 1 host).
   [[ ${DRY_RUN} == true ]] && return 0
 
-  # A missing *.sif here just means this compiler isn't staged on this
-  # platform yet -- skip gracefully, same as an unset CONTAINER_PATH/img_name.
   [[ -f ${RT_CONTAINER_IMG} ]] || return 1
   [[ -f ${PATHTR}/modulefiles/ufs_container.${RT_COMPILER}.lua ]] \
     || die "modulefiles/ufs_container.${RT_COMPILER}.lua not found under ${PATHTR}"
@@ -688,32 +654,18 @@ export STOP_ECFLOW_AT_END=false
 export DRY_RUN=false
 ACCNR=${ACCNR:-""}
 
-# -p : build and run inside the GNU/Intel container staged on this Tier 1 host.
-# CONTAINER_SUFFIX ("_container" when -p is used, empty otherwise) is appended to
-# the baseline roots and log paths so container results never collide with the
-# native-stack ones.
+# -p: build/run inside the GNU/Intel container staged on this Tier 1 host.
 CONTAINER_USE=false
 CONTAINER_SUFFIX=''
 
-# Container image *filenames* -- the same on nearly every Tier 1 platform, except 
-# for some variations for GNU-based containers related to container's MPI plugin
-# compatibility with the host system. A container is portable; only the staging
-# directory differs by host). Override a name of the container for 
-# a specific platform if needed (e.g., for Derecho), in the "case ${MACHINE_ID}"
-# construct further below. 
+# Default image filenames; overridden per host below where needed.
 CONTAINER_IMG_INTEL='rocky9-oneapi2024.2-ss192.sif'
-CONTAINER_IMG_GNU='rocky9-gcc13-ss192-ompi416.sif'   
-# Per-Tier-1-machine container settings; each machine "case" arm below sets
-# these (or leaves them empty where nothing has been staged on that host yet).
-# CONTAINER_PATH is the host directory containing the *.sif images (combined
-# with CONTAINER_IMG_INTEL/_GNU above to form the full path -- see
-# resolve_container_image()); CONTAINER_BIND_DIRS is the comma-separated
-# list of host dirs to bind-mount; CONTAINER_TPN is that host's MPI
-# tasks-per-node.
+CONTAINER_IMG_GNU='rocky9-gcc13-ss192-ompi416.sif'
+# Set per host in the "case ${MACHINE_ID}" block below.
 CONTAINER_PATH=''
 CONTAINER_BIND_DIRS=''
 CONTAINER_TPN=''
-RT_CONTAINER_IMG=''   # image for the compiler of the COMPILE/RUN line in hand
+RT_CONTAINER_IMG=''
 
 while getopts ":a:b:cl:mn:dwkpreovhx" opt; do
   case ${opt} in
@@ -851,7 +803,7 @@ case ${MACHINE_ID} in
     PTMP="/lfs/h2/emc/ptmp"
     SCHEDULER="pbs"
 
-    # -p container option: no container image staged on wcoss2/acorn yet
+    # no container image staged yet
     # CONTAINER_PATH=                 # directory holding the *.sif images
     # CONTAINER_BIND_DIRS=         # comma-separated host dirs to bind
     # CONTAINER_TPN=128
@@ -887,7 +839,7 @@ case ${MACHINE_ID} in
 
     SCHEDULER="slurm"
 
-    # -p container option: no container image staged on gaea c5/no longer supported
+    # gaea c5 no longer supported
     # CONTAINER_PATH=                 # directory holding the *.sif images
     # CONTAINER_BIND_DIRS=         # comma-separated host dirs to bind
     # CONTAINER_TPN=128
@@ -923,7 +875,6 @@ case ${MACHINE_ID} in
 
     SCHEDULER="slurm"
 
-    # -p container option: no container image staged on this platform yet
     CONTAINER_PATH=/gpfs/f6/bil-fire8/world-shared/containers   # directory holding the *.sif images
     CONTAINER_BIND_DIRS="/gpfs,/ncrc/home2"                  # comma-separated host dirs to bind
     CONTAINER_TPN=192
@@ -950,7 +901,7 @@ case ${MACHINE_ID} in
 
     SCHEDULER=slurm
 
-    # -p container option: no container image staged on hera/ no longer supported
+    # hera no longer supported
     # CONTAINER_PATH=                 # directory holding the *.sif images
     # CONTAINER_BIND_DIRS=         # comma-separated host dirs to bind
     # CONTAINER_TPN=40
@@ -983,7 +934,6 @@ case ${MACHINE_ID} in
 
     SCHEDULER=slurm
 
-    # -p container option: no container image staged on this platform yet
     CONTAINER_PATH=/scratch3/NCEPDEV/nems/role.epic/containers     # directory holding the *.sif images
     CONTAINER_BIND_DIRS="/scratch3,/scratch4"                   # comma-separated host dirs to bind
     CONTAINER_TPN=192
@@ -1018,7 +968,6 @@ case ${MACHINE_ID} in
     cp fv3_conf/fv3_slurm.IN_orion fv3_conf/fv3_slurm.IN
     cp fv3_conf/compile_slurm.IN_orion fv3_conf/compile_slurm.IN
 
-    # -p container option: no container image staged on this platform yet
     CONTAINER_PATH=/work/noaa/epic/role-epic/contrib/containers   # directory holding the *.sif images
     CONTAINER_BIND_DIRS="/work,/work2,/local"                  # comma-separated host dirs to bind
     CONTAINER_TPN=40
@@ -1050,7 +999,6 @@ case ${MACHINE_ID} in
     cp fv3_conf/fv3_slurm.IN_hercules fv3_conf/fv3_slurm.IN
     cp fv3_conf/compile_slurm.IN_hercules fv3_conf/compile_slurm.IN
 
-    # -p container option
     CONTAINER_PATH=/work/noaa/epic/role-epic/contrib/containers
     CONTAINER_BIND_DIRS="/work,/work2,/local"
     CONTAINER_TPN=80
@@ -1086,8 +1034,7 @@ case ${MACHINE_ID} in
       ROCOTO_SCHEDULER="pbspro"
     fi
 
-    # -p container option: still work in progress, but the image is staged on derecho and can be used for testing
-    CONTAINER_IMG_GNU="rocky9-gcc13-ss192-ompi507.sif"   
+    CONTAINER_IMG_GNU="rocky9-gcc13-ss192-ompi507.sif"
     CONTAINER_PATH=/glade/work/epicufsrt/contrib/containers  # directory holding the *.sif images
     CONTAINER_BIND_DIRS="/glade"                                # comma-separated host dirs to bind
     CONTAINER_TPN=128
@@ -1111,7 +1058,6 @@ case ${MACHINE_ID} in
     PTMP="${dprefix}/stmp2"
     SCHEDULER="slurm"
 
-    # -p container option: no container image staged on this platform yet
     CONTAINER_PATH=/contrib/EPIC/containers     # directory holding the *.sif images
     CONTAINER_BIND_DIRS="/contrib,/lustre"   # comma-separated host dirs to bind
     CONTAINER_TPN=36                            # may need to be specified for different cloud platforms
@@ -1121,19 +1067,12 @@ case ${MACHINE_ID} in
     ;;
 esac
 
-# -p is only meaningful on a recognized Tier 1 host (the "*)" above already
-# rejects UNKNOWN). Warn early if this host has no container images staged at
-# all -- every container COMPILE/RUN would then be skipped.
 if [[ ${CONTAINER_USE} == true && -z ${CONTAINER_PATH} ]]; then
   echo "rt.sh: WARNING -- no container images are staged for ${MACHINE_ID};"
   echo "                 all container tests will be skipped."
 fi
 
-# Resolve CONTAINER_BIND_DIRS (this host's comma-separated bind-dir list) into
-# the actual apptainer/singularity "-B dir" flags once, here, instead of
-# leaving every consumer (the native job-card templates, run_test.sh) to parse
-# the comma list on its own. CONTAINER_BIND_DIRS is fixed for the whole
-# rt.sh run (set once above, per host), so this only needs to happen once.
+# Resolve CONTAINER_BIND_DIRS into apptainer/singularity "-B dir" flags once.
 CONTAINER_BIND_FLAGS=''
 if [[ -n ${CONTAINER_BIND_DIRS} ]]; then
   IFS=',' read -r -a _container_bind_dirs <<< "${CONTAINER_BIND_DIRS}"
@@ -1144,8 +1083,6 @@ fi
 
 mkdir -p "${STMP}/${USER}"
 
-# CONTAINER_SUFFIX is "_container" only when -p is used, so container baselines
-# and logs land in their own directory, next to the native-stack ones.
 NEW_BASELINE=${STMP}/${USER}/FV3_RT/REGRESSION_TEST${CONTAINER_SUFFIX:-}
 
 # Overwrite default RUNDIR_ROOT if environment variable RUNDIR_ROOT is set
@@ -1361,7 +1298,6 @@ while read -r line || [[ -n "${line}" ]]; do
 
     machines_allow_run "${MACHINES}" || continue
 
-    # -p: skip this compile if no container image is staged for its compiler
     if [[ ${CONTAINER_USE} == true ]] && ! resolve_container_image; then
       [[ ${RUN_SINGLE_TEST} == true ]] && die "No ${RT_COMPILER} container image staged on ${MACHINE_ID} for -n test"
       echo "rt.sh: SKIP compile ${COMPILE_ID} -- no ${RT_COMPILER} container image staged on ${MACHINE_ID}"
@@ -1402,7 +1338,6 @@ while read -r line || [[ -n "${line}" ]]; do
 
     machines_allow_run "${MACHINES}" || continue
 
-    # -p: skip this test if no container image is staged for its compiler
     if [[ ${CONTAINER_USE} == true ]] && ! resolve_container_image; then
       echo "rt.sh: SKIP test ${TEST_ID} -- no ${RT_COMPILER} container image staged on ${MACHINE_ID}"
       continue
