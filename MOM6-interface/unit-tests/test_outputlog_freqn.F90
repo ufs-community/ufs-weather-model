@@ -5,6 +5,8 @@
 !! with fixed curr/next Time, mimicking actual ModelAdvance where the clock itself never
 !! advances. Creates and completes files in same sequence as actual production code.
 !!
+!! Optionally tests for restart pairing using either restart frequency or restart hours
+!!
 !> @date 08-12-2026
 
 !> Main program for testing outputlog_freqn file tracking
