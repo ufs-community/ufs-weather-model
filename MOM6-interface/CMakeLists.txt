@@ -132,6 +132,13 @@ if(MOM6SOLO)
   #endif()
 endif()
 
+option(ENABLE_UNIT_TESTS "Build MOM6 unit test suite" OFF)
+
+if(ENABLE_UNIT_TESTS)
+  enable_testing()
+  add_subdirectory(unit-tests)
+endif()
+
 ###############################################################################
 ### Install
 ###############################################################################
