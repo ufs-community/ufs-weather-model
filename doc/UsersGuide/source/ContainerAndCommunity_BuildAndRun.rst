@@ -22,7 +22,11 @@ driven by the driver script ``tests/community.sh``:
 
    This chapter covers the container-based and community platform workflows driven by
    ``community.sh``. For the standard, Tier-1-oriented RT framework driven by ``rt.sh``,
-   see :numref:`Section %s <UsingRegressionTest>`.
+   see :numref:`Section %s <UsingRegressionTest>`. Note that ``rt.sh`` also accepts a
+   ``-p`` flag, for running its regression tests inside a container on a Tier 1
+   platform (see :numref:`Section %s <rt-container>`) -- this is unrelated to, and has
+   the opposite meaning of, ``community.sh``'s own ``-p`` (community platform, i.e.
+   *no* container) described below.
 
 .. _container-rt-vs-rt:
 
@@ -59,14 +63,19 @@ baseline-comparison capability maintained on Tier 1.
 By contrast, ``rt.sh`` targets the officially supported NOAA Tier 1 RDHPC platforms
 exclusively (such as Ursa, Gaea, Orion, Hercules, Derecho, and NOAA Cloud at the moment of
 writing). It confirms that code changes preserve bit-for-bit baseline results, using
-Rocoto/ECFlow workflow management.
+Rocoto/ECFlow workflow management. ``rt.sh`` also has its own container option
+(``-p``), for running the officially supported regression tests inside a
+container on a Tier 1 platform rather than against its natively installed
+software stack; see :numref:`Section %s <rt-container>`. This is separate
+from the ``community.sh`` workflow described in this chapter: the container
+image location is fixed per Tier 1 platform rather than user-configured, and
+results are compared against baselines through the normal RT workflow
+instead of running standalone.
 
-Keeping ``community.sh`` and ``community.conf`` separate from ``rt.sh`` also means that
-container support and community-platform complexity do not burden the production
-``rt.sh`` CI/CD pipeline, and vice versa. ``community.sh`` runs sequentially — compiling each
-configuration and then running its tests in turn, with no Rocoto or ECFlow workflow
-manager involved — which keeps it simple for interactive debugging on whatever platform
-the user has available.
+``community.sh`` runs sequentially — compiling each configuration and then
+running its tests in turn, with no Rocoto or ECFlow workflow manager
+involved — which keeps it simple for interactive debugging on whatever
+platform the user has available.
 
 Users are expected to modify the ``community.conf`` configuration to suit their computing
 platform standards and job scheduler (if any). The locations of staged input data, the 

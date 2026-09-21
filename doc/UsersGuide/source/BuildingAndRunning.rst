@@ -18,11 +18,13 @@ On other systems, users will need to build the prerequisite libraries using :ter
 
 .. note::
 
-   For instructions on using software containers or a native community software stack to
-   build and run the UFS Weather Model, see :numref:`Chapter %s <container-rt-tests>`.
-   The container workflow provides a portable, reproducible software environment and
-   does not require a site-specific software stack. The community platform workflow
-   (``-p`` flag) supports systems where a native software stack is already available.
+   For instructions on running Regression Tests using software containers staged on
+   NOAA Tier 1 platforms, see :numref:`Section %s <rt-container>` in this chapter.
+   For options on obtaining a software container that is not one of the pre-staged
+   Tier 1 images -- and can instead be adapted to run on any system compatible with
+   the containerized software libraries -- or on running tests on other systems with
+   a native :term:`spack-stack` install, see
+   :numref:`Chapter %s <container-rt-tests>`.
 
 =======================
 Prerequisite Libraries
@@ -444,18 +446,20 @@ The ``rt.conf`` file is a pipe-separated values (PSV) file grouped into sections
    #. **Compile name** -- a category of test to compile
    #. **Compiler** to use in build (``intel`` or ``gnu``)
    #. **CMAKE Options** -- Provides all CMAKE options for the build. This typically includes the ``-DAPP`` and ``-DCCPP_SUITES`` flags; these flags set which components to build and which physics suites will be available at runtime. Additional options are documented in :numref:`Section %s <other-build-options>`, but users can examine the :wm-repo:`CMakeLists.txt <blob/develop/CMakeLists.txt>` file for the most up-to-date list of options. 
-   #. **Machines** to run on (``-`` is used to ignore specified machines, ``+`` is used to run only on specified machines). For example: 
-      
+   #. **Machines** to run on (``-`` is used to ignore specified machines, ``+`` is used to run only on specified machines). For example:
+
       * ``+ ursa orion gaeac6``: Compile will only run on Ursa, Orion, and Gaea-C6 machines
       * ``- wcoss2 acorn``: Compile will NOT be run on WCOSS2 or Acorn
+      * ``+container``/``-container`` additionally opt a line in or out of
+        containerized runs under ``-p``; see :numref:`Section %s <rt-container>`.
 
-   #. ``fv3``: Set as fv3. Previously, this was used to run a test without compiling code (e.g., if FV3 was already present). 
+   #. ``fv3``: Set as fv3. Previously, this was used to run a test without compiling code (e.g., if FV3 was already present).
 
-After each compile line is one or more ``RUN`` lines. ``RUN`` lines have five columns. The build resulting from the ``COMPILE`` line above the ``RUN`` line will be used to run the tests. 
+After each compile line is one or more ``RUN`` lines. ``RUN`` lines have five columns. The build resulting from the ``COMPILE`` line above the ``RUN`` line will be used to run the tests.
 
    #. ``RUN`` indicator
    #. **Test name** -- indicates which test in the :wm-repo:`tests/tests <tree/develop/tests/tests>` directory should be sourced.
-   #. **Machines** to run on (``+``) or ignore (``-``).
+   #. **Machines** to run on (``+``) or ignore (``-``); ``+container``/``-container`` are also accepted here, same as in the ``COMPILE`` line.
    #. **Baseline Creation** -- controls whether the run creates its own baseline or uses the baseline from a different (control) test (see information on ``-c`` option :ref:`below <cmd-line-opts>` for more).
    #. **Comparison Test** -- Test name to compare baselines with if not itself.
 
@@ -548,7 +552,7 @@ To display detailed information on how to use ``rt.sh``, users can simply run ``
 
 .. code-block:: console
 
-   ./rt.sh -a <account> | -b <file> | -c | -d | -e | -h | -k | -l <file> | -m | -n <name> | -o | -r | -v | -w
+   ./rt.sh -a <account> | -b <file> | -c | -d | -e | -h | -k | -l <file> | -m | -n <name> | -o | -p | -r | -v | -w
       -a  <account> to use on for HPC queue
       -b  create new baselines only for tests listed in <file>
       -c  create new baseline results
@@ -560,9 +564,12 @@ To display detailed information on how to use ``rt.sh``, users can simply run ``
       -m  compare against new baseline results
       -n  run single test <name>
       -o  compile only, skip tests
+      -p  compile and run inside a container on this Tier 1 platform
       -r  use Rocoto workflow manager
       -v  verbose output
       -w  for weekly_test, skip comparing baseline results
+
+The ``-p`` option is covered separately in :numref:`Section %s <rt-container>`.
 
 When running a large number (10's or 100's) of tests, the ``-e`` or ``-r`` options can significantly
 decrease testing time by using a workflow manager (ecFlow or Rocoto, respectively) to queue the jobs 
@@ -608,7 +615,45 @@ correctly. If there is a problem with these or other variables (e.g., file paths
    ++ echo 'rt.sh error on line 370'
    rt.sh error on line 370
 
-Then, users can adjust the information in ``rt.sh`` accordingly. 
+Then, users can adjust the information in ``rt.sh`` accordingly.
+
+.. _rt-container:
+
+Containerized Regression Tests (``-p``)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The ``-p`` option compiles and runs the selected tests inside the same kind of
+Singularity/Apptainer container used by the ``community.sh`` workflow (see
+:numref:`Section %s <container-rt-tests>`), but on the officially supported
+Tier 1 platforms themselves, using their normal scheduler and workflow
+manager (Rocoto or ecFlow) instead of running interactively:
+
+.. code-block:: console
+
+   ./rt.sh -a <account> -p -l rt.conf
+
+Unlike ``community.sh``, where the container image path is set by the user in
+``community.conf``, the container image location for ``-p`` is fixed per
+Tier 1 platform inside ``rt.sh`` and is not user-configurable. Container
+images are currently staged on Derecho, Gaea-C6, Hercules, NOAA Cloud,
+Orion, and Ursa. Whether a given ``COMPILE``/``RUN`` line builds with the
+GNU or Intel container follows that line's existing **Compiler** column in
+``rt.conf`` — no separate container-specific configuration is needed. If no
+image is staged for the requested platform/compiler combination, that line
+is skipped with a notice (or the run stops with an error if ``-n`` was used
+to request that specific test).
+
+Only ``COMPILE``/``RUN`` lines tagged for container use in their **Machines**
+column are eligible under ``-p`` (see :numref:`Section %s <rt-conf>`):
+
+* ``+container`` marks a line to also run in the container, in addition to
+  wherever its Machines column already allows it natively.
+* ``-container`` explicitly excludes a line from container runs, even if
+  ``+container`` is also present.
+
+Baselines and log files created with ``-p`` are kept in directories suffixed
+with ``_container``, separate from the native-stack results, so a
+containerized run never overwrites or compares against native baselines.
 
 .. _log-files:
 
