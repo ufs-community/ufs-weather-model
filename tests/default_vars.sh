@@ -1732,6 +1732,7 @@ export_cice6() {
   CICE_SNWGRAIN=.false.
   CICE_EMISSIVITY=0.95
   CICE_FBOT_XFER_TYPE='constant'
+  CICE_TSCALE_PND_DRAIN=10.0
   # SlenderX2
   CICE_NPROC=${ICE_tasks}
   np2=$((CICE_NPROC / 2))
