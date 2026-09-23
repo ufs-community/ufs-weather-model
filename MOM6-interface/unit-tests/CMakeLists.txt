@@ -104,12 +104,36 @@ find_package(Doxygen)
 if(DOXYGEN_FOUND)
     set(DOXYGEN_IN ${CMAKE_CURRENT_SOURCE_DIR}/../docs/Doxyfile.in)
     set(DOXYGEN_OUT ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile)
+    set(DOCS_IMAGES_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../docs/images)
 
     configure_file(${DOXYGEN_IN} ${DOXYGEN_OUT} @ONLY)
+    set(WIKI_IMAGE_BASE_URL "https://raw.githubusercontent.com/wiki/ufs-community/ufs-weather-model/images")
+
+    add_custom_command(
+        OUTPUT ${DOCS_IMAGES_DIR}/mom6_outputlogging_diagram1.png
+        COMMAND ${CMAKE_COMMAND} -E make_directory ${DOCS_IMAGES_DIR}
+        COMMAND curl -fsSL -o ${DOCS_IMAGES_DIR}/mom6_outputlogging_diagram1.png
+                ${WIKI_IMAGE_BASE_URL}/mom6_outputlogging_diagram1.png
+        COMMENT "Fetching mom6_outputlogging_diagram1.png from wiki"
+        VERBATIM)
+
+    add_custom_command(
+        OUTPUT ${DOCS_IMAGES_DIR}/mom6_outputlogging_diagram2.png
+        COMMAND ${CMAKE_COMMAND} -E make_directory ${DOCS_IMAGES_DIR}
+        COMMAND curl -fsSL -o ${DOCS_IMAGES_DIR}/mom6_outputlogging_diagram2.png
+                ${WIKI_IMAGE_BASE_URL}/mom6_outputlogging_diagram2.png
+        COMMENT "Fetching mom6_outputlogging_diagram2.png from wiki"
+        VERBATIM)
+
+    add_custom_target(feature_docs_images
+        DEPENDS
+            ${DOCS_IMAGES_DIR}/mom6_outputlogging_diagram1.png
+            ${DOCS_IMAGES_DIR}/mom6_outputlogging_diagram2.png)
 
     add_custom_target(feature_docs
         COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_OUT}
         WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
         COMMENT "Generating NUOPC cap and unit-test documentation"
         VERBATIM)
+    add_dependencies(feature_docs feature_docs_images)
 endif()

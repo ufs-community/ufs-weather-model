@@ -27,7 +27,7 @@ file. The log file can then be used by any related workflow
 To illustrate the concepts implemented in the output logging feature,
 consider the following diagram:
 
-@image html logging_diagram1.png "File Sequencing" width=50%
+@image html mom6_outputlogging_diagram1.png "File Sequencing" width=50%
 
 In this case, MOM6 is providing 6-hourly output; the model begins at
 hour=00 and runs for 30 hours; the output alarm will ring every 6
@@ -279,7 +279,7 @@ last output: ./MOM6_OUTPUT/ocn_2021_03_23_21_00.nc
 last restart:     2021       3      24       3       0       0
 ```
 
-@image html logging_diagram2.png "Restart Pairing Diagram" width=80%
+@image html mom6_outputlogging_diagram2.png "Logging Architecture Diagram" width=60%
 
 
 # Unit Testing
