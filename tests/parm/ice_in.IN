@@ -108,6 +108,7 @@
     dSdt_slow_mode    = -5.0e-8
     phi_c_slow_mode   =    0.05
     phi_i_mushy       =    0.85
+    tscale_pnd_drain  = 10.0d0
 /
 
 &dynamics_nml
@@ -152,6 +153,7 @@
 /
 
 &ponds_nml
+    apnd_sl         = 0.27d0
     hp1             = 0.01
     hs0             = @[CICE_HS0]
     hs1             = @[CICE_HS1]
@@ -185,8 +187,12 @@
     fbot_xfer_type  = '@[CICE_FBOT_XFER_TYPE]'
     update_ocn_f    = @[CICE_FRAZIL_FWSALT]
     l_mpond_fresh   = .false.
+    congel_freeze   = 'two-step'
     tfrz_option     = '@[CICE_TFREEZE_OPTION]'
     restart_coszen  = .true.
+    ice_data_type   = 'latsst'
+    ice_data_conc   = 'parabolic'
+    ice_data_dist   = 'uniform'
 /
 
 &domain_nml
@@ -395,6 +401,9 @@
     f_hpond_ai     = 'mdh1x'
     f_ipond_ai     = 'x'
     f_apeff_ai     = 'x'
+/
+
+&icefields_snow_nml
 /
 
 &icefields_drag_nml
