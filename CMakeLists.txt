@@ -189,6 +189,11 @@ if(CMEPS OR CDEPS)
 endif()
 
 find_package(bacio 2.4.0 REQUIRED)
+if(NOT TARGET bacio::bacio_4)
+  add_library(bacio::bacio_4 ALIAS bacio::bacio)
+else()
+  add_library(bacio::bacio ALIAS bacio::bacio_4)
+endif()
 find_package(ip 5 REQUIRED)
 find_package(w3emc 2.9.2 REQUIRED)
 
