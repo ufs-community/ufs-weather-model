@@ -1,0 +1,25 @@
+#
+#  DATM_CDEPS_MOM6_CICE_CMEPS_GEFS with 
+#  MOM6 IAU+stochastic and CICE adjust_aice test
+#
+
+source "${PATHRT}"/tests/datm_cdeps_control_gefs
+
+TEST_DESCR+=" - iau - stochastic - adjust_aice"
+
+CNTL_DIR=datm_gefs_init_stochy
+
+# MOM6 IAU
+ODA_INCUPD=True
+ODA_INCUPD_UV=True
+
+# MOM6 stochy
+DO_OCN_SPPT=True
+PERT_EPBL=True
+OCN_SPPT=1.0
+EPBL=1.0
+
+# CICE adjust_aice 
+# in test mode with internal rounding of aice to 0.01 for adjust_aice_test, 
+# in lieu of sic.nc file with 'sic' aice variable for adjust_aice
+CICE_RESTART_MOD='adjust_aice_test'
