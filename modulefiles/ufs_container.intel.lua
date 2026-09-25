@@ -2,10 +2,17 @@ help([[
 Load environment to compile ufs-weather-model in a container using Intel
 ]])
 
-prepend_path("MODULEPATH", "/opt/spack-stack/spack-stack-1.9.2/envs/unified-env/install/modulefiles/Core")
-prepend_path("MODULEPATH", "/opt/spack-stack/spack-stack-1.9.2/envs/unified-env/install/modulefiles/intel-oneapi-mpi/2021.13-argr3sd/gcc/11.4.0")
+prepend_path("MODULEPATH", "/opt/intel/oneapi/2024.2/etc/modulefiles")
+prepend_path("MODULEPATH", "/opt/spack-stack/spack-stack-1.9.2/envs/ufs-wm-env/install/modulefiles/Core")
+prepend_path("MODULEPATH", "/opt/spack-stack/spack-stack-1.9.2/envs/ufs-wm-env/install/modulefiles/intel-oneapi-mpi/2021.13-ux7fmve/gcc/13.3.1")
 
-stack_oneapi_ver=os.getenv("stack_oneapi_ver") or "2024.2.0"
+load("tbb/2021.13")
+load("compiler-rt/2024.2.1")
+load("compiler/2024.2.1")
+load("mkl/2024.2")
+load("ifort/2024.2.1")
+
+stack_oneapi_ver=os.getenv("stack_oneapi_ver") or "2024.2.1"
 stack_impi_ver=os.getenv("stack_impi_ver") or "2021.13"
 
 load(pathJoin("stack-oneapi", stack_oneapi_ver))

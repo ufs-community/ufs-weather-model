@@ -1,6 +1,7 @@
 #!/bin/bash
-set -eux
+set -eu
 set -o pipefail
+[[ "${RTVERBOSE:-false}" == true ]] && set -x
 
 echo "PID=$$"
 SECONDS=0
@@ -68,8 +69,25 @@ rm -rf "${RUNDIR}"
 mkdir -p "${RUNDIR}"
 cd "${RUNDIR}"
 
+# Stage module files for container mode.
+if [[ ${MACHINE_ID} = container ]]; then
+    mkdir -p modulefiles
+    if [[ -f "${PATHTR}/modulefiles/ufs_container.${RT_COMPILER}.lua" ]]; then
+        cp "${PATHTR}/modulefiles/ufs_container.${RT_COMPILER}.lua" "modulefiles/modules.fv3.lua"
+    else
+        echo "ERROR: no inside-container build module found" >&2
+        echo "       Provide ${PATHTR}/modulefiles/ufs_container.${RT_COMPILER}.lua" >&2
+        exit 1
+    fi
+    cp "${PATHTR}/modulefiles/ufs_container.runtime.lua" "modulefiles/ufs_container.runtime.lua"
+    [[ -f "${PATHTR}/modulefiles/ufs_common.lua" ]] && \
+        cp "${PATHTR}/modulefiles/ufs_common.lua" "modulefiles/ufs_common.lua"
+    cp "${PATHRT}/module-setup.sh" "module-setup.sh"
+fi
+
+
 if [[ ${SCHEDULER} = 'pbs' ]]; then
-  if [[ -e ${PATHRT}/fv3_conf/compile_qsub.IN_${MACHINE_ID} ]]; then 
+  if [[ -e ${PATHRT}/fv3_conf/compile_qsub.IN_${MACHINE_ID} ]]; then
     atparse < "${PATHRT}/fv3_conf/compile_qsub.IN_${MACHINE_ID}" > job_card
   else
     echo "Looking for fv3_conf/compile_qsub.IN_${MACHINE_ID} but it is not found. Exiting"
@@ -82,6 +100,21 @@ elif [[ ${SCHEDULER} = 'slurm' ]]; then
     echo "Looking for fv3_conf/compile_slurm.IN_${MACHINE_ID} but it is not found. Exiting"
     exit 1
   fi
+elif [[ ${SCHEDULER:-none} = 'none' && ${MACHINE_ID} = 'container' ]]; then
+  # No job scheduler — write an inline compile script (no scheduler headers).
+  # Unquoted heredoc: ${...} variables expand at write time (COMPILE_ID etc. are baked in).
+  cat > job_card << COMPILE_EOF
+#!/bin/bash
+set -e
+MACHINE_ID=container
+source ${PWD}/module-setup.sh
+module purge
+module use ${PWD}/modulefiles
+module load modules.fv3
+module list
+"${PATHRT}/compile.sh" "${MACHINE_ID}" "${MAKE_OPT}" "${COMPILE_ID}" "${RT_COMPILER}"
+COMPILE_EOF
+  chmod u+x job_card
 fi
 
 ################################################################################
@@ -89,7 +122,41 @@ fi
 ################################################################################
 
 if [[ ${ROCOTO} = 'false' ]]; then
-  submit_and_wait job_card
+  if [[ ${SCHEDULER:-none} = 'none' && ${MACHINE_ID} = 'container' ]]; then
+    echo -n "$( date +%s )," > job_timestamp.txt
+    # Load the host-side runtime module from the staged copy in the run directory.
+    module use modulefiles
+    module load ufs_container.runtime
+    # Run compile interactively inside the container.
+    if command -v apptainer &>/dev/null; then
+      CONTAINERBIN=apptainer
+    elif command -v singularity &>/dev/null; then
+      CONTAINERBIN=singularity
+    else
+      echo "ERROR: neither apptainer nor singularity found on this host" >&2
+      exit 1
+    fi
+    BIND_FLAGS=""
+    if [[ -n "${CONTAINER_BIND:-}" ]]; then
+      IFS=',' read -r -a _bind_dirs <<< "${CONTAINER_BIND}"
+      for _dir in "${_bind_dirs[@]}"; do
+        BIND_FLAGS="${BIND_FLAGS} -B ${_dir}"
+      done
+    fi
+    CONTAINER="${CONTAINERBIN^^}"
+    export "${CONTAINER}_SHELL=/bin/bash"
+    export "${CONTAINER}ENV_RTVERBOSE=${RTVERBOSE:-false}"
+    ${CONTAINERBIN} exec -e "${BIND_FLAGS}" "${CONTAINER_IMG}" "${RUNDIR}/job_card"
+    echo -n " $( date +%s )," >> job_timestamp.txt
+  elif [[ ${SCHEDULER:-none} = 'none' && "${COMMUNITY_PLATFORM:-false}" == true ]]; then
+    echo -n "$( date +%s )," > job_timestamp.txt
+    # Community platform: call compile.sh directly; module loading is handled
+    # by compile.sh's case block for this MACHINE_ID.
+    "${PATHRT}/compile.sh" "${MACHINE_ID}" "${MAKE_OPT}" "${COMPILE_ID}" "${RT_COMPILER}"
+    echo -n " $( date +%s )," >> job_timestamp.txt
+  else
+    submit_and_wait job_card
+  fi
 else
   chmod u+x job_card
   redirect_out_err ./job_card
