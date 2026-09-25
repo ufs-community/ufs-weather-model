@@ -3,7 +3,6 @@
 #SBATCH -o out
 #SBATCH --job-name="@[JBNME]"
 #SBATCH --account=@[ACCNR]
-#SBATCH --qos=@[QUEUE]
 #SBATCH --partition=@[PARTITION]
 #SBATCH --nodes=@[NODES]
 #SBATCH --ntasks-per-node=@[TPN]
@@ -34,8 +33,12 @@ if [ "${JOB_SHOULD_FAIL:-NO}" = WHEN_RUNNING ] ; then
 fi
 
 # Load the host-side runtime module (makes apptainer/singularity and host MPI available).
+# Some system module or completion scripts reference unset variables, so
+# nounset (set -u) is temporarily disabled while they are loaded.
+set +u
 module use "@[PATHTR]/modulefiles"
 module load ufs_container.runtime
+set -u
 
 # Locate the container runtime on the host.
 if command -v apptainer &>/dev/null; then

@@ -126,6 +126,9 @@ if [[ ${DRY_RUN:-false} == false ]]; then
   host_side_machine_id=${MACHINE_ID}
   [[ -n ${CONTAINER_IMG:-} ]] && host_side_machine_id=container
 
+  # Some system module or completion scripts reference unset variables, so
+  # nounset (set -u) is temporarily disabled while they are loaded.
+  set +u
   case ${host_side_machine_id} in
     wcoss2|acorn)
       module load intel/19.1.3.304
@@ -157,6 +160,7 @@ if [[ ${DRY_RUN:-false} == false ]]; then
       module load modules.fv3
       ;;
   esac
+  set -u
 fi
 
 # FV3_RUN could have multiple entry seperated by space

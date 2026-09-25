@@ -2,12 +2,11 @@
 #SBATCH -e err
 #SBATCH -o out
 #SBATCH --account=@[ACCNR]
-#SBATCH --qos=@[QUEUE]
+##SBATCH --qos=@[QUEUE]
 #SBATCH --partition=@[PARTITION]
 #SBATCH --nodes=1
-#SBATCH --ntasks-per-node=@[TPN]
-#SBATCH --exclusive
-#SBATCH --time=120
+#SBATCH --ntasks-per-node=8
+#SBATCH --time=60
 #SBATCH --job-name="@[JBNME]"
 
 set -eu
@@ -18,8 +17,12 @@ echo -n "${date_s_start}," > job_timestamp.txt
 echo "Compile started: ${date_start}"
 
 # Load the host-side runtime module (makes apptainer/singularity and host MPI available).
+# Some sites' module/completion machinery (e.g. TACC's apptainer bash-completion
+# hook) references unset variables, so nounset is relaxed just for this.
+set +u
 module use "@[PATHTR]/modulefiles"
 module load ufs_container.runtime
+set -u
 
 # Locate the container runtime on the host.
 if command -v apptainer &>/dev/null; then

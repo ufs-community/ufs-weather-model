@@ -315,9 +315,9 @@ echo ""
 
 # Derive INPUTDATA_ROOT sub-paths (same convention as rt.sh).
 # All three can be overridden by setting the variable before invoking this script.
-INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT_WW3:-${INPUTDATA_ROOT}/WW3_input_data_20250807}
+INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT_WW3:-${INPUTDATA_ROOT}/WW3_input_data_20260811}
 INPUTDATA_LM4=${INPUTDATA_LM4:-${INPUTDATA_ROOT}/LM4_input_data}
-INPUTDATA_GFSv17opn=${INPUTDATA_GFSv17opn:-${INPUTDATA_ROOT}/GFSv17opn_input_data}
+INPUTDATA_GFSv17opn=${INPUTDATA_GFSv17opn:-$(dirname "${INPUTDATA_ROOT}")/GFSv17opn_20251014}
 
 ###############################################################################
 # Validate prerequisites

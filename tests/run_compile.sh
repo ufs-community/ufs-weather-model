@@ -124,8 +124,12 @@ if [[ ${ROCOTO} = 'false' ]]; then
   if [[ ${SCHEDULER:-none} = 'none' && ${MACHINE_ID} = 'container' ]]; then
     echo -n "$( date +%s )," > job_timestamp.txt
     # Load the host-side runtime module from the staged copy in the run directory.
+    # Some system module or completion scripts reference unset variables, so
+    # nounset (set -u) is temporarily disabled while they are loaded.
+    set +u
     module use modulefiles
     module load ufs_container.runtime
+    set -u
     # Run compile interactively inside the container.
     if command -v apptainer &>/dev/null; then
       CONTAINERBIN=apptainer
