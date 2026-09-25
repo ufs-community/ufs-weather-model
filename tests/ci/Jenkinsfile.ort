@@ -36,6 +36,7 @@ def generateStage(nodeLabel) {
                 cleanWs()
                 checkout scm
 		script {
+                catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') { 
                  sh '''
                   export machine=${NODE_NAME,,}
                   git submodule update --init --recursive
@@ -62,6 +63,7 @@ def generateStage(nodeLabel) {
                   cd ..
                   pwd
                 '''
+                } 
                  echo "Ran regional_control on ${NODE_NAME}"
                 }
             }
@@ -71,6 +73,7 @@ def generateStage(nodeLabel) {
 		script {
                    cleanWs()
                    checkout scm
+                catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') { 
                 sh '''
                   export machine=${NODE_NAME,,}
                   git submodule update --init --recursive
@@ -94,6 +97,7 @@ def generateStage(nodeLabel) {
                   cd ..
                   pwd
                 '''
+                  }
 			echo "Ran control_p8 on NODE_NAME=${NODE_NAME}" 
                 }
             }
@@ -101,6 +105,7 @@ def generateStage(nodeLabel) {
         stage("Finalize on ${nodeLabel.replaceAll("'","")}") {
             node(nodeLabel) {
 		script {
+                  env.BUILD_STATUS = currentBuild.currentResult
                   sh '''
                     export machine=${NODE_NAME,,}
                     export PATH=$PATH:~/bin
@@ -132,7 +137,16 @@ def generateStage(nodeLabel) {
                     git remote -v | grep -w sshorigin > /dev/null 2>&1 && git remote remove sshorigin > /dev/null 2>&1
                     git remote add sshorigin $SSH_ORIGIN > /dev/null 2>&1
                     git add logs/OpnReqTests_control_p8_${machine}.log logs/OpnReqTests_regional_control_${machine}.log
-                    git commit -m "${NODE_NAME} ORT Completed. on-behalf-of @ufs-community <ecc.platform@noaa.gov>"
+
+                    if [[ $BUILD_STATUS == "SUCCESS" ]]; then 
+                       echo $BUILD_STATUS
+                       git commit -m "${NODE_NAME} ORT Completed. on-behalf-of @ufs-community <ecc.platform@noaa.gov>"
+                    else
+                       echo "It failed!"
+                       git commit -m "${NODE_NAME} ORT Failed! on-behalf-of @ufs-community <ecc.platform@noaa.gov>"
+                       
+                    fi
+
                     git pull sshorigin $FORK_BRANCH
                     git push sshorigin HEAD:$FORK_BRANCH
 
@@ -158,6 +172,7 @@ pipeline {
     agent none
      environment {
             ACCNR = 'epic'
+            BUILD_STATUS = "${currentBuild.currentResult}"
             GITHUB_TOKEN = credentials('GithubJenkinsNew')
             GIT_URL = 'https://github.com/ufs-community/ufs-weather-model.git'
           }  
