@@ -874,9 +874,9 @@ if [[ ${COMMUNITY_PLATFORM_USE} == true ]]; then
   PLATFORM_TAG=${MACHINE_ID}
 else
   source detect_machine.sh
+  # shellcheck disable=SC1091
+  source module-setup.sh
 fi
-# shellcheck disable=SC1091
-source module-setup.sh
 
 # Display the machine and account using the format detect_machine.sh used:
 echo "Machine: ${MACHINE_ID}"
@@ -1415,7 +1415,7 @@ while read -r line || [[ -n "${line}" ]]; do
 
     if [[ ${CONTAINER_USE} == true || ${COMMUNITY_PLATFORM_USE} == true ]] && ! resolve_container_image; then
       [[ ${RUN_SINGLE_TEST} == true ]] && die "No ${RT_COMPILER} container/platform match on ${MACHINE_ID} for -n test"
-      echo "rt.sh: SKIP compile ${COMPILE_ID} -- compiler ${RT_COMPILER} not available on ${MACHINE_ID}"
+      echo "rt.sh: SKIP compile ${COMPILE_ID} -- compiler ${RT_COMPILER} not available on MACHINE_ID=${MACHINE_ID}"
       continue
     fi
 
@@ -1454,7 +1454,7 @@ while read -r line || [[ -n "${line}" ]]; do
     machines_allow_run "${MACHINES}" || continue
 
     if [[ ${CONTAINER_USE} == true || ${COMMUNITY_PLATFORM_USE} == true ]] && ! resolve_container_image; then
-      echo "rt.sh: SKIP test ${TEST_ID} -- compiler ${RT_COMPILER} not available on ${MACHINE_ID}"
+      echo "rt.sh: SKIP test ${TEST_ID} -- compiler ${RT_COMPILER} not available on MACHINE_ID=${MACHINE_ID}"
       continue
     fi
 
