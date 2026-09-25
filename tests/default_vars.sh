@@ -373,8 +373,8 @@ elif [[ ${MACHINE_ID} = noaacloud ]]; then
 
 elif [[ ${MACHINE_ID} = container || ${COMMUNITY_PLATFORM} = 'true' ]]; then
 
-  # Running in a container.  TPN is provided at runtime from community.conf
-  # via the job .env file; use it if already set, otherwise fall back to 80.
+  # Running in a container or on a community platform.  TPN is provided at
+  # runtime via the job .env file; use it if already set, else fall back to 80.
   TPN=${TPN:-80}
   EXCLUSIVE_NODES=.true.
 

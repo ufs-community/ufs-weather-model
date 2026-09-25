@@ -11,7 +11,7 @@ die() { echo "$@" >&2; exit 1; }
 usage() {
   set +x #No reason to print out a bunch of echo statements here
   echo
-  echo "Usage: $0 -a <account> | -b <file> | -c | -d | -e | -h | -k | -l <file> | -m | -n <name> | -o | -p | -r | -v | -w | -x"
+  echo "Usage: $0 -a <account> | -b <file> | -c | -d | -e | -h | -k | -l <file> | -m | -n <name> | -o | -p | -P <file> | -r | -v | -w | -x"
   echo
   echo "  -a  <account> to use on for HPC queue"
   echo "  -b  create new baselines only for tests listed in <file>"
@@ -27,6 +27,9 @@ usage() {
   echo "  -p  build and run inside the GNU/Intel container staged on this Tier 1"
   echo "      platform (compiler taken from each COMPILE line); container"
   echo "      baselines and logs are kept separate from the native-stack ones"
+  echo "  -P  <file> build and run on a community (non-Tier-1) platform defined"
+  echo "      in <file>; a portability check, not a regression test -- always"
+  echo "      sequential (no -r/-e) and always skips baseline comparison"
   echo "  -r  use Rocoto workflow manager"
   echo "  -v  verbose output"
   echo "  -w  for weekly_test, skip comparing baseline results"
@@ -196,6 +199,7 @@ EOF
   [[ ${RUN_SINGLE_TEST} == true ]] && echo "* (-n) - RUN SINGLE TEST: ${SINGLE_OPTS}" >> "${REGRESSIONTEST_LOG}"
   [[ ${COMPILE_ONLY} == true ]]&& echo "* (-o) - COMPILE ONLY, SKIP TESTS" >> "${REGRESSIONTEST_LOG}"
   [[ ${CONTAINER_USE} == true ]] && echo "* (-p) - CONTAINER MODE ON ${MACHINE_ID} (baselines: ${RTPWD})" >> "${REGRESSIONTEST_LOG}"
+  [[ ${COMMUNITY_PLATFORM_USE} == true ]] && echo "* (-P) - COMMUNITY PLATFORM: ${MACHINE_ID} (${COMMUNITY_PLATFORM_FILE}); no baseline comparison" >> "${REGRESSIONTEST_LOG}"
   [[ ${delete_rundir} == true ]] && echo "* (-d) - DELETE RUN DIRECTORY" >> "${REGRESSIONTEST_LOG}"
   [[ ${skip_check_results} == true ]] && echo "* (-w) - SKIP RESULTS CHECK" >> "${REGRESSIONTEST_LOG}"
   [[ ${KEEP_RUNDIR} == true ]] && echo "* (-k) - KEEP RUN DIRECTORY" >> "${REGRESSIONTEST_LOG}"
@@ -229,7 +233,7 @@ EOF
 
       machines_allow_run "${CMACHINES}" && valid_compile=true
 
-      if [[ ${CONTAINER_USE} == true && ${valid_compile} == true ]]; then
+      if [[ (${CONTAINER_USE} == true || ${COMMUNITY_PLATFORM_USE} == true) && ${valid_compile} == true ]]; then
         RT_COMPILER=${COMPILER}
         resolve_container_image || valid_compile=false
       fi
@@ -312,7 +316,7 @@ EOF
 
       machines_allow_run "${RMACHINES}" && valid_test=true
 
-      if [[ ${CONTAINER_USE} == true && ${valid_test} == true ]]; then
+      if [[ (${CONTAINER_USE} == true || ${COMMUNITY_PLATFORM_USE} == true) && ${valid_test} == true ]]; then
         RT_COMPILER=${COMPILER}
         resolve_container_image || valid_test=false
       fi
@@ -464,22 +468,23 @@ EOF
 }
 
 # Whether a COMPILE/RUN line's MACHINES field allows it under the real
-# MACHINE_ID and the current -p/CONTAINER_USE state. "+container"/"-container"
-# explicitly mark a line to run (or not run) a containerized compile/test task
-# on the current Tier 1 platform.
+# MACHINE_ID and the current -p/-P state. "+<tag>"/"-<tag>" (PLATFORM_TAG --
+# 'container' for -p, or the -P file's declared platform name) explicitly
+# mark a line to run (or not run) on the current container/community
+# platform.
 machines_allow_run() {
   local machines=$1
-  local has_container_tag=false
-  local has_no_container_tag=false
-  [[ ${machines} == *+container* ]] && has_container_tag=true
-  [[ ${machines} == *-container* ]] && has_no_container_tag=true
+  local has_tag=false
+  local has_no_tag=false
+  [[ ${machines} == *"+${PLATFORM_TAG}"* ]] && has_tag=true
+  [[ ${machines} == *"-${PLATFORM_TAG}"* ]] && has_no_tag=true
 
-  if [[ ${CONTAINER_USE} == true ]]; then
-    [[ ${has_container_tag} == true && ${has_no_container_tag} == false ]] && return 0 || return 1
+  if [[ ${CONTAINER_USE} == true || ${COMMUNITY_PLATFORM_USE} == true ]]; then
+    [[ ${has_tag} == true && ${has_no_tag} == false ]] && return 0 || return 1
   fi
 
-  local native_machines=${machines//+container/}
-  native_machines=${native_machines//-container/}
+  local native_machines=${machines//"+${PLATFORM_TAG}"/}
+  native_machines=${native_machines//"-${PLATFORM_TAG}"/}
   native_machines=$(sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' <<< "${native_machines}")
   [[ ${native_machines} == '+' || ${native_machines} == '-' ]] && native_machines=''
 
@@ -495,18 +500,28 @@ machines_allow_run() {
 }
 
 # Resolves RT_CONTAINER_IMG for the current RT_COMPILER; returns 1 if no
-# image is staged for this machine/compiler (caller skips the line).
+# image is staged for this machine/compiler (caller skips the line), or -- for
+# -P -- if the line's compiler doesn't match the community platform's one
+# declared compiler. A community platform may have no container at all (a
+# native stack), in which case RT_CONTAINER_IMG is left empty.
 resolve_container_image() {
   RT_CONTAINER_IMG=''
-  local img_name=''
-  case ${RT_COMPILER} in
-    intel) img_name=${CONTAINER_IMG_INTEL} ;;
-    gnu)   img_name=${CONTAINER_IMG_GNU} ;;
-    *)     die "resolve_container_image: unexpected RT_COMPILER='${RT_COMPILER}'" ;;
-  esac
 
-  [[ -n ${CONTAINER_PATH} && -n ${img_name} ]] || return 1
-  RT_CONTAINER_IMG=${CONTAINER_PATH}/${img_name}
+  if [[ ${COMMUNITY_PLATFORM_USE} == true ]]; then
+    [[ ${RT_COMPILER} == "${COMMUNITY_PLATFORM_COMPILER}" ]] || return 1
+    RT_CONTAINER_IMG=${COMMUNITY_PLATFORM_CONTAINER_IMG}
+  else
+    local img_name=''
+    case ${RT_COMPILER} in
+      intel) img_name=${CONTAINER_IMG_INTEL} ;;
+      gnu)   img_name=${CONTAINER_IMG_GNU} ;;
+      *)     die "resolve_container_image: unexpected RT_COMPILER='${RT_COMPILER}'" ;;
+    esac
+    [[ -n ${CONTAINER_PATH} && -n ${img_name} ]] || return 1
+    RT_CONTAINER_IMG=${CONTAINER_PATH}/${img_name}
+  fi
+
+  [[ -z ${RT_CONTAINER_IMG} ]] && return 0
 
   [[ ${DRY_RUN} == true ]] && return 0
 
@@ -516,6 +531,59 @@ resolve_container_image() {
   [[ -f ${PATHTR}/modulefiles/ufs_container.runtime.lua ]] \
     || die "modulefiles/ufs_container.runtime.lua not found under ${PATHTR}"
   return 0
+}
+
+# Parses a -P community-platform definition file (a 4-line pipe-delimited
+# header; rt.conf remains the only test source, so there is no compile/test
+# list here). Sets MACHINE_ID, RT_COMPILER (the platform's one and only
+# compiler), and the platform's paths/scheduler info.
+parse_platform_def() {
+  local file=$1
+  local line header_lines_read=0
+  local f1 f2 f3 f4 f5 f6 _rest
+  while IFS= read -r line || [[ -n "${line}" ]]; do
+    line=$(sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' <<< "${line}")
+    [[ -z ${line} ]] && continue
+    [[ ${line} == \#* ]] && continue
+
+    case ${header_lines_read} in
+      0)
+        IFS='|' read -r f1 f2 f3 f4 _rest <<< "${line}"
+        MACHINE_ID=$(sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' <<< "${f1:-}")
+        COMMUNITY_PLATFORM_COMPILER=$(sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' <<< "${f2:-}")
+        COMMUNITY_PLATFORM_CONTAINER_IMG=$(sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' <<< "${f3:-}")
+        CONTAINER_BIND_DIRS=$(sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' <<< "${f4:-}")
+        ;;
+      1)
+        IFS='|' read -r f1 f2 f3 f4 f5 f6 _rest <<< "${line}"
+        CONTAINER_TPN=$(sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' <<< "${f1:-}")
+        SCHEDULER=$(sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' <<< "${f2:-}")
+        ACCNR=$(sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' <<< "${f3:-${ACCNR}}")
+        PARTITION=$(sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' <<< "${f4:-}")
+        QUEUE=$(sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' <<< "${f5:-}")
+        MPI_LAUNCH=$(sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' <<< "${f6:-mpirun}")
+        ;;
+      2)
+        RUNDIR_ROOT=${line}
+        ;;
+      3)
+        IFS='|' read -r f1 f2 f3 f4 _rest <<< "${line}"
+        INPUTDATA_ROOT=$(sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' <<< "${f1:-}")
+        INPUTDATA_ROOT_WW3=$(sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' <<< "${f2:-}")
+        INPUTDATA_LM4=$(sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' <<< "${f3:-}")
+        INPUTDATA_GFSv17opn=$(sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' <<< "${f4:-}")
+        ;;
+    esac
+    header_lines_read=$((header_lines_read + 1))
+    [[ ${header_lines_read} -ge 4 ]] && break
+  done < "${file}"
+
+  [[ ${header_lines_read} -ge 4 ]] || die "${file}: expected 4 header lines, found ${header_lines_read}"
+  [[ -n ${MACHINE_ID} ]] || die "${file}: platform name (header line 1, field 1) is required"
+  [[ -n ${COMMUNITY_PLATFORM_COMPILER} ]] || die "${file}: compiler (header line 1, field 2) is required"
+  [[ -n ${SCHEDULER} ]] || die "${file}: scheduler (header line 2, field 2) is required"
+  [[ -n ${RUNDIR_ROOT} ]] || die "${file}: RUNDIR_ROOT (header line 3) is required"
+  [[ -n ${INPUTDATA_ROOT} ]] || die "${file}: INPUTDATA_ROOT (header line 4, field 1) is required"
 }
 
 create_or_run_compile_task() {
@@ -536,9 +604,10 @@ export LOG_DIR=${LOG_DIR}
 export RTVERBOSE=${RTVERBOSE}
 export CONTAINER_IMG=${RT_CONTAINER_IMG}
 export CONTAINER_BIND_FLAGS="${CONTAINER_BIND_FLAGS}"
+export COMMUNITY_PLATFORM=${COMMUNITY_PLATFORM_USE}
 EOF
 
-  if [[ ${CONTAINER_USE} == true ]]; then
+  if [[ ${CONTAINER_USE} == true || ${COMMUNITY_PLATFORM_USE} == true ]]; then
     cat << EOF >> "${RUNDIR_ROOT}/compile_${COMPILE_ID}.env"
 export TPN=${CONTAINER_TPN:-}
 EOF
@@ -629,10 +698,7 @@ else
 fi
 
 ls -l detect_machine.sh rt_utils.sh
-source detect_machine.sh
 source rt_utils.sh
-# shellcheck disable=SC1091
-source module-setup.sh
 
 CREATE_BASELINE=false
 ROCOTO=false
@@ -667,7 +733,17 @@ CONTAINER_BIND_DIRS=''
 CONTAINER_TPN=''
 RT_CONTAINER_IMG=''
 
-while getopts ":a:b:cl:mn:dwkpreovhx" opt; do
+# -P <file>: build/run on a community (non-Tier-1) platform defined in <file>.
+# PLATFORM_TAG is the "+<tag>"/"-<tag>" name machines_allow_run() checks in
+# rt.conf; it stays 'container' for -p, and becomes the platform's own
+# declared name for -P.
+COMMUNITY_PLATFORM_USE=false
+COMMUNITY_PLATFORM_FILE=''
+COMMUNITY_PLATFORM_COMPILER=''
+COMMUNITY_PLATFORM_CONTAINER_IMG=''
+PLATFORM_TAG='container'
+
+while getopts ":a:b:cl:mn:dwkpP:reovhx" opt; do
   case ${opt} in
     a)
       ACCNR=${OPTARG}
@@ -689,6 +765,11 @@ while getopts ":a:b:cl:mn:dwkpreovhx" opt; do
     p)
       CONTAINER_USE=true
       CONTAINER_SUFFIX='_container'
+      ;;
+    P)
+      COMMUNITY_PLATFORM_USE=true
+      COMMUNITY_PLATFORM_FILE=${OPTARG}
+      [[ -s ${COMMUNITY_PLATFORM_FILE} ]] || die "${COMMUNITY_PLATFORM_FILE} empty or not found, exiting..."
       ;;
     m)
       # redefine RTPWD to point to newly created baseline outputs
@@ -759,6 +840,14 @@ done
 [[ ${CREATE_BASELINE} == true && ${RTPWD_NEW_BASELINE} == true ]] && die "-c and -m options cannot be used at the same time"
 #B&N not run together
 [[ ${NEW_BASELINES_FILE} != '' && ${RUN_SINGLE_TEST} == true ]] && die "-b and -n options cannot be used at the same time"
+#P&p not run together; a community platform run is always sequential and never compares baselines
+[[ ${COMMUNITY_PLATFORM_USE} == true && ${CONTAINER_USE} == true ]] && die "-p and -P options cannot be used at the same time"
+if [[ ${COMMUNITY_PLATFORM_USE} == true ]]; then
+  [[ ${ROCOTO} == false ]] || die "-P should not be used with -r"
+  [[ ${ECFLOW} == false ]] || die "-P should not be used with -e"
+  [[ ${CREATE_BASELINE} == false ]] || die "-P should not be used with -c"
+  [[ ${RTPWD_NEW_BASELINE} == false ]] || die "-P should not be used with -m"
+fi
 
 if [[ ${DRY_RUN} == true ]]; then
    [[ ${NEW_BASELINES_FILE} == '' ]] || die "-x should not be used with -b"
@@ -780,10 +869,30 @@ if [[ -z "${ACCNR}" ]]; then
   exit 1
 fi
 
+if [[ ${COMMUNITY_PLATFORM_USE} == true ]]; then
+  parse_platform_def "${COMMUNITY_PLATFORM_FILE}"
+  PLATFORM_TAG=${MACHINE_ID}
+else
+  source detect_machine.sh
+fi
+# shellcheck disable=SC1091
+source module-setup.sh
+
 # Display the machine and account using the format detect_machine.sh used:
 echo "Machine: ${MACHINE_ID}"
 echo "Account: ${ACCNR}"
 
+if [[ ${COMMUNITY_PLATFORM_USE} == true ]]; then
+  # Community platform: no per-host case block -- everything came from the
+  # -P file. Fill in what unrelated downstream code still references.
+  DISKNM=''
+  STMP=${RUNDIR_ROOT}
+  PTMP=${RUNDIR_ROOT}
+  COMPILE_QUEUE=${QUEUE}
+  ROCOTO=false
+  ECFLOW=false
+  export skip_check_results=true
+else
 case ${MACHINE_ID} in
   wcoss2|acorn)
     echo "rt.sh: Setting up WCOSS2/Acorn"
@@ -1066,6 +1175,7 @@ case ${MACHINE_ID} in
     die "Unknown machine ID, please edit detect_machine.sh file"
     ;;
 esac
+fi
 
 if [[ ${CONTAINER_USE} == true && -z ${CONTAINER_PATH} ]]; then
   echo "rt.sh: WARNING -- no container images are staged for ${MACHINE_ID};"
@@ -1094,9 +1204,12 @@ ln -s "${RUNDIR_ROOT}" "${PATHRT}/run_dir"
 echo "Run regression test in: ${RUNDIR_ROOT}"
 
 # BEFORE MOVING ANY FURTHER LETS CHECK THAT DISKNM/STMP/PTMP ALL EXIST
-[[ -d ${DISKNM} ]] || die "ERROR: DISKNM: ${DISKNM} -- DOES NOT EXIST"
-[[ -d ${STMP} ]] || die "ERROR: STMP: ${STMP} -- DOES NOT EXIST"
-[[ -d ${PTMP} ]] || die "ERROR: PTMP: ${PTMP} -- DOES NOT EXIST"
+# (a community platform, -P, has no DISKNM/baseline area at all -- skip)
+if [[ ${COMMUNITY_PLATFORM_USE} == false ]]; then
+  [[ -d ${DISKNM} ]] || die "ERROR: DISKNM: ${DISKNM} -- DOES NOT EXIST"
+  [[ -d ${STMP} ]] || die "ERROR: STMP: ${STMP} -- DOES NOT EXIST"
+  [[ -d ${PTMP} ]] || die "ERROR: PTMP: ${PTMP} -- DOES NOT EXIST"
+fi
 
 update_rtconf
 
@@ -1112,7 +1225,9 @@ else
   RTPWD=${RTPWD:-${DISKNM}/NEMSfv3gfs/develop-${BL_DATE}${CONTAINER_SUFFIX:-}}
 fi
 
-if [[ "${CREATE_BASELINE}" == false ]] ; then
+# A community platform (-P) always skips baseline comparison -- no baseline
+# directory to check.
+if [[ "${CREATE_BASELINE}" == false && ${COMMUNITY_PLATFORM_USE} == false ]] ; then
   EMPTY_CHECK=$(find "${RTPWD}/" -type d -prune -empty)
   if [[ ! -d "${RTPWD}" ]] ; then
     echo "Baseline directory does not exist:"
@@ -1126,7 +1241,7 @@ if [[ "${CREATE_BASELINE}" == false ]] ; then
 fi
 
 INPUTDATA_ROOT=${INPUTDATA_ROOT:-${DISKNM}/NEMSfv3gfs/input-data-20260617}
-INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT}/WW3_input_data_20260811
+INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT_WW3:-${INPUTDATA_ROOT}/WW3_input_data_20260811}
 INPUTDATA_LM4=${INPUTDATA_LM4:-${INPUTDATA_ROOT}/LM4_input_data}
 INPUTDATA_GFSv17opn=${INPUTDATA_GFSv17opn:-${DISKNM}/NEMSfv3gfs/GFSv17opn_20251014}
 
@@ -1298,9 +1413,9 @@ while read -r line || [[ -n "${line}" ]]; do
 
     machines_allow_run "${MACHINES}" || continue
 
-    if [[ ${CONTAINER_USE} == true ]] && ! resolve_container_image; then
-      [[ ${RUN_SINGLE_TEST} == true ]] && die "No ${RT_COMPILER} container image staged on ${MACHINE_ID} for -n test"
-      echo "rt.sh: SKIP compile ${COMPILE_ID} -- no ${RT_COMPILER} container image staged on ${MACHINE_ID}"
+    if [[ ${CONTAINER_USE} == true || ${COMMUNITY_PLATFORM_USE} == true ]] && ! resolve_container_image; then
+      [[ ${RUN_SINGLE_TEST} == true ]] && die "No ${RT_COMPILER} container/platform match on ${MACHINE_ID} for -n test"
+      echo "rt.sh: SKIP compile ${COMPILE_ID} -- compiler ${RT_COMPILER} not available on ${MACHINE_ID}"
       continue
     fi
 
@@ -1338,8 +1453,8 @@ while read -r line || [[ -n "${line}" ]]; do
 
     machines_allow_run "${MACHINES}" || continue
 
-    if [[ ${CONTAINER_USE} == true ]] && ! resolve_container_image; then
-      echo "rt.sh: SKIP test ${TEST_ID} -- no ${RT_COMPILER} container image staged on ${MACHINE_ID}"
+    if [[ ${CONTAINER_USE} == true || ${COMMUNITY_PLATFORM_USE} == true ]] && ! resolve_container_image; then
+      echo "rt.sh: SKIP test ${TEST_ID} -- compiler ${RT_COMPILER} not available on ${MACHINE_ID}"
       continue
     fi
 
@@ -1412,9 +1527,10 @@ export WLCLK=${WLCLK}
 export DRY_RUN=${DRY_RUN}
 export CONTAINER_IMG=${RT_CONTAINER_IMG}
 export CONTAINER_BIND_FLAGS="${CONTAINER_BIND_FLAGS}"
+export COMMUNITY_PLATFORM=${COMMUNITY_PLATFORM_USE}
 EOF
 
-      if [[ ${CONTAINER_USE} == true ]]; then
+      if [[ ${CONTAINER_USE} == true || ${COMMUNITY_PLATFORM_USE} == true ]]; then
         cat << EOF >> "${RUNDIR_ROOT}/run_test_${TEST_ID}.env"
 export TPN=${CONTAINER_TPN:-}
 EOF
