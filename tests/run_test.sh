@@ -83,7 +83,13 @@ echo "Test ${TEST_ID} ${TEST_DESCR}"
 source rt_utils.sh
 source atparse.bash
 
-rm -rf "${RUNDIR}"
+if [[ ${COMMUNITY_PLATFORM:-false} == true && -d ${RUNDIR} ]]; then
+  # A community platform (-P) reuses a fixed RUNDIR_ROOT across runs; keep
+  # a prior test directory instead of clobbering it.
+  mv "${RUNDIR}" "${RUNDIR}_old_$(date +%Y%m%d%H%M)"
+else
+  rm -rf "${RUNDIR}"
+fi
 mkdir -p "${RUNDIR}"
 cd "${RUNDIR}"
 

@@ -65,7 +65,14 @@ export RT_LOG=${LOG_DIR}/${JBNME}.log
 source rt_utils.sh
 source atparse.bash
 
-rm -rf "${RUNDIR}"
+if [[ ${COMMUNITY_PLATFORM:-false} == true && -d ${RUNDIR} ]]; then
+  # A community platform (-P) reuses a fixed RUNDIR_ROOT across runs; keep
+  # a prior compile directory instead of clobbering it (rt.sh only invokes
+  # this compile at all when the executable wasn't already found reusable).
+  mv "${RUNDIR}" "${RUNDIR}_old_$(date +%Y%m%d%H%M)"
+else
+  rm -rf "${RUNDIR}"
+fi
 mkdir -p "${RUNDIR}"
 cd "${RUNDIR}"
 

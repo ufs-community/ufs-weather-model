@@ -449,7 +449,10 @@ EOF
     [[ ${KEEP_RUNDIR} == false ]] && rm -rf "${RUNDIR_ROOT}" && rm "${PATHRT}/run_dir"
     [[ ${ROCOTO} == true ]] && rm -f "${ROCOTO_XML}" "${ROCOTO_DB}" "${ROCOTO_STATE}" ./*_lock.db
     [[ ${TEST_35D} == true ]] && rm -f tests/cpld_bmark*_20*
-    echo "REGRESSION TEST RESULT: SUCCESS"
+    # A community platform (-P) is a portability check, not a pass/fail
+    # regression suite -- report per-compile/per-test PASS/FAILED only
+    # (see the COMPILE/TEST SUMMARY block above), not one aggregate verdict.
+    [[ ${COMMUNITY_PLATFORM_USE} == true ]] || echo "REGRESSION TEST RESULT: SUCCESS"
   else
     cat << EOF >> "${REGRESSIONTEST_LOG}"
 
@@ -462,7 +465,7 @@ Result: FAILURE
 
 ====END OF ${MACHINE_ID^^} REGRESSION TESTING LOG====
 EOF
-    echo "REGRESSION TEST RESULT: FAILURE"
+    [[ ${COMMUNITY_PLATFORM_USE} == true ]] || echo "REGRESSION TEST RESULT: FAILURE"
   fi
 
 }
@@ -620,7 +623,13 @@ EOF
   else
     echo "rt.sh: Running compile ${COMPILE_ID}"
     ./run_compile.sh "${PATHRT}" "${RUNDIR_ROOT}" "${MAKE_OPT}" "${COMPILE_ID}" > "${LOG_DIR}/compile_${COMPILE_ID}.log" 2>&1
-    echo "rt.sh: Compile ${COMPILE_ID} completed."
+    if [[ -f "${PATHRT}/fail_compile_${COMPILE_ID}" ]]; then
+      echo "rt.sh: Compile ${COMPILE_ID} FAILED -- see ${LOG_DIR}/compile_${COMPILE_ID}.log"
+      COMPILE_FAILED+=("${COMPILE_ID}")
+    else
+      echo "rt.sh: Compile ${COMPILE_ID} PASSED"
+      COMPILE_PASSED+=("${COMPILE_ID}")
+    fi
   fi
 
   RT_SUFFIX=""
@@ -663,8 +672,10 @@ rt_trap() {
 
 cleanup() {
   echo "rt.sh: Cleaning up..."
-  awk_info=$(awk '{print $2}' < "${LOCKDIR}/PID")
-  [[ ${awk_info} == "$$" ]] && rm -rf "${LOCKDIR}"
+  if [[ -e ${LOCKDIR}/PID ]]; then
+    awk_info=$(awk '{print $2}' < "${LOCKDIR}/PID")
+    [[ ${awk_info} == "$$" ]] && rm -rf "${LOCKDIR}"
+  fi
   [[ ${ECFLOW:-false} == true ]] && ecflow_stop
   trap 0
   echo "rt.sh: Exiting."
@@ -687,15 +698,10 @@ cd "${PATHRT}"
 PATHTR=$( cd "${PATHRT}/.." && pwd )
 readonly PATHTR
 
-# make sure only one instance of rt.sh is running
+# Single-instance lock path; created below once -P/-p are known (a
+# community platform run does not use it -- see near ACCNR check).
 readonly LOCKDIR="${PATHRT}"/lock
 HOSTNAME_IN=$(hostname)
-if mkdir "${LOCKDIR}" ; then
-  echo "${HOSTNAME_IN}" $$ > "${LOCKDIR}/PID"
-else
-  echo "Only one instance of rt.sh can be running at a time"
-  exit 1
-fi
 
 ls -l detect_machine.sh rt_utils.sh
 source rt_utils.sh
@@ -867,6 +873,18 @@ fi
 if [[ -z "${ACCNR}" ]]; then
   echo "Please use -a <account> to set group account to use on HPC"
   exit 1
+fi
+
+# make sure only one instance of rt.sh is running -- not for a community
+# platform (-P), which uses its own fixed RUNDIR_ROOT rather than a
+# per-PID one and may be run concurrently (e.g. one -P run per compiler)
+if [[ ${COMMUNITY_PLATFORM_USE} == false ]]; then
+  if mkdir "${LOCKDIR}" ; then
+    echo "${HOSTNAME_IN}" $$ > "${LOCKDIR}/PID"
+  else
+    echo "Only one instance of rt.sh can be running at a time"
+    exit 1
+  fi
 fi
 
 if [[ ${COMMUNITY_PLATFORM_USE} == true ]]; then
@@ -1195,8 +1213,14 @@ mkdir -p "${STMP}/${USER}"
 
 NEW_BASELINE=${STMP}/${USER}/FV3_RT/REGRESSION_TEST${CONTAINER_SUFFIX:-}
 
-# Overwrite default RUNDIR_ROOT if environment variable RUNDIR_ROOT is set
-RUNDIR_ROOT=${RUNDIR_ROOT:-${PTMP}/${USER}/FV3_RT}/rt_$$
+# A community platform (-P) uses its RUNDIR_ROOT exactly as given in the
+# platform-definition file -- no per-PID subdirectory -- so repeated runs
+# land in the same place and old test dirs can be found and renamed aside
+# (see run_test.sh) instead of silently multiplying under a fresh rt_$$.
+if [[ ${COMMUNITY_PLATFORM_USE} == false ]]; then
+  # Overwrite default RUNDIR_ROOT if environment variable RUNDIR_ROOT is set
+  RUNDIR_ROOT=${RUNDIR_ROOT:-${PTMP}/${USER}/FV3_RT}/rt_$$
+fi
 mkdir -p "${RUNDIR_ROOT}"
 rm -rf "${PATHRT}/run_dir"
 echo "Linking ${RUNDIR_ROOT} to ${PATHRT}/run_dir"
@@ -1378,6 +1402,16 @@ in_metatask=false
 
 declare -A compiles
 
+# Live PASS/FAILtracking for sequential (non-Rocoto/ecFlow) compiles and
+# tests -- run_compile.sh/run_test.sh always exit 0 in this mode (so rt.sh
+# keeps going and generate_log can catch failures at the end from their
+# fail_compile_*/fail_test_* marker files), which otherwise leaves a failed
+# compile/test indistinguishable from a passed one in the console log.
+COMPILE_PASSED=()
+COMPILE_FAILED=()
+TEST_PASSED=()
+TEST_FAILED=()
+
 while read -r line || [[ -n "${line}" ]]; do
 
   line="${line#"${line%%[![:space:]]*}"}"
@@ -1420,6 +1454,11 @@ while read -r line || [[ -n "${line}" ]]; do
     fi
 
     [[ ${DRY_RUN} == true ]] && continue
+
+    if [[ ${COMMUNITY_PLATFORM_USE} == true && -x "${PATHTR}/tests/fv3_${COMPILE_ID}.exe" ]]; then
+      echo "rt.sh: SKIP compile ${COMPILE_ID} -- fv3_${COMPILE_ID}.exe already present in ${PATHTR}/tests/"
+      continue
+    fi
 
     create_or_run_compile_task
     continue
@@ -1546,6 +1585,18 @@ EOF
         echo "rt.sh: Run with test ${TEST_ID} completed."
       fi
     )
+    # TEST_ID is set in the parent shell above, and fail_test_* (if any) was
+    # written by run_test.sh, so this check works even though the run itself
+    # happened inside the subshell just closed.
+    if [[ ${ROCOTO} == false && ${ECFLOW} == false ]]; then
+      if [[ -f "${PATHRT}/fail_test_${TEST_ID}" ]]; then
+        echo "rt.sh: Test ${TEST_ID} FAILED -- see ${LOG_DIR}/run_${TEST_ID}${RT_SUFFIX}.log"
+        TEST_FAILED+=("${TEST_ID}")
+      else
+        echo "rt.sh: Test ${TEST_ID} PASSED"
+        TEST_PASSED+=("${TEST_ID}")
+      fi
+    fi
     continue
   else
     die "Unknown command ${line}"
@@ -1583,6 +1634,19 @@ fi
 if [[ ${DRY_RUN} == true ]]; then
   echo "Successful dry run"
   exit 0
+fi
+
+if [[ ${ROCOTO} == false && ${ECFLOW} == false ]]; then
+  echo
+  echo "===== COMPILE/TEST SUMMARY ====="
+  echo "Compiles: ${#COMPILE_PASSED[@]} passed, ${#COMPILE_FAILED[@]} failed"
+  for c in "${COMPILE_PASSED[@]}"; do echo "  PASSED -- COMPILE ${c}"; done
+  for c in "${COMPILE_FAILED[@]}"; do echo "  FAILED -- COMPILE ${c}"; done
+  echo "Tests: ${#TEST_PASSED[@]} passed, ${#TEST_FAILED[@]} failed"
+  for t in "${TEST_PASSED[@]}"; do echo "  PASSED -- TEST ${t}"; done
+  for t in "${TEST_FAILED[@]}"; do echo "  FAILED -- TEST ${t}"; done
+  echo "================================"
+  echo
 fi
 
 ## Lets verify all tests were run and that they passed
