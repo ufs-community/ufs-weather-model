@@ -1,0 +1,54 @@
+#
+#  DATM_CDEPS_MOM6_CICE_WW3_CMEPS wavice test
+#
+
+TEST_DESCR="DATM_CDEPS-MOM6-CICE-WW3-CMEPS - wavice "
+
+CNTL_DIR=datm_s2sw_wavice
+
+LIST_FILES="RESTART/20210323.060000.MOM.res.nc \
+            RESTART/iced.2021-03-23-21600.nc \
+            RESTART/DATM_GFS.cpl.r.2021-03-23-21600.nc"
+
+export_datm_cdeps
+export_ww3
+CPLWAV=.true.
+
+DATM_SRC=GFS
+FILEBASE_DATM=gfs
+SYEAR=2021
+SMONTH=03
+SDAY=22
+SHOUR=06
+SECS=$((10#${SHOUR} * 3600))
+
+IATM=3072
+JATM=1536
+ATM_NX_GLB=$IATM
+ATM_NY_GLB=$JATM
+ATMRES=${IATM}x${JATM}
+MESH_ATM=mesh.datm.3072x1536.nc
+atm_datamode=GEFS
+
+CICE_KTHERM=2
+CICE_TFREEZE_OPTION=mushy
+RESTART_N=12
+stream_files="INPUT/gfs.202103.nc"
+eps_imesh=2.5e-1
+MOM6_TOPOEDITS=ufs.topo_edits_011818.nc
+MOM6_ALLOW_LANDMASK_CHANGES=True
+
+export WW3_DOMAIN=global_270k
+# INPUTDATA_ROOT_WW3]=TMP_USER_INP
+export MESH_WAV=mesh.${WW3_DOMAIN}.nc
+export WW3_MODDEF=mod_def.ic4.exp.${WW3_DOMAIN}
+export WW3_ICE='C'
+export WW3_IC1='C'
+export WW3_IC5='C'
+export CICE_nfsd=12
+export CICE_tr_fsd=.true.
+export CICE_restart_fsd=.false.
+export CICE_wave_spec_type=constant
+export wav_coupling_to_cice=true
+
+FV3_RUN=cpld_datm_cdeps_gfs.IN
