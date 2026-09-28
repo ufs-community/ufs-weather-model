@@ -97,8 +97,11 @@ cd "${RUNDIR}"
 # Make configure and run files
 ###############################################################################
 
-# if this is a dry-run we skip copying the executable and loading modules
-if [[ ${DRY_RUN:-false} == false ]]; then
+# if this is a dry-run we skip copying the executable and loading modules --
+# except on a community platform (-P), where a dry run (-x) verifies the
+# compile (this copy fails if it didn't produce a usable executable) and
+# stages modulefiles as one of its pre-flight checks.
+if [[ ${DRY_RUN:-false} == false || ${COMMUNITY_PLATFORM:-false} == true ]]; then
   # FV3 executable:
   cp "${PATHRT}/fv3_${COMPILE_ID}.exe" "fv3.exe"
 
@@ -298,7 +301,7 @@ if [[ "Q${FIELD_TABLE:-}" != Q ]]; then
   cp "${PATHRT}/parm/field_table/${FIELD_TABLE}" field_table
 fi
 
-if [[ ${DRY_RUN:-false} == false ]]; then
+if [[ ${DRY_RUN:-false} == false || ${COMMUNITY_PLATFORM:-false} == true ]]; then
 # fix files
 if [[ ${FV3} == true ]]; then
   cp "${INPUTDATA_ROOT}"/FV3_fix/*.txt .
@@ -325,8 +328,10 @@ fi
 # Field Dictionary
 cp "${PATHRT}/parm/fd_ufs.yaml" fd_ufs.yaml
 
-if [[ ${DRY_RUN:-false} == false ]]; then
-   # Set up the run directory
+if [[ ${DRY_RUN:-false} == false || ${COMMUNITY_PLATFORM:-false} == true ]]; then
+   # Set up the run directory -- this is the actual input-data staging step
+   # (fv3_run copies/links INPUT files from INPUTDATA_ROOT), so a community
+   # platform (-P) dry run (-x) still runs it as one of its pre-flight checks.
    # shellcheck disable=SC1091
    source ./fv3_run
 else
@@ -500,6 +505,9 @@ if [[ "${JOB_SHOULD_FAIL:-NO}" == WHEN_COPYING ]] ; then
 fi
 
 if [[ ${DRY_RUN:-false} == true ]]; then
+  if [[ ${COMMUNITY_PLATFORM:-false} == true ]]; then
+    echo "run_test.sh: DRY RUN -- compile verified, input data staged, job_card prepared for ${TEST_ID}; not submitted"
+  fi
   exit 0
 fi
 

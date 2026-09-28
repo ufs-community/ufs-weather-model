@@ -33,7 +33,10 @@ usage() {
   echo "  -r  use Rocoto workflow manager"
   echo "  -v  verbose output"
   echo "  -w  for weekly_test, skip comparing baseline results"
-  echo "  -x  dry-run"
+  echo "  -x  dry-run; with -P, still compiles for real and, per RUN line,"
+  echo "      verifies its compile, stages input data, verifies the"
+  echo "      container (if any), and prepares job_card, but does not"
+  echo "      submit it -- reported as DRY RUN SUCCESS/FAIL, not PASS/FAIL"
   echo
 }
 
@@ -526,7 +529,10 @@ resolve_container_image() {
 
   [[ -z ${RT_CONTAINER_IMG} ]] && return 0
 
-  [[ ${DRY_RUN} == true ]] && return 0
+  # A Tier 1 (-p) dry run skips the disk check for speed; a community
+  # platform (-P) dry run verifies the container is actually present, since
+  # that is one of its pre-flight checks.
+  [[ ${DRY_RUN} == true && ${COMMUNITY_PLATFORM_USE} == false ]] && return 0
 
   [[ -f ${RT_CONTAINER_IMG} ]] || return 1
   [[ -f ${PATHTR}/modulefiles/ufs_container.${RT_COMPILER}.lua ]] \
@@ -624,10 +630,10 @@ EOF
     echo "rt.sh: Running compile ${COMPILE_ID}"
     ./run_compile.sh "${PATHRT}" "${RUNDIR_ROOT}" "${MAKE_OPT}" "${COMPILE_ID}" > "${LOG_DIR}/compile_${COMPILE_ID}.log" 2>&1
     if [[ -f "${PATHRT}/fail_compile_${COMPILE_ID}" ]]; then
-      echo "rt.sh: Compile ${COMPILE_ID} FAILED -- see ${LOG_DIR}/compile_${COMPILE_ID}.log"
+      echo "rt.sh: Compile ${COMPILE_ID} FAIL -- see ${LOG_DIR}/compile_${COMPILE_ID}.log"
       COMPILE_FAILED+=("${COMPILE_ID}")
     else
-      echo "rt.sh: Compile ${COMPILE_ID} PASSED"
+      echo "rt.sh: Compile ${COMPILE_ID} PASS"
       COMPILE_PASSED+=("${COMPILE_ID}")
     fi
   fi
@@ -1402,7 +1408,7 @@ in_metatask=false
 
 declare -A compiles
 
-# Live PASS/FAILtracking for sequential (non-Rocoto/ecFlow) compiles and
+# Live PASS/FAIL tracking for sequential (non-Rocoto/ecFlow) compiles and
 # tests -- run_compile.sh/run_test.sh always exit 0 in this mode (so rt.sh
 # keeps going and generate_log can catch failures at the end from their
 # fail_compile_*/fail_test_* marker files), which otherwise leaves a failed
@@ -1411,6 +1417,11 @@ COMPILE_PASSED=()
 COMPILE_FAILED=()
 TEST_PASSED=()
 TEST_FAILED=()
+# A community platform (-P) dry run (-x) validates a test's setup (compile
+# result, input data staging, container presence, job_card) without
+# submitting it -- tracked separately from a real PASS/FAIL.
+TEST_DRYRUN_PASS=()
+TEST_DRYRUN_FAIL=()
 
 while read -r line || [[ -n "${line}" ]]; do
 
@@ -1453,7 +1464,10 @@ while read -r line || [[ -n "${line}" ]]; do
       continue
     fi
 
-    [[ ${DRY_RUN} == true ]] && continue
+    # A community platform (-P) dry run still compiles for real: a RUN
+    # line's dry run below verifies its compile succeeded, which needs an
+    # actual executable to check against.
+    [[ ${DRY_RUN} == true && ${COMMUNITY_PLATFORM_USE} == false ]] && continue
 
     if [[ ${COMMUNITY_PLATFORM_USE} == true && -x "${PATHTR}/tests/fv3_${COMPILE_ID}.exe" ]]; then
       echo "rt.sh: SKIP compile ${COMPILE_ID} -- fv3_${COMPILE_ID}.exe already present in ${PATHTR}/tests/"
@@ -1589,11 +1603,19 @@ EOF
     # written by run_test.sh, so this check works even though the run itself
     # happened inside the subshell just closed.
     if [[ ${ROCOTO} == false && ${ECFLOW} == false ]]; then
-      if [[ -f "${PATHRT}/fail_test_${TEST_ID}" ]]; then
-        echo "rt.sh: Test ${TEST_ID} FAILED -- see ${LOG_DIR}/run_${TEST_ID}${RT_SUFFIX}.log"
+      if [[ ${COMMUNITY_PLATFORM_USE} == true && ${DRY_RUN} == true ]]; then
+        if [[ -f "${PATHRT}/fail_test_${TEST_ID}" ]]; then
+          echo "rt.sh: Test ${TEST_ID} DRY RUN FAIL -- see ${LOG_DIR}/run_${TEST_ID}${RT_SUFFIX}.log"
+          TEST_DRYRUN_FAIL+=("${TEST_ID}")
+        else
+          echo "rt.sh: Test ${TEST_ID} DRY RUN SUCCESS"
+          TEST_DRYRUN_PASS+=("${TEST_ID}")
+        fi
+      elif [[ -f "${PATHRT}/fail_test_${TEST_ID}" ]]; then
+        echo "rt.sh: Test ${TEST_ID} FAIL -- see ${LOG_DIR}/run_${TEST_ID}${RT_SUFFIX}.log"
         TEST_FAILED+=("${TEST_ID}")
       else
-        echo "rt.sh: Test ${TEST_ID} PASSED"
+        echo "rt.sh: Test ${TEST_ID} PASS"
         TEST_PASSED+=("${TEST_ID}")
       fi
     fi
@@ -1631,7 +1653,7 @@ if [[ ${CREATE_BASELINE} == true && ${NEW_BASELINES_FILE} != '' ]]; then
   done
 fi
 
-if [[ ${DRY_RUN} == true ]]; then
+if [[ ${DRY_RUN} == true && ${COMMUNITY_PLATFORM_USE} == false ]]; then
   echo "Successful dry run"
   exit 0
 fi
@@ -1640,11 +1662,17 @@ if [[ ${ROCOTO} == false && ${ECFLOW} == false ]]; then
   echo
   echo "===== COMPILE/TEST SUMMARY ====="
   echo "Compiles: ${#COMPILE_PASSED[@]} passed, ${#COMPILE_FAILED[@]} failed"
-  for c in "${COMPILE_PASSED[@]}"; do echo "  PASSED -- COMPILE ${c}"; done
-  for c in "${COMPILE_FAILED[@]}"; do echo "  FAILED -- COMPILE ${c}"; done
-  echo "Tests: ${#TEST_PASSED[@]} passed, ${#TEST_FAILED[@]} failed"
-  for t in "${TEST_PASSED[@]}"; do echo "  PASSED -- TEST ${t}"; done
-  for t in "${TEST_FAILED[@]}"; do echo "  FAILED -- TEST ${t}"; done
+  for c in "${COMPILE_PASSED[@]}"; do echo "  PASS -- COMPILE ${c}"; done
+  for c in "${COMPILE_FAILED[@]}"; do echo "  FAIL -- COMPILE ${c}"; done
+  if [[ ${COMMUNITY_PLATFORM_USE} == true && ${DRY_RUN} == true ]]; then
+    echo "Tests (dry run): ${#TEST_DRYRUN_PASS[@]} succeeded, ${#TEST_DRYRUN_FAIL[@]} failed"
+    for t in "${TEST_DRYRUN_PASS[@]}"; do echo "  DRY RUN SUCCESS -- TEST ${t}"; done
+    for t in "${TEST_DRYRUN_FAIL[@]}"; do echo "  DRY RUN FAIL -- TEST ${t}"; done
+  else
+    echo "Tests: ${#TEST_PASSED[@]} passed, ${#TEST_FAILED[@]} failed"
+    for t in "${TEST_PASSED[@]}"; do echo "  PASS -- TEST ${t}"; done
+    for t in "${TEST_FAILED[@]}"; do echo "  FAIL -- TEST ${t}"; done
+  fi
   echo "================================"
   echo
 fi
