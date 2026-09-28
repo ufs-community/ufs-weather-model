@@ -1474,6 +1474,7 @@ export_fv3() {
   WW3_ICE='F'
   WW3_IC1='F'
   WW3_IC5='F'
+  wav_coupling_to_cice=false
   # ATMW
   WW3_MODDEF=mod_def.glo_1deg
   MESH_WAV=mesh.glo_1deg.nc
@@ -1732,6 +1733,11 @@ export_cice6() {
   CICE_SNWGRAIN=.false.
   CICE_EMISSIVITY=0.95
   CICE_FBOT_XFER_TYPE='constant'
+  #Wave-ice coupling variables
+  CICE_nfsd=1
+  CICE_tr_fsd=.false.
+  CICE_restart_fsd=.false.
+  CICE_wave_spec_type=none
   # SlenderX2
   CICE_NPROC=${ICE_tasks}
   np2=$((CICE_NPROC / 2))

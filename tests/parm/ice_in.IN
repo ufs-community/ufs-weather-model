@@ -68,11 +68,10 @@
     kmt_file     = '@[CICE_MASK]'
     kcatbound    = 0
     ncat         = 5
-    nfsd         = 1
+    nfsd         = @[CICE_nfsd]
     nilyr        = 7
     nslyr        = 1
     nblyr        = 1
-    nfsd         = 1
     grid_atm     = '@[CICE_GRIDATM]'
     grid_ocn     = '@[CICE_GRIDOCN]'
     grid_ice     = '@[CICE_GRIDICE]'
@@ -93,8 +92,8 @@
     restart_pond_sealvl = .false.
     tr_aero      = .false.
     restart_aero = .false.
-    tr_fsd       = .false.
-    restart_fsd  = .false.
+    tr_fsd       = @[CICE_tr_fsd]
+    restart_fsd  = @[CICE_restart_fsd]
     tr_snow      = @[CICE_TR_SNOW]
 /
 
@@ -190,6 +189,7 @@
     congel_freeze   = 'two-step'
     tfrz_option     = '@[CICE_TFREEZE_OPTION]'
     restart_coszen  = .true.
+    wave_spec_type = '@[CICE_wave_spec_type]'
     ice_data_type   = 'latsst'
     ice_data_conc   = 'parabolic'
     ice_data_dist   = 'uniform'
@@ -410,6 +410,9 @@
     f_drag         = 'x'
     f_Cdn_atm      = 'x'
     f_Cdn_ocn      = 'x'
+/
+
+&icefields_fsd_nml
 /
 
 &icefields_bgc_nml
