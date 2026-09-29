@@ -106,8 +106,8 @@ def generateStage(nodeLabel) {
             node(nodeLabel) {
 		script {
                   env.BUILD_STATUS = currentBuild.currentResult
-                 try {
                   sh '''
+                   
                     export machine=${NODE_NAME,,}
                     export PATH=$PATH:~/bin
                     export SSH_ORIGIN=$(curl --silent https://api.github.com/repos/ufs-community/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.repo.ssh_url')
@@ -118,47 +118,20 @@ def generateStage(nodeLabel) {
                     echo "GIT_OWNER ${GIT_OWNER}"
                     echo "GIT_REPO_NAME ${GIT_REPO_NAME}"
 
-                    echo 'cd tests'
-                    pwd
-                    git remote -v
-                    git fetch --no-recurse-submodules origin
-                    git reset FETCH_HEAD --hard
-                    cd $WORKSPACE/..
-                    echo '3 cds'
-                    pwd
-                    ls -l
+                    if [[ $BUILD_STATUS == "SUCCESS" ]]; then 
+                       echo 'cd tests'
+                       pwd
+                       git remote -v
+                       git fetch --no-recurse-submodules origin
+                       git reset FETCH_HEAD --hard
+                       cd $WORKSPACE/..
+                       echo '3 cds'
+                       pwd
+                       ls -l
 
-                    # change "cp" to "mv" to be tighter on logfiles existence (prevents using logfiles from a previous run)
-                    [ -f OpnReqTests_control_p8_${machine}.log ] && mv OpnReqTests_control_p8_${machine}.log $WORKSPACE/tests/logs/
-                    [ -f OpnReqTests_regional_control_${machine}.log ] && mv OpnReqTests_regional_control_${machine}.log $WORKSPACE/tests/logs/
-                    cd $WORKSPACE/tests/
-                    git config user.email "ecc.platform@noaa.gov"
-                    git config user.name "epic-cicd-jenkins"
-                    export machine_name_logs=$(echo $machine | awk '{ print tolower($1) }')
-                    git remote -v | grep -w sshorigin > /dev/null 2>&1 && git remote remove sshorigin > /dev/null 2>&1
-                    git remote add sshorigin $SSH_ORIGIN > /dev/null 2>&1
-                    git add --ignore-errors logs/OpnReqTests_control_p8_${machine}.log logs/OpnReqTests_regional_control_${machine}.log
-
-                    echo $BUILD_STATUS
-                    git commit -m "${NODE_NAME} ORT Completed. on-behalf-of @ufs-community <ecc.platform@noaa.gov>"
-                       
-
-                    git pull sshorigin $FORK_BRANCH
-                    git push sshorigin HEAD:$FORK_BRANCH
-
-                    echo "Testing concluded for ${GIT_URL}"
-                    GIT_OWNER=$(echo $GIT_URL | cut -d '/' -f4)
-                    GIT_REPO_NAME=$(echo $GIT_URL | cut -d '/' -f5 | cut -d '.' -f1)
-                    echo "Removing labels from $GIT_URL"
-                    echo "https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/$machine-ORT"
-                    curl --silent -X DELETE -H "Accept:   application/vnd.github.v3+json" -H "Authorization:   Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/$machine-ORT
-                    curl --silent -X DELETE -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/$machine-CI_RUNNING
-                  '''
-                  } catch (Exception e) {
-                    sh '''
-                       export machine=${NODE_NAME,,}
-                       export BUILT_STATUS='FAILURE'
-                       echo $BUILD_STATUS
+                       # change "cp" to "mv" to be tighter on logfiles existence (prevents using logfiles from a previous run)
+                       [ -f OpnReqTests_control_p8_${machine}.log ] && mv OpnReqTests_control_p8_${machine}.log $WORKSPACE/tests/logs/
+                       [ -f OpnReqTests_regional_control_${machine}.log ] && mv OpnReqTests_regional_control_${machine}.log $WORKSPACE/tests/logs/
                        cd $WORKSPACE/tests/
                        git config user.email "ecc.platform@noaa.gov"
                        git config user.name "epic-cicd-jenkins"
@@ -166,7 +139,14 @@ def generateStage(nodeLabel) {
                        git remote -v | grep -w sshorigin > /dev/null 2>&1 && git remote remove sshorigin > /dev/null 2>&1
                        git remote add sshorigin $SSH_ORIGIN > /dev/null 2>&1
                        git add --ignore-errors logs/OpnReqTests_control_p8_${machine}.log logs/OpnReqTests_regional_control_${machine}.log
-                       git commit -m "${NODE_NAME} ORT Failed! on-behalf-of @ufs-community <ecc.platform@noaa.gov>"
+
+                       echo $BUILD_STATUS
+                       git commit -m "${NODE_NAME} ORT Completed. on-behalf-of @ufs-community <ecc.platform@noaa.gov>"
+                       
+
+                       git pull sshorigin $FORK_BRANCH
+                       git push sshorigin HEAD:$FORK_BRANCH
+
                        echo "Testing concluded for ${GIT_URL}"
                        GIT_OWNER=$(echo $GIT_URL | cut -d '/' -f4)
                        GIT_REPO_NAME=$(echo $GIT_URL | cut -d '/' -f5 | cut -d '.' -f1)
@@ -174,10 +154,35 @@ def generateStage(nodeLabel) {
                        echo "https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/$machine-ORT"
                        curl --silent -X DELETE -H "Accept:   application/vnd.github.v3+json" -H "Authorization:   Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/$machine-ORT
                        curl --silent -X DELETE -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/$machine-CI_RUNNING
+                   else
+                      echo $BUILD_STATUS
+                      [ -f OpnReqTests_control_p8_${machine}.log ] && mv OpnReqTests_control_p8_${machine}.log $WORKSPACE/tests/logs/
+                      [ -f OpnReqTests_regional_control_${machine}.log ] && mv OpnReqTests_regional_control_${machine}.log $WORKSPACE/tests/logs/
+                      cd $WORKSPACE/tests/
+                      git config user.email "ecc.platform@noaa.gov"
+                      git config user.name "epic-cicd-jenkins"
+                      export machine_name_logs=$(echo $machine | awk '{ print tolower($1) }')
+                      git remote -v | grep -w sshorigin > /dev/null 2>&1 && git remote remove sshorigin > /dev/null 2>&1
+                      git remote add sshorigin $SSH_ORIGIN > /dev/null 2>&1
+                      git add --ignore-errors logs/OpnReqTests_control_p8_${machine}.log logs/OpnReqTests_regional_control_${machine}.log
 
-                    '''
-                  
-                  }
+                      git commit -m "${NODE_NAME} ORT Failed! on-behalf-of @ufs-community <ecc.platform@noaa.gov>"
+
+
+                      git pull sshorigin $FORK_BRANCH
+                      git push sshorigin HEAD:$FORK_BRANCH
+
+                      echo "Testing concluded for ${GIT_URL}"
+                      GIT_OWNER=$(echo $GIT_URL | cut -d '/' -f4)
+                      GIT_REPO_NAME=$(echo $GIT_URL | cut -d '/' -f5 | cut -d '.' -f1)
+                      echo "Removing labels from $GIT_URL"
+                      echo "https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/$machine-ORT"
+                      curl --silent -X DELETE -H "Accept:   application/vnd.github.v3+json" -H "Authorization:   Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/$machine-ORT
+                      curl --silent -X DELETE -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/$machine-CI_RUNNING
+                   fi
+                      
+                       
+                  '''
                 }
             }
         }
