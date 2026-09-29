@@ -30,7 +30,8 @@ get_shas () {
 declare -A urls branches paths
 # UPP, ccpp-framework, rrtmgp, and gocart are intentionally excluded because they update at a different cadence 
 # and periodically bring in changes. 
-submodules="base ufsatm mom6 cice ww3 stoch cmeps cdeps cmake ccpp_physics aqm noahmp cubed_sphere lm4 fb catchem c3 tempo mynn" # Add cece once available; not adding mpas yet; it is currently one commit behind seemingly on purpose.
+# Temporarily disable TEMPO check while CCPP submodule CM practices are being ironed out. 
+submodules="base ufsatm mom6 cice ww3 stoch cmeps cdeps cmake ccpp_physics aqm noahmp cubed_sphere lm4 fb catchem c3 mynn" # Add cece once available; not adding mpas yet; it is currently one commit behind seemingly on purpose.
 
 urls[base]='https://github.com/ufs-community/ufs-weather-model'
 branches[base]='develop'
