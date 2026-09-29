@@ -8,7 +8,6 @@ on:
       - labeled
       - unlabeled
       - synchronize
-# Need to add push logic to call API properly! Workflow assumes a PR, but there isn't one on push to develop...
 
 defaults:
   run:
@@ -20,7 +19,7 @@ concurrency:
 
 env: 
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  MACHINES: "acorn derecho gaeac6 hercules orion ursa wcoss2"
+  MACHINES: "gaeac6 hercules orion ursa wcoss2"
   #BASE_URL: https://api.github.com/repos/ufs-community/ufs-weather-model
   BASE_URL: https://api.github.com/repos/NOAA-EPIC/ufs-weather-model
   PR_NUM: ${{ github.event.number }}
