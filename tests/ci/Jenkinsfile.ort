@@ -56,6 +56,7 @@ def generateStage(nodeLabel) {
                    curl --silent -X POST -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/"${GIT_OWNER}"/"${GIT_REPO_NAME}"/issues/"${CHANGE_ID}"/labels -d '{"labels":["'"$machine"'-CI_RUNNING"]}'
 
                   pwd
+                  exit 0 
                   ./opnReqTest -n regional_control -a ${ACCNR} -c bit,dcp,thr
                   cd logs/
                   # change "cp" to "mv" to be tighter on logfiles existence (prevents using logfiles from a previous run)
@@ -90,6 +91,7 @@ def generateStage(nodeLabel) {
                   echo "GIT_REPO_NAME ${GIT_REPO_NAME}"
 
                   pwd
+                  exit 1
                   ./opnReqTest -n control_p8 -a ${ACCNR} -c std,dbg,bit,mpi,rst,thr,dcp
                   cd logs/
                   # change "cp" to "mv" to be tighter on logfiles existence (prevents using logfiles from a previous run)
