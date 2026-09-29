@@ -105,6 +105,7 @@ def generateStage(nodeLabel) {
         stage("Finalize on ${nodeLabel.replaceAll("'","")}") {
             node(nodeLabel) {
 		script {
+                 try {
                   env.BUILD_STATUS = currentBuild.currentResult
                   sh '''
                     export machine=${NODE_NAME,,}
@@ -158,6 +159,20 @@ def generateStage(nodeLabel) {
                     curl --silent -X DELETE -H "Accept:   application/vnd.github.v3+json" -H "Authorization:   Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/$machine-ORT
                     curl --silent -X DELETE -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/$machine-CI_RUNNING
                   '''
+                  } finally {
+                    sh '''
+                       export machine=${NODE_NAME,,}
+                       echo "Testing concluded for ${GIT_URL}"
+                       GIT_OWNER=$(echo $GIT_URL | cut -d '/' -f4)
+                       GIT_REPO_NAME=$(echo $GIT_URL | cut -d '/' -f5 | cut -d '.' -f1)
+                       echo "Removing labels from $GIT_URL"
+                       echo "https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/$machine-ORT"
+                       curl --silent -X DELETE -H "Accept:   application/vnd.github.v3+json" -H "Authorization:   Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/$machine-ORT
+                       curl --silent -X DELETE -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/$machine-CI_RUNNING
+
+                    '''
+                  
+                  }
                 }
             }
         }
