@@ -28,10 +28,8 @@ get_shas () {
 
 
 declare -A urls branches paths
-# UPP, ccpp-framework, rrtmgp, and gocart are intentionally excluded because they update at a different cadence 
-# and periodically bring in changes. 
-# Temporarily disable TEMPO check while CCPP submodule CM practices are being ironed out. 
-submodules="base ufsatm mom6 cice ww3 stoch cmeps cdeps cmake ccpp_physics aqm noahmp cubed_sphere lm4 fb catchem c3 mynn" # Add cece once available; not adding mpas yet; it is currently one commit behind seemingly on purpose.
+# mpas, rrtmgp, and gocart are intentionally excluded because they update at a different cadence and don't have appropriate tags to clone
+submodules="base aqm catchem cdeps cice cmeps cmake lm4 mom6 noahmp ufsatm ww3 fb stoch cubed_sphere upp ccpp_framework ccpp_physics c3 tempo mynn" # Add cece once available 
 
 urls[base]='https://github.com/ufs-community/ufs-weather-model'
 branches[base]='develop'
@@ -69,6 +67,10 @@ urls[cmake]='https://github.com/NOAA-EMC/CMakeModules'
 branches[cmake]='develop'
 paths[cmake]='CMakeModules'
 
+urls[ccpp_framework]='https://github.com/NCAR/ccpp-framework'
+branches[framework]='capgen-1.0.0-pre'
+paths[ccpp_framework]='UFSATM/ccpp/framework'
+
 urls[ccpp_physics]='https://github.com/ufs-community/ccpp-physics'
 branches[ccpp_physics]='ufs/dev'
 paths[ccpp_physics]='UFSATM/ccpp/physics'
@@ -78,7 +80,7 @@ branches[c3]='main'
 paths[c3]='UFSATM/ccpp/physics/physics/CONV/C3'
 
 urls[tempo]='https://github.com/NCAR/TEMPO'
-branches[tempo]='main'
+branches[tempo]='tempo_v3.1.2'
 paths[tempo]='UFSATM/ccpp/physics/physics/MP/TEMPO/tempo_v3'
 
 urls[mynn]='https://github.com/NCAR/MYNN-SFC'
@@ -102,7 +104,7 @@ branches[cubed_sphere]='dev/emc'
 paths[cubed_sphere]='UFSATM/fv3/atmos_cubed_sphere'
 
 urls[mpas]='https://github.com/ufs-community/MPAS-Model'
-branches[mpas]='feature/mpas-in-ufs'
+branches[mpas]='noaa/develop'
 paths[mpas]='UFSATM/mpas/MPAS-Model'
 
 urls[lm4]='https://github.com/NOAA-GFDL/LM4-NUOPC-driver'
@@ -122,6 +124,9 @@ urls[catchem]='https://github.com/ufs-community/CATChem'
 branches[catchem]='main'
 paths[catchem]='CATChem'
 
+urls[upp]='https://github.com/NOAA-EMC/UPP'
+branches[upp]='wm-latest'
+paths[upp]='UFSATM/upp'
 
 for submodule in $submodules; do
     url=${urls[$submodule]}
