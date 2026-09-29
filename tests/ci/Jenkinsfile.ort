@@ -106,6 +106,7 @@ def generateStage(nodeLabel) {
             node(nodeLabel) {
 		script {
                   env.BUILD_STATUS = currentBuild.currentResult
+                  catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') { 
                   sh '''
                     export machine=${NODE_NAME,,}
                     export PATH=$PATH:~/bin
@@ -158,6 +159,7 @@ def generateStage(nodeLabel) {
                     curl --silent -X DELETE -H "Accept:   application/vnd.github.v3+json" -H "Authorization:   Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/$machine-ORT
                     curl --silent -X DELETE -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/$machine-CI_RUNNING
                   '''
+                  }
                 }
             }
         }
