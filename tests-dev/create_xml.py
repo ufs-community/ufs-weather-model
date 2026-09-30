@@ -65,6 +65,7 @@ def rocoto_create_compile_task(MACHINE_ID,COMPILE_ID,ROCOTO_COMPILE_MAXTRIES,MAK
     if ( MACHINE_ID == 'orion'): BUILD_WALLTIME="01:00:00"
     if ( MACHINE_ID == 'hercules'): BUILD_WALLTIME="01:00:00"
     if ( MACHINE_ID == 'gaeac6' ): BUILD_WALLTIME="01:00:00"
+    if ( MACHINE_ID == 'gaeac7' ): BUILD_WALLTIME="01:00:00"
     compile_task = f"""  <task name="compile_{COMPILE_ID}" maxtries="{ROCOTO_COMPILE_MAXTRIES}">
     <command>&PATHRT;/run_compile.sh &PATHRT; &RUNDIR_ROOT; "{MAKE_OPT}" {COMPILE_ID} 2>&amp;1 | tee &LOG;/compile_{COMPILE_ID}.log</\
 command>
@@ -75,6 +76,10 @@ command>
     if ( MACHINE_ID == 'gaeac6' ):
         compile_task+=f"""    <native>--clusters=es</native>
     <partition>eslogin_c6</partition>
+"""
+    if ( MACHINE_ID == 'gaeac7' ):
+        compile_task+=f"""    <native>--clusters=es</native>
+    <partition>eslogin_c7</partition>
 """
         PARTITION= ""
     if ( PARTITION != "" and MACHINE_ID != "hera" ):

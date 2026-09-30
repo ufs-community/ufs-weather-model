@@ -56,7 +56,11 @@ chmod 755 g2ctl
 
 # load modules grads and wgrib2
 HOSTNAME=$(hostname)
-if [[ ${HOSTNAME} == gaea6[1-9] ]]; then module load Core/24.11 ; fi
+if [[ ${HOSTNAME} == gaea6[1-6] ]]; then
+  module load Core/24.11
+elif [[ ${HOSTNAME} == gaea7[1-6]; then
+  module load Core/26.06
+fi
 module load grads wgrib2
 
 # check if model output file exxists:
@@ -65,8 +69,9 @@ echo Using model file: GFSPRS.GrbF24
 
 # detect machine we are on
 case $(hostname -f) in
-  gaea5*)       HSD_path=/gpfs/f5/epic/world-shared/HSD_INPUT_DATA        ;; ## gaea5
-  gaea6*)       HSD_path=/gpfs/f6/bil-fire8/world-shared/HSD_INPUT_DATA   ;; ## gaea6
+  gaea5*)       HSD_path=/gpfs/f5/epic/world-shared/HSD_INPUT_DATA        ;; ## gaeac5
+  gaea6*)       HSD_path=/gpfs/f6/bil-fire8/world-shared/HSD_INPUT_DATA   ;; ## gaeac6
+  gaea7*)       HSD_path=/gpfs/f7/epic/world-shared/HSD_INPUT_DATA        ;; ## gaeac7
   hfe*)         HSD_path=/scratch1/NCEPDEV/nems/role.epic/HSD_INPUT_DATA  ;; ## hera
   hecflow*)     HSD_path=/scratch1/NCEPDEV/nems/role.epic/HSD_INPUT_DATA  ;; ## hera
   [Oo]rion*)    HSD_path=/work/noaa/epic/role-epic/contrib/HSD_INPUT_DATA ;; ## orion

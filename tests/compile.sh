@@ -61,11 +61,8 @@ case ${MACHINE_ID} in
     source "${PATHTR}/modulefiles/ufs_${MACHINE_ID}.${RT_COMPILER}"
     ;;
   *)
-    # Activate lua environment for gaea c5
-    if [[ ${MACHINE_ID} == gaeac5 ]]; then
-      module reset
-    fi
-    if [[ ${MACHINE_ID} == gaeac6 ]]; then
+    # Activate lua environment for Gaea C5, C6, and C7
+    if [[ ${MACHINE_ID} == gaea* ]]; then
       module reset
     elif [[ ${MACHINE_ID} == container ]]; then
       # shellcheck disable=SC1091

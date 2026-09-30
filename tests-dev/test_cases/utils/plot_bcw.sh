@@ -27,7 +27,11 @@ chmod 755 g2ctl
 
 # load modules grads and wgrib2
 HOSTNAME=$(hostname)
-if [[ ${HOSTNAME} == gaea6[1-9] ]]; then module load Core/24.11 ; fi
+if [[ ${HOSTNAME} == gaea6[1-6] ]]; then
+  module load Core/24.11
+elif [[ ${HOSTNAME} == gaea7[1-6]; then
+  module load Core/26.06
+fi
 module load grads wgrib2
 
 # check if model output file exists:

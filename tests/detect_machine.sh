@@ -27,10 +27,12 @@ case $(hostname -f) in
   dlogin0[1-9].dogwood.wcoss2.ncep.noaa.gov) MACHINE_ID=wcoss2 ;; ### dogwood01-9
   dlogin10.dogwood.wcoss2.ncep.noaa.gov)     MACHINE_ID=wcoss2 ;; ### dogwood10
 
-  gaea5[1-8])          MACHINE_ID=gaeac5 ;; ### gaea51-58
-  gaea5[1-8].ncrc.gov) MACHINE_ID=gaeac5 ;; ### gaea51-58
-  gaea6[1-8])          MACHINE_ID=gaeac6 ;; ### gaea61-68
-  gaea6[1-8].ncrc.gov) MACHINE_ID=gaeac6 ;; ### gaea61-68
+  gaea5[1-6])          MACHINE_ID=gaeac5 ;; ### gaea51-56
+  gaea5[1-6].ncrc.gov) MACHINE_ID=gaeac5 ;; ### gaea51-56
+  gaea6[1-6])          MACHINE_ID=gaeac6 ;; ### gaea61-66
+  gaea6[1-6].ncrc.gov) MACHINE_ID=gaeac6 ;; ### gaea61-66
+  gaea7[1-6])          MACHINE_ID=gaeac7 ;; ### gaea71-76
+  gaea7[1-6].ncrc.gov) MACHINE_ID=gaeac7 ;; ### gaea71-76
 
   hfe0[1-9]) MACHINE_ID=hera ;; ### hera01-09
   hfe1[0-2]) MACHINE_ID=hera ;; ### hera10-12
@@ -109,12 +111,15 @@ elif [[ -d /work ]]; then
   else
     MACHINE_ID=orion
   fi
-elif [[ -d /gpfs/f5 && -d /ncrc ]]; then
+elif [[ -d /gpfs/f5 ]]; then
   # We are on GAEA C5.
   MACHINE_ID=gaeac5
-elif [[ -d /gpfs/f6 && -d /ncrc ]]; then
+elif [[ -d /gpfs/f6 ]]; then
   # We are on GAEA C6.
   MACHINE_ID=gaeac6
+elif [[ -d /gpfs/f7 ]]; then
+  # We are on GAEA C7.
+  MACHINE_ID=gaeac7
 elif [[ -d /opt/spack-stack && -v SINGULARITY_CONTAINER ]]; then
   # We are in a container
   MACHINE_ID=container

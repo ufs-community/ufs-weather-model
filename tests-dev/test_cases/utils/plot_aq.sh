@@ -25,7 +25,11 @@ data_path=/scratch3/NAGAPE/epic/role.epic/Aquaplanet
 
 # load grads module
 HOSTNAME=$(hostname)
-if [[ ${HOSTNAME} == gaea6[1-9] ]]; then module load Core/24.11 ; fi
+if [[ ${HOSTNAME} == gaea6[1-6] ]]; then 
+  module load Core/24.11 
+elif [[ ${HOSTNAME} == gaea7[1-6]; then
+  module load Core/26.06
+fi
 module load grads
 
 # if color bar script is not present, get it from github:
