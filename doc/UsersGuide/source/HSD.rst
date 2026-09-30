@@ -18,6 +18,7 @@ Although the UFS Weather Model (WM) can be run in any of several configurations,
    baroclinic_wave
    IdealizedTC
    Aquaplanet
+   CaseBenchmarking
    AddingHSDCase
    HSDcontainer
 

@@ -4,107 +4,107 @@
 #
 ###############################################################################
 
-export TEST_DESCR="fv3 wam debug test"
+TEST_DESCR="fv3 wam debug test"
 
-export CNTL_DIR=control_wam_debug
+CNTL_DIR=control_wam_debug
 
-export LIST_FILES="sfcf002.nc \
-                   atmf002.nc"
+LIST_FILES="sfcf002.nc \
+            atmf002.nc"
 
 export_fv3
 export_tiled
-export NPZ=149
-export NPZP=150
-export DT_ATMOS=180
-export DT_INNER=${DT_ATMOS}
-export SYEAR=2021
-export SMONTH=3
-export SDAY=22
-export SHOUR=6
-export FHMAX=2
-export OUTPUT_GRID='gaussian_grid'
-export FHROT=0
-export OUTPUT_FH='1 -1'
- 
+NPZ=149
+NPZP=150
+DT_ATMOS=180
+DT_INNER=${DT_ATMOS}
+SYEAR=2021
+SMONTH=3
+SDAY=22
+SHOUR=6
+FHMAX=2
+OUTPUT_GRID='gaussian_grid'
+FHROT=0
+OUTPUT_FH='1 -1'
+
 #WAM settings
-export TAU=1.0
-export D2_BG_K1=0.0
-export D2_BG_K2=0.0
-export D4_BG=0.16
-export PSM_BC=1
-export DDDMP=0.0
+TAU=1.0
+D2_BG_K1=0.0
+D2_BG_K2=0.0
+D4_BG=0.16
+PSM_BC=1
+DDDMP=0.0
 
-export NA_INIT=0
-export NUDGE_QV=.false.
-export Z_TRACER=.false.
-export INLINE_Q=.false.
-export FV_SG_ADJ=-1
-export VTDM4=0.0
-export DELT_MAX=1.0
-export DO_VORT_DAMP=.false.
-export D_CON=0.0
-export MAKE_NH=.false.
-export TRANS_TRAC=.false.
-export FHZERO=1.0
-export DNATS=0
+NA_INIT=0
+NUDGE_QV=.false.
+Z_TRACER=.false.
+INLINE_Q=.false.
+FV_SG_ADJ=-1
+VTDM4=0.0
+DELT_MAX=1.0
+DO_VORT_DAMP=.false.
+D_CON=0.0
+MAKE_NH=.false.
+TRANS_TRAC=.false.
+FHZERO=1.0
+DNATS=0
 
-export USE_MERRA2=.true.
-export IAER=1011
-export NSTF_NAME=2,1,0,0,0
+USE_MERRA2=.true.
+IAER=1011
+NSTF_NAME=2,1,0,0,0
 
 #UGWP1
-export GWD_OPT=2
-export DO_UGWP_V1=.false.
-export KNOB_UGWP_VERSION=0
-export KNOB_UGWP_NSLOPE=1
-export DO_UGWP_V0=.true.
-export DO_GSL_DRAG_LS_BL=.false.
-export DO_GSL_DRAG_SS=.true.
-export DO_GSL_DRAG_TOFD=.false.
-export DO_UGWP_V1_OROG_ONLY=.false.
-export DO_UGWP_V0_NST_ONLY=.false.
-export LDIAG_UGWP=.false.
+GWD_OPT=2
+DO_UGWP_V1=.false.
+KNOB_UGWP_VERSION=0
+KNOB_UGWP_NSLOPE=1
+DO_UGWP_V0=.true.
+DO_GSL_DRAG_LS_BL=.false.
+DO_GSL_DRAG_SS=.true.
+DO_GSL_DRAG_TOFD=.false.
+DO_UGWP_V1_OROG_ONLY=.false.
+DO_UGWP_V0_NST_ONLY=.false.
+LDIAG_UGWP=.false.
 
 #CA
-export DO_CA=.true.
-export CA_SGS=.true.
-export CA_GLOBAL=.false.
-export NCA=1
-export NCELLS=5
-export NLIVES=12
-export NTHRESH=18
-export NSEED=1
-export NFRACSEED=0.5
-export CA_TRIGGER=.true.
-export NSPINUP=1
-export ISEED_CA=12345
+DO_CA=.true.
+CA_SGS=.true.
+CA_GLOBAL=.false.
+NCA=1
+NCELLS=5
+NLIVES=12
+NTHRESH=18
+NSEED=1
+NFRACSEED=0.5
+CA_TRIGGER=.true.
+NSPINUP=1
+ISEED_CA=12345
 
 #settings
-export TILEDFIX=.true.
-export FSICL=0
-export FSICS=0
+TILEDFIX=.true.
+FSICL=0
+FSICS=0
 
-export IMP_PHYSICS=8
-export LGFDLMPRAD=.false.
-export LHEATSTRG=.false.
-export LSEASPRAY=.true.
-export SATMEDMF=.true.
-export DO_SAT_ADJ=.false.
-export DZ_MIN=6
+IMP_PHYSICS=8
+LGFDLMPRAD=.false.
+LHEATSTRG=.false.
+LSEASPRAY=.true.
+SATMEDMF=.true.
+DO_SAT_ADJ=.false.
+DZ_MIN=6
 
 #required for NML.IN sharing
-export MIN_SEAICE=0.15
-export FRAC_GRID=.true.
-export MOM6_OUTPUT_DIR=./MOM6_OUTPUT
-export MOM6_RESTART_DIR=./RESTART/
-export MOM6_RESTART_SETTING=n
-export USE_CICE_ALB=.false.
+MIN_SEAICE=0.15
+FRAC_GRID=.true.
+MOM6_OUTPUT_DIR=./MOM6_OUTPUT
+MOM6_RESTART_DIR=./RESTART/
+MOM6_RESTART_SETTING=n
+USE_CICE_ALB=.false.
 
-export FV3_RUN=wam_run.IN
-export CCPP_SUITE=FV3_GFS_v17_p8
-export FIELD_TABLE=field_table_wam_noaer
-export DIAG_TABLE=diag_table_wam
+FV3_RUN=wam_run.IN
+CCPP_SUITE=FV3_GFS_v17_p8
+FIELD_TABLE=field_table_wam_noaer
+DIAG_TABLE=diag_table_wam
 
-export INPUT_NML=wam_v17.nml.IN
+INPUT_NML=wam_v17.nml.IN
 
-export ZSTANDARD_LEVEL=5
+ZSTANDARD_LEVEL=5

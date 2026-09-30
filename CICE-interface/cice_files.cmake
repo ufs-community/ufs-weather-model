@@ -42,6 +42,7 @@ list(APPEND cice_shared_files
   CICE/cicecore/cicedyn/general/ice_init.F90
   CICE/cicecore/cicedyn/general/ice_state.F90
   CICE/cicecore/cicedyn/general/ice_step_mod.F90
+  CICE/cicecore/cicedyn/general/ice_bound_state.F90
 
   #Infrastructure List
   CICE/cicecore/cicedyn/infrastructure/ice_blocks.F90
@@ -97,26 +98,14 @@ list(APPEND cice_shared_files_c
 
 #-- Using MPI
 list(APPEND cice_mpi_comm_files
-  CICE/cicecore/cicedyn/infrastructure/comm/mpi/ice_boundary.F90
-  CICE/cicecore/cicedyn/infrastructure/comm/mpi/ice_broadcast.F90
-  CICE/cicecore/cicedyn/infrastructure/comm/mpi/ice_communicate.F90
-  CICE/cicecore/cicedyn/infrastructure/comm/mpi/ice_exit.F90
-  CICE/cicecore/cicedyn/infrastructure/comm/mpi/ice_gather_scatter.F90
-  CICE/cicecore/cicedyn/infrastructure/comm/mpi/ice_global_reductions.F90
-  CICE/cicecore/cicedyn/infrastructure/comm/mpi/ice_reprosum.F90
-  CICE/cicecore/cicedyn/infrastructure/comm/mpi/ice_timers.F90
-)
-
-#-- Using Serial
-list(APPEND cice_serial_comm_files
-  CICE/cicecore/cicedyn/infrastructure/comm/serial/ice_boundary.F90
-  CICE/cicecore/cicedyn/infrastructure/comm/serial/ice_broadcast.F90
-  CICE/cicecore/cicedyn/infrastructure/comm/serial/ice_communicate.F90
-  CICE/cicecore/cicedyn/infrastructure/comm/serial/ice_exit.F90
-  CICE/cicecore/cicedyn/infrastructure/comm/serial/ice_gather_scatter.F90
-  CICE/cicecore/cicedyn/infrastructure/comm/serial/ice_global_reductions.F90
-  CICE/cicecore/cicedyn/infrastructure/comm/serial/ice_reprosum.F90
-  CICE/cicecore/cicedyn/infrastructure/comm/serial/ice_timers.F90
+  CICE/cicecore/cicedyn/infrastructure/comm/ice_boundary.F90
+  CICE/cicecore/cicedyn/infrastructure/comm/ice_broadcast.F90
+  CICE/cicecore/cicedyn/infrastructure/comm/ice_communicate.F90
+  CICE/cicecore/cicedyn/infrastructure/comm/ice_exit.F90
+  CICE/cicecore/cicedyn/infrastructure/comm/ice_gather_scatter.F90
+  CICE/cicecore/cicedyn/infrastructure/comm/ice_global_reductions.F90
+  CICE/cicecore/cicedyn/infrastructure/comm/ice_reprosum.F90
+  CICE/cicecore/cicedyn/infrastructure/comm/ice_timers.F90
 )
 
 #-- Using binary IO

@@ -1,0 +1,17 @@
+#  example Icepack physics test
+source "${PATHRT}"/tests/datm_cdeps_gfs
+TEST_DESCR+=" icepack physics RT "
+CNTL_DIR=datm_gfs_icethermo
+
+CICE_DYN_AREA_MIN=0.000001d0
+CICE_DYN_MASS_MIN=0.00001d0
+
+CICE_NML_OVERRIDES="${PATHRT}"/../CICE-interface/CICE/icepack/configuration/scripts/options/set_nml.pondsealvl
+
+# Changing snow layers changes restart variables (like qsno for each layer)
+CICE_NML_OVERRIDES+=" ${PATHRT}"/../CICE-interface/CICE/icepack/configuration/scripts/options/set_nml.snwitdrdg
+# If no restart, Can "cold start" with CICE_IC_IC none or internal. Then chain restart/... dependencies
+CICE_RUNTYPE=initial
+CICE_ICE_IC=internal
+
+CICE_NML_OVERRIDES+=" ${PATHRT}"/../CICE-interface/CICE/icepack/configuration/scripts/options/set_nml.congel

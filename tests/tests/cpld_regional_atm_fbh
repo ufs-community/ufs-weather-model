@@ -4,132 +4,131 @@
 #
 ###############################################################################
 
-export TEST_DESCR="Compare FV3 regional with FIRE BEHAVIOR control results with previous trunk version"
+TEST_DESCR="Compare FV3 regional with FIRE BEHAVIOR control results with previous trunk version"
 
-export CNTL_DIR=cpld_regional_atm_fbh
+CNTL_DIR=cpld_regional_atm_fbh
 
-export LIST_FILES="dynf000.nc \
-                   dynf003.nc \
-                   phyf000.nc \
-                   phyf003.nc \
-                   fire_output_2020-08-13_18:00:00.nc \
-                   fire_output_2020-08-13_21:00:00.nc"
+LIST_FILES="dynf000.nc \
+            dynf003.nc \
+            phyf000.nc \
+            phyf003.nc \
+            fire_output_2020-08-13_18:00:00.nc \
+            fire_output_2020-08-13_21:00:00.nc"
 
 # default configuration
 export_fv3
 export_fire_behavior
 
 # models
-export atm_model=fv3
-export fbh_model=fire_behavior
+atm_model=fv3
+fbh_model=fire_behavior
 
 # simulation window
-export SYEAR=2020
-export SMONTH=8
-export SDAY=13
-export SHOUR=18
-export EYEAR=2020
-export EMONTH=8
-export EDAY=13
-export EHOUR=21
+SYEAR=2020
+SMONTH=8
+SDAY=13
+SHOUR=18
+EYEAR=2020
+EMONTH=8
+EDAY=13
+EHOUR=21
 
 # time steps
-export coupling_interval_sec=36
-export DT_ATMOS=36
-export DT_FIRE=0.5
+coupling_interval_sec=36
+DT_ATMOS=36
+DT_FIRE=0.5
 
 # model configuration
-export FHMAX=3
-export RESTART_INTERVAL=0
-export QUILTING=.true.
-export WRITE_GROUP=1
-export WRTTASK_PER_GROUP=5
-export NUM_FILES=2
-export FILENAME_BASE="'dyn' 'phy'"
-export OUTPUT_FILE="'netcdf' 'netcdf'"
-export WRITE_DOPOST=.false.
-export OUTPUT_GRID="'lambert_conformal'"
-export CEN_LON=-105.6041
-export CEN_LAT=39.01736
-export LON1=-109.0989
-export LAT1=36.2794
-export STDLAT1=39.01736
-export STDLAT2=39.01736
-export NX=207
-export NY=197
-export DX=3000.0
-export DY=3000.0
+FHMAX=3
+RESTART_INTERVAL=0
+QUILTING=.true.
+WRITE_GROUP=1
+WRTTASK_PER_GROUP=5
+NUM_FILES=2
+FILENAME_BASE="'dyn' 'phy'"
+OUTPUT_FILE="'netcdf' 'netcdf'"
+WRITE_DOPOST=.false.
+OUTPUT_GRID="'lambert_conformal'"
+CEN_LON=-105.6041
+CEN_LAT=39.01736
+LON1=-109.0989
+LAT1=36.2794
+STDLAT1=39.01736
+STDLAT2=39.01736
+NX=207
+NY=197
+DX=3000.0
+DY=3000.0
 
 # atmosphere configuration (fv3atm)
-export BLOCKSIZE=40
-export CCPP_SUITE='FV3_HRRR'
-export INPES='5'
-export JNPES='5'
-export NPX=211
-export NPY=201
-export NPZ=64
-export NTILES=1
-export K_SPLIT=2
-export N_SPLIT=5
-export NWAT=6
-export NA_INIT=1
-export DNATS=0
-export EXTERNAL_IC=.true.
-export NGGPS_IC=.true.
-export MOUNTAIN=.false.
-export DO_SAT_ADJ=.false.
-export WARM_START=.false.
-export TARGET_LAT=39.01737
-export TARGET_LON=-105.6041
-export STRETCH_FAC=0.999
-export REGIONAL=.true.
-export BC_UPDATE_INTERVAL=3
-export NROWS_BLEND=10
-export FULL_ZS_FILTER=.false.
-export N_ZS_FILTER=0
-export NPZP=65
-export FHCYC=0.0
-export IMP_PHYSICS=8
-export FHSWR=1200.0
-export FHLWR=1200.0
-export CPLFLX=.false.
-export CPL_IMP_MRG=.false.
-export CPL_IMP_DBG=.false.
-export CPLFIRE=.true.
+BLOCKSIZE=40
+CCPP_SUITE='FV3_HRRR_nolake'
+INPES='5'
+JNPES='5'
+NPX=211
+NPY=201
+NPZ=64
+NTILES=1
+K_SPLIT=2
+N_SPLIT=5
+NWAT=6
+NA_INIT=1
+DNATS=0
+EXTERNAL_IC=.true.
+NGGPS_IC=.true.
+MOUNTAIN=.false.
+DO_SAT_ADJ=.false.
+WARM_START=.false.
+TARGET_LAT=39.01737
+TARGET_LON=-105.6041
+STRETCH_FAC=0.999
+REGIONAL=.true.
+BC_UPDATE_INTERVAL=3
+NROWS_BLEND=10
+FULL_ZS_FILTER=.false.
+N_ZS_FILTER=0
+NPZP=65
+FHCYC=0.0
+IMP_PHYSICS=8
+FHSWR=1200.0
+FHLWR=1200.0
+CPLFLX=.false.
+CPL_IMP_MRG=.false.
+CPL_IMP_DBG=.false.
+CPLFIRE=.true.
 
 # fire configuration (fire_behavior)
-export FIRE_NAME=cameron_peak_fire
-export fire_atm_feedback=1.0
-export fire_ignition_end_lat1=40.609
-export fire_ignition_end_lon1=-105.879
-export fire_ignition_end_time1=7000
-export fire_ignition_radius1=250
-export fire_ignition_ros1=0.05
-export fire_ignition_start_lat1=40.609
-export fire_ignition_start_lon1=-105.879
-export fire_ignition_start_time1=6480
-export fire_lsm_zcoupling=.false.
-export fire_lsm_zcoupling_ref=60.0
-export fire_num_ignitions=1
-export fire_print_msg=0
-export fire_upwinding=9
-export fire_viscosity=0.4
-export fire_wind_height=5.0
+FIRE_NAME=cameron_peak_fire
+fire_atm_feedback=1.0
+fire_ignition_end_lat1=40.609
+fire_ignition_end_lon1=-105.879
+fire_ignition_end_time1=7000
+fire_ignition_radius1=250
+fire_ignition_ros1=0.05
+fire_ignition_start_lat1=40.609
+fire_ignition_start_lon1=-105.879
+fire_ignition_start_time1=6480
+fire_lsm_zcoupling=.false.
+fire_lsm_zcoupling_ref=60.0
+fire_num_ignitions=1
+fire_print_msg=0
+fire_upwinding=9
+fire_viscosity=0.4
+fire_wind_height=5.0
 
 # output configuration
-export OUTPUT_FH='1  -1'
-export OUTPUT_FS=3600
+OUTPUT_FH='1  -1'
+OUTPUT_FS=3600
 
 # tasks
-export ATM_compute_tasks=$(( INPES*JNPES*NTILES ))
-export FBH_tasks=1
+ATM_compute_tasks=$((INPES * JNPES * NTILES))
+FBH_tasks=1
 
 # configuration files
-export INPUT_NML=input_regional_fire.nml.IN
-export MODEL_CONFIGURE=model_configure_fire.IN
-export UFS_CONFIGURE=ufs.configure.cpld_atm_fbh.IN
-export FV3_RUN="regional_fire_run.IN"
-export DIAG_TABLE=diag_table_fire
-export FIELD_TABLE=field_table_fire
-export FIRE_NML=namelist.fire.IN
-
+INPUT_NML=input_regional_fire.nml.IN
+MODEL_CONFIGURE=model_configure_fire.IN
+UFS_CONFIGURE=ufs.configure.cpld_atm_fbh.IN
+FV3_RUN="regional_fire_run.IN"
+DIAG_TABLE=diag_table_fire
+FIELD_TABLE=field_table_fire
+FIRE_NML=namelist.fire.IN
