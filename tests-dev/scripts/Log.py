@@ -210,6 +210,7 @@ class Log():
          num = 1
       else:
          logging.error(f"{category} does not exist!")
+         sys.exit()
 
       current_log = self.current_pr_log_data
       

@@ -1,7 +1,6 @@
 import os
 from mdutils.mdutils import MdUtils
 import pandas as pd
-from .create_images import *
 from .Manager import *
 
 class HTMLBuilder(Manager):
