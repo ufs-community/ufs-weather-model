@@ -57,3 +57,7 @@ export_rrfs_v1
 RESTART_INTERVAL="6 -1"
 OUTPUT_FH='0 09 12'
 ZSTANDARD_LEVEL=5
+
+if [[ ${MACHINE_ID} == ursa && -n ${CONTAINER_IMG:-} ]]; then
+  WLCLK=40
+fi
