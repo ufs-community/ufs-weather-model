@@ -204,10 +204,12 @@ class Log():
          stats = self.get_runtime_stats()
          data = self.get_historical_runtime_data()
          num = 0
-      if category == "memory":
+      elif category == "memory":
          stats = self.get_mem_stats()
          data = self.get_historical_mem_data()
          num = 1
+      else:
+         logging.error(f"{category} does not exist!")
 
       current_log = self.current_pr_log_data
       
@@ -219,8 +221,6 @@ class Log():
 
       previous_logs = {test: {hash: values[hash] for hash in recent_hashes if hash in values} 
                        for test, values in data.items()}
-
-      
 
       for test in current_log:
          try:
