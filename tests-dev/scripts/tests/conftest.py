@@ -15,7 +15,7 @@ def pytest_configure(config):
 def set_env_vars():
    os.environ["BASE_URL"] = "https://api.github.com/repos/ufs-community/ufs-weather-model"
    os.environ["PR_NUM"] = "2882"
-   os.environ["MACHINES"] = "acorn derecho gaeac6 hercules orion ursa wcoss2"
+   os.environ["MACHINES"] = "gaeac6 hercules orion ursa wcoss2"
 
 @pytest.fixture
 def log_manager(set_env_vars):
@@ -1366,11 +1366,11 @@ def message_content():
    messages = {
       "no_hi_rt_mem": "",
       "hi_rt_mem": "For the past three PRs, RUNTIME has been greater than two standard deviations above the mean for the following tests: \n\n" + \
-         "  * control_c384gdas_intel: derecho\n  * cpld_debug_sfs_intel: hercules, orion\n\n  * regional_debug_intel: ursa" + \
+         "  * control_c384gdas_intel: gaeac6\n  * cpld_debug_sfs_intel: hercules, orion\n\n  * regional_debug_intel: ursa" + \
          "\n\nFor the past three PRs, MEMORY has been greater than two standard deviations above the mean for the following tests: \n\n" + \
          "  * cpld_control_p8_lnd_intel: wcoss2\n  * datm_cdeps_lnd_gswp3_intel: ursa, hercules",
       "hi_rt": "For the past three PRs, RUNTIME has been greater than two standard deviations above the mean for the following tests: \n\n" + \
-         "  * control_c384gdas_intel: derecho\n  * cpld_debug_sfs_intel: hercules, orion\n\n  * regional_debug_intel: ursa",
+         "  * control_c384gdas_intel: gaeac6\n  * cpld_debug_sfs_intel: hercules, orion\n\n  * regional_debug_intel: ursa",
       "hi_mem": "For the past three PRs, MEMORY has been greater than two standard deviations above the mean for the following tests: \n\n" + \
          "  * cpld_control_p8_lnd_intel: wcoss2\n  * datm_cdeps_lnd_gswp3_intel: ursa, hercules",
    }
@@ -1384,12 +1384,12 @@ def expected_messages():
       "no_hi_rt_mem": "\n\n\n### ✅ Test Suite Performance\n\nNo tests with repeatedly high runtime or memory.",
       "hi_rt_mem": "\n\n\n### ⚠️ Test Suite Performance Threshold Exceeded\n\n" + \
          "For the past three PRs, RUNTIME has been greater than two standard deviations above the mean for the following tests: \n\n" + \
-         "  * control_c384gdas_intel: derecho\n  * cpld_debug_sfs_intel: hercules, orion\n\n  * regional_debug_intel: ursa" + \
+         "  * control_c384gdas_intel: gaeac6\n  * cpld_debug_sfs_intel: hercules, orion\n\n  * regional_debug_intel: ursa" + \
          "\n\nFor the past three PRs, MEMORY has been greater than two standard deviations above the mean for the following tests: \n\n" + \
          "  * cpld_control_p8_lnd_intel: wcoss2\n  * datm_cdeps_lnd_gswp3_intel: ursa, hercules\n\n@gspetro-NOAA",
       "hi_rt": "\n\n\n### ⚠️ Test Suite Performance Threshold Exceeded\n\n" + \
          "For the past three PRs, RUNTIME has been greater than two standard deviations above the mean for the following tests: \n\n" + \
-         "  * control_c384gdas_intel: derecho\n  * cpld_debug_sfs_intel: hercules, orion\n\n  * regional_debug_intel: ursa\n\n@gspetro-NOAA",
+         "  * control_c384gdas_intel: gaeac6\n  * cpld_debug_sfs_intel: hercules, orion\n\n  * regional_debug_intel: ursa\n\n@gspetro-NOAA",
       "hi_mem": "\n\n\n### ⚠️ Test Suite Performance Threshold Exceeded\n\n" + \
          "For the past three PRs, MEMORY has been greater than two standard deviations above the mean for the following tests: \n\n" + \
          "  * cpld_control_p8_lnd_intel: wcoss2\n  * datm_cdeps_lnd_gswp3_intel: ursa, hercules\n\n@gspetro-NOAA",
