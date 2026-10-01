@@ -43,10 +43,11 @@ class Manager():
          See GitHub documentation for https://docs.github.com/en/rest/commits/commits?apiVersion=2022-11-28#list-commits
       """
       try:
-         api_call = APICall(f"pulls/{os.environ.get('PR_NUM')}")
-         response = api_call.call_API()
-         response = api_call.load_json_from_api_call(response)
-         return response['head']['sha']
+         if os.environ.get('PR_NUM'):
+            api_call = APICall(f"pulls/{os.environ.get('PR_NUM')}")
+            response = api_call.call_API()
+            response = api_call.load_json_from_api_call(response)
+            return response['head']['sha']
       except:
          logging.error(f"{response['status']} {response['message']}. URL: {api_call.url}")
          sys.exit()
