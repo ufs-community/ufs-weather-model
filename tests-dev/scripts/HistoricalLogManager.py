@@ -21,7 +21,7 @@ class HistoricalLogManager(Manager):
    def manage_data(self):
 
       for machine in self.machines:
-         print(machine.upper())
+         print(f"Fetching historical data for {machine.upper()}.")
          log = HistoricalLog(machine, self.repo_hashes)
 
          self.collect_new_log_data(log, machine)
@@ -30,7 +30,7 @@ class HistoricalLogManager(Manager):
       """Download and process log data for a given machine and update log with that information; calculate runtime/memory statistics.
       Args:
          log (Log):
-         machine (string): 
+         machine (string):
       """
       self.historical_runtime[machine] = log.get_historical_runtime_data()
       self.historical_mem[machine] = log.get_historical_mem_data()

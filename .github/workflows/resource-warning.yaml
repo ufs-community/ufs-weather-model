@@ -38,12 +38,14 @@ jobs:
         run: |
           pip install requests numpy matplotlib pandas
           mkdir -p data
-      - name: Cache machine stats
+      - name: Restore historical data
         id: cache-stats
-        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 #v6.1.0
+        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 #v6.1.0
         with:
           path: ${{ github.workspace }}/data
-          key: hist-stats-${{ github.event.pull_request.base.sha }} # If develop gets updated, data from repo should, too
+          key: hist-stats-${{ github.event.pull_request.base.sha }}
+          restore-keys: | 
+            hist-stats-
       - name: Set data env var (if cache hit) and compare w/HEAD of develop 
         if: steps.cache-stats.outputs.cache-hit == 'true'
         run: |

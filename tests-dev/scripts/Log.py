@@ -1,8 +1,6 @@
 import requests
 import sys
 import re
-import numpy as np
-import pandas as pd
 import logging
 from .APICall import APICall
 
@@ -88,26 +86,6 @@ class Log():
             tests_for_log_instance[test_name] = [total_minutes, int(mem)]
       
       return tests_for_log_instance
-      
-   def compile_historical_log_data(self): # Could split for runtime, mem to make more maintainable
-      """Create a dictionary of data with runtime and memory usage for each test over time. Structure:  
-         historical_[runtime/mem]_test_data = {
-            test: {hash: value, hash: value, ...}
-         }
-      """
-   
-      # Skip self.pr_head_commit because it is the log from the PR
-      for hash in self.text_per_log:
-         if hash != self.pr_head_commit:
-            data = self._get_instance_test_data(self.text_per_log[hash])
-            for test in data:
-               try:
-                  self.historical_runtime_data[test].update({hash: data[test][0]})
-                  self.historical_mem_data[test].update({hash: data[test][1]})
-               except KeyError: 
-                  logging.info("Test key doesn't exist yet. Creating test key.")
-                  self.historical_runtime_data[test] = {hash: data[test][0]}
-                  self.historical_mem_data[test] = {hash: data[test][1]}
    
    def get_current_pr_data(self):
       """Extract runtime/memory data for the PR's most recent commit.
@@ -139,61 +117,6 @@ class Log():
          self.current_pr_mem_data[test] = self.current_pr_log_data[test][1]
       return self.current_pr_mem_data
 
-   def fetch_historical_data(self):
-      """
-      Extract runtime/memory data for the authoritative repository's last several commits.
-      Actual number determined by Manager.get_hashes()
-      """
-      self.get_log_text(self.repo_commits)
-      self.compile_historical_log_data()
-
-   def get_historical_runtime_data(self):
-      if not self.historical_runtime_data:
-         self.fetch_historical_data()
-      return self.historical_runtime_data
-   
-   def get_historical_mem_data(self):
-      if not self.historical_mem_data: # pragma: no cover
-         self.fetch_historical_data()
-      return self.historical_mem_data
-               
-   def calculate_stats(self, data):
-      """For each test, calculate the mean and standard deviation of memory and runtime.
-      Args:
-         data (dict): Dictionary structured {
-            test1: {hash: value, hash: value, ...},
-            test2: {hash: value, hash: value, ...},
-         }
-      """
-      test_stats = {}
-      
-      for test in data:
-         mean = round(np.mean(list(data[test].values())), 5)
-         stdev = round(np.std(list(data[test].values())), 5)
-         test_stats[test] = [mean, stdev]
-
-      return test_stats
-
-   def calculate_runtime_stats(self):
-      if not self.historical_runtime_data:
-         self.fetch_historical_data()
-      self.runtime_stats = self.calculate_stats(self.historical_runtime_data)
-
-   def get_runtime_stats(self):
-      if not self.runtime_stats:
-         self.calculate_runtime_stats()
-      return self.runtime_stats 
-
-   def calculate_mem_stats(self):
-      if not self.historical_mem_data:
-         self.fetch_historical_data()
-      self.mem_stats = self.calculate_stats(self.historical_mem_data)
-
-   def get_mem_stats(self):
-      if not self.mem_stats:
-         self.calculate_mem_stats()
-      return self.mem_stats
-
    def _compare_results(self, category): 
       """Check results from previous three commits to determine whether the test runtime/memory usage 
       is within normal bounds."""
@@ -201,12 +124,12 @@ class Log():
       results = {}
 
       if category == "runtime":
-         stats = self.get_runtime_stats()
-         data = self.get_historical_runtime_data()
+         stats = self.runtime_stats
+         data = self.historical_runtime_data
          num = 0
       elif category == "memory":
-         stats = self.get_mem_stats()
-         data = self.get_historical_mem_data()
+         stats = self.mem_stats
+         data = self.historical_mem_data
          num = 1
       else:
          logging.error(f"{category} does not exist!")

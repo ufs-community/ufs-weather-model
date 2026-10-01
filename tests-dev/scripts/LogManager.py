@@ -1,6 +1,7 @@
 import os
 from .Manager import *
 from .Log import *
+from .HistoricalLogManager import *
 
 class LogManager(Manager):
    """Manages log objects and information common to all logs."""
@@ -28,6 +29,20 @@ class LogManager(Manager):
       self.runtime_stats_by_machine = self.load_json_from_file(f"{os.environ.get('TEST_STATS')}/runtime_stats.json")
       self.mem_stats_by_machine = self.load_json_from_file(f"{os.environ.get('TEST_STATS')}/memory_stats.json")
 
+   def collect_historical_log_data(self):
+      """Download and process log data for a given machine and update log with that information; 
+      calculate runtime/memory statistics.
+      Args:
+         log (Log):
+         machine (string): 
+      """
+      hist_log_manager = HistoricalLogManager()
+      hist_log_manager.manage_data()
+      self.historical_runtime = hist_log_manager.historical_runtime
+      self.historical_mem = hist_log_manager.historical_mem
+      self.runtime_stats_by_machine = hist_log_manager.runtime_stats_by_machine
+      self.mem_stats_by_machine = hist_log_manager.mem_stats_by_machine
+
    def add_current_pr_data(self, machine, data, pr_data): 
       
       for test in list(pr_data.keys()):
@@ -36,13 +51,9 @@ class LogManager(Manager):
    def manage_data(self):
 
       for machine in self.machines:
-         print(machine.upper())
+         print(f"Processing data for {machine.upper()}.")
          log = Log(machine, self.repo_hashes, self.pr_head_commit)
-
-         if os.environ.get('TEST_STATS'):
-            self.manage_preexisting_data(log, machine)
-         else:
-            self.collect_new_log_data(log, machine)
+         self.manage_historical_data(log, machine)
          
          # Add current PR data
          self.add_current_pr_data(machine, self.current_pr_runtime_data, log.get_current_pr_runtime_data())
@@ -52,7 +63,7 @@ class LogManager(Manager):
          self.runtime_results_by_machine[machine] = log.get_runtime_results()
          self.mem_results_by_machine[machine] = log.get_mem_results()
 
-   def manage_preexisting_data(self,log,machine):
+   def manage_historical_data(self,log,machine):
       """Populate the Log data with cached data and statistics on runtime/memory.
       Args:
          log (Log):
@@ -64,29 +75,10 @@ class LogManager(Manager):
       # Runtime or memory mean & STDev for each test 
       log.runtime_stats = self.runtime_stats_by_machine[machine]
       log.mem_stats = self.mem_stats_by_machine[machine]
-
-   def collect_new_log_data(self,log,machine):
-      """Download and process log data for a given machine and update log with that information; calculate runtime/memory statistics.
-      Args:
-         log (Log):
-         machine (string): 
-      """
-      self.historical_runtime[machine] = log.get_historical_runtime_data()
-      self.historical_mem[machine] = log.get_historical_mem_data()
-      self.runtime_stats_by_machine[machine] = log.get_runtime_stats() # Add stats to save/cache later
-      self.mem_stats_by_machine[machine] = log.get_mem_stats() # Add stats to save/cache later
    
-   def save_data(self):
+   def save_pr_data(self):
       # If the statistics on mean/standard deviation have NOT already been cached, create file to cache.
-      if not os.environ.get('TEST_STATS'):
-         self.create_json(self.runtime_stats_by_machine, "runtime_stats")
-         self.create_json(self.mem_stats_by_machine, "memory_stats")
-      
-      # Create a record of historical runtime & memory values w/current PR data for caching 
-      # (to use in plotting job and subsequent workflow runs)
-      self.create_json(self.historical_runtime, "historical_runtime")
-      self.create_json(self.historical_mem, "historical_memory")
-      
+
       # Save current_pr_data for plotting task; do not mix with cached data that is reused w/newer PR commits
       self.create_json(self.current_pr_runtime_data, "current_pr_runtime_data")
       self.create_json(self.current_pr_mem_data, "current_pr_memory_data")
