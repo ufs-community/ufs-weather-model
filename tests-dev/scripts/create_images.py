@@ -24,6 +24,7 @@ class PlotManager(Manager):
          category (str): 'runtime' or 'memory'
       """
       super().__init__() # set hashes, machine list, categories
+      self.pr_head_commit = self.set_pr_head()
       self.category = category
 
    def get_test_names(self):

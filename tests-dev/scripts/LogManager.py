@@ -7,7 +7,8 @@ class LogManager(Manager):
 
    def __init__(self):
       super().__init__() # set hashes, machine list, categories
-
+      self.pr_head_commit = self.set_pr_head()
+      
       # Contains runtime/memory data by machine for the last X number of commits (set in get_hashes() )
       self.historical_runtime = {}
       self.historical_mem = {}
