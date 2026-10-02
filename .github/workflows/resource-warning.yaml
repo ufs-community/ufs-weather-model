@@ -68,6 +68,8 @@ jobs:
     runs-on: ubuntu-latest
     needs: get-data
     if: github.event.action == 'labeled' && github.event.label.name == 'update-wiki-pngs'
+    permissions:
+      contents: write
     steps:
       - name: Checkout base branch (develop)
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 #v7.0.1
@@ -92,7 +94,7 @@ jobs:
         with:
           repository: ${{ github.repository }}.wiki 
           path: wm-wiki 
-          token: ${{ secrets.PNG_TOKEN }} 
+          token: ${{ secrets.GITHUB_TOKEN }} 
       - name: Copy plots to wiki
         if: env.PR_NUM != '' # Still needed? 
         run: |
@@ -145,6 +147,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: get-data
     permissions:
+      contents: read
       pull-requests: write
     steps:
       - name: Checkout base branch (develop)
