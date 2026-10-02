@@ -11,10 +11,9 @@ die() { echo "$@" >&2; exit 1; }
 usage() {
   set +x #No reason to print out a bunch of echo statements here
   echo
-  echo "Usage: $0 -a <account> | -b <file> | -c | -d | -e | -h | -k | -l <file> | -m | -n <name> | -o | -p | -P <file> | -r | -v | -w | -x"
+  echo "Usage: $0 -a <account> | -c | -d | -e | -h | -k | -l <file> | -m | -n <name> | -o | -P <file> | -r | -s <file> | -v | -w | -x"
   echo
   echo "  -a  <account> to use on for HPC queue"
-  echo "  -b  create new baselines only for tests listed in <file>"
   echo "  -c  create new baseline results"
   echo "  -d  delete run directories that are not used by other tests"
   echo "  -e  use ecFlow workflow manager"
@@ -24,13 +23,12 @@ usage() {
   echo "  -m  compare against new baseline results"
   echo "  -n  run single test <name>"
   echo "  -o  compile only, skip tests"
-  echo "  -p  build and run inside the GNU/Intel container staged on this Tier 1"
-  echo "      platform (compiler taken from each COMPILE line); container"
-  echo "      baselines and logs are kept separate from the native-stack ones"
-  echo "  -P  <file> build and run on a community (non-Tier-1) platform defined"
-  echo "      in <file>; a portability check, not a regression test -- always"
-  echo "      sequential (no -r/-e) and always skips baseline comparison"
+  echo "  -P  <file> build and run on a platform (container or native stack) defined"
+  echo "      in <file>; always sequential (no -r/-e). By default a portability"
+  echo "      check only (no comparison); -c/-m create/compare against a baseline"
+  echo "      under that platform's own $RUNDIR_ROOT/REGRESSION_TEST"
   echo "  -r  use Rocoto workflow manager"
+  echo "  -s  run only the subset of tests listed in <file>"
   echo "  -v  verbose output"
   echo "  -w  for weekly_test, skip comparing baseline results"
   echo "  -x  dry-run; with -P, still compiles for real and, per RUN line,"
@@ -64,13 +62,13 @@ update_rtconf() {
   }
 
   # This script will update the rt.conf ($TESTS_FILE) if needed by the
-  # -b or -n options being called/used.
+  # -s or -n options being called/used.
 
-  # THE USER CHOSE THE -b OPTION
-  if [[ ${NEW_BASELINES_FILE} != '' ]]; then
-    [[ -s "${NEW_BASELINES_FILE}" ]] || die "${NEW_BASELINES_FILE} is empty, exiting..."
+  # THE USER CHOSE THE -s OPTION
+  if [[ ${TEST_SUBSET_FILE} != '' ]]; then
+    [[ -s "${TEST_SUBSET_FILE}" ]] || die "${TEST_SUBSET_FILE} is empty, exiting..."
     TEST_WITH_COMPILE=()
-    readarray -t TEST_WITH_COMPILE < "${NEW_BASELINES_FILE}"
+    readarray -t TEST_WITH_COMPILE < "${TEST_SUBSET_FILE}"
   # else USER CHOSE THE -n OPTION
   elif [[ ${RUN_SINGLE_TEST} == true ]]; then
     TEST_WITH_COMPILE=("${SRT_NAME} ${SRT_COMPILER}")
@@ -195,14 +193,18 @@ RT.SH OPTIONS USED:
 EOF
 
   [[ -n ${ACCNR} ]] && echo "* (-a) - HPC PROJECT ACCOUNT: ${ACCNR}" >> "${REGRESSIONTEST_LOG}"
-  [[ -n ${NEW_BASELINES_FILE} ]] && echo "* (-b) - NEW BASELINES FROM FILE: ${NEW_BASELINES_FILE}" >> "${REGRESSIONTEST_LOG}"
+  [[ -n ${TEST_SUBSET_FILE} ]] && echo "* (-s) - RUN TESTS FROM FILE: ${TEST_SUBSET_FILE}" >> "${REGRESSIONTEST_LOG}"
   [[ ${CREATE_BASELINE} == true ]] && echo "* (-c) - CREATE NEW BASELINES" >> "${REGRESSIONTEST_LOG}"
   [[ ${DEFINE_CONF_FILE} == true ]] && echo "* (-l) - USE CONFIG FILE: ${TESTS_FILE}" >> "${REGRESSIONTEST_LOG}"
   [[ ${RTPWD_NEW_BASELINE} == true ]] && echo "* (-m) - COMPARE AGAINST CREATED BASELINES" >> "${REGRESSIONTEST_LOG}"
   [[ ${RUN_SINGLE_TEST} == true ]] && echo "* (-n) - RUN SINGLE TEST: ${SINGLE_OPTS}" >> "${REGRESSIONTEST_LOG}"
   [[ ${COMPILE_ONLY} == true ]]&& echo "* (-o) - COMPILE ONLY, SKIP TESTS" >> "${REGRESSIONTEST_LOG}"
-  [[ ${CONTAINER_USE} == true ]] && echo "* (-p) - CONTAINER MODE ON ${MACHINE_ID} (baselines: ${RTPWD})" >> "${REGRESSIONTEST_LOG}"
-  [[ ${COMMUNITY_PLATFORM_USE} == true ]] && echo "* (-P) - COMMUNITY PLATFORM: ${MACHINE_ID} (${COMMUNITY_PLATFORM_FILE}); no baseline comparison" >> "${REGRESSIONTEST_LOG}"
+  if [[ ${COMMUNITY_PLATFORM_USE} == true ]]; then
+    platform_baseline_note="no baseline comparison (portability check)"
+    [[ ${CREATE_BASELINE} == true ]] && platform_baseline_note="creating baseline at ${NEW_BASELINE}"
+    [[ ${RTPWD_NEW_BASELINE} == true ]] && platform_baseline_note="comparing against baseline at ${RTPWD}"
+    echo "* (-P) - COMMUNITY PLATFORM: ${MACHINE_ID} (${COMMUNITY_PLATFORM_FILE}); ${platform_baseline_note}" >> "${REGRESSIONTEST_LOG}"
+  fi
   [[ ${delete_rundir} == true ]] && echo "* (-d) - DELETE RUN DIRECTORY" >> "${REGRESSIONTEST_LOG}"
   [[ ${skip_check_results} == true ]] && echo "* (-w) - SKIP RESULTS CHECK" >> "${REGRESSIONTEST_LOG}"
   [[ ${KEEP_RUNDIR} == true ]] && echo "* (-k) - KEEP RUN DIRECTORY" >> "${REGRESSIONTEST_LOG}"
@@ -236,7 +238,7 @@ EOF
 
       machines_allow_run "${CMACHINES}" && valid_compile=true
 
-      if [[ (${CONTAINER_USE} == true || ${COMMUNITY_PLATFORM_USE} == true) && ${valid_compile} == true ]]; then
+      if [[ ${COMMUNITY_PLATFORM_USE} == true && ${valid_compile} == true ]]; then
         RT_COMPILER=${COMPILER}
         resolve_container_image || valid_compile=false
       fi
@@ -319,7 +321,7 @@ EOF
 
       machines_allow_run "${RMACHINES}" && valid_test=true
 
-      if [[ (${CONTAINER_USE} == true || ${COMMUNITY_PLATFORM_USE} == true) && ${valid_test} == true ]]; then
+      if [[ ${COMMUNITY_PLATFORM_USE} == true && ${valid_test} == true ]]; then
         RT_COMPILER=${COMPILER}
         resolve_container_image || valid_test=false
       fi
@@ -449,19 +451,24 @@ Result: SUCCESS
 EOF
     echo "Performing Cleanup..."
     rm -f fv3_*.x fv3_*.exe modules.fv3_* modulefiles/modules.fv3_* keep_tests.tmp
-    [[ ${KEEP_RUNDIR} == false ]] && rm -rf "${RUNDIR_ROOT}" && rm "${PATHRT}/run_dir"
+    # A community platform's (-P) RUNDIR_ROOT is the user's own persistent
+    # platform directory, not a throwaway rt_$$ one -- and NEW_BASELINE now
+    # lives under it, so auto-deleting it here would destroy a baseline a
+    # -c run just created. Never auto-delete it; -k is irrelevant for -P.
+    [[ ${KEEP_RUNDIR} == false && ${COMMUNITY_PLATFORM_USE} == false ]] && rm -rf "${RUNDIR_ROOT}" && rm "${PATHRT}/run_dir"
     [[ ${ROCOTO} == true ]] && rm -f "${ROCOTO_XML}" "${ROCOTO_DB}" "${ROCOTO_STATE}" ./*_lock.db
     [[ ${TEST_35D} == true ]] && rm -f tests/cpld_bmark*_20*
-    # A community platform (-P) is a portability check, not a pass/fail
-    # regression suite -- report per-compile/per-test PASS/FAILED only
-    # (see the COMPILE/TEST SUMMARY block above), not one aggregate verdict.
+    # A community platform (-P) reports per-compile/per-test PASS/FAIL to the
+    # console (see the COMPILE/TEST SUMMARY block above) and the full
+    # per-item + SYNOPSIS breakdown to ${REGRESSIONTEST_LOG} above, same as
+    # Tier-1 -- but not this one aggregate console verdict.
     [[ ${COMMUNITY_PLATFORM_USE} == true ]] || echo "REGRESSION TEST RESULT: SUCCESS"
   else
     cat << EOF >> "${REGRESSIONTEST_LOG}"
 
 NOTES:
 A file '${TEST_CHANGES_LOG}' was generated with list of all failed tests.
-You can use './rt.sh -c -b test_changes.list' to create baselines for the failed tests.
+You can use './rt.sh -c -s test_changes.list' to create baselines for the failed tests.
 If you are using this log as a pull request verification, please commit '${TEST_CHANGES_LOG}'.
 
 Result: FAILURE
@@ -474,10 +481,9 @@ EOF
 }
 
 # Whether a COMPILE/RUN line's MACHINES field allows it under the real
-# MACHINE_ID and the current -p/-P state. "+<tag>"/"-<tag>" (PLATFORM_TAG --
-# 'container' for -p, or the -P file's declared platform name) explicitly
-# mark a line to run (or not run) on the current container/community
-# platform.
+# MACHINE_ID and the current -P state. "+<tag>"/"-<tag>" (PLATFORM_TAG -- the
+# -P file's declared platform name) explicitly mark a line to run (or not
+# run) on the current platform.
 machines_allow_run() {
   local machines=$1
   local has_tag=false
@@ -485,7 +491,7 @@ machines_allow_run() {
   [[ ${machines} == *"+${PLATFORM_TAG}"* ]] && has_tag=true
   [[ ${machines} == *"-${PLATFORM_TAG}"* ]] && has_no_tag=true
 
-  if [[ ${CONTAINER_USE} == true || ${COMMUNITY_PLATFORM_USE} == true ]]; then
+  if [[ ${COMMUNITY_PLATFORM_USE} == true ]]; then
     [[ ${has_tag} == true && ${has_no_tag} == false ]] && return 0 || return 1
   fi
 
@@ -505,35 +511,20 @@ machines_allow_run() {
   fi
 }
 
-# Resolves RT_CONTAINER_IMG for the current RT_COMPILER; returns 1 if no
-# image is staged for this machine/compiler (caller skips the line), or -- for
-# -P -- if the line's compiler doesn't match the community platform's one
-# declared compiler. A community platform may have no container at all (a
-# native stack), in which case RT_CONTAINER_IMG is left empty.
+# Resolves RT_CONTAINER_IMG for the current RT_COMPILER; returns 1 if the
+# line's compiler doesn't match the community platform's one declared
+# compiler. A community platform may have no container at all (a native
+# stack), in which case RT_CONTAINER_IMG is left empty.
 resolve_container_image() {
   RT_CONTAINER_IMG=''
 
-  if [[ ${COMMUNITY_PLATFORM_USE} == true ]]; then
-    [[ ${RT_COMPILER} == "${COMMUNITY_PLATFORM_COMPILER}" ]] || return 1
-    RT_CONTAINER_IMG=${COMMUNITY_PLATFORM_CONTAINER_IMG}
-  else
-    local img_name=''
-    case ${RT_COMPILER} in
-      intel) img_name=${CONTAINER_IMG_INTEL} ;;
-      gnu)   img_name=${CONTAINER_IMG_GNU} ;;
-      *)     die "resolve_container_image: unexpected RT_COMPILER='${RT_COMPILER}'" ;;
-    esac
-    [[ -n ${CONTAINER_PATH} && -n ${img_name} ]] || return 1
-    RT_CONTAINER_IMG=${CONTAINER_PATH}/${img_name}
-  fi
+  [[ ${RT_COMPILER} == "${COMMUNITY_PLATFORM_COMPILER}" ]] || return 1
+  RT_CONTAINER_IMG=${COMMUNITY_PLATFORM_CONTAINER_IMG}
 
   [[ -z ${RT_CONTAINER_IMG} ]] && return 0
 
-  # A Tier 1 (-p) dry run skips the disk check for speed; a community
-  # platform (-P) dry run verifies the container is actually present, since
+  # A dry run (-x) still verifies the container is actually present, since
   # that is one of its pre-flight checks.
-  [[ ${DRY_RUN} == true && ${COMMUNITY_PLATFORM_USE} == false ]] && return 0
-
   [[ -f ${RT_CONTAINER_IMG} ]] || return 1
   [[ -f ${PATHTR}/modulefiles/ufs_container.${RT_COMPILER}.lua ]] \
     || die "modulefiles/ufs_container.${RT_COMPILER}.lua not found under ${PATHTR}"
@@ -564,13 +555,12 @@ parse_platform_def() {
         CONTAINER_BIND_DIRS=$(sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' <<< "${f4:-}")
         ;;
       1)
-        IFS='|' read -r f1 f2 f3 f4 f5 f6 _rest <<< "${line}"
+        IFS='|' read -r f1 f2 f3 f4 f5 _rest <<< "${line}"
         CONTAINER_TPN=$(sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' <<< "${f1:-}")
         SCHEDULER=$(sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' <<< "${f2:-}")
-        ACCNR=$(sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' <<< "${f3:-${ACCNR}}")
-        PARTITION=$(sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' <<< "${f4:-}")
-        QUEUE=$(sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' <<< "${f5:-}")
-        MPI_LAUNCH=$(sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' <<< "${f6:-mpirun}")
+        PARTITION=$(sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' <<< "${f3:-}")
+        QUEUE=$(sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' <<< "${f4:-}")
+        MPI_LAUNCH=$(sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' <<< "${f5:-mpirun}")
         ;;
       2)
         RUNDIR_ROOT=${line}
@@ -593,6 +583,12 @@ parse_platform_def() {
   [[ -n ${SCHEDULER} ]] || die "${file}: scheduler (header line 2, field 2) is required"
   [[ -n ${RUNDIR_ROOT} ]] || die "${file}: RUNDIR_ROOT (header line 3) is required"
   [[ -n ${INPUTDATA_ROOT} ]] || die "${file}: INPUTDATA_ROOT (header line 4, field 1) is required"
+
+  if [[ -n ${COMMUNITY_PLATFORM_CONTAINER_IMG} ]]; then
+    CONTAINER_USE=true
+  else
+    CONTAINER_USE=false
+  fi
 }
 
 create_or_run_compile_task() {
@@ -613,10 +609,11 @@ export LOG_DIR=${LOG_DIR}
 export RTVERBOSE=${RTVERBOSE}
 export CONTAINER_IMG=${RT_CONTAINER_IMG}
 export CONTAINER_BIND_FLAGS="${CONTAINER_BIND_FLAGS}"
+export CONTAINER_USE=${CONTAINER_USE}
 export COMMUNITY_PLATFORM=${COMMUNITY_PLATFORM_USE}
 EOF
 
-  if [[ ${CONTAINER_USE} == true || ${COMMUNITY_PLATFORM_USE} == true ]]; then
+  if [[ ${COMMUNITY_PLATFORM_USE} == true ]]; then
     cat << EOF >> "${RUNDIR_ROOT}/compile_${COMPILE_ID}.env"
 export TPN=${CONTAINER_TPN:-}
 EOF
@@ -704,7 +701,7 @@ cd "${PATHRT}"
 PATHTR=$( cd "${PATHRT}/.." && pwd )
 readonly PATHTR
 
-# Single-instance lock path; created below once -P/-p are known (a
+# Single-instance lock path; created below once -P is known (a
 # community platform run does not use it -- see near ACCNR check).
 readonly LOCKDIR="${PATHRT}"/lock
 HOSTNAME_IN=$(hostname)
@@ -723,7 +720,7 @@ export delete_rundir=false
 COMPILE_ONLY=false
 RTPWD_NEW_BASELINE=false
 TESTS_FILE='rt.conf'
-NEW_BASELINES_FILE=''
+TEST_SUBSET_FILE=''
 DEFINE_CONF_FILE=false
 RUN_SINGLE_TEST=false
 RTVERBOSE=false
@@ -732,36 +729,34 @@ export STOP_ECFLOW_AT_END=false
 export DRY_RUN=false
 ACCNR=${ACCNR:-""}
 
-# -p: build/run inside the GNU/Intel container staged on this Tier 1 host.
+# -P <file>: build/run on a platform (container or native stack) defined in
+# <file>. CONTAINER_USE is derived in parse_platform_def() from whether the
+# file declares a container image -- it is not a CLI flag.
 CONTAINER_USE=false
-CONTAINER_SUFFIX=''
-
-# Default image filenames; overridden per host below where needed.
-CONTAINER_IMG_INTEL='rocky9-oneapi2024.2-ss192.sif'
-CONTAINER_IMG_GNU='rocky9-gcc13-ss192-ompi416.sif'
-# Set per host in the "case ${MACHINE_ID}" block below.
-CONTAINER_PATH=''
 CONTAINER_BIND_DIRS=''
 CONTAINER_TPN=''
 RT_CONTAINER_IMG=''
 
-# -P <file>: build/run on a community (non-Tier-1) platform defined in <file>.
 # PLATFORM_TAG is the "+<tag>"/"-<tag>" name machines_allow_run() checks in
-# rt.conf; it stays 'container' for -p, and becomes the platform's own
-# declared name for -P.
+# rt.conf; it is set to the platform's own declared name once -P is parsed.
+# The 'container' placeholder below is never used to gate anything before
+# then (COMMUNITY_PLATFORM_USE is false) -- it only needs to be a non-empty,
+# harmless string so stripping "+container"/"-container" out of a plain
+# native MACHINES field (where it's just an inert, ignorable substring)
+# doesn't collapse to stripping every literal "+"/"-" character instead.
 COMMUNITY_PLATFORM_USE=false
 COMMUNITY_PLATFORM_FILE=''
 COMMUNITY_PLATFORM_COMPILER=''
 COMMUNITY_PLATFORM_CONTAINER_IMG=''
 PLATFORM_TAG='container'
 
-while getopts ":a:b:cl:mn:dwkpP:reovhx" opt; do
+while getopts ":a:cl:mn:dwkP:reovhxs:" opt; do
   case ${opt} in
     a)
       ACCNR=${OPTARG}
       ;;
-    b)
-      NEW_BASELINES_FILE=${OPTARG}
+    s)
+      TEST_SUBSET_FILE=${OPTARG}
       ;;
     c)
       CREATE_BASELINE=true
@@ -773,10 +768,6 @@ while getopts ":a:b:cl:mn:dwkpP:reovhx" opt; do
       ;;
     o)
       COMPILE_ONLY=true
-      ;;
-    p)
-      CONTAINER_USE=true
-      CONTAINER_SUFFIX='_container'
       ;;
     P)
       COMMUNITY_PLATFORM_USE=true
@@ -851,18 +842,17 @@ done
 [[ ${ECFLOW} == true && ${ROCOTO} == true ]] && die "-r and -e options cannot be used at the same time"
 [[ ${CREATE_BASELINE} == true && ${RTPWD_NEW_BASELINE} == true ]] && die "-c and -m options cannot be used at the same time"
 #B&N not run together
-[[ ${NEW_BASELINES_FILE} != '' && ${RUN_SINGLE_TEST} == true ]] && die "-b and -n options cannot be used at the same time"
-#P&p not run together; a community platform run is always sequential and never compares baselines
-[[ ${COMMUNITY_PLATFORM_USE} == true && ${CONTAINER_USE} == true ]] && die "-p and -P options cannot be used at the same time"
+[[ ${TEST_SUBSET_FILE} != '' && ${RUN_SINGLE_TEST} == true ]] && die "-s and -n options cannot be used at the same time"
+# A community platform (-P) run is always sequential; -c/-m are allowed,
+# creating/comparing against a baseline under the platform's own
+# RUNDIR_ROOT rather than a Tier-1 DISKNM baseline area.
 if [[ ${COMMUNITY_PLATFORM_USE} == true ]]; then
   [[ ${ROCOTO} == false ]] || die "-P should not be used with -r"
   [[ ${ECFLOW} == false ]] || die "-P should not be used with -e"
-  [[ ${CREATE_BASELINE} == false ]] || die "-P should not be used with -c"
-  [[ ${RTPWD_NEW_BASELINE} == false ]] || die "-P should not be used with -m"
 fi
 
 if [[ ${DRY_RUN} == true ]]; then
-   [[ ${NEW_BASELINES_FILE} == '' ]] || die "-x should not be used with -b"
+   [[ ${TEST_SUBSET_FILE} == '' ]] || die "-x should not be used with -s"
    [[ ${CREATE_BASELINE} == false ]] || die "-x should not be used with -c"
    [[ ${delete_rundir} == false ]] || die "-x should not be used with -d"
    [[ ${ECFLOW} == false ]] || die "-x should not be used with -e"
@@ -915,7 +905,14 @@ if [[ ${COMMUNITY_PLATFORM_USE} == true ]]; then
   COMPILE_QUEUE=${QUEUE}
   ROCOTO=false
   ECFLOW=false
-  export skip_check_results=true
+  # Default -P behavior is a pure portability check (build+run only, no
+  # comparison). -c (create a baseline) and -m (compare against one) opt
+  # into real baseline interaction; otherwise comparison stays skipped.
+  if [[ ${CREATE_BASELINE} == true || ${RTPWD_NEW_BASELINE} == true ]]; then
+    export skip_check_results=false
+  else
+    export skip_check_results=true
+  fi
 else
 case ${MACHINE_ID} in
   wcoss2|acorn)
@@ -935,11 +932,6 @@ case ${MACHINE_ID} in
     STMP="/lfs/h2/emc/ptmp"
     PTMP="/lfs/h2/emc/ptmp"
     SCHEDULER="pbs"
-
-    # no container image staged yet
-    # CONTAINER_PATH=                 # directory holding the *.sif images
-    # CONTAINER_BIND_DIRS=         # comma-separated host dirs to bind
-    # CONTAINER_TPN=128
     ;;
   gaeac5)
     echo "rt.sh: Setting up gaea c5..."
@@ -971,11 +963,6 @@ case ${MACHINE_ID} in
     PTMP=${PTMP:-${dprefix}/RT_RUNDIRS}
 
     SCHEDULER="slurm"
-
-    # gaea c5 no longer supported
-    # CONTAINER_PATH=                 # directory holding the *.sif images
-    # CONTAINER_BIND_DIRS=         # comma-separated host dirs to bind
-    # CONTAINER_TPN=128
     ;;
   gaeac6)
     echo "rt.sh: Setting up gaea c6..."
@@ -1007,10 +994,6 @@ case ${MACHINE_ID} in
     PTMP=${PTMP:-${dprefix}/RT_RUNDIRS}
 
     SCHEDULER="slurm"
-
-    CONTAINER_PATH=/gpfs/f6/bil-fire8/world-shared/containers   # directory holding the *.sif images
-    CONTAINER_BIND_DIRS="/gpfs,/ncrc/home2"                  # comma-separated host dirs to bind
-    CONTAINER_TPN=192
     ;;
   hera)
     echo "rt.sh: Setting up hera..."
@@ -1033,11 +1016,6 @@ case ${MACHINE_ID} in
     PTMP="${dprefix}/RT_RUNDIRS"
 
     SCHEDULER=slurm
-
-    # hera no longer supported
-    # CONTAINER_PATH=                 # directory holding the *.sif images
-    # CONTAINER_BIND_DIRS=         # comma-separated host dirs to bind
-    # CONTAINER_TPN=40
     ;;
   ursa)
     echo "rt.sh: Setting up ursa..."
@@ -1066,11 +1044,6 @@ case ${MACHINE_ID} in
     PTMP="${PTMP:-${dprefix}/RT_RUNDIRS}"
 
     SCHEDULER=slurm
-
-    CONTAINER_PATH=/scratch3/NCEPDEV/nems/role.epic/containers     # directory holding the *.sif images
-    CONTAINER_BIND_DIRS="/scratch3,/scratch4"                   # comma-separated host dirs to bind
-    CONTAINER_TPN=192
-
     ;;
   orion)
     echo "rt.sh: Setting up orion..."
@@ -1100,10 +1073,6 @@ case ${MACHINE_ID} in
 
     cp fv3_conf/fv3_slurm.IN_orion fv3_conf/fv3_slurm.IN
     cp fv3_conf/compile_slurm.IN_orion fv3_conf/compile_slurm.IN
-
-    CONTAINER_PATH=/work/noaa/epic/role-epic/contrib/containers   # directory holding the *.sif images
-    CONTAINER_BIND_DIRS="/work,/work2,/local"                  # comma-separated host dirs to bind
-    CONTAINER_TPN=40
     ;;
   hercules)
     echo "rt.sh: Setting up hercules..."
@@ -1131,10 +1100,6 @@ case ${MACHINE_ID} in
     SCHEDULER="slurm"
     cp fv3_conf/fv3_slurm.IN_hercules fv3_conf/fv3_slurm.IN
     cp fv3_conf/compile_slurm.IN_hercules fv3_conf/compile_slurm.IN
-
-    CONTAINER_PATH=/work/noaa/epic/role-epic/contrib/containers
-    CONTAINER_BIND_DIRS="/work,/work2,/local"
-    CONTAINER_TPN=80
     ;;
   derecho)
     echo "rt.sh: Setting up derecho..."
@@ -1166,11 +1131,6 @@ case ${MACHINE_ID} in
     if [[ "${ROCOTO:-false}" == true ]] ; then
       ROCOTO_SCHEDULER="pbspro"
     fi
-
-    CONTAINER_IMG_GNU="rocky9-gcc13-ss192-ompi507.sif"
-    CONTAINER_PATH=/glade/work/epicufsrt/contrib/containers  # directory holding the *.sif images
-    CONTAINER_BIND_DIRS="/glade"                                # comma-separated host dirs to bind
-    CONTAINER_TPN=128
     ;;
   noaacloud)
     echo "rt.sh: Setting up noaacloud..."
@@ -1190,20 +1150,11 @@ case ${MACHINE_ID} in
     STMP="${dprefix}/stmp4"
     PTMP="${dprefix}/stmp2"
     SCHEDULER="slurm"
-
-    CONTAINER_PATH=/contrib/EPIC/containers     # directory holding the *.sif images
-    CONTAINER_BIND_DIRS="/contrib,/lustre"   # comma-separated host dirs to bind
-    CONTAINER_TPN=36                            # may need to be specified for different cloud platforms
     ;;
   *)
     die "Unknown machine ID, please edit detect_machine.sh file"
     ;;
 esac
-fi
-
-if [[ ${CONTAINER_USE} == true && -z ${CONTAINER_PATH} ]]; then
-  echo "rt.sh: WARNING -- no container images are staged for ${MACHINE_ID};"
-  echo "                 all container tests will be skipped."
 fi
 
 # Resolve CONTAINER_BIND_DIRS into apptainer/singularity "-B dir" flags once.
@@ -1215,9 +1166,14 @@ if [[ -n ${CONTAINER_BIND_DIRS} ]]; then
   done
 fi
 
-mkdir -p "${STMP}/${USER}"
-
-NEW_BASELINE=${STMP}/${USER}/FV3_RT/REGRESSION_TEST${CONTAINER_SUFFIX:-}
+if [[ ${COMMUNITY_PLATFORM_USE} == true ]]; then
+  # Baselines for a community platform (-P) live directly under its own
+  # RUNDIR_ROOT, not nested under a Tier-1-style STMP/USER/FV3_RT path.
+  NEW_BASELINE=${RUNDIR_ROOT}/REGRESSION_TEST
+else
+  mkdir -p "${STMP}/${USER}"
+  NEW_BASELINE=${STMP}/${USER}/FV3_RT/REGRESSION_TEST
+fi
 
 # A community platform (-P) uses its RUNDIR_ROOT exactly as given in the
 # platform-definition file -- no per-PID subdirectory -- so repeated runs
@@ -1252,12 +1208,13 @@ source bl_date.conf
 if [[ "${RTPWD_NEW_BASELINE}" == true ]] ; then
   RTPWD=${NEW_BASELINE}
 else
-  RTPWD=${RTPWD:-${DISKNM}/NEMSfv3gfs/develop-${BL_DATE}${CONTAINER_SUFFIX:-}}
+  RTPWD=${RTPWD:-${DISKNM}/NEMSfv3gfs/develop-${BL_DATE}}
 fi
 
-# A community platform (-P) always skips baseline comparison -- no baseline
-# directory to check.
-if [[ "${CREATE_BASELINE}" == false && ${COMMUNITY_PLATFORM_USE} == false ]] ; then
+# A community platform (-P) only has a baseline directory to check when
+# explicitly comparing against one it created earlier (-m); its default
+# portability-check mode (neither -c nor -m) has nothing to check here.
+if [[ "${CREATE_BASELINE}" == false && ( ${COMMUNITY_PLATFORM_USE} == false || ${RTPWD_NEW_BASELINE} == true ) ]] ; then
   EMPTY_CHECK=$(find "${RTPWD}/" -type d -prune -empty)
   if [[ ! -d "${RTPWD}" ]] ; then
     echo "Baseline directory does not exist:"
@@ -1290,9 +1247,9 @@ if [[ ${CREATE_BASELINE} == true ]]; then
 fi
 
 if [[ ${skip_check_results} == true ]]; then
-  REGRESSIONTEST_LOG=${PATHRT}/logs/RegressionTests_weekly_${MACHINE_ID}${CONTAINER_SUFFIX:-}.log
+  REGRESSIONTEST_LOG=${PATHRT}/logs/RegressionTests_weekly_${MACHINE_ID}.log
 else
-  REGRESSIONTEST_LOG=${PATHRT}/logs/RegressionTests_${MACHINE_ID}${CONTAINER_SUFFIX:-}.log
+  REGRESSIONTEST_LOG=${PATHRT}/logs/RegressionTests_${MACHINE_ID}.log
 fi
 
 [ -f "${REGRESSIONTEST_LOG}" ] && cp "${REGRESSIONTEST_LOG}" "${REGRESSIONTEST_LOG}.bak"
@@ -1306,7 +1263,7 @@ source default_vars.sh
 COMPILE_COUNTER=0
 rm -f fail_test* fail_compile*
 
-LOG_DIR=${PATHRT}/logs/log_${MACHINE_ID}${CONTAINER_SUFFIX:-}
+LOG_DIR=${PATHRT}/logs/log_${MACHINE_ID}
 export LOG_DIR
 
 rm -rf "${LOG_DIR}"
@@ -1458,7 +1415,7 @@ while read -r line || [[ -n "${line}" ]]; do
 
     machines_allow_run "${MACHINES}" || continue
 
-    if [[ ${CONTAINER_USE} == true || ${COMMUNITY_PLATFORM_USE} == true ]] && ! resolve_container_image; then
+    if [[ ${COMMUNITY_PLATFORM_USE} == true ]] && ! resolve_container_image; then
       [[ ${RUN_SINGLE_TEST} == true ]] && die "No ${RT_COMPILER} container/platform match on ${MACHINE_ID} for -n test"
       echo "rt.sh: SKIP compile ${COMPILE_ID} -- compiler ${RT_COMPILER} not available on MACHINE_ID=${MACHINE_ID}"
       continue
@@ -1506,7 +1463,7 @@ while read -r line || [[ -n "${line}" ]]; do
 
     machines_allow_run "${MACHINES}" || continue
 
-    if [[ ${CONTAINER_USE} == true || ${COMMUNITY_PLATFORM_USE} == true ]] && ! resolve_container_image; then
+    if [[ ${COMMUNITY_PLATFORM_USE} == true ]] && ! resolve_container_image; then
       echo "rt.sh: SKIP test ${TEST_ID} -- compiler ${RT_COMPILER} not available on MACHINE_ID=${MACHINE_ID}"
       continue
     fi
@@ -1580,10 +1537,11 @@ export WLCLK=${WLCLK}
 export DRY_RUN=${DRY_RUN}
 export CONTAINER_IMG=${RT_CONTAINER_IMG}
 export CONTAINER_BIND_FLAGS="${CONTAINER_BIND_FLAGS}"
+export CONTAINER_USE=${CONTAINER_USE}
 export COMMUNITY_PLATFORM=${COMMUNITY_PLATFORM_USE}
 EOF
 
-      if [[ ${CONTAINER_USE} == true || ${COMMUNITY_PLATFORM_USE} == true ]]; then
+      if [[ ${COMMUNITY_PLATFORM_USE} == true ]]; then
         cat << EOF >> "${RUNDIR_ROOT}/run_test_${TEST_ID}.env"
 export TPN=${CONTAINER_TPN:-}
 EOF
@@ -1644,8 +1602,8 @@ if [[ ${ECFLOW} == true ]]; then
   ecflow_run
 fi
 
-# IF -c AND -b; LINK VERIFIED BASELINES TO NEW_BASELINE
-if [[ ${CREATE_BASELINE} == true && ${NEW_BASELINES_FILE} != '' ]]; then
+# IF -c AND -s; LINK VERIFIED BASELINES TO NEW_BASELINE
+if [[ ${CREATE_BASELINE} == true && ${TEST_SUBSET_FILE} != '' ]]; then
   for dir in "${RTPWD}"/*/; do
     dir=${dir%*/}
     [[ -d "${NEW_BASELINE}/${dir##*/}" ]] && continue
