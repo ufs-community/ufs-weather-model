@@ -1094,6 +1094,8 @@ export_fv3() {
   USE_UFO=.true.
   PRE_RAD=.false.
   TTENDLIM=-999
+  
+  PDC=.false.
 
   # Radiation
   DO_RRTMGP=.false.
