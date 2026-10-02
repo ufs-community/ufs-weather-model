@@ -37,17 +37,19 @@
 #                  container (must cover the source tree, input data, and
 #                  RUNDIR_ROOT below). Ignored for a native stack.
 # ------------------------------------------------------------------------
-# Header line 2: TPN | SCHEDULER | ACCNR | PARTITION | QUEUE | MPI_LAUNCH
+# Header line 2: TPN | SCHEDULER | PARTITION | QUEUE | MPI_LAUNCH
 #
 #   TPN         Required. MPI tasks per node on this platform.
 #   SCHEDULER   "slurm", "pbs", or blank for an interactive/no-scheduler
 #                run.
-#   ACCNR       Scheduler account/project name (may also be given with
-#               rt.sh's own -a; a value here is used if -a is omitted).
 #   PARTITION   Slurm partition name (blank for PBS or no scheduler).
 #   QUEUE       Slurm QOS / PBS queue name (blank for no scheduler).
 #   MPI_LAUNCH  MPI launch command used only when SCHEDULER is blank:
 #               "mpirun" or "mpiexec" (defaults to "mpirun" if omitted).
+#
+#   The scheduler account/project is set only with rt.sh's own -a <account>
+#   on the command line, not here -- it is always required (rt.sh dies
+#   immediately if -a is omitted), so there is no fallback to configure.
 # ------------------------------------------------------------------------
 # Header line 3: RUNDIR_ROOT
 #
@@ -68,6 +70,6 @@
 # ------------------------------------------------------------------------
 
 myplatform | intel | /path/to/containers/rocky9-oneapi2024.2-ss192.sif | /path1,/path2
-40 | slurm | myaccount | mypartition | myqueue | mpirun
+48 | slurm | mypartition | myqueue | mpirun
 /path/to/runtime_dir
 /path/to/input-data | | |
