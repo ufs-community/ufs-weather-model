@@ -2,6 +2,7 @@ import os
 from .Manager import *
 from mdutils.mdutils import MdUtils
 import logging
+from datetime import datetime, timezone
 
 class MessageManager(Manager):
 
@@ -70,9 +71,11 @@ class MessageManager(Manager):
          mdFile.write("### ⚠️ Test Suite Performance Threshold Exceeded")
          mdFile.new_paragraph(self.message_content)
          mdFile.new_paragraph("@gspetro-NOAA")
+         mdFile.new_paragraph(f"Updated for commit {self.pr_head_commit[:8]} on {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M')} UTC.")
       else:
          mdFile.write("### ✅ Test Suite Performance")
          mdFile.new_paragraph(f"No tests with repeatedly high runtime or memory.")
+         mdFile.new_paragraph(f"Updated for commit {self.pr_head_commit[:8]} on {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M')} UTC.")
 
       mdFile.create_md_file()
 
