@@ -11,13 +11,15 @@
 #   3. Run:
 #        ./rt.sh -a <account> -P myplatform.def -l rt.conf
 #
-# Exactly four data lines are read here, in that order, skipping blank
-# lines and comment lines ("#", like this one). A list of tests is given
-# in rt.conf. A community-platform run is always sequential (no -r/-e)
-# and always skips baseline comparison (no -c/-m): it is a portability
-# check ("does the model build and run here at all?"), not a regression
-# test. See the User's Guide chapter "Container and Community Platform
-# Options" for the full field reference.
+# Four required data lines are read here, in that order, skipping blank
+# lines and comment lines ("#", like this one), plus an optional fifth
+# (see below). A list of tests is given in rt.conf. By default a
+# community-platform run is sequential and skips baseline comparison: a
+# portability check ("does the model build and run here at all?"), not a
+# regression test. -c/-m opt into baseline creation/comparison; -r/-e opt
+# into Rocoto/ecFlow (needs the optional header line 5). See the User's
+# Guide chapter "Container and Community Platform Options" for the full
+# field reference.
 # ------------------------------------------------------------------------
 # Header line 1: PLATFORM_NAME | RT_COMPILER | CONTAINER_IMG | BIND_DIRS
 #
@@ -46,10 +48,6 @@
 #   QUEUE       Slurm QOS / PBS queue name (blank for no scheduler).
 #   MPI_LAUNCH  MPI launch command used only when SCHEDULER is blank:
 #               "mpirun" or "mpiexec" (defaults to "mpirun" if omitted).
-#
-#   The scheduler account/project is set only with rt.sh's own -a <account>
-#   on the command line, not here -- it is always required (rt.sh dies
-#   immediately if -a is omitted), so there is no fallback to configure.
 # ------------------------------------------------------------------------
 # Header line 3: RUNDIR_ROOT
 #
@@ -68,8 +66,18 @@
 #   INPUTDATA_GFSv17opn  Optional. Only needed by tests that explicitly
 #                        require GFSv17 operational input data.
 # ------------------------------------------------------------------------
+# Header line 5 (optional; only needed to use -r or -e): ROCOTO_SCHEDULER | WORKFLOW_MODULE_CMD
+#
+#   ROCOTO_SCHEDULER    Rocoto's own scheduler-driver name -- not always the
+#                       same as SCHEDULER above (e.g. plain PBS is "pbs" but
+#                       PBS Professional is "pbspro"). Required to use -r.
+#   WORKFLOW_MODULE_CMD A shell command run to put rocoto's or ecflow's
+#                       command-line tools on PATH (e.g. "module load
+#                       rocoto/1.3.7"). Leave blank if already on PATH.
+# ------------------------------------------------------------------------
 
 myplatform | intel | /path/to/containers/rocky9-oneapi2024.2-ss192.sif | /path1,/path2
 48 | slurm | mypartition | myqueue | mpirun
 /path/to/runtime_dir
 /path/to/input-data | | |
+#slurm | module load rocoto/1.3.7

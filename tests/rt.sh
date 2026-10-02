@@ -24,9 +24,10 @@ usage() {
   echo "  -n  run single test <name>"
   echo "  -o  compile only, skip tests"
   echo "  -P  <file> build and run on a platform (container or native stack) defined"
-  echo "      in <file>; always sequential (no -r/-e). By default a portability"
-  echo "      check only (no comparison); -c/-m create/compare against a baseline"
-  echo "      under that platform's own $RUNDIR_ROOT/REGRESSION_TEST"
+  echo "      in <file>; sequential by default, or -r/-e if <file> declares a"
+  echo "      ROCOTO_SCHEDULER. By default a portability check only (no"
+  echo "      comparison); -c/-m create/compare against a baseline under that"
+  echo "      platform's own $RUNDIR_ROOT/REGRESSION_TEST"
   echo "  -r  use Rocoto workflow manager"
   echo "  -s  run only the subset of tests listed in <file>"
   echo "  -v  verbose output"
@@ -199,7 +200,7 @@ EOF
   [[ ${RTPWD_NEW_BASELINE} == true ]] && echo "* (-m) - COMPARE AGAINST CREATED BASELINES" >> "${REGRESSIONTEST_LOG}"
   [[ ${RUN_SINGLE_TEST} == true ]] && echo "* (-n) - RUN SINGLE TEST: ${SINGLE_OPTS}" >> "${REGRESSIONTEST_LOG}"
   [[ ${COMPILE_ONLY} == true ]]&& echo "* (-o) - COMPILE ONLY, SKIP TESTS" >> "${REGRESSIONTEST_LOG}"
-  if [[ ${COMMUNITY_PLATFORM_USE} == true ]]; then
+  if [[ ${COMMUNITY_PLATFORM} == true ]]; then
     platform_baseline_note="no baseline comparison (portability check)"
     [[ ${CREATE_BASELINE} == true ]] && platform_baseline_note="creating baseline at ${NEW_BASELINE}"
     [[ ${RTPWD_NEW_BASELINE} == true ]] && platform_baseline_note="comparing against baseline at ${RTPWD}"
@@ -238,7 +239,7 @@ EOF
 
       machines_allow_run "${CMACHINES}" && valid_compile=true
 
-      if [[ ${COMMUNITY_PLATFORM_USE} == true && ${valid_compile} == true ]]; then
+      if [[ ${COMMUNITY_PLATFORM} == true && ${valid_compile} == true ]]; then
         RT_COMPILER=${COMPILER}
         resolve_container_image || valid_compile=false
       fi
@@ -321,7 +322,7 @@ EOF
 
       machines_allow_run "${RMACHINES}" && valid_test=true
 
-      if [[ ${COMMUNITY_PLATFORM_USE} == true && ${valid_test} == true ]]; then
+      if [[ ${COMMUNITY_PLATFORM} == true && ${valid_test} == true ]]; then
         RT_COMPILER=${COMPILER}
         resolve_container_image || valid_test=false
       fi
@@ -455,14 +456,14 @@ EOF
     # platform directory, not a throwaway rt_$$ one -- and NEW_BASELINE now
     # lives under it, so auto-deleting it here would destroy a baseline a
     # -c run just created. Never auto-delete it; -k is irrelevant for -P.
-    [[ ${KEEP_RUNDIR} == false && ${COMMUNITY_PLATFORM_USE} == false ]] && rm -rf "${RUNDIR_ROOT}" && rm "${PATHRT}/run_dir"
+    [[ ${KEEP_RUNDIR} == false && ${COMMUNITY_PLATFORM} == false ]] && rm -rf "${RUNDIR_ROOT}" && rm "${PATHRT}/run_dir"
     [[ ${ROCOTO} == true ]] && rm -f "${ROCOTO_XML}" "${ROCOTO_DB}" "${ROCOTO_STATE}" ./*_lock.db
     [[ ${TEST_35D} == true ]] && rm -f tests/cpld_bmark*_20*
     # A community platform (-P) reports per-compile/per-test PASS/FAIL to the
     # console (see the COMPILE/TEST SUMMARY block above) and the full
     # per-item + SYNOPSIS breakdown to ${REGRESSIONTEST_LOG} above, same as
     # Tier-1 -- but not this one aggregate console verdict.
-    [[ ${COMMUNITY_PLATFORM_USE} == true ]] || echo "REGRESSION TEST RESULT: SUCCESS"
+    [[ ${COMMUNITY_PLATFORM} == true ]] || echo "REGRESSION TEST RESULT: SUCCESS"
   else
     cat << EOF >> "${REGRESSIONTEST_LOG}"
 
@@ -475,7 +476,7 @@ Result: FAILURE
 
 ====END OF ${MACHINE_ID^^} REGRESSION TESTING LOG====
 EOF
-    [[ ${COMMUNITY_PLATFORM_USE} == true ]] || echo "REGRESSION TEST RESULT: FAILURE"
+    [[ ${COMMUNITY_PLATFORM} == true ]] || echo "REGRESSION TEST RESULT: FAILURE"
   fi
 
 }
@@ -491,7 +492,7 @@ machines_allow_run() {
   [[ ${machines} == *"+${PLATFORM_TAG}"* ]] && has_tag=true
   [[ ${machines} == *"-${PLATFORM_TAG}"* ]] && has_no_tag=true
 
-  if [[ ${COMMUNITY_PLATFORM_USE} == true ]]; then
+  if [[ ${COMMUNITY_PLATFORM} == true ]]; then
     [[ ${has_tag} == true && ${has_no_tag} == false ]] && return 0 || return 1
   fi
 
@@ -556,7 +557,7 @@ parse_platform_def() {
         ;;
       1)
         IFS='|' read -r f1 f2 f3 f4 f5 _rest <<< "${line}"
-        CONTAINER_TPN=$(sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' <<< "${f1:-}")
+        PLATFORM_TPN=$(sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' <<< "${f1:-}")
         SCHEDULER=$(sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' <<< "${f2:-}")
         PARTITION=$(sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' <<< "${f3:-}")
         QUEUE=$(sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' <<< "${f4:-}")
@@ -572,9 +573,15 @@ parse_platform_def() {
         INPUTDATA_LM4=$(sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' <<< "${f3:-}")
         INPUTDATA_GFSv17opn=$(sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' <<< "${f4:-}")
         ;;
+      4)
+        # Optional: only needed to use -r/-e with -P.
+        IFS='|' read -r f1 f2 _rest <<< "${line}"
+        ROCOTO_SCHEDULER=$(sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' <<< "${f1:-}")
+        WORKFLOW_MODULE_CMD=$(sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' <<< "${f2:-}")
+        ;;
     esac
     header_lines_read=$((header_lines_read + 1))
-    [[ ${header_lines_read} -ge 4 ]] && break
+    [[ ${header_lines_read} -ge 5 ]] && break
   done < "${file}"
 
   [[ ${header_lines_read} -ge 4 ]] || die "${file}: expected 4 header lines, found ${header_lines_read}"
@@ -610,12 +617,12 @@ export RTVERBOSE=${RTVERBOSE}
 export CONTAINER_IMG=${RT_CONTAINER_IMG}
 export CONTAINER_BIND_FLAGS="${CONTAINER_BIND_FLAGS}"
 export CONTAINER_USE=${CONTAINER_USE}
-export COMMUNITY_PLATFORM=${COMMUNITY_PLATFORM_USE}
+export COMMUNITY_PLATFORM=${COMMUNITY_PLATFORM}
 EOF
 
-  if [[ ${COMMUNITY_PLATFORM_USE} == true ]]; then
+  if [[ ${COMMUNITY_PLATFORM} == true ]]; then
     cat << EOF >> "${RUNDIR_ROOT}/compile_${COMPILE_ID}.env"
-export TPN=${CONTAINER_TPN:-}
+export TPN=${PLATFORM_TPN:-}
 EOF
   fi
 
@@ -734,21 +741,25 @@ ACCNR=${ACCNR:-""}
 # file declares a container image -- it is not a CLI flag.
 CONTAINER_USE=false
 CONTAINER_BIND_DIRS=''
-CONTAINER_TPN=''
+PLATFORM_TPN=''
 RT_CONTAINER_IMG=''
 
 # PLATFORM_TAG is the "+<tag>"/"-<tag>" name machines_allow_run() checks in
 # rt.conf; it is set to the platform's own declared name once -P is parsed.
 # The 'container' placeholder below is never used to gate anything before
-# then (COMMUNITY_PLATFORM_USE is false) -- it only needs to be a non-empty,
+# then (COMMUNITY_PLATFORM is false) -- it only needs to be a non-empty,
 # harmless string so stripping "+container"/"-container" out of a plain
 # native MACHINES field (where it's just an inert, ignorable substring)
 # doesn't collapse to stripping every literal "+"/"-" character instead.
-COMMUNITY_PLATFORM_USE=false
+COMMUNITY_PLATFORM=false
 COMMUNITY_PLATFORM_FILE=''
 COMMUNITY_PLATFORM_COMPILER=''
 COMMUNITY_PLATFORM_CONTAINER_IMG=''
 PLATFORM_TAG='container'
+# Optional (header line 5); only set if -P's file declares them, needed
+# only to use -r/-e with -P.
+ROCOTO_SCHEDULER=''
+WORKFLOW_MODULE_CMD=''
 
 while getopts ":a:cl:mn:dwkP:reovhxs:" opt; do
   case ${opt} in
@@ -770,7 +781,7 @@ while getopts ":a:cl:mn:dwkP:reovhxs:" opt; do
       COMPILE_ONLY=true
       ;;
     P)
-      COMMUNITY_PLATFORM_USE=true
+      COMMUNITY_PLATFORM=true
       COMMUNITY_PLATFORM_FILE=${OPTARG}
       [[ -s ${COMMUNITY_PLATFORM_FILE} ]] || die "${COMMUNITY_PLATFORM_FILE} empty or not found, exiting..."
       ;;
@@ -843,13 +854,10 @@ done
 [[ ${CREATE_BASELINE} == true && ${RTPWD_NEW_BASELINE} == true ]] && die "-c and -m options cannot be used at the same time"
 #B&N not run together
 [[ ${TEST_SUBSET_FILE} != '' && ${RUN_SINGLE_TEST} == true ]] && die "-s and -n options cannot be used at the same time"
-# A community platform (-P) run is always sequential; -c/-m are allowed,
-# creating/comparing against a baseline under the platform's own
-# RUNDIR_ROOT rather than a Tier-1 DISKNM baseline area.
-if [[ ${COMMUNITY_PLATFORM_USE} == true ]]; then
-  [[ ${ROCOTO} == false ]] || die "-P should not be used with -r"
-  [[ ${ECFLOW} == false ]] || die "-P should not be used with -e"
-fi
+# A community platform (-P) run is sequential by default; -c/-m create/
+# compare a baseline under the platform's own RUNDIR_ROOT rather than a
+# Tier-1 DISKNM baseline area. -r/-e are also allowed (see the
+# ROCOTO_SCHEDULER check once the -P file itself is parsed, below).
 
 if [[ ${DRY_RUN} == true ]]; then
    [[ ${TEST_SUBSET_FILE} == '' ]] || die "-x should not be used with -s"
@@ -874,7 +882,7 @@ fi
 # make sure only one instance of rt.sh is running -- not for a community
 # platform (-P), which uses its own fixed RUNDIR_ROOT rather than a
 # per-PID one and may be run concurrently (e.g. one -P run per compiler)
-if [[ ${COMMUNITY_PLATFORM_USE} == false ]]; then
+if [[ ${COMMUNITY_PLATFORM} == false ]]; then
   if mkdir "${LOCKDIR}" ; then
     echo "${HOSTNAME_IN}" $$ > "${LOCKDIR}/PID"
   else
@@ -883,9 +891,12 @@ if [[ ${COMMUNITY_PLATFORM_USE} == false ]]; then
   fi
 fi
 
-if [[ ${COMMUNITY_PLATFORM_USE} == true ]]; then
+if [[ ${COMMUNITY_PLATFORM} == true ]]; then
   parse_platform_def "${COMMUNITY_PLATFORM_FILE}"
   PLATFORM_TAG=${MACHINE_ID}
+  if [[ ${ROCOTO} == true && -z ${ROCOTO_SCHEDULER:-} ]]; then
+    die "-P with -r requires ROCOTO_SCHEDULER (header line 5) in ${COMMUNITY_PLATFORM_FILE}"
+  fi
 else
   source detect_machine.sh
   # shellcheck disable=SC1091
@@ -896,15 +907,14 @@ fi
 echo "Machine: ${MACHINE_ID}"
 echo "Account: ${ACCNR}"
 
-if [[ ${COMMUNITY_PLATFORM_USE} == true ]]; then
+if [[ ${COMMUNITY_PLATFORM} == true ]]; then
   # Community platform: no per-host case block -- everything came from the
   # -P file. Fill in what unrelated downstream code still references.
   DISKNM=''
   STMP=${RUNDIR_ROOT}
   PTMP=${RUNDIR_ROOT}
   COMPILE_QUEUE=${QUEUE}
-  ROCOTO=false
-  ECFLOW=false
+  TPN=${PLATFORM_TPN}
   # Default -P behavior is a pure portability check (build+run only, no
   # comparison). -c (create a baseline) and -m (compare against one) opt
   # into real baseline interaction; otherwise comparison stays skipped.
@@ -1166,7 +1176,7 @@ if [[ -n ${CONTAINER_BIND_DIRS} ]]; then
   done
 fi
 
-if [[ ${COMMUNITY_PLATFORM_USE} == true ]]; then
+if [[ ${COMMUNITY_PLATFORM} == true ]]; then
   # Baselines for a community platform (-P) live directly under its own
   # RUNDIR_ROOT, not nested under a Tier-1-style STMP/USER/FV3_RT path.
   NEW_BASELINE=${RUNDIR_ROOT}/REGRESSION_TEST
@@ -1179,7 +1189,7 @@ fi
 # platform-definition file -- no per-PID subdirectory -- so repeated runs
 # land in the same place and old test dirs can be found and renamed aside
 # (see run_test.sh) instead of silently multiplying under a fresh rt_$$.
-if [[ ${COMMUNITY_PLATFORM_USE} == false ]]; then
+if [[ ${COMMUNITY_PLATFORM} == false ]]; then
   # Overwrite default RUNDIR_ROOT if environment variable RUNDIR_ROOT is set
   RUNDIR_ROOT=${RUNDIR_ROOT:-${PTMP}/${USER}/FV3_RT}/rt_$$
 fi
@@ -1191,7 +1201,7 @@ echo "Run regression test in: ${RUNDIR_ROOT}"
 
 # BEFORE MOVING ANY FURTHER LETS CHECK THAT DISKNM/STMP/PTMP ALL EXIST
 # (a community platform, -P, has no DISKNM/baseline area at all -- skip)
-if [[ ${COMMUNITY_PLATFORM_USE} == false ]]; then
+if [[ ${COMMUNITY_PLATFORM} == false ]]; then
   [[ -d ${DISKNM} ]] || die "ERROR: DISKNM: ${DISKNM} -- DOES NOT EXIST"
   [[ -d ${STMP} ]] || die "ERROR: STMP: ${STMP} -- DOES NOT EXIST"
   [[ -d ${PTMP} ]] || die "ERROR: PTMP: ${PTMP} -- DOES NOT EXIST"
@@ -1214,7 +1224,7 @@ fi
 # A community platform (-P) only has a baseline directory to check when
 # explicitly comparing against one it created earlier (-m); its default
 # portability-check mode (neither -c nor -m) has nothing to check here.
-if [[ "${CREATE_BASELINE}" == false && ( ${COMMUNITY_PLATFORM_USE} == false || ${RTPWD_NEW_BASELINE} == true ) ]] ; then
+if [[ "${CREATE_BASELINE}" == false && ( ${COMMUNITY_PLATFORM} == false || ${RTPWD_NEW_BASELINE} == true ) ]] ; then
   EMPTY_CHECK=$(find "${RTPWD}/" -type d -prune -empty)
   if [[ ! -d "${RTPWD}" ]] ; then
     echo "Baseline directory does not exist:"
@@ -1273,6 +1283,10 @@ if [[ ${ROCOTO} == true ]]; then
 
   echo "rt.sh: Verifying ROCOTO support..."
 
+  if [[ ${COMMUNITY_PLATFORM} == true && -n ${WORKFLOW_MODULE_CMD} ]]; then
+    eval "${WORKFLOW_MODULE_CMD}"
+  fi
+
   case ${MACHINE_ID} in
     wcoss2|acorn)
       die "Rocoto not supported on this machine, please do not use '-r'."
@@ -1314,6 +1328,17 @@ fi
 
 if [[ ${ECFLOW} == true ]]; then
   echo "Verifying ECFLOW support..."
+
+  if [[ ${COMMUNITY_PLATFORM} == true ]]; then
+    [[ -n ${WORKFLOW_MODULE_CMD} ]] && eval "${WORKFLOW_MODULE_CMD}"
+    # No per-host ecflow node for a community platform; a local server on
+    # this host, same pattern most Tier-1 hosts already use (see ecflow_run
+    # in rt_utils.sh), is what ecflow_run() needs ECF_HOST/ECF_PORT set to.
+    ECF_HOST=$(hostname)
+    ECF_PORT=$(( $(id -u) + 1500 ))
+    export ECF_HOST ECF_PORT
+  fi
+
   case ${MACHINE_ID} in
     noaacloud)
       die "ECFLOW not supported on this machine, please do not use '-e'."
@@ -1415,7 +1440,7 @@ while read -r line || [[ -n "${line}" ]]; do
 
     machines_allow_run "${MACHINES}" || continue
 
-    if [[ ${COMMUNITY_PLATFORM_USE} == true ]] && ! resolve_container_image; then
+    if [[ ${COMMUNITY_PLATFORM} == true ]] && ! resolve_container_image; then
       [[ ${RUN_SINGLE_TEST} == true ]] && die "No ${RT_COMPILER} container/platform match on ${MACHINE_ID} for -n test"
       echo "rt.sh: SKIP compile ${COMPILE_ID} -- compiler ${RT_COMPILER} not available on MACHINE_ID=${MACHINE_ID}"
       continue
@@ -1424,9 +1449,9 @@ while read -r line || [[ -n "${line}" ]]; do
     # A community platform (-P) dry run still compiles for real: a RUN
     # line's dry run below verifies its compile succeeded, which needs an
     # actual executable to check against.
-    [[ ${DRY_RUN} == true && ${COMMUNITY_PLATFORM_USE} == false ]] && continue
+    [[ ${DRY_RUN} == true && ${COMMUNITY_PLATFORM} == false ]] && continue
 
-    if [[ ${COMMUNITY_PLATFORM_USE} == true && -x "${PATHTR}/tests/fv3_${COMPILE_ID}.exe" ]]; then
+    if [[ ${COMMUNITY_PLATFORM} == true && -x "${PATHTR}/tests/fv3_${COMPILE_ID}.exe" ]]; then
       echo "rt.sh: SKIP compile ${COMPILE_ID} -- fv3_${COMPILE_ID}.exe already present in ${PATHTR}/tests/"
       continue
     fi
@@ -1463,7 +1488,7 @@ while read -r line || [[ -n "${line}" ]]; do
 
     machines_allow_run "${MACHINES}" || continue
 
-    if [[ ${COMMUNITY_PLATFORM_USE} == true ]] && ! resolve_container_image; then
+    if [[ ${COMMUNITY_PLATFORM} == true ]] && ! resolve_container_image; then
       echo "rt.sh: SKIP test ${TEST_ID} -- compiler ${RT_COMPILER} not available on MACHINE_ID=${MACHINE_ID}"
       continue
     fi
@@ -1538,12 +1563,12 @@ export DRY_RUN=${DRY_RUN}
 export CONTAINER_IMG=${RT_CONTAINER_IMG}
 export CONTAINER_BIND_FLAGS="${CONTAINER_BIND_FLAGS}"
 export CONTAINER_USE=${CONTAINER_USE}
-export COMMUNITY_PLATFORM=${COMMUNITY_PLATFORM_USE}
+export COMMUNITY_PLATFORM=${COMMUNITY_PLATFORM}
 EOF
 
-      if [[ ${COMMUNITY_PLATFORM_USE} == true ]]; then
+      if [[ ${COMMUNITY_PLATFORM} == true ]]; then
         cat << EOF >> "${RUNDIR_ROOT}/run_test_${TEST_ID}.env"
-export TPN=${CONTAINER_TPN:-}
+export TPN=${PLATFORM_TPN:-}
 EOF
       fi
 
@@ -1561,7 +1586,7 @@ EOF
     # written by run_test.sh, so this check works even though the run itself
     # happened inside the subshell just closed.
     if [[ ${ROCOTO} == false && ${ECFLOW} == false ]]; then
-      if [[ ${COMMUNITY_PLATFORM_USE} == true && ${DRY_RUN} == true ]]; then
+      if [[ ${COMMUNITY_PLATFORM} == true && ${DRY_RUN} == true ]]; then
         if [[ -f "${PATHRT}/fail_test_${TEST_ID}" ]]; then
           echo "rt.sh: Test ${TEST_ID} DRY RUN FAIL -- see ${LOG_DIR}/run_${TEST_ID}${RT_SUFFIX}.log"
           TEST_DRYRUN_FAIL+=("${TEST_ID}")
@@ -1611,7 +1636,7 @@ if [[ ${CREATE_BASELINE} == true && ${TEST_SUBSET_FILE} != '' ]]; then
   done
 fi
 
-if [[ ${DRY_RUN} == true && ${COMMUNITY_PLATFORM_USE} == false ]]; then
+if [[ ${DRY_RUN} == true && ${COMMUNITY_PLATFORM} == false ]]; then
   echo "Successful dry run"
   exit 0
 fi
@@ -1622,7 +1647,7 @@ if [[ ${ROCOTO} == false && ${ECFLOW} == false ]]; then
   echo "Compiles: ${#COMPILE_PASSED[@]} passed, ${#COMPILE_FAILED[@]} failed"
   for c in "${COMPILE_PASSED[@]}"; do echo "  PASS -- COMPILE ${c}"; done
   for c in "${COMPILE_FAILED[@]}"; do echo "  FAIL -- COMPILE ${c}"; done
-  if [[ ${COMMUNITY_PLATFORM_USE} == true && ${DRY_RUN} == true ]]; then
+  if [[ ${COMMUNITY_PLATFORM} == true && ${DRY_RUN} == true ]]; then
     echo "Tests (dry run): ${#TEST_DRYRUN_PASS[@]} succeeded, ${#TEST_DRYRUN_FAIL[@]} failed"
     for t in "${TEST_DRYRUN_PASS[@]}"; do echo "  DRY RUN SUCCESS -- TEST ${t}"; done
     for t in "${TEST_DRYRUN_FAIL[@]}"; do echo "  DRY RUN FAIL -- TEST ${t}"; done
