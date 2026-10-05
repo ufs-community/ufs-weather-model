@@ -1,0 +1,71 @@
+#
+#  DATM_CDEPS_MOM6_CICE_WW3_CMEPS wavice test
+#
+
+TEST_DESCR="DATM_CDEPS-MOM6-CICE-WW3-CMEPS - wavice "
+
+CNTL_DIR=s2sw_datm_wavice
+
+LIST_FILES="RESTART/20210323.060000.MOM.res.nc \
+            RESTART/iced.2021-03-23-21600.nc \
+            DATM_GFS.ww3.r.2021-03-23-21600.nc \
+            RESTART/DATM_GFS.cpl.r.2021-03-23-21600.nc"
+
+# datm cdeps is currently configured datm-mom6-cice6 (ie, no wav)
+export_datm_cdeps
+export_ww3
+CPLWAV=.true.
+WAV_tasks=$WAV_tasks_cpl_unstr
+
+DATM_SRC=GFS
+FILEBASE_DATM=gfs
+SYEAR=2021
+SMONTH=03
+SDAY=22
+SHOUR=06
+SECS=$((10#${SHOUR} * 3600))
+
+IATM=3072
+JATM=1536
+ATM_NX_GLB=$IATM
+ATM_NY_GLB=$JATM
+ATMRES=${IATM}x${JATM}
+MESH_ATM=mesh.datm.3072x1536.nc
+atm_datamode=GEFS
+
+CICE_KTHERM=2
+CICE_TFREEZE_OPTION=mushy
+RESTART_N=12
+stream_files="INPUT/gfs.202103.nc"
+eps_imesh=2.5e-1
+MOM6_TOPOEDITS=ufs.topo_edits_011818.nc
+MOM6_ALLOW_LANDMASK_CHANGES=True
+
+WW3_DOMAIN=global_270k
+INPUTDATA_ROOT_WW3=/scratch3/NCEPDEV/nems/Nick.Szapiro/tasks/wavice/WW3_input_data_20260930/
+MESH_WAV=mesh.${WW3_DOMAIN}.nc
+WW3_MODDEF=mod_def.ic4.exp.${WW3_DOMAIN}
+
+RUN_BEG="${SYEAR}${SMONTH}${SDAY} $(printf "%02d" $((SHOUR)))0000"
+RUN_END="2100${SMONTH}${SDAY} $(printf "%02d" $((SHOUR)))0000"
+GOFILETYPE=1
+POFILETYPE=1
+WW3_GRD_OUTDIR='./'
+WW3_PNT_OUTDIR='./'
+WW3_RST_OUTDIR='./'
+WW3_ICE='C'
+WW3_IC1='C'
+WW3_IC5='C'
+WW3_OUTPARS='WND CUR ICE HS T01 T02 DIR FP DP PHS PTP PDIR CHA'
+WW3_RSTFLDS=" "
+
+CICE_nfsd=12
+CICE_tr_fsd=.true.
+CICE_restart_fsd=.false.
+CICE_wave_spec_type=constant
+wav_coupling_to_cice=true
+
+UFS_CONFIGURE=ufs.configure.datm_s2sw.IN
+FV3_RUN=cpld_datm_cdeps_gfs.IN
+
+WLCLK=90
