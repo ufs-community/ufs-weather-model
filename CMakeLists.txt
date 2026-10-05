@@ -89,6 +89,7 @@ set(PDLIB_BT4       OFF CACHE BOOL "Enable Domain Decomposition in WW3 via PDLIB
 set(CDEPS_INLINE    OFF CACHE BOOL "Enable CDEPS inline capability")
 set(HYDRO           OFF CACHE BOOL "Enable hydrostatic set")
 set(UFS_TRACING     OFF CACHE BOOL "Enable UFS Tracing")
+set(DATM            OFF CACHE BOOL "Enable DATM. ATM off")
 set(WAVICE          OFF CACHE BOOL "Enable wave-sea ice coupling")
 
 if(CMAKE_Platform)
@@ -141,6 +142,8 @@ message("CMEPS_AOFLUX ..... ${CMEPS_AOFLUX}")
 message("CDEPS_INLINE ..... ${CDEPS_INLINE}")
 message("HYDRO ............ ${HYDRO}")
 message("UFS_TRACING ...... ${UFS_TRACING}")
+message("DATM ............. ${DATM}")
+message("WAVICE ............${WAVICE}")
 
 message("")
 
@@ -183,6 +186,12 @@ if(FMS)
       add_library(fms ALIAS FMS::fms_r8)
     endif()
   endif()
+endif()
+
+if(DATM)
+  set(FV3  OFF CACHE BOOL "DATM blocks FV3 OFF" FORCE)
+  set(MPAS OFF CACHE BOOL "DATM blocks MPAS OFF" FORCE)
+  set(CDEPS ON CACHE BOOL "DATM enables CDEPS" FORCE)
 endif()
 
 if(CMEPS OR CDEPS)
