@@ -642,7 +642,11 @@ if [[ ${skip_check_results} == false ]]; then
 
       else
         if [[ ${i##*.} == nc* ]] ; then
-          if [[ " orion hercules hera ursa wcoss2 acorn derecho gaeac5 gaeac6 noaacloud " =~ ${MACHINE_ID} ]]; then
+          # A community platform (-P) is never in this fixed Tier-1 host
+          # list -- its MACHINE_ID is whatever name the platform-definition
+          # file declares -- but nccmp is just as required there (see the
+          # container/native branch right below), so always use it for -P.
+          if [[ ${COMMUNITY_PLATFORM:-false} == true || " orion hercules hera ursa wcoss2 acorn derecho gaeac5 gaeac6 noaacloud " =~ ${MACHINE_ID} ]]; then
             echo "USING NCCMP.." >> "${RT_LOG}"
             echo "USING NCCMP.."
               nccmp_args=(-d -S -q -f -B --Attribute=checksum --warn=format)

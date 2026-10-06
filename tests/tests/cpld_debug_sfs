@@ -57,3 +57,7 @@ MOM6_HISTFREQ_N=2
 # CICE frequency
 CICE_DIAGFREQ=$(((FHMAX - FHROT) * 3600 / DT_CICE))
 CICE_HISTFREQ_N="0, 0, 2, 0, 1"
+
+if [[  -n ${CONTAINER_IMG:-} ]]; then
+  WLCLK=40
+fi
