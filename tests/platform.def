@@ -5,7 +5,7 @@
 #      data lines below for your own platform.
 #   2. Tag the rt.conf (or -l <file>) COMPILE/RUN lines you want to run on
 #      this platform with "+<PLATFORM_NAME>" in their Machines column,
-#      using the same name given on header line 1 below. "-<PLATFORM_NAME>"
+#      using the same name given on line 1 below. "-<PLATFORM_NAME>"
 #      excludes a line from this platform even if "+<PLATFORM_NAME>" is
 #      also present.
 #   3. Run:
@@ -17,11 +17,11 @@
 # community-platform run is sequential and skips baseline comparison: a
 # portability check ("does the model build and run here at all?"), not a
 # regression test. -c/-m opt into baseline creation/comparison; -r/-e opt
-# into Rocoto/ecFlow (needs the optional header line 5). See the User's
+# into Rocoto/ecFlow (needs the optional line 5). See the User's
 # Guide chapter "Container and Community Platform Options" for the full
 # field reference.
 # ------------------------------------------------------------------------
-# Header line 1: PLATFORM_NAME | RT_COMPILER | CONTAINER_IMG | BIND_DIRS
+# Line 1: PLATFORM_NAME | RT_COMPILER | CONTAINER_IMG | BIND_DIRS
 #
 #   PLATFORM_NAME  Required. Becomes MACHINE_ID for this run, and the name
 #                  used in the "+<name>"/"-<name>" rt.conf tag above. May
@@ -39,7 +39,7 @@
 #                  container (must cover the source tree, input data, and
 #                  RUNDIR_ROOT below). Ignored for a native stack.
 # ------------------------------------------------------------------------
-# Header line 2: TPN | SCHEDULER | PARTITION | QUEUE | MPI_LAUNCH
+# Line 2: TPN | SCHEDULER | PARTITION | QUEUE | MPI_LAUNCH
 #
 #   TPN         Required. MPI tasks per node on this platform.
 #   SCHEDULER   "slurm", "pbs", or blank for an interactive/no-scheduler
@@ -49,13 +49,13 @@
 #   MPI_LAUNCH  MPI launch command used only when SCHEDULER is blank:
 #               "mpirun" or "mpiexec" (defaults to "mpirun" if omitted).
 # ------------------------------------------------------------------------
-# Header line 3: RUNDIR_ROOT
+# Line 3: RUNDIR_ROOT
 #
 #   Required. Top-level directory where compile and test run directories
 #   are created. Should be a user-writable path, preferably on a scratch
 #   or work filesystem.
 # ------------------------------------------------------------------------
-# Header line 4: INPUTDATA_ROOT | INPUTDATA_ROOT_WW3 | INPUTDATA_LM4 | INPUTDATA_GFSv17opn
+# Line 4: INPUTDATA_ROOT | INPUTDATA_ROOT_WW3 | INPUTDATA_LM4 | INPUTDATA_GFSv17opn
 #
 #   INPUTDATA_ROOT       Required. Staged input-data directory (fix files
 #                        and other RT input data).
@@ -66,7 +66,7 @@
 #   INPUTDATA_GFSv17opn  Optional. Only needed by tests that explicitly
 #                        require GFSv17 operational input data.
 # ------------------------------------------------------------------------
-# Header line 5 (optional; only needed to use -r or -e): ROCOTO_SCHEDULER | WORKFLOW_MODULE_CMD
+# Line 5 (optional; only needed to use -r or -e): ROCOTO_SCHEDULER | WORKFLOW_MODULE_CMD
 #
 #   ROCOTO_SCHEDULER    Rocoto's own scheduler-driver name -- not always the
 #                       same as SCHEDULER above (e.g. plain PBS is "pbs" but
@@ -76,7 +76,7 @@
 #                       rocoto/1.3.7"). Leave blank if already on PATH.
 # ------------------------------------------------------------------------
 
-myplatform | intel | /path/to/containers/rocky9-oneapi2024.2-ss192.sif | /path1,/path2
+container | intel | /path/to/containers/rocky9-oneapi2024.2-ss192.sif | /path1,/path2,/path3
 48 | slurm | mypartition | myqueue | mpirun
 /path/to/runtime_dir
 /path/to/input-data | | |
