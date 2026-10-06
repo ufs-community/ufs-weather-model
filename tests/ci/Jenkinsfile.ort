@@ -71,13 +71,10 @@ def generateStage(nodeLabel) {
         stage("Run control_p8 on ${nodeLabel.replaceAll("'","")}") {
             node(nodeLabel) {
 		script {
-                   cleanWs()
-                   checkout scm
                 catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') { 
                 sh '''
                   export machine=${NODE_NAME,,}
-                  git submodule update --init --recursive
-                  cd tests/fv3_conf
+                  cd $/WORKSPACE/tests/fv3_conf
                   sed 's/#SBATCH --time=.*/#SBATCH --time=02:00:00/g' -i fv3_slurm.IN_${machine}
                   cd ..
                   export PATH=$PATH:~/bin
