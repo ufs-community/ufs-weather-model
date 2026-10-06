@@ -89,6 +89,7 @@ jobs:
           cd $GITHUB_WORKSPACE
           mkdir -p plots
           python -m tests-dev.scripts.create_images
+        env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Clone wiki
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 #v7.0.1
