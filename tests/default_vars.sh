@@ -1095,7 +1095,7 @@ export_fv3() {
   PRE_RAD=.false.
   TTENDLIM=-999
   
-  PDC=.false.
+  PDC_DRIB=.false.
 
   # Radiation
   DO_RRTMGP=.false.
