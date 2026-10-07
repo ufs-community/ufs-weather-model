@@ -1,87 +1,78 @@
 .. _container-rt-tests:
 
-*************************************************************************
-Container and Community Platform Workflows for the UFS Weather Model
-*************************************************************************
+******************************************************************************
+Container and Community Platform Options to Test and Run the UFS Weather Model
+******************************************************************************
 
-This chapter describes two build-and-run workflows for the UFS Weather Model (:term:`WM`)
-driven by the driver script ``tests/community.sh``:
+This chapter describes two ways to build and run the UFS Weather Model (:term:`WM`)
+outside of the standard Tier 1 software stacks. Both use the regression test script
+``tests/rt.sh`` with the ``-P <platform.def>`` option, where ``<platform.def>`` is a
+*platform definition file* that describes the platform (see :numref:`Section %s <container-rt-conf>`):
 
-* **Container workflow** (default): The model is compiled and run inside a
+* **Container option**: The model is compiled and run inside a
   Singularity/Apptainer software container that bundles the prerequisite compilers,
   MPI, and all required third-party libraries. The UFS WM source code is checked out
   from standard GitHub repositories and built inside the container environment,
   eliminating the need to install :term:`spack-stack` or host-specific modules.
+  This option is selected when the platform definition file gives a container image.
 
-* **Community platform workflow** (``-p`` flag): The container is bypassed entirely.
+* **Community platform option** (native software stack): No container is used.
   The model is compiled and run natively using a software stack already installed on
-  the host system and exposed through a user-provided Lmod modulefile. This mode
-  requires natively installed software stack to already exist on a community platform.
+  the host system and exposed through a user-provided Lmod modulefile. This option
+  is selected when the container image field in the platform definition file is left blank.
+
+The container option has been tested on the community platform Stampede3 (TACC, University of
+Texas) with both GNU-based and Intel-based software containers. An example platform definition
+file for Stampede3, ``tests/stampede.def``, is included (see :numref:`Section %s <container-rt-conf>`).
+The container option has also been tested on NOAA RDHPC Tier 1 platforms with the same method
+(``-P <platform.def>``), by adapting the platform definition file for each platform and container
+(GNU- or Intel-based).
 
 .. attention::
 
-   This chapter covers the container-based and community platform workflows driven by
-   ``community.sh``. For the standard, Tier-1-oriented RT framework driven by ``rt.sh``,
-   see :numref:`Section %s <UsingRegressionTest>`. Note that ``rt.sh`` also accepts a
-   ``-p`` flag, for running its regression tests inside a container on a Tier 1
-   platform (see :numref:`Section %s <rt-container>`) -- this is unrelated to, and has
-   the opposite meaning of, ``community.sh``'s own ``-p`` (community platform, i.e.
-   *no* container) described below.
+   This chapter covers ``rt.sh`` runs with the ``-P <platform.def>`` option. For standard Tier 1
+   regression testing, see :numref:`Section %s <UsingRegressionTest>`. A summary of
+   the ``-P`` option is also given in :numref:`Section %s <rt-container>`.
 
 .. _container-rt-vs-rt:
 
 ==========================================================
-Relationship to the Regression Test (RT) Workflow
+Relationship to the Regression Test (RT) Framework
 ==========================================================
 
-``community.sh`` was intentionally designed to follow a logic and structure similar to
-the Regression Test (:term:`RT`) framework (``rt.sh``/``rt.conf``). The goal of this
-design choice is to facilitate testing and adoption of this new workflow. UFS WM
-developers already familiar with running RTs would be able to use ``community.sh``
-without learning an entirely new set of conventions. To that end, ``community.sh``
-reuses several pieces of the existing RT infrastructure:
+Container and community platform runs use the same Regression Test (:term:`RT`) framework
+as Tier 1 platforms:
 
-* Test cases are selected from the same test definition files under ``tests/tests``
-  that ``rt.conf``/``rt.sh`` draw from, and CMake build options follow the same
-  conventions as ``rt.conf``.
-* ``rt_utils.sh`` is reused to configure some of the shell environment variables needed
-  to run the tests.
-* Job card templates in ``tests/fv3_conf/`` follow the same naming pattern used by the
-  RT framework.
+* Tests are selected from ``tests/rt.conf`` (or from another file given with ``-l``), and the
+  test definitions are the same files under ``tests/tests``. CMake build options follow the
+  same conventions as ``rt.conf``.
+* A ``COMPILE`` or ``RUN`` line in ``rt.conf`` runs on the platform only when its
+  **Machines** column contains ``+<PLATFORM_NAME>``, where ``<PLATFORM_NAME>`` is the name
+  given in line 1/ field 1 of the platform definition file. ``-<PLATFORM_NAME>`` excludes the line
+  even if ``+<PLATFORM_NAME>`` is also present. The tests currently enabled for the container
+  option are tagged ``+container`` in ``rt.conf``.
+* The same ``rt.sh`` options are used, for example ``-a``, ``-l``, ``-n``, ``-o``, ``-c``,
+  ``-m``, ``-r``, and ``-e`` (see :numref:`Section %s <container-rt-run>`).
 
-That said, ``community.sh`` is a separate driver script with its own configuration
-file, ``community.conf``, and its own goal.
+The goal of a ``-P`` run differs from a Tier 1 run. By default, a ``-P`` run is a
+**portability check**: it confirms that the model has been **ported, built, and run
+successfully** on the platform, with the same input data, model configuration(s), and
+test case definitions as the Tier 1 platforms. The ``-P`` run is not intended to be a
+The platform may be a Tier 1 system, another community/HPC center system, a cloud instance,
+or a laptop/workstation, with or without container software. Baselines can still be created
+(``-c``) and compared against (``-m``) on the same platform. These baselines are kept
+under the platform user's runtime directory, and are separate from the Tier 1 baselines.
 
-``community.sh`` is intended for portability testing on a contributor's own platform.
-It gives the UFS-WMcommunity members and users outside the core UFS WM development team 
-a simple starting point for building and running the model. This platform may be a Tier 1
-system, another HPC center, a cloud instance, or a laptop/workstation, with or without
-container software. Running the tests successfully with ``community.sh`` confirms that
-the model has been **ported, built, and run successfully**, rather than reproducing the full
-baseline-comparison capability maintained on Tier 1.
+By default, a ``-P`` run is **sequential**: ``rt.sh`` compiles each configuration and then
+runs its tests in turn, which keeps it simple for interactive debugging. The Rocoto (``-r``)
+or ecFlow (``-e``) workflow managers can be used instead when the platform definition file
+provides the optional line 5 (see :numref:`Section %s <container-rt-conf>`).
 
-By contrast, ``rt.sh`` targets the officially supported NOAA Tier 1 RDHPC platforms
-exclusively (such as Ursa, Gaea, Orion, Hercules, Derecho, and NOAA Cloud at the moment of
-writing). It confirms that code changes preserve bit-for-bit baseline results, using
-Rocoto/ECFlow workflow management. ``rt.sh`` also has its own container option
-(``-p``), for running the officially supported regression tests inside a
-container on a Tier 1 platform rather than against its natively installed
-software stack; see :numref:`Section %s <rt-container>`. This is separate
-from the ``community.sh`` workflow described in this chapter: the container
-image location is fixed per Tier 1 platform rather than user-configured, and
-results are compared against baselines through the normal RT workflow
-instead of running standalone.
-
-``community.sh`` runs sequentially — compiling each configuration and then
-running its tests in turn, with no Rocoto or ECFlow workflow manager
-involved — which keeps it simple for interactive debugging on whatever
-platform the user has available.
-
-Users are expected to modify the ``community.conf`` configuration to suit their computing
-platform standards and job scheduler (if any). The locations of staged input data, the 
-container image, the runtime directory, as well as host-system runtime modules need to be
-adjusted to fit local data paths and user's environment. Users are encouraged to further
-tailor the workflow to fit their own modeling needs beyond running predefined test cases.
+Users are expected to adapt the platform definition file to their computing platform and job
+scheduler (if any): the container image, the run directory, the location of the staged input
+data, and the host-system runtime modules all need to match the local environment. Users are
+encouraged to further tailor these runs to fit their own modeling needs beyond running
+predefined test cases.
 
 .. _container-rt-prereqs:
 
@@ -94,9 +85,17 @@ Prerequisites
 Singularity/Apptainer
 -----------------------
 
-Users running the workflow in container mode (the default, without the ``-p`` community
-platform flag) must have **Singularity** or **Apptainer** software installed on their
-compute platform. `Singularity/Apptainer <https://en.wikipedia.org/wiki/Apptainer#History>`_ container software is widely used in HPC environments to provide portable and reproducible software environments. It provides OS-level virtualization by packaging an application, its dependencies, and selected runtime environment components into a container image.  For MPI workflows, the host HPC system typically coordinates process launch and task initialization through its scheduler and runtime services, allowing the containerized application to integrate with compute nodes, interconnects, and parallel file systems.
+Users running with the container option (a platform definition file with a container image)
+must have **Singularity** or **Apptainer** software installed on their
+compute platform. `Singularity/Apptainer <https://en.wikipedia.org/wiki/Apptainer#History>`_
+container software is widely used in HPC environments to provide portable and reproducible
+software environments. Multi-node MPI runs require the MPI library inside the container to be
+binary (ABI) compatible with the host MPI (for ``mpirun``/``mpiexec``) or with the host's PMI/PMIx
+(for ``srun``), so that the MPI ranks can communicate across nodes; a mismatch can cause failures
+or hangs. See `Hybrid MPI Model (Host + Container MPI)
+<https://docs.rdhpcs.noaa.gov/software/containers/index.html#hybrid-mpi-model-host-container-mpi>`__
+on the `Containers <https://docs.rdhpcs.noaa.gov/software/containers/index.html>`__
+page of the NOAA RDHPCS documentation.
 
 
 For further information of container software, see:
@@ -115,15 +114,18 @@ On many HPC systems, Singularity/Apptainer is available as a loadable module:
 
 When not available system-wide, Apptainer can be installed on a Linux-based system by following the `Apptainer Installation Guide <https://apptainer.org/docs/admin/latest/installation.html>`__.
 
-The following table lists the container software and the module load command on NOAA RDHPC Tier 1 platforms:
+The following table lists the container software and the module load command on several platforms:
 
-.. list-table:: Container software on NOAA RDHPC Tier 1 platforms
+.. list-table:: Examples of container software used on various platforms
    :widths: 25 25 30
    :header-rows: 1
 
    * - Machine
      - Container command
      - Module to load
+   * - Stampede3
+     - ``apptainer``
+     - ``module load tacc-apptainer``
    * - Ursa
      - ``apptainer``
      - none required
@@ -151,6 +153,16 @@ that are otherwise limited in ``singularity`` module by security
 constraints. The ``singularity`` module could further be used for compile
 and runtime environments.
 
+The container software module is loaded on the host system by the
+``modulefiles/ufs_container.runtime.lua`` module before the container is started (see
+:numref:`Section %s <container-rt-runtime-mod>`). Examples of the module loading lines are
+given in that file: uncomment the lines needed for the platform, or add your own. For example,
+to run a container on Stampede3, add:
+
+.. code-block:: lua
+
+   load("tacc-apptainer")
+
 .. note::
 
    Apptainer is fully compatible with Singularity, and commands shown with ``singularity`` may be replaced with ``apptainer`` as appropriate.
@@ -168,7 +180,12 @@ Further information on Singularity/Apptainer is available at:
 Container Image
 ---------------
 
-The container RT workflow requires a Singularity/Apptainer image (``*.sif``). Both GNU-based and Intel-based images are supported.
+The container option requires a Singularity/Apptainer image (``*.sif``). Both GNU-based and
+Intel-based images are supported. Users can either build their own image from the Docker Hub
+images (see :numref:`Section %s <container-rt-image-build>`), or use an existing ``*.sif`` image
+if one is already staged on the system (see :numref:`Section %s <container-rt-image-tier1>`).
+Pre-built images on Stampede3 a staged in a user's directory providing an example. 
+Container images are also staged on NOAA RDHPC Tier 1 platforms in common locations maintained by EPIC.
 
 .. note::
 
@@ -179,68 +196,13 @@ The container RT workflow requires a Singularity/Apptainer image (``*.sif``). Bo
    Users already familiar with SRW App containers may refer to that guide for additional
    context, troubleshooting tips, and platform-specific notes.
 
-.. _container-rt-image-tier1:
-
-On NOAA RDHPC Tier 1 Platforms
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Pre-built images for both GNU and Intel toolchains are staged at system-specific shared directories:
-
-.. list-table:: Pre-built container image locations on Tier 1 platforms
-   :widths: 20 50
-   :header-rows: 1
-
-   * - Machine
-     - Directory
-   * - Ursa
-     - ``/scratch3/NCEPDEV/nems/role.epic/containers``
-   * - Gaea-C6
-     - ``/gpfs/f6/bil-fire8/world-shared/containers``
-   * - Hercules / Orion
-     - ``/work/noaa/epic/role-epic/contrib/containers``
-   * - Derecho
-     - ``/glade/work/epicufsrt/contrib/containers``
-   * - NOAA Cloud
-     - ``/contrib/EPIC/containers``
-
-The container image file names are:
-
-.. list-table:: Container image file names
-   :widths: 15 25 40
-   :header-rows: 1
-
-   * - Toolchain
-     - Platform
-     - Image file name
-   * - GNU (GCC 13.3.1 / OpenMPI 4.1.6)
-     - Ursa, Gaea-C6, Hercules, Orion, NOAA Cloud
-     - ``rocky9-gcc13-ss192-ompi416.sif``
-   * - GNU (GCC 13.3.1 / OpenMPI 5.0.7)
-     - Derecho
-     - ``rocky9-gcc13-ss192-ompi507.sif``
-   * - Intel (oneAPI 2024.2 / Intel MPI 2021.13)
-     - Ursa, Gaea-C6, Hercules, Orion, NOAA Cloud
-     - ``rocky9-oneapi2024.2-ss192.sif``
-
-.. note::
-
-   Derecho uses a GNU container image built with **OpenMPI 5.0.7** (``ompi507``) rather
-   than 4.1.6 (``ompi416``) used on other platforms, due to MPI compatibility requirements
-   on that system. The Intel container image has **not** been tested on Derecho to date;
-   only the GNU container is currently supported there.
-
-For example, on Hercules or Orion the Intel image is at:
-
-.. code-block:: console
-
-   /work/noaa/epic/role-epic/contrib/containers/rocky9-oneapi2024.2-ss192.sif
-
 .. _container-rt-image-build:
 
-Building a Container Image on Other Systems
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Building a Container Image on a Community Platform
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-On systems where a pre-staged image is not available, build a Singularity/Apptainer image from Docker Hub.
+On a community platform, or on any system where a pre-staged image is not available, build a
+Singularity/Apptainer image from the Docker Hub images maintained by EPIC.
 
 .. note::
 
@@ -330,6 +292,68 @@ The Intel oneAPI software cannot be distributed inside Docker Hub images due to 
 
       singularity build --fix-perms rocky9-oneapi2024.2-ss192.sif rocky9-oneapi2024.2-ss192
 
+.. _container-rt-image-tier1:
+
+Pre-built Container Images
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+If a ``*.sif`` image already exists on the system, it can be used directly. Pre-built images for
+both GNU and Intel toolchains are staged in the following directories:
+
+.. list-table:: Pre-built container image locations on various platforms
+   :widths: 20 50
+   :header-rows: 1
+
+   * - Machine
+     - Directory
+   * - Stampede3 (*)
+     - ``/work2/10000/nperlin/stampede3``
+   * - Ursa
+     - ``/scratch3/NCEPDEV/nems/role.epic/containers``
+   * - Gaea-C6
+     - ``/gpfs/f6/bil-fire8/world-shared/containers``
+   * - Hercules / Orion
+     - ``/work/noaa/epic/role-epic/contrib/containers``
+   * - Derecho
+     - ``/glade/work/epicufsrt/contrib/containers``
+   * - NOAA Cloud
+     - ``/contrib/EPIC/containers``
+
+(*) - The Stampede3 images are staged in a user's directory, not in a common location
+maintained by EPIC. The Tier 1 locations are common locations maintained by EPIC.
+
+The container image file names are:
+
+.. list-table:: Container image file names
+   :widths: 15 25 40
+   :header-rows: 1
+
+   * - Toolchain
+     - Platform
+     - Image file name
+   * - GNU (GCC 13.3.1 / OpenMPI 4.1.6)
+     - Stampede3, Ursa, Gaea-C6, Hercules, Orion, NOAA Cloud
+     - ``rocky9-gcc13-ss192-ompi416.sif``
+   * - GNU (GCC 13.3.1 / OpenMPI 5.0.7)
+     - Derecho
+     - ``rocky9-gcc13-ss192-ompi507.sif``
+   * - Intel (oneAPI 2024.2 / Intel MPI 2021.13)
+     - Stampede3, Ursa, Gaea-C6, Hercules, Orion, NOAA Cloud
+     - ``rocky9-oneapi2024.2-ss192.sif``
+
+.. note::
+
+   Derecho uses a GNU container image built with **OpenMPI 5.0.7** (``ompi507``) rather
+   than 4.1.6 (``ompi416``) used on other platforms, due to MPI compatibility requirements
+   on that system. The Intel container image has **not** been tested on Derecho to date;
+   only the GNU container is currently supported there.
+
+For example, on Hercules or Orion the Intel image is at:
+
+.. code-block:: console
+
+   /work/noaa/epic/role-epic/contrib/containers/rocky9-oneapi2024.2-ss192.sif
+
 .. _container-rt-binddirs:
 
 Bind Directories for Tier 1 Platforms
@@ -337,7 +361,7 @@ Bind Directories for Tier 1 Platforms
 
 The following table lists the typical bind directories for NOAA RDHPC Tier 1 platforms.
 These paths should be provided as a comma-separated list in the ``BIND_DIRS`` field of
-``community.conf`` header line 1 (see :numref:`Section %s <container-rt-conf>`):
+line 1 of the platform definition file (see :numref:`Section %s <container-rt-conf>`):
 
 .. list-table:: Typical bind directories on NOAA RDHPC Tier 1 platforms
    :widths: 25 35 40
@@ -364,15 +388,504 @@ These paths should be provided as a comma-separated list in the ``BIND_DIRS`` fi
 
 .. _container-rt-data:
 
-Input and Baseline Data
------------------------
+Input Data
+----------
 
-The container and community workflow uses the same input datasets as the standard RT framework.
+Container and community platform runs use the same input datasets as the standard RT framework.
 On Level 1 and Level 2 systems these are pre-staged; see :numref:`Section %s <DataLocations>` for
 the ``DISKNM`` and ``INPUTDATA_ROOT`` paths for each platform. These paths are set in
-``community.conf`` (see :numref:`Section %s <container-rt-conf>`).
+line 4 of the platform definition file (see :numref:`Section %s <container-rt-conf>`).
 
 For Level 3–4 systems, input data is publicly available in the `UFS WM Data Bucket <https://registry.opendata.aws/noaa-ufs-regtests/>`__.
+The current input data sets are ``input-data-20260617`` (``INPUTDATA_ROOT``), with WaveWatch III data in
+``input-data-20260617/WW3_input_data_20260811`` (``INPUTDATA_ROOT_WW3``) and LM4 data in
+``input-data-20260617/LM4_input_data`` (``INPUTDATA_LM4``).
+
+The complete ``input-data-20260617`` data set is large. To run only the tests tagged ``+container`` in
+``tests/rt.conf``, a subset of about 121 GiB is enough. The table below lists, for each ``+container``
+test, the subdirectories of ``INPUTDATA_ROOT`` (``input-data-20260617`` in the data bucket) that the test
+copies input data from. Only those subdirectories need to be downloaded. "(files only)" means that only
+the files directly in that directory are used, not its subdirectories. The compilers in parentheses are
+those with which the test is tagged ``+container``. The input data is the same for both compilers,
+except for ``control_c48``.
+
+.. list-table:: Input data subdirectories used by each ``+container`` test
+   :widths: 18 30 52
+   :header-rows: 1
+
+   * - Configuration (compilers)
+     - Test
+     - Input data subdirectories
+   * - ``s2swa_32bit`` (intel, gnu)
+     - ``cpld_control_p8``
+     - | ``CICE_FIX/100``
+       | ``CICE_IC/100``
+       | ``CPL_FIX/aC96o100``
+       | ``FV3_fix``
+       | ``FV3_fix_tiled/C96mx100``
+       | ``FV3_input_data`` (files only)
+       | ``FV3_input_data/INPUT``
+       | ``FV3_input_data/INPUT_L127_gfsv17``
+       | ``FV3_input_data/INPUT_L127_mx100``
+       | ``FV3_input_data_INCCN_aeroclim/MERRA2_y14_24``
+       | ``FV3_input_data_INCCN_aeroclim/aer_data/LUTS``
+       | ``MOM6_FIX/100``
+       | ``MOM6_IC`` (files only)
+       | ``WW3_input_data_20260811`` (files only)
+   * - ``s2sw_32bit_pdlib`` (intel, gnu)
+     - ``cpld_control_gfsv17``
+     - | ``CICE_FIX/100``
+       | ``CICE_IC/100``
+       | ``CPL_FIX/aC96o100``
+       | ``FV3_fix``
+       | ``FV3_fix_tiled/C96mx100``
+       | ``FV3_input_data`` (files only)
+       | ``FV3_input_data/INPUT``
+       | ``FV3_input_data/INPUT_L127_gfsv17``
+       | ``FV3_input_data/INPUT_L127_mx100``
+       | ``FV3_input_data_INCCN_aeroclim/MERRA2_y14_24``
+       | ``FV3_input_data_INCCN_aeroclim/aer_data/LUTS``
+       | ``MOM6_FIX/100``
+       | ``MOM6_IC`` (files only)
+       | ``WW3_input_data_20260811`` (files only)
+   * - ``s2s_32bit_sfs`` (intel)
+     - ``cpld_control_sfs``
+     - | ``CICE_FIX/025``
+       | ``CPL_FIX/aC192o025``
+       | ``FV3_fix``
+       | ``FV3_fix_tiled/C192mx025``
+       | ``FV3_input_data`` (files only)
+       | ``FV3_input_data192`` (files only)
+       | ``FV3_input_data192/INPUT``
+       | ``FV3_input_data192/INPUT_L127_gfsv17``
+       | ``FV3_input_data_INCCN_aeroclim/MERRA2_y14_24``
+       | ``FV3_input_data_INCCN_aeroclim/aer_data/LUTS``
+       | ``MOM6_FIX/025``
+       | ``SFS/1994050100``
+   * - ``s2s_32bit_sfs_debug`` (intel, gnu)
+     - ``cpld_debug_sfs``
+     - | ``CICE_FIX/025``
+       | ``CPL_FIX/aC192o025``
+       | ``FV3_fix``
+       | ``FV3_fix_tiled/C192mx025``
+       | ``FV3_input_data`` (files only)
+       | ``FV3_input_data192`` (files only)
+       | ``FV3_input_data192/INPUT``
+       | ``FV3_input_data192/INPUT_L127_gfsv17``
+       | ``FV3_input_data_INCCN_aeroclim/MERRA2_y14_24``
+       | ``FV3_input_data_INCCN_aeroclim/aer_data/LUTS``
+       | ``MOM6_FIX/025``
+       | ``SFS/1994050100``
+   * - ``s2swl`` (intel)
+     - ``cpld_control_p8_lnd``
+     - | ``CICE_FIX/100``
+       | ``CICE_IC/100``
+       | ``CPL_FIX/aC96o100``
+       | ``FV3_fix``
+       | ``FV3_fix_tiled/C96mx100``
+       | ``FV3_input_data`` (files only)
+       | ``FV3_input_data/INPUT``
+       | ``FV3_input_data/INPUT_L127_gfsv17``
+       | ``FV3_input_data/INPUT_L127_mx100``
+       | ``FV3_input_data_INCCN_aeroclim/MERRA2_y14_24``
+       | ``FV3_input_data_INCCN_aeroclim/aer_data/LUTS``
+       | ``MOM6_FIX/100``
+       | ``MOM6_IC`` (files only)
+       | ``WW3_input_data_20260811`` (files only)
+   * - ``s2s_aoflux`` (intel)
+     - | ``cpld_control_noaero_p8_``
+       | ``agrid``
+     - | ``CICE_FIX/100``
+       | ``CICE_IC/100``
+       | ``CPL_FIX/aC96o100``
+       | ``FV3_fix``
+       | ``FV3_fix_tiled/C96mx100``
+       | ``FV3_input_data`` (files only)
+       | ``FV3_input_data/INPUT``
+       | ``FV3_input_data/INPUT_L127_gfsv17``
+       | ``FV3_input_data/INPUT_L127_mx100``
+       | ``FV3_input_data_INCCN_aeroclim/MERRA2_y14_24``
+       | ``FV3_input_data_INCCN_aeroclim/aer_data/LUTS``
+       | ``MOM6_FIX/100``
+       | ``MOM6_IC`` (files only)
+   * - ``s2sw_pdlib`` (intel)
+     - ``cpld_control_c48_5deg``
+     - | ``CICE_FIX/500``
+       | ``CICE_IC/C48mx500/2021032206``
+       | ``CPL_FIX/aC48o500``
+       | ``FV3_fix``
+       | ``FV3_fix_tiled/C48mx500``
+       | ``FV3_input_data`` (files only)
+       | ``FV3_input_data48`` (files only)
+       | ``FV3_input_data48/INPUT``
+       | ``FV3_input_data48/INPUT_L127_gfsv17``
+       | ``FV3_input_data48/INPUT_L127_mx500/2021032206``
+       | ``FV3_input_data_INCCN_aeroclim/MERRA2_y14_24``
+       | ``FV3_input_data_INCCN_aeroclim/aer_data/LUTS``
+       | ``MOM6_FIX/500``
+       | ``MOM6_IC/C48mx500/2021032206``
+       | ``WW3_input_data_20260811`` (files only)
+   * - ``s2sw_pdlib`` (intel)
+     - ``cpld_warmstart_c48_5deg``
+     - | ``CICE_FIX/500``
+       | ``CICE_IC/C48mx500/2021032306``
+       | ``CMEPS_IC/C48mx500/2021032306``
+       | ``CPL_FIX/aC48o500``
+       | ``FV3_fix``
+       | ``FV3_fix_tiled/C48mx500``
+       | ``FV3_input_data`` (files only)
+       | ``FV3_input_data48`` (files only)
+       | ``FV3_input_data48/INPUT``
+       | ``FV3_input_data48/INPUT_L127_gfsv17``
+       | ``FV3_input_data48/INPUT_L127_mx500/2021032306``
+       | ``FV3_input_data_INCCN_aeroclim/MERRA2_y14_24``
+       | ``FV3_input_data_INCCN_aeroclim/aer_data/LUTS``
+       | ``MOM6_FIX/500``
+       | ``MOM6_IC/C48mx500/2021032306``
+       | ``WW3_IC/C48mx500/2021032306``
+       | ``WW3_input_data_20260811`` (files only)
+   * - ``s2sw_pdlib`` (intel)
+     - ``cpld_control_c24_5deg``
+     - | ``CICE_FIX/500``
+       | ``CICE_IC/C24mx500/2021032206``
+       | ``CPL_FIX/aC24o500``
+       | ``FV3_fix``
+       | ``FV3_fix_tiled/C24mx500``
+       | ``FV3_input_data24`` (files only)
+       | ``FV3_input_data24/INPUT``
+       | ``FV3_input_data24/INPUT_L41_mx500/2021032206``
+       | ``FV3_input_data_INCCN_aeroclim/MERRA2_y14_24``
+       | ``FV3_input_data_INCCN_aeroclim/aer_data/LUTS``
+       | ``MOM6_FIX/500``
+       | ``MOM6_IC/C24mx500/2021032206``
+       | ``WW3_input_data_20260811`` (files only)
+   * - ``s2sw_pdlib`` (intel)
+     - ``cpld_warmstart_c24_5deg``
+     - | ``CICE_FIX/500``
+       | ``CICE_IC/C24mx500/2021032306``
+       | ``CMEPS_IC/C24mx500/2021032306``
+       | ``CPL_FIX/aC24o500``
+       | ``FV3_fix``
+       | ``FV3_fix_tiled/C24mx500``
+       | ``FV3_input_data24`` (files only)
+       | ``FV3_input_data24/INPUT``
+       | ``FV3_input_data24/INPUT_L41_mx500/2021032306``
+       | ``FV3_input_data_INCCN_aeroclim/MERRA2_y14_24``
+       | ``FV3_input_data_INCCN_aeroclim/aer_data/LUTS``
+       | ``MOM6_FIX/500``
+       | ``MOM6_IC/C24mx500/2021032306``
+       | ``WW3_IC/C24mx500/2021032306``
+       | ``WW3_input_data_20260811`` (files only)
+   * - ``s2sw_pdlib`` (intel)
+     - ``cpld_control_c24_9deg``
+     - | ``CICE_FIX/900``
+       | ``CICE_IC/C24mx900/2021032206``
+       | ``CPL_FIX/aC24o900``
+       | ``FV3_fix``
+       | ``FV3_fix_tiled/C24mx900``
+       | ``FV3_input_data24`` (files only)
+       | ``FV3_input_data24/INPUT``
+       | ``FV3_input_data24/INPUT_L41_mx900/2021032206``
+       | ``FV3_input_data_INCCN_aeroclim/MERRA2_y14_24``
+       | ``FV3_input_data_INCCN_aeroclim/aer_data/LUTS``
+       | ``MOM6_FIX/900``
+       | ``MOM6_IC/C24mx900/2021032206``
+       | ``WW3_input_data_20260811`` (files only)
+   * - ``s2sw_pdlib`` (intel)
+     - ``cpld_control_c12_9deg``
+     - | ``CICE_FIX/900``
+       | ``CICE_IC/C12mx900/2021032206``
+       | ``CPL_FIX/aC12o900``
+       | ``FV3_fix``
+       | ``FV3_fix_tiled/C12mx900``
+       | ``FV3_input_data12`` (files only)
+       | ``FV3_input_data12/INPUT``
+       | ``FV3_input_data12/INPUT_L41_mx900/2021032206``
+       | ``FV3_input_data_INCCN_aeroclim/MERRA2_y14_24``
+       | ``FV3_input_data_INCCN_aeroclim/aer_data/LUTS``
+       | ``MOM6_FIX/900``
+       | ``MOM6_IC/C12mx900/2021032206``
+       | ``WW3_input_data_20260811`` (files only)
+   * - ``atm_dyn32`` (intel, gnu)
+     - ``control_CubedSphereGrid``
+     - | ``FV3_fix``
+       | ``FV3_fix_tiled/C96mx100``
+       | ``FV3_input_data`` (files only)
+       | ``FV3_input_data/INPUT_L127_gfsv17``
+       | ``FV3_input_data_INCCN_aeroclim/aer_data/LUTS``
+   * - ``atm_dyn32`` (intel)
+     - ``control_c48``
+     - | ``FV3_fix``
+       | ``FV3_fix_tiled/C48mx500``
+       | ``FV3_input_data`` (files only)
+       | ``FV3_input_data48`` (files only)
+       | ``FV3_input_data48/INPUT_L127_gfsv17``
+       | ``FV3_input_data_INCCN_aeroclim/aer_data/LUTS``
+   * - ``atm_dyn32`` (gnu)
+     - ``control_c48``
+     - | ``FV3_fix``
+       | ``FV3_fix_tiled/C48mx500``
+       | ``FV3_input_data48`` (files only)
+       | ``FV3_input_data48/INPUT_L127_gfsv17``
+       | ``FV3_input_data_INCCN_aeroclim/aer_data/LUTS``
+   * - ``atm`` (gnu)
+     - ``control_c48``
+     - | ``FV3_fix``
+       | ``FV3_fix_tiled/C48mx500``
+       | ``FV3_input_data48`` (files only)
+       | ``FV3_input_data48/INPUT_L127_gfsv17``
+       | ``FV3_input_data_INCCN_aeroclim/aer_data/LUTS``
+   * - ``atm_dyn32`` (intel, gnu)
+     - ``control_c192``
+     - | ``FV3_fix``
+       | ``FV3_fix_tiled/C192mx050``
+       | ``FV3_input_data`` (files only)
+       | ``FV3_input_data192`` (files only)
+       | ``FV3_input_data192/INPUT_L127_gfsv17``
+       | ``FV3_input_data_INCCN_aeroclim/aer_data/LUTS``
+   * - ``atm_dyn32`` (intel, gnu)
+     - ``control_p8``
+     - | ``FV3_fix``
+       | ``FV3_fix_tiled/C96mx100``
+       | ``FV3_input_data`` (files only)
+       | ``FV3_input_data/INPUT_L127_gfsv17``
+       | ``FV3_input_data_INCCN_aeroclim/MERRA2_y14_24``
+       | ``FV3_input_data_INCCN_aeroclim/aer_data/LUTS``
+   * - ``atm`` (gnu)
+     - ``control_p8``
+     - | ``FV3_fix``
+       | ``FV3_fix_tiled/C96mx100``
+       | ``FV3_input_data`` (files only)
+       | ``FV3_input_data/INPUT_L127_gfsv17``
+       | ``FV3_input_data_INCCN_aeroclim/MERRA2_y14_24``
+       | ``FV3_input_data_INCCN_aeroclim/aer_data/LUTS``
+   * - ``atm_dyn32`` (intel, gnu)
+     - ``control_p8.v2.sfc``
+     - | ``FV3_fix``
+       | ``FV3_fix_tiled/C96mx100``
+       | ``FV3_input_data`` (files only)
+       | ``FV3_input_data/INPUT_L127_v2_sfc``
+       | ``FV3_input_data_INCCN_aeroclim/MERRA2_y14_24``
+       | ``FV3_input_data_INCCN_aeroclim/aer_data/LUTS``
+   * - ``atm_dyn32_rad32`` (intel)
+     - ``control_p8_rrtmgp_rad32``
+     - | ``FV3_fix``
+       | ``FV3_fix_tiled/C96mx100``
+       | ``FV3_input_data`` (files only)
+       | ``FV3_input_data/INPUT_L127_gfsv17``
+       | ``FV3_input_data_INCCN_aeroclim/MERRA2_y14_24``
+       | ``FV3_input_data_INCCN_aeroclim/aer_data/LUTS``
+       | ``FV3_input_data_RRTMGP``
+   * - ``rrfs`` (intel, gnu)
+     - ``rap_control``
+     - | ``FV3_fix``
+       | ``FV3_input_data`` (files only)
+       | ``FV3_input_data/INPUT_L127_gfsv17``
+   * - ``rrfs`` (intel, gnu)
+     - ``hrrr_control``
+     - | ``FV3_fix``
+       | ``FV3_input_data`` (files only)
+       | ``FV3_input_data/INPUT_L127``
+       | ``FV3_input_data_gsd`` (files only)
+       | ``lake_p8_water_fraction2020``
+   * - ``rrfs`` (intel, gnu)
+     - ``rrfs_v1beta``
+     - | ``FV3_fix``
+       | ``FV3_input_data`` (files only)
+       | ``FV3_input_data/INPUT_L127_gfsv17``
+   * - ``wam`` (intel)
+     - ``control_wam``
+     - | ``FV3_fix``
+       | ``FV3_fix_tiled/C96mx100``
+       | ``FV3_input_data_INCCN_aeroclim/MERRA2``
+       | ``FV3_input_data_INCCN_aeroclim/aer_data/LUTS``
+       | ``FV3_input_data_L149_wam`` (files only)
+       | ``FV3_input_data_L149_wam/INPUT_C``
+   * - ``wam_debug`` (intel, gnu)
+     - ``control_wam_debug``
+     - | ``FV3_fix``
+       | ``FV3_fix_tiled/C96mx100``
+       | ``FV3_input_data_INCCN_aeroclim/MERRA2``
+       | ``FV3_input_data_INCCN_aeroclim/aer_data/LUTS``
+       | ``FV3_input_data_L149_wam`` (files only)
+       | ``FV3_input_data_L149_wam/INPUT_C``
+   * - ``rrfs_dyn32_phy32`` (intel, gnu)
+     - ``rap_control_dyn32_phy32``
+     - | ``FV3_fix``
+       | ``FV3_input_data`` (files only)
+       | ``FV3_input_data/INPUT_L127_gfsv17``
+   * - ``rrfs_dyn32_phy32`` (intel, gnu)
+     - ``hrrr_control_dyn32_phy32``
+     - | ``FV3_fix``
+       | ``FV3_input_data`` (files only)
+       | ``FV3_input_data/INPUT_L127``
+       | ``FV3_input_data_gsd`` (files only)
+       | ``lake_p8_water_fraction2020``
+   * - ``rrfs_dyn32_phy32`` (intel, gnu)
+     - | ``hrrr_control_2threads_``
+       | ``dyn32_phy32``
+     - | ``FV3_fix``
+       | ``FV3_input_data`` (files only)
+       | ``FV3_input_data/INPUT_L127``
+       | ``FV3_input_data_gsd`` (files only)
+       | ``lake_p8_water_fraction2020``
+   * - ``rrfs_dyn32_phy32`` (intel, gnu)
+     - ``conus13km_control``
+     - | ``FV3_aeroclim``
+       | ``FV3_fix``
+       | ``FV3_input_data`` (files only)
+       | ``FV3_input_data_conus13km/INPUT``
+   * - ``rrfs_dyn64_phy32`` (intel)
+     - ``rap_control_dyn64_phy32``
+     - | ``FV3_fix``
+       | ``FV3_input_data`` (files only)
+       | ``FV3_input_data/INPUT_L127_gfsv17``
+   * - ``hafsw`` (intel)
+     - ``hafs_regional_atm``
+     - | ``FV3_fix``
+       | ``FV3_hafs_input_data`` (files only)
+       | ``FV3_hafs_input_data/INPUT_hafs_regional_atm``
+   * - ``hafsw`` (intel)
+     - ``hafs_regional_atm_wav``
+     - | ``FV3_fix``
+       | ``FV3_hafs_input_data`` (files only)
+       | ``FV3_hafs_input_data/INPUT_hafs_regional_atm``
+       | ``WW3_input_data_20260811`` (files only)
+   * - ``hafsw`` (intel)
+     - ``hafs_global_1nest_atm``
+     - | ``FV3_fix``
+       | ``FV3_hafs_input_data`` (files only)
+       | ``FV3_hafs_input_data/INPUT_hafs_global_1nest_atm``
+   * - ``hafsw`` (intel)
+     - | ``hafs_global_multiple_``
+       | ``4nests_atm``
+     - | ``FV3_fix``
+       | ``FV3_hafs_input_data`` (files only)
+       | ``FV3_hafs_input_data/INPUT_hafs_global_multiple_4nests_atm``
+   * - ``hafs_mom6w`` (intel)
+     - | ``hafs_regional_storm_``
+       | ``following_1nest_atm_ocn_``
+       | ``wav_mom6``
+     - | ``FV3_fix``
+       | ``FV3_hafs_input_data`` (files only)
+       | ``FV3_hafs_input_data/CDEPS_input_data``
+       | ``FV3_hafs_input_data/INPUT_hafs_regional_storm_following_1nest_atm``
+       | ``FV3_hafs_input_data/MOM6_regional_input_data``
+       | ``FV3_hafs_input_data/WW3_hafs_regional_input_data``
+       | ``WW3_input_data_20260811`` (files only)
+   * - ``hafs_all`` (intel, gnu)
+     - ``hafs_regional_docn``
+     - | ``DOCN_MOM6_input_data``
+       | ``FV3_fix``
+       | ``FV3_hafs_input_data`` (files only)
+       | ``FV3_hafs_input_data/INPUT_hafs_regional_atm``
+   * - ``hafs_all`` (intel, gnu)
+     - ``hafs_regional_docn_oisst``
+     - | ``DOCN_OISST_input_data``
+       | ``FV3_fix``
+       | ``FV3_hafs_input_data`` (files only)
+       | ``FV3_hafs_input_data/INPUT_hafs_regional_atm``
+   * - ``datm_cdeps`` (intel, gnu)
+     - ``datm_cdeps_control_cfsr``
+     - | ``CICE_FIX/100``
+       | ``CICE_IC/100``
+       | ``DATM_CDEPS`` (files only)
+       | ``DATM_CDEPS/CFSR/201110``
+       | ``MOM6_FIX/100``
+       | ``MOM6_FIX_DATM/100``
+       | ``MOM6_IC/100/2011100100``
+   * - ``datm_cdeps`` (intel)
+     - ``datm_cdeps_control_gefs``
+     - | ``CICE_FIX/100``
+       | ``CICE_IC/100``
+       | ``DATM_CDEPS`` (files only)
+       | ``DATM_CDEPS/GEFS_NEW/201110``
+       | ``MOM6_FIX/100``
+       | ``MOM6_FIX_DATM/100``
+       | ``MOM6_IC/100/2011100100``
+   * - ``datm_cdeps`` (intel)
+     - ``datm_cdeps_ciceC_cfsr``
+     - | ``CICE_FIX/100``
+       | ``CICE_IC/100``
+       | ``DATM_CDEPS`` (files only)
+       | ``DATM_CDEPS/CFSR/201110``
+       | ``MOM6_FIX/100``
+       | ``MOM6_FIX_DATM/100``
+       | ``MOM6_IC/100/2011100100``
+   * - ``datm_cdeps`` (intel)
+     - ``datm_cdeps_gfs``
+     - | ``CICE_FIX/100``
+       | ``CICE_IC/100``
+       | ``DATM_CDEPS`` (files only)
+       | ``DATM_CDEPS/GFS/202103``
+       | ``MOM6_FIX/100``
+       | ``MOM6_FIX_DATM/100``
+       | ``MOM6_IC`` (files only)
+   * - ``datm_cdeps_land`` (intel)
+     - ``datm_cdeps_lnd_gswp3``
+     - | ``CPL_FIX/aC96o100``
+       | ``DATM_GSWP3_input_data``
+       | ``FV3_fix_tiled/C96mx100``
+       | ``FV3_input_data/INPUT``
+       | ``FV3_input_data/INPUT_L127_gfsv17``
+       | ``NOAHMP_IC/CLMNCEP``
+   * - ``datm_cdeps_land`` (intel)
+     - ``datm_cdeps_lnd_era5``
+     - | ``CPL_FIX/aC96o100``
+       | ``DATM_ERA5_input_data_v2``
+       | ``FV3_fix_tiled/C96mx100``
+       | ``FV3_input_data/INPUT``
+       | ``FV3_input_data/INPUT_L127_gfsv17``
+       | ``NOAHMP_IC/ERA5``
+   * - ``atm_ds2s_docn_pcice`` (intel, gnu)
+     - ``atm_ds2s_docn_pcice``
+     - | ``CICE_FIX/100``
+       | ``CICE_IC/100``
+       | ``CPL_FIX/aC96o100``
+       | ``DOCN_DICE_ERA5``
+       | ``FV3_fix``
+       | ``FV3_fix_tiled/C96mx100``
+       | ``FV3_input_data`` (files only)
+       | ``FV3_input_data/INPUT``
+       | ``FV3_input_data/INPUT_L127_gfsv17``
+       | ``FV3_input_data/INPUT_L127_mx100``
+       | ``FV3_input_data_INCCN_aeroclim/MERRA2_y14_24``
+       | ``FV3_input_data_INCCN_aeroclim/aer_data/LUTS``
+       | ``MOM6_FIX/100``
+       | ``MOM6_IC`` (files only)
+   * - ``atmaero`` (intel)
+     - ``atmaero_control_p8``
+     - | ``FV3_fix``
+       | ``FV3_fix_tiled/C96mx100``
+       | ``FV3_input_data`` (files only)
+       | ``FV3_input_data/INPUT_L127_gfsv17``
+       | ``FV3_input_data_INCCN_aeroclim/MERRA2_y14_24``
+       | ``FV3_input_data_INCCN_aeroclim/aer_data/LUTS``
+       | ``GOCART/p8``
+
+The ``+container`` tests do not use ``GEFS``, ``FV3_input_data384``, ``LM4_input_data``, or ``FV3_regional``.
+They also do not use the ``GFSv17opn_20251014`` and ``BM_IC-20220207`` data sets.
+
+The data can be downloaded with the AWS CLI; no AWS account is needed when ``--no-sign-request`` is used.
+For example:
+
+.. code-block:: console
+
+   export BUCKET=s3://noaa-ufs-regtests-pds/input-data-20260617
+   export INPUTDATA_ROOT=/path/to/input-data-20260617
+
+   aws s3 sync ${BUCKET}/FV3_fix/ ${INPUTDATA_ROOT}/FV3_fix/ --no-sign-request
+   for combo in C96mx100 C192mx050 C192mx025 C48mx500 C24mx500 C24mx900 C12mx900; do
+     aws s3 sync ${BUCKET}/FV3_fix_tiled/${combo}/ ${INPUTDATA_ROOT}/FV3_fix_tiled/${combo}/ --no-sign-request
+   done
+   # Skip subdirectories that the +container tests do not use
+   aws s3 sync ${BUCKET}/MOM6_IC/ ${INPUTDATA_ROOT}/MOM6_IC/ --no-sign-request --exclude "025/*"
+   aws s3 sync ${BUCKET}/CICE_IC/ ${INPUTDATA_ROOT}/CICE_IC/ --no-sign-request --exclude "025/*" --exclude "050/*"
+   aws s3 sync ${BUCKET}/WW3_input_data_20260811/ ${INPUTDATA_ROOT}/WW3_input_data_20260811/ --no-sign-request
+
+Repeat the ``aws s3 sync`` command for each remaining subdirectory in the table above.
+Set ``INPUTDATA_ROOT`` (and, if needed, ``INPUTDATA_ROOT_WW3``) in line 4 of the platform definition file
+(see :numref:`Section %s <container-rt-conf>`) to the download location.
 
 .. _container-rt-setup:
 
@@ -394,30 +907,31 @@ All further steps in this section assume the working directory is the root of th
 Required Modulefiles
 --------------------
 
-The modulefiles required depend on the workflow selected. The container option (default)
-requires a user-adapted modulefile to load any host system modules during the runtime.
-The community platform option (``-p`` flag) requires a modulefile to load all the required
-software stack libraries on the platform. All modulefiles are placed in the
+The modulefiles required depend on the option selected. The container option
+requires a user-adapted modulefile to load any host system modules needed at runtime.
+The community platform option (native software stack) requires a modulefile that loads
+all the required software stack libraries on the platform. All modulefiles are placed in the
 ``modulefiles/`` directory at the root of the repository.
 
 .. _container-rt-modulefiles-container:
 
-Container Option (Default)
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+Container Option
+~~~~~~~~~~~~~~~~
 
-The container workflow uses two modulefiles. Only ``ufs_container.runtime.lua``
+The container option uses two modulefiles. Only ``ufs_container.runtime.lua``
 **must be adapted** by the user. The ``ufs_container.<compiler>.lua`` build module
 depends on the software stack inside the container image and does not
-require user changes.
+require user changes. ``rt.sh`` checks that both files exist before it compiles or runs
+a test in a container.
 
 .. _container-rt-runtime-mod:
 
 ``ufs_container.runtime.lua`` — Host-Side Runtime Module
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-This modulefile is loaded **on the host** by ``community.sh`` and by the compile and run
-job cards. **Users must create and adapt this file** for their platform. Its content
-depends on the MPI launch method:
+This modulefile is loaded **on the host** by the compile and run job cards (or by
+``rt.sh`` itself when no scheduler is used). **Users must create and adapt this file**
+for their platform. Its content depends on the MPI launch method:
 
 * **Slurm** (``srun``): ``srun`` coordinates MPI rank launch across compute nodes via the
   host Process Management Interface. The GNU-based image with OpenMPI 4.1.6 supports PMI2
@@ -427,7 +941,7 @@ depends on the MPI launch method:
 
 * **PBS** (``mpirun``/``mpiexec``): the host MPI launcher requires ABI-compatible MPI
   libraries on the host. Load the Singularity/Apptainer module together with compiler and
-  MPI modules that match the container’s toolchain.
+  MPI modules that match the container's toolchain.
 
 .. warning::
 
@@ -514,24 +1028,26 @@ where ``<container-image>`` is the path to the container image file (``*.sif``) 
 
 .. _container-rt-modulefiles-community:
 
-Community Platform Option (``-p`` flag)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Community Platform Option (Native Software Stack)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-When running with the ``-p`` flag, the model is built and run natively on the host — no
-container is involved. Natively installed software stack is expected to be present. 
+When the container image field of the platform definition file is left blank, the model is
+built and run natively on the host — no container is involved. A natively installed software
+stack is expected to be present.
 
 .. _container-rt-community-mod:
 
-``ufs_<MACHINE_ID>.<compiler>.lua`` — Platform Module
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+``ufs_<PLATFORM_NAME>.<compiler>.lua`` — Platform Module
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 **Users must create and adapt this file** for their platform. It is loaded during both
 the compile and run stages and sets up the compiler toolchain, MPI library, and all
 required software libraries available on the host system.
 
-The file must be named ``modulefiles/ufs_<MACHINE_ID>.<compiler>.lua``, where
-``<MACHINE_ID>`` matches the value in header line 1 of the conf file and ``<compiler>``
-is ``intel`` or ``gnu``.
+The file must be named ``modulefiles/ufs_<PLATFORM_NAME>.<compiler>.lua``, where
+``<PLATFORM_NAME>`` matches the platform name in line 1 of the platform definition file and
+``<compiler>`` is ``intel`` or ``gnu``. ``compile.sh`` loads this module for the build and
+saves a copy next to the executable, which is then loaded for each test run.
 
 An example for a GNU-based native stack:
 
@@ -548,63 +1064,92 @@ An example for a GNU-based native stack:
 .. _container-rt-conf:
 
 ====================================
-Configuring ``community.conf``
+The Platform Definition File
 ====================================
 
-The file ``tests/community.conf`` controls what gets compiled and tested.
-It begins with four mandatory header lines followed by one or more compile configuration blocks,
-each with a list of test cases.
+The platform definition file passed to ``rt.sh -P <platform.def>`` describes the platform: its name,
+compiler, container image (if any), scheduler, run directory, and input data locations.
+It does **not** list tests; tests are always selected from ``rt.conf`` (or the file given
+with ``-l``), as described in :numref:`Section %s <container-rt-vs-rt>`.
 
-The file uses ``|`` as a field separator and ``#`` for comments. Blank lines between configuration blocks are ignored.
+The following platform definition files are provided in the ``tests/`` directory:
 
-**Container mode example:**
+.. list-table::
+   :widths: 25 60
+   :header-rows: 1
+
+   * - File
+     - Description
+   * - ``platform.def``
+     - Template with a description of every field. Copy it and edit the copy for a new platform.
+   * - ``stampede.def``
+     - Example for GNU or Intel container runs on Stampede3 (TACC, University of Texas).
+
+To set up a new platform:
+
+#. Copy ``platform.def``, keeping the original as a reference, and edit the data lines of the
+   copy for the new platform.
+#. Tag the ``COMPILE`` and ``RUN`` lines to run on the platform with ``+<PLATFORM_NAME>`` in
+   the **Machines** column of ``rt.conf`` (or of the file given with ``-l``), using the
+   name given in line 1 of the platform definition file. ``-<PLATFORM_NAME>``
+   excludes a line from the platform even if ``+<PLATFORM_NAME>`` is also present. With
+   ``PLATFORM_NAME`` set to ``container``, the lines already tagged ``+container`` are used.
+#. Run ``rt.sh`` with the new file:
+
+   .. code-block:: console
+
+      ./rt.sh -a <account> -P myplatform.def -l rt.conf
+
+The file uses ``|`` as a field separator. Blank lines and lines starting with ``#`` are
+skipped. ``rt.sh`` reads four required data lines, in the order described in
+:numref:`Section %s <container-rt-conf-fields>`, and an optional fifth line that is
+needed only for the Rocoto (``-r``) and ecFlow (``-e``) workflow managers. Tests are not
+listed in this file; they are selected from ``rt.conf``.
+
+By default, a run with a platform definition file is sequential and does not compare results
+against baselines: it is a portability check that the model builds and runs on the platform,
+not a regression test. The ``-c`` and ``-m`` options create and compare against baselines,
+and ``-r`` and ``-e`` use Rocoto or ecFlow (these need line 5).
+
+**Template** ``tests/platform.def``. The comments describe every entry, followed by the data
+lines to edit:
+
+.. literalinclude:: ../../../tests/platform.def
+   :language: text
+
+**Container option example** (Stampede3, GNU container). These are the data lines of
+``tests/stampede.def``; the full file also contains the same entry descriptions as the
+template:
 
 .. code-block:: text
 
-   # tests/community.conf — container mode example
+   #container | intel | /work2/10000/nperlin/stampede3/rocky9-oneapi2024.2-ss192.sif | /work,/work2,/scratch
+   container | gnu | /work2/10000/nperlin/stampede3/rocky9-gcc13-ss192-ompi416.sif  | /work,/work2,/scratch
+   48 | slurm | skx-dev | myqueue | mpirun
+   /scratch/10000/nperlin/UFS-WM/RUNDIR_RT
+   /work2/10000/nperlin/stampede3/ufs-wm_input/input-data-20260617 |  |  |
+   #slurm | module load rocoto/1.3.7
 
-   # Header line 1: MACHINE_ID | RT_COMPILER | CONTAINER_IMG | BIND_DIRS
-   container | intel | /work/noaa/epic/role-epic/contrib/containers/rocky9-oneapi2024.2-ss192.sif | /work,/work2,/local
+In this example:
 
-   # Header line 2: TPN | SCHEDULER | ACCNR | PARTITION | QUEUE | MPI_LAUNCH
-   80 | slurm | epic | hercules | batch |
+* Line 1 selects the GNU container image and binds ``/work``, ``/work2``, and
+  ``/scratch`` into the container. To use the Intel container instead, comment out this
+  line and uncomment the ``intel`` line above it.
+* Line 2 gives 48 MPI tasks per node (Stampede3 SKX nodes) and the Slurm partition
+  ``skx-dev``.
+* Line 3 is the run directory, and line 4 gives only ``INPUTDATA_ROOT``; the
+  other input data directories use their defaults.
+* Line 5 is commented out, so the tests run sequentially. Uncomment it to use ``-r``.
 
-   # Header line 3: RUNDIR_ROOT
-   /work2/noaa/epic/nperlin/hercules/UFS-WM/ufs-weather-model/tests/run_container
+The container software must be available before ``rt.sh`` is started (on Stampede3:
+``module load tacc-apptainer``; see :numref:`Section %s <container-rt-apptainer>`).
 
-   # Header line 4: INPUTDATA_ROOT | INPUTDATA_ROOT_WW3 | INPUTDATA_LM4 | INPUTDATA_GFSv17opn
-   /work2/noaa/epic/hercules/UFS-WM_RT/NEMSfv3gfs/input-data-20251015 | | | /work2/noaa/epic/hercules/UFS-WM_RT/NEMSfv3gfs/GFSv17opn_20251014
+.. _container-rt-conf-fields:
 
-   # Compile configuration block: compile_id | MAKE_OPT
-   atm | -DAPP=ATM -DCCPP_SUITES=FV3_GFS_v16,FV3_GFS_v17_p8
-   control_c48
-   control_p8
+Platform Definition Fields
+--------------------------
 
-**Community platform mode example** (``-p`` flag, no container image needed):
-
-.. code-block:: text
-
-   # tests/community.conf — community platform mode example
-
-   # Header line 1: MACHINE_ID | RT_COMPILER | CONTAINER_IMG | BIND_DIRS
-   myplatform | gnu |  |
-
-   # Header line 2: TPN | SCHEDULER | ACCNR | PARTITION | QUEUE | MPI_LAUNCH
-   96 |  |  |  |  | mpirun
-
-   # Header line 3: RUNDIR_ROOT
-   /scratch/nperlin/ufs-weather-model/tests/run_myplatform
-
-   # Header line 4: INPUTDATA_ROOT | INPUTDATA_ROOT_WW3 | INPUTDATA_LM4 | INPUTDATA_GFSv17opn
-   /data/UFS-WM_INPUT/input-data-20251015 | | | /data/UFS-WM_INPUT/GFSv17opn_20251014
-
-   atm | -DAPP=ATM -DCCPP_SUITES=FV3_GFS_v16,FV3_GFS_v17_p8
-   control_c48
-
-Header Line Fields
-------------------
-
-**Header line 1:**
+**Line 1:** ``PLATFORM_NAME | RT_COMPILER | CONTAINER_IMG | BIND_DIRS``
 
 .. list-table::
    :widths: 20 60
@@ -612,22 +1157,28 @@ Header Line Fields
 
    * - Field
      - Description
-   * - ``MACHINE_ID``
-     - Platform identifier. Use ``container`` for the container workflow, or a custom
-       name matching the modulefile name for community platform (``-p``) runs.
-       See :numref:`Section %s <container-rt-community-mod>`.
+   * - ``PLATFORM_NAME``
+     - Required. Becomes ``MACHINE_ID`` for the run, and is the name used in the
+       ``+<PLATFORM_NAME>``/``-<PLATFORM_NAME>`` tags in ``rt.conf``. Use ``container`` for
+       container runs: this selects the ``+container`` tests in ``rt.conf`` and the container
+       job card templates in ``tests/fv3_conf/``. For a native stack, use a name that matches
+       the platform modulefile (see :numref:`Section %s <container-rt-community-mod>`).
    * - ``RT_COMPILER``
-     - Compiler toolchain: ``intel`` or ``gnu``.
+     - Required. The platform's only compiler: ``intel`` or ``gnu``. ``rt.conf`` lines that
+       are tagged for the platform but use the other compiler are skipped with a notice.
    * - ``CONTAINER_IMG``
      - Absolute path to the Singularity/Apptainer image file (``*.sif``) on the host.
-       Leave blank when using the ``-p`` flag.
+       Leave blank to build and run with a native software stack instead, using the
+       modulefile ``modulefiles/ufs_<PLATFORM_NAME>.<compiler>.lua``, which may need to be
+       adapted for the user's platform. If the image file does
+       not exist, the lines that need it are skipped.
    * - ``BIND_DIRS``
      - Comma-separated list of host directories to bind/mount to the container.
        Include all filesystems containing the source tree, input data, and run directory.
        See :numref:`Section %s <container-rt-binddirs>` for typical values on Tier 1 platforms.
-       Leave blank when using the ``-p`` flag.
+       Ignored for a native stack.
 
-**Header line 2:**
+**Line 2:** ``TPN | SCHEDULER | PARTITION | QUEUE | MPI_LAUNCH``
 
 .. list-table::
    :widths: 20 60
@@ -636,20 +1187,23 @@ Header Line Fields
    * - Field
      - Description
    * - ``TPN``
-     - MPI tasks per node (default: 40).
+     - Required. Tasks per node: the number of MPI tasks per node on this platform
+       (a numeric value, e.g., ``48`` on Stampede3).
    * - ``SCHEDULER``
-     - Job scheduler: ``slurm``, ``pbs``, or leave blank for interactive/no-scheduler runs.
-   * - ``ACCNR``
-     - Scheduler account or project name (leave blank if not required).
+     - Required. ``slurm``, ``pbs``, or ``none`` for interactive runs without a scheduler.
+       This field cannot be left blank.
    * - ``PARTITION``
-     - Slurm partition name (leave blank for PBS or interactive runs).
+     - Slurm partition name (leave blank for PBS or ``none``).
    * - ``QUEUE``
-     - Slurm QOS / PBS queue name (leave blank for interactive runs).
+     - Slurm QOS / PBS queue name (leave blank for ``none``).
    * - ``MPI_LAUNCH``
-     - MPI launch command used when no scheduler is set: ``mpirun`` or ``mpiexec``.
-       Defaults to ``mpirun`` if omitted.
+     - MPI launch command used when ``SCHEDULER`` is ``none`` and in PBS job cards:
+       ``mpirun`` or ``mpiexec``. Defaults to ``mpirun`` if omitted.
 
-**Header line 3:**
+The scheduler account (project) is not set in this file. It is always given on the command
+line with ``rt.sh -a <account>``.
+
+**Line 3:** ``RUNDIR_ROOT``
 
 .. list-table::
    :widths: 20 60
@@ -658,12 +1212,12 @@ Header Line Fields
    * - Field
      - Description
    * - ``RUNDIR_ROOT``
-     - Top-level directory where compile and test run directories will be created.
-       This should be a user-writable path (preferably on a scratch or work filesystem).
-       If ``RUNDIR_ROOT`` differs from ``${PATHRT}/run_dir``, the driver automatically
-       creates a convenience symlink ``tests/run_dir`` pointing to ``RUNDIR_ROOT``.
+     - Required. Top-level directory where compile and test run directories are created.
+       This should be a user-writable path, preferably on a scratch or work filesystem.
+       ``rt.sh`` uses this directory exactly as given and does not delete it at the end of
+       the run. A symlink ``tests/run_dir`` pointing to it is created.
 
-**Header line 4:**
+**Line 4:** ``INPUTDATA_ROOT | INPUTDATA_ROOT_WW3 | INPUTDATA_LM4 | INPUTDATA_GFSv17opn``
 
 .. list-table::
    :widths: 20 60
@@ -672,38 +1226,32 @@ Header Line Fields
    * - Field
      - Description
    * - ``INPUTDATA_ROOT``
-     - Input data directory (required).
+     - Required. Input data directory, e.g., ``.../input-data-20260617``
+       (see :numref:`Section %s <container-rt-data>`).
    * - ``INPUTDATA_ROOT_WW3``
-     - Input data directory for WaveWatch III data (optional; leave blank if not needed).
+     - Optional. WaveWatch III input data directory. Defaults to
+       ``${INPUTDATA_ROOT}/WW3_input_data_20260811`` if left blank.
    * - ``INPUTDATA_LM4``
-     - Input data directory for LM4 land model data (optional; leave blank if not needed).
+     - Optional. LM4 land model input data directory. Defaults to
+       ``${INPUTDATA_ROOT}/LM4_input_data`` if left blank.
    * - ``INPUTDATA_GFSv17opn``
-     - Input data directory for GFS v17 operational data (optional; leave blank if not needed).
+     - Optional. GFS v17 operational input data directory, needed only by tests that
+       use it. None of the ``+container`` tests need it.
 
-Compile Configuration Blocks
------------------------------
+**Line 5** (optional; needed only for ``-r`` or ``-e``): ``ROCOTO_SCHEDULER | WORKFLOW_MODULE_CMD``
 
-After the four header lines, each compile configuration block consists of:
+.. list-table::
+   :widths: 20 60
+   :header-rows: 1
 
-1. A **compile line** containing the configuration name and CMake options, separated by ``|``:
-
-   .. code-block:: text
-
-      <compile_id> | <MAKE_OPT>
-
-2. One or more **test case lines**, each naming a single test (no ``|`` character):
-
-   .. code-block:: text
-
-      <test_case_name>
-
-A blank line between blocks closes the current configuration. Configuration names must be unique. CMake options follow the same conventions as the standard ``rt.conf`` file.
-
-.. note::
-
-   The workflow is **sequential**: the driver compiles configuration 1, runs all its tests in order,
-   then moves to configuration 2, and so on. A startup summary listing all configurations and their
-   test cases is printed before any work begins.
+   * - Field
+     - Description
+   * - ``ROCOTO_SCHEDULER``
+     - Rocoto's name for the scheduler, which is not always the same as ``SCHEDULER``
+       (e.g., PBS Professional is ``pbspro``). Required to use ``-r``.
+   * - ``WORKFLOW_MODULE_CMD``
+     - A shell command that puts the Rocoto or ecFlow command-line tools on ``PATH``
+       (e.g., ``module load rocoto``). Leave blank if they are already on ``PATH``.
 
 .. _container-rt-run:
 
@@ -711,85 +1259,118 @@ A blank line between blocks closes the current configuration. Configuration name
 Running the Tests
 ====================
 
-All tests are launched by running ``community.sh`` from the ``tests/`` directory:
+Tests are launched by running ``rt.sh`` with ``-P`` from the ``tests/`` directory:
 
 .. code-block:: console
 
    cd ${WM_HOME}/tests
-   ./community.sh [options] <conf_file>
+   ./rt.sh -a <account> -P <platform.def> [options]
 
-The configuration file is a required positional argument. Provide the path to the
-``community.conf``-style file as the last argument.
+For example, to run all ``+container`` tests in ``rt.conf`` with the Stampede3 example:
+
+.. code-block:: console
+
+   ./rt.sh -a <account> -P stampede.def -l rt.conf
 
 Command-Line Options
 --------------------
 
+The usual ``rt.sh`` options can be combined with ``-P``. The ones most useful for container
+and community platform runs are:
+
 .. list-table::
-   :widths: 10 60
+   :widths: 15 60
    :header-rows: 1
 
    * - Option
      - Description
-   * - ``-p``
-     - Community platform mode: build and run natively without a container.
-       Requires a ``ufs_<MACHINE_ID>.<compiler>.lua`` modulefile in ``modulefiles/``;
-       see :numref:`Section %s <container-rt-community-mod>`.
-   * - ``-d``
-     - Delete each test run directory after the test completes.
-   * - ``-n <name>``
-     - Run only the single test named ``<name>`` (the compile step that owns it still runs).
-       ``<name>`` must match a test case name listed in ``<conf_file>``.
+   * - ``-a <account>``
+     - Scheduler account/project. Always required.
+   * - ``-P <platform.def>``
+     - Platform definition file (see :numref:`Section %s <container-rt-conf>`).
+   * - ``-l <file>``
+     - Use ``<file>`` instead of ``rt.conf`` to select tests.
+   * - ``-n "<test> <compiler>"``
+     - Run a single test, for example ``-n "control_c48 intel"``. Its compile still runs.
+   * - ``-s <file>``
+     - Run only the subset of tests listed in ``<file>``.
    * - ``-o``
-     - Compile only; skip all test cases.
+     - Compile only; skip all tests.
+   * - ``-x``
+     - Dry run. With ``-P``, ``rt.sh`` still compiles; for each test it then checks the
+       compiled executable, stages the input data, checks the container (if any), and prepares
+       the job card, but does not submit the job. Results are reported as
+       ``DRY RUN SUCCESS``/``DRY RUN FAIL``.
+   * - ``-c``
+     - Create a baseline under ``${RUNDIR_ROOT}/REGRESSION_TEST``.
+   * - ``-m``
+     - Compare against the baseline previously created with ``-c`` under
+       ``${RUNDIR_ROOT}/REGRESSION_TEST``.
+   * - ``-r`` / ``-e``
+     - Use the Rocoto or ecFlow workflow manager instead of running sequentially.
+       Requires line 5 of the platform definition file.
+   * - ``-d``
+     - Delete run directories that are not used by other tests.
    * - ``-v``
-     - Verbose output: enables shell tracing (``set -x``) in the driver and all sub-scripts,
-       prints full configuration detail on startup, and prompts before starting work.
+     - Verbose output (shell tracing).
    * - ``-h``
      - Print help and exit.
+
+Without ``-c`` or ``-m``, results are not compared against any baseline.
+
+.. note::
+
+   If the executable ``tests/fv3_<compile_name>_<compiler>.exe`` from an earlier run is
+   already present, ``rt.sh -P`` reuses it and skips that compile. Remove the executable
+   to force a rebuild.
+
+   Because ``-P`` runs do not use the ``rt.sh`` lock, several runs can proceed at the same
+   time (e.g., one per compiler). Give each platform definition file its own ``RUNDIR_ROOT``
+   so that the runs do not share directories.
 
 Job Script Templates
 --------------------
 
-When ``SCHEDULER`` is set to ``slurm`` or ``pbs``, the driver uses job script templates
-from ``tests/fv3_conf/``. The template name is based on the scheduler type and the
-``MACHINE_ID`` value from the conf file:
+When ``SCHEDULER`` is ``slurm`` or ``pbs``, compile and test jobs are created from job
+script templates in ``tests/fv3_conf/``, selected by scheduler and ``PLATFORM_NAME``:
 
-- ``fv3_slurm.IN_<MACHINE_ID>`` — Slurm run job card
-- ``fv3_qsub.IN_<MACHINE_ID>`` — PBS run job card
-- ``compile_slurm.IN_<MACHINE_ID>`` — Slurm compile job card
-- ``compile_qsub.IN_<MACHINE_ID>`` — PBS compile job card
+- ``compile_slurm.IN_<PLATFORM_NAME>`` — Slurm compile job card
+- ``fv3_slurm.IN_<PLATFORM_NAME>`` — Slurm run job card
+- ``compile_qsub.IN_<PLATFORM_NAME>`` — PBS compile job card
+- ``fv3_qsub.IN_<PLATFORM_NAME>`` — PBS run job card
 
-For the container workflow (``MACHINE_ID=container``), templates are provided in the
-repository. For community platform runs with a scheduler, users must create
-platform-specific templates following the pattern of the container or Tier 1 templates
-in ``tests/fv3_conf/``. When ``SCHEDULER`` is blank, no job template is used and
-compile and run steps execute directly on the current host.
+Templates for the container option (``PLATFORM_NAME=container``) are provided in the
+repository. For a native stack with a scheduler, users must create templates for their
+platform name, following the container or Tier 1 templates in ``tests/fv3_conf/``.
+When ``SCHEDULER`` is ``none``, no template is used and compile and run steps execute
+directly on the current host.
 
 These templates contain scheduler directives and environment setup that may require
-platform-specific adjustments. Scheduler adjutments may include account/project names,
-partition or queue names, wall-clock limits, node counts, and any
-platform-specific environment variables required before launching the model.
+platform-specific adjustments, such as partition or queue names, wall-clock limits, node
+counts, and any platform-specific environment variables required before launching the model.
 
 Running with a Job Scheduler (Slurm or PBS)
 --------------------------------------------
 
-When ``SCHEDULER`` is set to ``slurm`` or ``pbs`` in ``community.conf``, set ``ACCNR``, ``PARTITION``, and ``QUEUE`` appropriately and run the driver from a login node:
+When ``SCHEDULER`` is ``slurm`` or ``pbs``, set ``PARTITION`` and ``QUEUE`` in the platform
+definition file and run ``rt.sh`` from a login node:
 
 .. code-block:: console
 
-   ./community.sh [-p] community.conf
+   ./rt.sh -a <account> -P <platform.def> -l rt.conf
 
-The driver submits each compile and test job to the scheduler and blocks until the job finishes before submitting the next one. Progress is reported on the terminal; full output is captured in ``${RUNDIR_ROOT}/logs/``.
+By default, ``rt.sh`` submits each compile and test job to the scheduler and waits for it to
+finish before submitting the next one. With ``-r`` or ``-e``, the jobs are managed by Rocoto
+or ecFlow instead.
 
 Running Interactively (No Scheduler)
 --------------------------------------
 
-When ``SCHEDULER`` is blank in ``community.conf``, jobs run directly on the current host —
+When ``SCHEDULER`` is ``none``, jobs run directly on the current host —
 suitable for an allocated compute node or single-workstation development.
 
-If not allowed using a login node for runtime tests, request an interactive compute node
-allocation before running
-the driver. On **Slurm** systems the command may look similar to:
+If login nodes may not be used for running tests, request an interactive compute node
+allocation before running ``rt.sh``. On **Slurm** systems the command may look similar to:
 
 .. code-block:: console
 
@@ -801,65 +1382,74 @@ On **PBS** systems the command may look similar to:
 
    qsub -I -l walltime=<time> -A <account> -q <queue> -l select=1:ncpus=<cores>:mpiprocs=<cores>
 
-After the allocation is granted (and connecting via ``ssh`` to the compute node if required), run the driver.
-A command set as ``MPI_LAUNCH`` in header line 2 of the ``community.conf`` to start MPI tasks will be used.
+After the allocation is granted (and connecting via ``ssh`` to the compute node if required),
+run ``rt.sh``. The model is started with the ``MPI_LAUNCH`` command from line 2 of the
+platform definition file.
 
 .. code-block:: console
 
    cd tests
-   ./community.sh [-p] community.conf
-
+   ./rt.sh -a <account> -P <platform.def> -l rt.conf
 
 .. note::
 
-    For a **container workflow**, the driver starts the software container first, and then runs MPI tasks
-    entirely inside it, which is the correct approach for single-node interactive runs.
+   For the **container option**, ``rt.sh`` starts the software container first, and then
+   runs the MPI tasks entirely inside it, which is the correct approach for single-node
+   interactive runs. Interactive container runs require ``PLATFORM_NAME=container``.
 
    The ``--mpi=pmi2`` flag is a Slurm ``srun``-specific option and should **not** be used
-   with ``mpirun`` or ``mpiexec``. When no scheduler is set, ``srun`` is not used and
-   no container is launched for community platform (``-p``) runs.
+   with ``mpirun`` or ``mpiexec``. When ``SCHEDULER`` is ``none``, ``srun`` is not used.
 
 .. _container-rt-output:
 
-===================
-Run Directory
-===================
+=============================
+Run Directory and Log Files
+=============================
 
-After the driver starts, it creates the following structure under ``RUNDIR_ROOT``.
+``rt.sh`` creates the following structure under ``RUNDIR_ROOT``:
 
-**Container mode** (``MACHINE_ID=container``):
-
-.. code-block:: text
-
-   ${RUNDIR_ROOT}/
-   ├── logs/                         # per-job log files and timestamps
-   ├── compile_<compile_id>/         # compile working directory
-   │   ├── job_card                  # generated compile job script (scheduler) or absent
-   │   ├── container_compile.sh      # script executed inside the container
-   │   ├── modulefiles/              # modulefile staged for the build
-   │   └── out / err                 # job stdout and stderr files
-   └── <test_id>_<compiler>/         # test working directory
-       ├── job_card                  # generated test job script (scheduler) or absent
-       ├── fv3_container_run.sh      # wrapper executed inside the container
-       ├── modulefiles/              # modulefile staged for the run
-       └── out / err                 # job stdout and stderr files
-
-**Community platform mode** (``-p`` flag):
+**Container option** (``PLATFORM_NAME=container``):
 
 .. code-block:: text
 
    ${RUNDIR_ROOT}/
-   ├── logs/                         # per-job log files and timestamps
-   ├── compile_<compile_id>/         # compile working directory
-   │   ├── job_card                  # generated compile job script (if scheduler is used)
-   │   ├── modulefiles/              # modulefile staged for the build
-   │   └── out / err                 # job stdout and stderr files
-   └── <test_id>_<compiler>/         # test working directory
-       ├── job_card                  # generated test job script (if scheduler is used)
-       ├── fv3_run.sh                # native run wrapper (when no scheduler)
-       ├── modulefiles/              # modulefile staged for the run
-       └── out / err                 # job stdout and stderr files
+   ├── compile_<compile_name>_<compiler>/   # compile working directory
+   │   ├── job_card                         # compile job script
+   │   ├── modulefiles/                     # modulefiles staged for the build
+   │   └── out / err                        # job stdout and stderr files
+   ├── <test_name>_<compiler>/              # test working directory
+   │   ├── job_card                         # test job script (scheduler runs)
+   │   ├── fv3_container_run.sh             # script run inside the container (no scheduler)
+   │   ├── modulefiles/                     # modulefiles staged for the run
+   │   └── out / err                        # job stdout and stderr files
+   └── REGRESSION_TEST/                     # baseline, only with -c
 
-A symlink at ``tests/run_dir`` is created pointing to ``RUNDIR_ROOT``, making it easy to navigate to the run directory without knowing the full path. This symlink is not created if the user has already set ``RUNDIR_ROOT`` to ``${PATHRT}/run_dir``.
+**Community platform option** (native software stack):
 
-A PASS/FAIL summary is printed to the terminal when all tests have finished. The driver exits with status 1 if any compile or test failed, and 0 if all succeeded.
+.. code-block:: text
+
+   ${RUNDIR_ROOT}/
+   ├── compile_<compile_name>_<compiler>/   # compile working directory
+   │   ├── job_card                         # compile job script (scheduler runs)
+   │   └── out / err                        # job stdout and stderr files
+   ├── <test_name>_<compiler>/              # test working directory
+   │   ├── job_card                         # test job script (scheduler runs)
+   │   ├── fv3_run.sh                       # native run script (no scheduler)
+   │   ├── modulefiles/                     # modulefile staged for the run
+   │   └── out / err                        # job stdout and stderr files
+   └── REGRESSION_TEST/                     # baseline, only with -c
+
+Because ``RUNDIR_ROOT`` is reused from run to run, a compile or test directory left from an
+earlier run is not deleted. It is renamed to ``<directory>_old_<YYYYMMDDHHMM>`` before the
+new run starts. A symlink ``tests/run_dir`` points to ``RUNDIR_ROOT``.
+
+Log files are written to the ``tests/logs/`` directory, as for Tier 1 runs
+(see :numref:`Section %s <log-files>`):
+
+* ``RegressionTests_<PLATFORM_NAME>.log`` — summary of the run. For a default run
+  without ``-c`` or ``-m``, the file is named ``RegressionTests_weekly_<PLATFORM_NAME>.log``
+  because the comparison step is skipped.
+* ``log_<PLATFORM_NAME>/`` — detailed compile and test logs.
+
+For sequential runs, a ``COMPILE/TEST SUMMARY`` with PASS/FAIL for each compile and test
+is also printed to the terminal when all tests have finished.
