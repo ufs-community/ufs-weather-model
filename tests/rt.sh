@@ -11,7 +11,7 @@ die() { echo "$@" >&2; exit 1; }
 usage() {
   set +x #No reason to print out a bunch of echo statements here
   echo
-  echo "Usage: $0 -a <account> | -c | -d | -e | -h | -k | -l <file> | -m | -n <name> | -o | -P <file> | -r | -s <file> | -v | -w | -x"
+  echo "Usage: $0 -a <account> | -c | -d | -e | -h | -k | -l <file> | -m | -n <name> | -o | -P <platform.def> | -r | -s <file> | -v | -w | -x"
   echo
   echo "  -a  <account> to use on for HPC queue"
   echo "  -c  create new baseline results"
@@ -23,11 +23,11 @@ usage() {
   echo "  -m  compare against new baseline results"
   echo "  -n  run single test <name>"
   echo "  -o  compile only, skip tests"
-  echo "  -P  <file> build and run on a platform (container or native stack) defined"
-  echo "      in <file>; sequential by default, or -r/-e if <file> declares a"
-  echo "      ROCOTO_SCHEDULER. By default a portability check only (no"
-  echo "      comparison); -c/-m create/compare against a baseline under that"
-  echo "      platform's own $RUNDIR_ROOT/REGRESSION_TEST"
+  echo "  -P  <platform.def> build and run on a platform (container or native stack)"
+  echo "      defined in <platform.def>; sequential by default, or -r/-e if"
+  echo "      <platform.def> declares a ROCOTO_SCHEDULER. By default a portability"
+  echo "      check only (no comparison); -c/-m create/compare against a baseline"
+  echo "      under that platform's own \$RUNDIR_ROOT/REGRESSION_TEST"
   echo "  -r  use Rocoto workflow manager"
   echo "  -s  run only the subset of tests listed in <file>"
   echo "  -v  verbose output"
@@ -584,12 +584,12 @@ parse_platform_def() {
     [[ ${header_lines_read} -ge 5 ]] && break
   done < "${file}"
 
-  [[ ${header_lines_read} -ge 4 ]] || die "${file}: expected 4 header lines, found ${header_lines_read}"
-  [[ -n ${MACHINE_ID} ]] || die "${file}: platform name (header line 1, field 1) is required"
-  [[ -n ${COMMUNITY_PLATFORM_COMPILER} ]] || die "${file}: compiler (header line 1, field 2) is required"
-  [[ -n ${SCHEDULER} ]] || die "${file}: scheduler (header line 2, field 2) is required"
-  [[ -n ${RUNDIR_ROOT} ]] || die "${file}: RUNDIR_ROOT (header line 3) is required"
-  [[ -n ${INPUTDATA_ROOT} ]] || die "${file}: INPUTDATA_ROOT (header line 4, field 1) is required"
+  [[ ${header_lines_read} -ge 4 ]] || die "${file}: expected 4 data lines, found ${header_lines_read}"
+  [[ -n ${MACHINE_ID} ]] || die "${file}: platform name (line 1, field 1) is required"
+  [[ -n ${COMMUNITY_PLATFORM_COMPILER} ]] || die "${file}: compiler (line 1, field 2) is required"
+  [[ -n ${SCHEDULER} ]] || die "${file}: scheduler (line 2, field 2) is required"
+  [[ -n ${RUNDIR_ROOT} ]] || die "${file}: RUNDIR_ROOT (line 3) is required"
+  [[ -n ${INPUTDATA_ROOT} ]] || die "${file}: INPUTDATA_ROOT (line 4, field 1) is required"
 
   if [[ -n ${COMMUNITY_PLATFORM_CONTAINER_IMG} ]]; then
     CONTAINER_USE=true
@@ -736,8 +736,8 @@ export STOP_ECFLOW_AT_END=false
 export DRY_RUN=false
 ACCNR=${ACCNR:-""}
 
-# -P <file>: build/run on a platform (container or native stack) defined in
-# <file>. CONTAINER_USE is derived in parse_platform_def() from whether the
+# -P <platform.def>: build/run on a platform (container or native stack) defined in
+# <platform.def>. CONTAINER_USE is derived in parse_platform_def() from whether the
 # file declares a container image -- it is not a CLI flag.
 CONTAINER_USE=false
 CONTAINER_BIND_DIRS=''
@@ -756,7 +756,7 @@ COMMUNITY_PLATFORM_FILE=''
 COMMUNITY_PLATFORM_COMPILER=''
 COMMUNITY_PLATFORM_CONTAINER_IMG=''
 PLATFORM_TAG='container'
-# Optional (header line 5); only set if -P's file declares them, needed
+# Optional (line 5); only set if -P's file declares them, needed
 # only to use -r/-e with -P.
 ROCOTO_SCHEDULER=''
 WORKFLOW_MODULE_CMD=''
@@ -895,7 +895,7 @@ if [[ ${COMMUNITY_PLATFORM} == true ]]; then
   parse_platform_def "${COMMUNITY_PLATFORM_FILE}"
   PLATFORM_TAG=${MACHINE_ID}
   if [[ ${ROCOTO} == true && -z ${ROCOTO_SCHEDULER:-} ]]; then
-    die "-P with -r requires ROCOTO_SCHEDULER (header line 5) in ${COMMUNITY_PLATFORM_FILE}"
+    die "-P with -r requires ROCOTO_SCHEDULER (line 5) in ${COMMUNITY_PLATFORM_FILE}"
   fi
 else
   source detect_machine.sh
@@ -1405,7 +1405,9 @@ TEST_FAILED=()
 TEST_DRYRUN_PASS=()
 TEST_DRYRUN_FAIL=()
 
-while read -r line || [[ -n "${line}" ]]; do
+# Read rt.conf on file descriptor 3 instead of stdin, so that commands that read stdin
+# (e.g. Open MPI mpirun) cannot end the loop early and skip tests or the final summary.
+while read -r -u 3 line || [[ -n "${line}" ]]; do
 
   line="${line#"${line%%[![:space:]]*}"}"
   [[ ${#line} == 0 ]] && continue
@@ -1606,7 +1608,7 @@ EOF
   else
     die "Unknown command ${line}"
   fi
-done < "${TESTS_FILE}"
+done 3< "${TESTS_FILE}"
 
 ##
 ## run regression test workflow (currently Rocoto or ecFlow are supported)
