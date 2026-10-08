@@ -402,488 +402,131 @@ The current input data sets are ``input-data-20260617`` (``INPUTDATA_ROOT``), wi
 ``input-data-20260617/LM4_input_data`` (``INPUTDATA_LM4``).
 
 The complete ``input-data-20260617`` data set is large. To run only the tests tagged ``+container`` in
-``tests/rt.conf``, a subset of about 121 GiB is enough. The table below lists, for each ``+container``
-test, the subdirectories of ``INPUTDATA_ROOT`` (``input-data-20260617`` in the data bucket) that the test
-copies input data from. Only those subdirectories need to be downloaded. "(files only)" means that only
-the files directly in that directory are used, not its subdirectories. The compilers in parentheses are
-those with which the test is tagged ``+container``. The input data is the same for both compilers,
-except for ``control_c48``.
+``tests/rt.conf``, a subset of about 121 GiB is enough. The data can be downloaded with the AWS CLI;
+no AWS account is needed when ``--no-sign-request`` is used.
 
-.. list-table:: Input data subdirectories used by each ``+container`` test
-   :widths: 18 30 52
-   :header-rows: 1
-
-   * - Configuration (compilers)
-     - Test
-     - Input data subdirectories
-   * - ``s2swa_32bit`` (intel, gnu)
-     - ``cpld_control_p8``
-     - | ``CICE_FIX/100``
-       | ``CICE_IC/100``
-       | ``CPL_FIX/aC96o100``
-       | ``FV3_fix``
-       | ``FV3_fix_tiled/C96mx100``
-       | ``FV3_input_data`` (files only)
-       | ``FV3_input_data/INPUT``
-       | ``FV3_input_data/INPUT_L127_gfsv17``
-       | ``FV3_input_data/INPUT_L127_mx100``
-       | ``FV3_input_data_INCCN_aeroclim/MERRA2_y14_24``
-       | ``FV3_input_data_INCCN_aeroclim/aer_data/LUTS``
-       | ``MOM6_FIX/100``
-       | ``MOM6_IC`` (files only)
-       | ``WW3_input_data_20260811`` (files only)
-   * - ``s2sw_32bit_pdlib`` (intel, gnu)
-     - ``cpld_control_gfsv17``
-     - | ``CICE_FIX/100``
-       | ``CICE_IC/100``
-       | ``CPL_FIX/aC96o100``
-       | ``FV3_fix``
-       | ``FV3_fix_tiled/C96mx100``
-       | ``FV3_input_data`` (files only)
-       | ``FV3_input_data/INPUT``
-       | ``FV3_input_data/INPUT_L127_gfsv17``
-       | ``FV3_input_data/INPUT_L127_mx100``
-       | ``FV3_input_data_INCCN_aeroclim/MERRA2_y14_24``
-       | ``FV3_input_data_INCCN_aeroclim/aer_data/LUTS``
-       | ``MOM6_FIX/100``
-       | ``MOM6_IC`` (files only)
-       | ``WW3_input_data_20260811`` (files only)
-   * - ``s2s_32bit_sfs`` (intel)
-     - ``cpld_control_sfs``
-     - | ``CICE_FIX/025``
-       | ``CPL_FIX/aC192o025``
-       | ``FV3_fix``
-       | ``FV3_fix_tiled/C192mx025``
-       | ``FV3_input_data`` (files only)
-       | ``FV3_input_data192`` (files only)
-       | ``FV3_input_data192/INPUT``
-       | ``FV3_input_data192/INPUT_L127_gfsv17``
-       | ``FV3_input_data_INCCN_aeroclim/MERRA2_y14_24``
-       | ``FV3_input_data_INCCN_aeroclim/aer_data/LUTS``
-       | ``MOM6_FIX/025``
-       | ``SFS/1994050100``
-   * - ``s2s_32bit_sfs_debug`` (intel, gnu)
-     - ``cpld_debug_sfs``
-     - | ``CICE_FIX/025``
-       | ``CPL_FIX/aC192o025``
-       | ``FV3_fix``
-       | ``FV3_fix_tiled/C192mx025``
-       | ``FV3_input_data`` (files only)
-       | ``FV3_input_data192`` (files only)
-       | ``FV3_input_data192/INPUT``
-       | ``FV3_input_data192/INPUT_L127_gfsv17``
-       | ``FV3_input_data_INCCN_aeroclim/MERRA2_y14_24``
-       | ``FV3_input_data_INCCN_aeroclim/aer_data/LUTS``
-       | ``MOM6_FIX/025``
-       | ``SFS/1994050100``
-   * - ``s2swl`` (intel)
-     - ``cpld_control_p8_lnd``
-     - | ``CICE_FIX/100``
-       | ``CICE_IC/100``
-       | ``CPL_FIX/aC96o100``
-       | ``FV3_fix``
-       | ``FV3_fix_tiled/C96mx100``
-       | ``FV3_input_data`` (files only)
-       | ``FV3_input_data/INPUT``
-       | ``FV3_input_data/INPUT_L127_gfsv17``
-       | ``FV3_input_data/INPUT_L127_mx100``
-       | ``FV3_input_data_INCCN_aeroclim/MERRA2_y14_24``
-       | ``FV3_input_data_INCCN_aeroclim/aer_data/LUTS``
-       | ``MOM6_FIX/100``
-       | ``MOM6_IC`` (files only)
-       | ``WW3_input_data_20260811`` (files only)
-   * - ``s2s_aoflux`` (intel)
-     - | ``cpld_control_noaero_p8_``
-       | ``agrid``
-     - | ``CICE_FIX/100``
-       | ``CICE_IC/100``
-       | ``CPL_FIX/aC96o100``
-       | ``FV3_fix``
-       | ``FV3_fix_tiled/C96mx100``
-       | ``FV3_input_data`` (files only)
-       | ``FV3_input_data/INPUT``
-       | ``FV3_input_data/INPUT_L127_gfsv17``
-       | ``FV3_input_data/INPUT_L127_mx100``
-       | ``FV3_input_data_INCCN_aeroclim/MERRA2_y14_24``
-       | ``FV3_input_data_INCCN_aeroclim/aer_data/LUTS``
-       | ``MOM6_FIX/100``
-       | ``MOM6_IC`` (files only)
-   * - ``s2sw_pdlib`` (intel)
-     - ``cpld_control_c48_5deg``
-     - | ``CICE_FIX/500``
-       | ``CICE_IC/C48mx500/2021032206``
-       | ``CPL_FIX/aC48o500``
-       | ``FV3_fix``
-       | ``FV3_fix_tiled/C48mx500``
-       | ``FV3_input_data`` (files only)
-       | ``FV3_input_data48`` (files only)
-       | ``FV3_input_data48/INPUT``
-       | ``FV3_input_data48/INPUT_L127_gfsv17``
-       | ``FV3_input_data48/INPUT_L127_mx500/2021032206``
-       | ``FV3_input_data_INCCN_aeroclim/MERRA2_y14_24``
-       | ``FV3_input_data_INCCN_aeroclim/aer_data/LUTS``
-       | ``MOM6_FIX/500``
-       | ``MOM6_IC/C48mx500/2021032206``
-       | ``WW3_input_data_20260811`` (files only)
-   * - ``s2sw_pdlib`` (intel)
-     - ``cpld_warmstart_c48_5deg``
-     - | ``CICE_FIX/500``
-       | ``CICE_IC/C48mx500/2021032306``
-       | ``CMEPS_IC/C48mx500/2021032306``
-       | ``CPL_FIX/aC48o500``
-       | ``FV3_fix``
-       | ``FV3_fix_tiled/C48mx500``
-       | ``FV3_input_data`` (files only)
-       | ``FV3_input_data48`` (files only)
-       | ``FV3_input_data48/INPUT``
-       | ``FV3_input_data48/INPUT_L127_gfsv17``
-       | ``FV3_input_data48/INPUT_L127_mx500/2021032306``
-       | ``FV3_input_data_INCCN_aeroclim/MERRA2_y14_24``
-       | ``FV3_input_data_INCCN_aeroclim/aer_data/LUTS``
-       | ``MOM6_FIX/500``
-       | ``MOM6_IC/C48mx500/2021032306``
-       | ``WW3_IC/C48mx500/2021032306``
-       | ``WW3_input_data_20260811`` (files only)
-   * - ``s2sw_pdlib`` (intel)
-     - ``cpld_control_c24_5deg``
-     - | ``CICE_FIX/500``
-       | ``CICE_IC/C24mx500/2021032206``
-       | ``CPL_FIX/aC24o500``
-       | ``FV3_fix``
-       | ``FV3_fix_tiled/C24mx500``
-       | ``FV3_input_data24`` (files only)
-       | ``FV3_input_data24/INPUT``
-       | ``FV3_input_data24/INPUT_L41_mx500/2021032206``
-       | ``FV3_input_data_INCCN_aeroclim/MERRA2_y14_24``
-       | ``FV3_input_data_INCCN_aeroclim/aer_data/LUTS``
-       | ``MOM6_FIX/500``
-       | ``MOM6_IC/C24mx500/2021032206``
-       | ``WW3_input_data_20260811`` (files only)
-   * - ``s2sw_pdlib`` (intel)
-     - ``cpld_warmstart_c24_5deg``
-     - | ``CICE_FIX/500``
-       | ``CICE_IC/C24mx500/2021032306``
-       | ``CMEPS_IC/C24mx500/2021032306``
-       | ``CPL_FIX/aC24o500``
-       | ``FV3_fix``
-       | ``FV3_fix_tiled/C24mx500``
-       | ``FV3_input_data24`` (files only)
-       | ``FV3_input_data24/INPUT``
-       | ``FV3_input_data24/INPUT_L41_mx500/2021032306``
-       | ``FV3_input_data_INCCN_aeroclim/MERRA2_y14_24``
-       | ``FV3_input_data_INCCN_aeroclim/aer_data/LUTS``
-       | ``MOM6_FIX/500``
-       | ``MOM6_IC/C24mx500/2021032306``
-       | ``WW3_IC/C24mx500/2021032306``
-       | ``WW3_input_data_20260811`` (files only)
-   * - ``s2sw_pdlib`` (intel)
-     - ``cpld_control_c24_9deg``
-     - | ``CICE_FIX/900``
-       | ``CICE_IC/C24mx900/2021032206``
-       | ``CPL_FIX/aC24o900``
-       | ``FV3_fix``
-       | ``FV3_fix_tiled/C24mx900``
-       | ``FV3_input_data24`` (files only)
-       | ``FV3_input_data24/INPUT``
-       | ``FV3_input_data24/INPUT_L41_mx900/2021032206``
-       | ``FV3_input_data_INCCN_aeroclim/MERRA2_y14_24``
-       | ``FV3_input_data_INCCN_aeroclim/aer_data/LUTS``
-       | ``MOM6_FIX/900``
-       | ``MOM6_IC/C24mx900/2021032206``
-       | ``WW3_input_data_20260811`` (files only)
-   * - ``s2sw_pdlib`` (intel)
-     - ``cpld_control_c12_9deg``
-     - | ``CICE_FIX/900``
-       | ``CICE_IC/C12mx900/2021032206``
-       | ``CPL_FIX/aC12o900``
-       | ``FV3_fix``
-       | ``FV3_fix_tiled/C12mx900``
-       | ``FV3_input_data12`` (files only)
-       | ``FV3_input_data12/INPUT``
-       | ``FV3_input_data12/INPUT_L41_mx900/2021032206``
-       | ``FV3_input_data_INCCN_aeroclim/MERRA2_y14_24``
-       | ``FV3_input_data_INCCN_aeroclim/aer_data/LUTS``
-       | ``MOM6_FIX/900``
-       | ``MOM6_IC/C12mx900/2021032206``
-       | ``WW3_input_data_20260811`` (files only)
-   * - ``atm_dyn32`` (intel, gnu)
-     - ``control_CubedSphereGrid``
-     - | ``FV3_fix``
-       | ``FV3_fix_tiled/C96mx100``
-       | ``FV3_input_data`` (files only)
-       | ``FV3_input_data/INPUT_L127_gfsv17``
-       | ``FV3_input_data_INCCN_aeroclim/aer_data/LUTS``
-   * - ``atm_dyn32`` (intel)
-     - ``control_c48``
-     - | ``FV3_fix``
-       | ``FV3_fix_tiled/C48mx500``
-       | ``FV3_input_data`` (files only)
-       | ``FV3_input_data48`` (files only)
-       | ``FV3_input_data48/INPUT_L127_gfsv17``
-       | ``FV3_input_data_INCCN_aeroclim/aer_data/LUTS``
-   * - ``atm_dyn32`` (gnu)
-     - ``control_c48``
-     - | ``FV3_fix``
-       | ``FV3_fix_tiled/C48mx500``
-       | ``FV3_input_data48`` (files only)
-       | ``FV3_input_data48/INPUT_L127_gfsv17``
-       | ``FV3_input_data_INCCN_aeroclim/aer_data/LUTS``
-   * - ``atm`` (gnu)
-     - ``control_c48``
-     - | ``FV3_fix``
-       | ``FV3_fix_tiled/C48mx500``
-       | ``FV3_input_data48`` (files only)
-       | ``FV3_input_data48/INPUT_L127_gfsv17``
-       | ``FV3_input_data_INCCN_aeroclim/aer_data/LUTS``
-   * - ``atm_dyn32`` (intel, gnu)
-     - ``control_c192``
-     - | ``FV3_fix``
-       | ``FV3_fix_tiled/C192mx050``
-       | ``FV3_input_data`` (files only)
-       | ``FV3_input_data192`` (files only)
-       | ``FV3_input_data192/INPUT_L127_gfsv17``
-       | ``FV3_input_data_INCCN_aeroclim/aer_data/LUTS``
-   * - ``atm_dyn32`` (intel, gnu)
-     - ``control_p8``
-     - | ``FV3_fix``
-       | ``FV3_fix_tiled/C96mx100``
-       | ``FV3_input_data`` (files only)
-       | ``FV3_input_data/INPUT_L127_gfsv17``
-       | ``FV3_input_data_INCCN_aeroclim/MERRA2_y14_24``
-       | ``FV3_input_data_INCCN_aeroclim/aer_data/LUTS``
-   * - ``atm`` (gnu)
-     - ``control_p8``
-     - | ``FV3_fix``
-       | ``FV3_fix_tiled/C96mx100``
-       | ``FV3_input_data`` (files only)
-       | ``FV3_input_data/INPUT_L127_gfsv17``
-       | ``FV3_input_data_INCCN_aeroclim/MERRA2_y14_24``
-       | ``FV3_input_data_INCCN_aeroclim/aer_data/LUTS``
-   * - ``atm_dyn32`` (intel, gnu)
-     - ``control_p8.v2.sfc``
-     - | ``FV3_fix``
-       | ``FV3_fix_tiled/C96mx100``
-       | ``FV3_input_data`` (files only)
-       | ``FV3_input_data/INPUT_L127_v2_sfc``
-       | ``FV3_input_data_INCCN_aeroclim/MERRA2_y14_24``
-       | ``FV3_input_data_INCCN_aeroclim/aer_data/LUTS``
-   * - ``atm_dyn32_rad32`` (intel)
-     - ``control_p8_rrtmgp_rad32``
-     - | ``FV3_fix``
-       | ``FV3_fix_tiled/C96mx100``
-       | ``FV3_input_data`` (files only)
-       | ``FV3_input_data/INPUT_L127_gfsv17``
-       | ``FV3_input_data_INCCN_aeroclim/MERRA2_y14_24``
-       | ``FV3_input_data_INCCN_aeroclim/aer_data/LUTS``
-       | ``FV3_input_data_RRTMGP``
-   * - ``rrfs`` (intel, gnu)
-     - ``rap_control``
-     - | ``FV3_fix``
-       | ``FV3_input_data`` (files only)
-       | ``FV3_input_data/INPUT_L127_gfsv17``
-   * - ``rrfs`` (intel, gnu)
-     - ``hrrr_control``
-     - | ``FV3_fix``
-       | ``FV3_input_data`` (files only)
-       | ``FV3_input_data/INPUT_L127``
-       | ``FV3_input_data_gsd`` (files only)
-       | ``lake_p8_water_fraction2020``
-   * - ``rrfs`` (intel, gnu)
-     - ``rrfs_v1beta``
-     - | ``FV3_fix``
-       | ``FV3_input_data`` (files only)
-       | ``FV3_input_data/INPUT_L127_gfsv17``
-   * - ``wam`` (intel)
-     - ``control_wam``
-     - | ``FV3_fix``
-       | ``FV3_fix_tiled/C96mx100``
-       | ``FV3_input_data_INCCN_aeroclim/MERRA2``
-       | ``FV3_input_data_INCCN_aeroclim/aer_data/LUTS``
-       | ``FV3_input_data_L149_wam`` (files only)
-       | ``FV3_input_data_L149_wam/INPUT_C``
-   * - ``wam_debug`` (intel, gnu)
-     - ``control_wam_debug``
-     - | ``FV3_fix``
-       | ``FV3_fix_tiled/C96mx100``
-       | ``FV3_input_data_INCCN_aeroclim/MERRA2``
-       | ``FV3_input_data_INCCN_aeroclim/aer_data/LUTS``
-       | ``FV3_input_data_L149_wam`` (files only)
-       | ``FV3_input_data_L149_wam/INPUT_C``
-   * - ``rrfs_dyn32_phy32`` (intel, gnu)
-     - ``rap_control_dyn32_phy32``
-     - | ``FV3_fix``
-       | ``FV3_input_data`` (files only)
-       | ``FV3_input_data/INPUT_L127_gfsv17``
-   * - ``rrfs_dyn32_phy32`` (intel, gnu)
-     - ``hrrr_control_dyn32_phy32``
-     - | ``FV3_fix``
-       | ``FV3_input_data`` (files only)
-       | ``FV3_input_data/INPUT_L127``
-       | ``FV3_input_data_gsd`` (files only)
-       | ``lake_p8_water_fraction2020``
-   * - ``rrfs_dyn32_phy32`` (intel, gnu)
-     - | ``hrrr_control_2threads_``
-       | ``dyn32_phy32``
-     - | ``FV3_fix``
-       | ``FV3_input_data`` (files only)
-       | ``FV3_input_data/INPUT_L127``
-       | ``FV3_input_data_gsd`` (files only)
-       | ``lake_p8_water_fraction2020``
-   * - ``rrfs_dyn32_phy32`` (intel, gnu)
-     - ``conus13km_control``
-     - | ``FV3_aeroclim``
-       | ``FV3_fix``
-       | ``FV3_input_data`` (files only)
-       | ``FV3_input_data_conus13km/INPUT``
-   * - ``rrfs_dyn64_phy32`` (intel)
-     - ``rap_control_dyn64_phy32``
-     - | ``FV3_fix``
-       | ``FV3_input_data`` (files only)
-       | ``FV3_input_data/INPUT_L127_gfsv17``
-   * - ``hafsw`` (intel)
-     - ``hafs_regional_atm``
-     - | ``FV3_fix``
-       | ``FV3_hafs_input_data`` (files only)
-       | ``FV3_hafs_input_data/INPUT_hafs_regional_atm``
-   * - ``hafsw`` (intel)
-     - ``hafs_regional_atm_wav``
-     - | ``FV3_fix``
-       | ``FV3_hafs_input_data`` (files only)
-       | ``FV3_hafs_input_data/INPUT_hafs_regional_atm``
-       | ``WW3_input_data_20260811`` (files only)
-   * - ``hafsw`` (intel)
-     - ``hafs_global_1nest_atm``
-     - | ``FV3_fix``
-       | ``FV3_hafs_input_data`` (files only)
-       | ``FV3_hafs_input_data/INPUT_hafs_global_1nest_atm``
-   * - ``hafsw`` (intel)
-     - | ``hafs_global_multiple_``
-       | ``4nests_atm``
-     - | ``FV3_fix``
-       | ``FV3_hafs_input_data`` (files only)
-       | ``FV3_hafs_input_data/INPUT_hafs_global_multiple_4nests_atm``
-   * - ``hafs_mom6w`` (intel)
-     - | ``hafs_regional_storm_``
-       | ``following_1nest_atm_ocn_``
-       | ``wav_mom6``
-     - | ``FV3_fix``
-       | ``FV3_hafs_input_data`` (files only)
-       | ``FV3_hafs_input_data/CDEPS_input_data``
-       | ``FV3_hafs_input_data/INPUT_hafs_regional_storm_following_1nest_atm``
-       | ``FV3_hafs_input_data/MOM6_regional_input_data``
-       | ``FV3_hafs_input_data/WW3_hafs_regional_input_data``
-       | ``WW3_input_data_20260811`` (files only)
-   * - ``hafs_all`` (intel, gnu)
-     - ``hafs_regional_docn``
-     - | ``DOCN_MOM6_input_data``
-       | ``FV3_fix``
-       | ``FV3_hafs_input_data`` (files only)
-       | ``FV3_hafs_input_data/INPUT_hafs_regional_atm``
-   * - ``hafs_all`` (intel, gnu)
-     - ``hafs_regional_docn_oisst``
-     - | ``DOCN_OISST_input_data``
-       | ``FV3_fix``
-       | ``FV3_hafs_input_data`` (files only)
-       | ``FV3_hafs_input_data/INPUT_hafs_regional_atm``
-   * - ``datm_cdeps`` (intel, gnu)
-     - ``datm_cdeps_control_cfsr``
-     - | ``CICE_FIX/100``
-       | ``CICE_IC/100``
-       | ``DATM_CDEPS`` (files only)
-       | ``DATM_CDEPS/CFSR/201110``
-       | ``MOM6_FIX/100``
-       | ``MOM6_FIX_DATM/100``
-       | ``MOM6_IC/100/2011100100``
-   * - ``datm_cdeps`` (intel)
-     - ``datm_cdeps_control_gefs``
-     - | ``CICE_FIX/100``
-       | ``CICE_IC/100``
-       | ``DATM_CDEPS`` (files only)
-       | ``DATM_CDEPS/GEFS_NEW/201110``
-       | ``MOM6_FIX/100``
-       | ``MOM6_FIX_DATM/100``
-       | ``MOM6_IC/100/2011100100``
-   * - ``datm_cdeps`` (intel)
-     - ``datm_cdeps_ciceC_cfsr``
-     - | ``CICE_FIX/100``
-       | ``CICE_IC/100``
-       | ``DATM_CDEPS`` (files only)
-       | ``DATM_CDEPS/CFSR/201110``
-       | ``MOM6_FIX/100``
-       | ``MOM6_FIX_DATM/100``
-       | ``MOM6_IC/100/2011100100``
-   * - ``datm_cdeps`` (intel)
-     - ``datm_cdeps_gfs``
-     - | ``CICE_FIX/100``
-       | ``CICE_IC/100``
-       | ``DATM_CDEPS`` (files only)
-       | ``DATM_CDEPS/GFS/202103``
-       | ``MOM6_FIX/100``
-       | ``MOM6_FIX_DATM/100``
-       | ``MOM6_IC`` (files only)
-   * - ``datm_cdeps_land`` (intel)
-     - ``datm_cdeps_lnd_gswp3``
-     - | ``CPL_FIX/aC96o100``
-       | ``DATM_GSWP3_input_data``
-       | ``FV3_fix_tiled/C96mx100``
-       | ``FV3_input_data/INPUT``
-       | ``FV3_input_data/INPUT_L127_gfsv17``
-       | ``NOAHMP_IC/CLMNCEP``
-   * - ``datm_cdeps_land`` (intel)
-     - ``datm_cdeps_lnd_era5``
-     - | ``CPL_FIX/aC96o100``
-       | ``DATM_ERA5_input_data_v2``
-       | ``FV3_fix_tiled/C96mx100``
-       | ``FV3_input_data/INPUT``
-       | ``FV3_input_data/INPUT_L127_gfsv17``
-       | ``NOAHMP_IC/ERA5``
-   * - ``atm_ds2s_docn_pcice`` (intel, gnu)
-     - ``atm_ds2s_docn_pcice``
-     - | ``CICE_FIX/100``
-       | ``CICE_IC/100``
-       | ``CPL_FIX/aC96o100``
-       | ``DOCN_DICE_ERA5``
-       | ``FV3_fix``
-       | ``FV3_fix_tiled/C96mx100``
-       | ``FV3_input_data`` (files only)
-       | ``FV3_input_data/INPUT``
-       | ``FV3_input_data/INPUT_L127_gfsv17``
-       | ``FV3_input_data/INPUT_L127_mx100``
-       | ``FV3_input_data_INCCN_aeroclim/MERRA2_y14_24``
-       | ``FV3_input_data_INCCN_aeroclim/aer_data/LUTS``
-       | ``MOM6_FIX/100``
-       | ``MOM6_IC`` (files only)
-   * - ``atmaero`` (intel)
-     - ``atmaero_control_p8``
-     - | ``FV3_fix``
-       | ``FV3_fix_tiled/C96mx100``
-       | ``FV3_input_data`` (files only)
-       | ``FV3_input_data/INPUT_L127_gfsv17``
-       | ``FV3_input_data_INCCN_aeroclim/MERRA2_y14_24``
-       | ``FV3_input_data_INCCN_aeroclim/aer_data/LUTS``
-       | ``GOCART/p8``
-
-The ``+container`` tests do not use ``GEFS``, ``FV3_input_data384``, ``LM4_input_data``, or ``FV3_regional``.
-They also do not use the ``GFSv17opn_20251014`` and ``BM_IC-20220207`` data sets.
-
-The data can be downloaded with the AWS CLI; no AWS account is needed when ``--no-sign-request`` is used.
-For example:
+Before downloading, the contents of the data bucket can be listed to check which directories
+are available, for example:
 
 .. code-block:: console
 
    export BUCKET=s3://noaa-ufs-regtests-pds/input-data-20260617
-   export INPUTDATA_ROOT=/path/to/input-data-20260617
+   aws s3 ls ${BUCKET}/ --no-sign-request
+   aws s3 ls ${BUCKET}/CPL_FIX/ --no-sign-request
 
+The trailing ``/`` is needed to list the contents of a directory; without it, ``aws s3 ls`` shows only
+the directory name itself.
+
+The following commands download only the input data needed by the ``+container`` tests. Run them
+from the directory where ``input-data-20260617`` is to be created. The comments name the tests that
+use each subdirectory, and the ``--exclude`` options skip subdirectories that these tests do not use.
+
+.. code-block:: bash
+
+   # Input data needed ONLY for the tests marked "+container" in tests/rt.conf
+   export INPUTDATA_ROOT=$PWD/input-data-20260617
+   export BUCKET=s3://noaa-ufs-regtests-pds/input-data-20260617
+   export INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT}/WW3_input_data_20260811
+
+   # --- FV3 static fix files (global fix: grids, orography, climatology, Thompson tables) ---
    aws s3 sync ${BUCKET}/FV3_fix/ ${INPUTDATA_ROOT}/FV3_fix/ --no-sign-request
+
+   # --- FV3 tiled fix files (ATMRESmxOCNRES combos used by container tests) ---
+   #     C192mx025: cpld_control_sfs, cpld_debug_sfs
    for combo in C96mx100 C192mx050 C192mx025 C48mx500 C24mx500 C24mx900 C12mx900; do
      aws s3 sync ${BUCKET}/FV3_fix_tiled/${combo}/ ${INPUTDATA_ROOT}/FV3_fix_tiled/${combo}/ --no-sign-request
    done
-   # Skip subdirectories that the +container tests do not use
-   aws s3 sync ${BUCKET}/MOM6_IC/ ${INPUTDATA_ROOT}/MOM6_IC/ --no-sign-request --exclude "025/*"
-   aws s3 sync ${BUCKET}/CICE_IC/ ${INPUTDATA_ROOT}/CICE_IC/ --no-sign-request --exclude "025/*" --exclude "050/*"
-   aws s3 sync ${BUCKET}/WW3_input_data_20260811/ ${INPUTDATA_ROOT}/WW3_input_data_20260811/ --no-sign-request
 
-Repeat the ``aws s3 sync`` command for each remaining subdirectory in the table above.
+   # --- MOM6 / CICE6 fix files (025: SFS, 100: C96/DATM, 500/900: low-res coupled) ---
+   #     050: not used by container tests; kept for cpld_control_c192_p8/cpld_restart_c192_p8
+   #     (C192 + 1/2-deg ocean), in case they are enabled for container/community platform runs
+   #     (CICE_IC/050/ is also downloaded below)
+   for r in 025 050 100 500 900; do
+     aws s3 sync ${BUCKET}/MOM6_FIX/${r}/ ${INPUTDATA_ROOT}/MOM6_FIX/${r}/ --no-sign-request
+     aws s3 sync ${BUCKET}/CICE_FIX/${r}/ ${INPUTDATA_ROOT}/CICE_FIX/${r}/ --no-sign-request
+   done
+
+   # --- Coupling grid (CPL_FIX), and MOM6/CICE6 initial conditions ---
+   #     MOM6_IC/025/ and CICE_IC/025/ (~18 GiB) are used only by datm_cdeps_mx025_cfsr/gefs
+   #     (not container tests; they would also need MOM6_FIX_DATM/025/); CICE_IC/050/ by cpld_*_c192_p8
+   aws s3 sync ${BUCKET}/CPL_FIX/ ${INPUTDATA_ROOT}/CPL_FIX/ --no-sign-request
+   aws s3 sync ${BUCKET}/MOM6_IC/ ${INPUTDATA_ROOT}/MOM6_IC/ --no-sign-request --exclude "025/*"
+   aws s3 sync ${BUCKET}/CICE_IC/ ${INPUTDATA_ROOT}/CICE_IC/ --no-sign-request --exclude "025/*"
+
+   # --- CMEPS mediator / WW3 wave restart IC (low-res cpld_control_c*/cpld_warmstart_c* tests) ---
+   aws s3 sync ${BUCKET}/CMEPS_IC/ ${INPUTDATA_ROOT}/CMEPS_IC/ --no-sign-request
+   aws s3 sync ${BUCKET}/WW3_IC/   ${INPUTDATA_ROOT}/WW3_IC/   --no-sign-request
+
+   # --- FV3 atmosphere IC, by resolution ---
+   aws s3 sync ${BUCKET}/FV3_input_data/     ${INPUTDATA_ROOT}/FV3_input_data/     --no-sign-request  # C96 tests
+   aws s3 sync ${BUCKET}/FV3_input_data192/  ${INPUTDATA_ROOT}/FV3_input_data192/  --no-sign-request  # control_c192
+   aws s3 sync ${BUCKET}/FV3_input_data48/   ${INPUTDATA_ROOT}/FV3_input_data48/   --no-sign-request  # control_c48, cpld_*_c48_5deg
+   aws s3 sync ${BUCKET}/FV3_input_data24/   ${INPUTDATA_ROOT}/FV3_input_data24/   --no-sign-request  # cpld_*_c24_5deg/c24_9deg
+   aws s3 sync ${BUCKET}/FV3_input_data12/   ${INPUTDATA_ROOT}/FV3_input_data12/   --no-sign-request  # cpld_control_c12_9deg
+
+   # --- SFS coupled IC (cpld_control_sfs, cpld_debug_sfs) ---
+   aws s3 sync ${BUCKET}/SFS/ ${INPUTDATA_ROOT}/SFS/ --no-sign-request
+
+   # --- Aerosol/GOCART (atmaero_control_p8), MERRA2 aerosol climatology + optics LUTs (IAER=1011, USE_MERRA2),
+   #     and RRTMGP radiation (control_p8_rrtmgp_rad32) ---
+   #     MERRA2_40y/ (IAER=6011) and mg2_IN_CCN/ (fv3_gocart.IN) are not used by container tests
+   aws s3 sync ${BUCKET}/GOCART/p8/                     ${INPUTDATA_ROOT}/GOCART/p8/                     --no-sign-request
+   aws s3 sync ${BUCKET}/FV3_input_data_INCCN_aeroclim/ ${INPUTDATA_ROOT}/FV3_input_data_INCCN_aeroclim/ --no-sign-request \
+       --exclude "MERRA2_40y/*" --exclude "mg2_IN_CCN/*"
+   aws s3 sync ${BUCKET}/FV3_input_data_RRTMGP/         ${INPUTDATA_ROOT}/FV3_input_data_RRTMGP/         --no-sign-request
+
+   # --- HRRR tests (hrrr_control*, lake_control_run.IN): Thompson MP tables and CLM lake orography ---
+   aws s3 sync ${BUCKET}/FV3_input_data_gsd/         ${INPUTDATA_ROOT}/FV3_input_data_gsd/         --no-sign-request
+   aws s3 sync ${BUCKET}/lake_p8_water_fraction2020/ ${INPUTDATA_ROOT}/lake_p8_water_fraction2020/ --no-sign-request
+
+   # --- RRFS CONUS 13-km warm start (conus13km_control, rrfs_warm_run.IN): IC/grid/LBC and aerosol climatology ---
+   aws s3 sync ${BUCKET}/FV3_input_data_conus13km/ ${INPUTDATA_ROOT}/FV3_input_data_conus13km/ --no-sign-request
+   aws s3 sync ${BUCKET}/FV3_aeroclim/             ${INPUTDATA_ROOT}/FV3_aeroclim/             --no-sign-request
+
+   # --- DATM/CDEPS forcing (CFSR, GEFS_NEW, GFS + mesh files) and MOM6 fix for data-atmosphere tests ---
+   #     GEFS/ and CFSR3072x1536/ are not used by container tests
+   aws s3 sync ${BUCKET}/DATM_CDEPS/        ${INPUTDATA_ROOT}/DATM_CDEPS/        --no-sign-request \
+       --exclude "GEFS/*" --exclude "CFSR3072x1536/*"
+   aws s3 sync ${BUCKET}/MOM6_FIX_DATM/100/ ${INPUTDATA_ROOT}/MOM6_FIX_DATM/100/ --no-sign-request
+
+   # --- LND Noah-MP initial conditions and forcing (cpld_control_p8_lnd, datm_cdeps_lnd_gswp3, datm_cdeps_lnd_era5) ---
+   aws s3 sync ${BUCKET}/NOAHMP_IC/               ${INPUTDATA_ROOT}/NOAHMP_IC/               --no-sign-request
+   aws s3 sync ${BUCKET}/DATM_GSWP3_input_data/   ${INPUTDATA_ROOT}/DATM_GSWP3_input_data/   --no-sign-request
+   aws s3 sync ${BUCKET}/DATM_ERA5_input_data_v2/ ${INPUTDATA_ROOT}/DATM_ERA5_input_data_v2/ --no-sign-request
+
+   # --- DOCN/DICE (atm_ds2s_docn_pcice) ---
+   aws s3 sync ${BUCKET}/DOCN_DICE_ERA5/ ${INPUTDATA_ROOT}/DOCN_DICE_ERA5/ --no-sign-request
+
+   # --- HAFS family (atmosphere IC/LBC, regional MOM6, CDEPS forcing, WW3 wind; data-ocean MOM6/OISST SST) ---
+   #     Only INPUT_* dirs of container HAFS tests are kept; HYCOM and other HAFS configurations are excluded
+   aws s3 sync ${BUCKET}/FV3_hafs_input_data/   ${INPUTDATA_ROOT}/FV3_hafs_input_data/   --no-sign-request \
+       --exclude "HYCOM_hafs_regional_input_data/*" \
+       --exclude "INPUT_hafs_global_storm_following_1nest_atm/*" \
+       --exclude "INPUT_hafs_regional_1nest_atm/*" \
+       --exclude "INPUT_hafs_regional_telescopic_2nests_atm/*"
+   aws s3 sync ${BUCKET}/DOCN_MOM6_input_data/  ${INPUTDATA_ROOT}/DOCN_MOM6_input_data/  --no-sign-request
+   aws s3 sync ${BUCKET}/DOCN_OISST_input_data/ ${INPUTDATA_ROOT}/DOCN_OISST_input_data/ --no-sign-request
+
+   # --- WAM tests (control_wam, control_wam_debug: 149-level whole-atmosphere model IC) ---
+   aws s3 sync ${BUCKET}/FV3_input_data_L149_wam/ ${INPUTDATA_ROOT}/FV3_input_data_L149_wam/ --no-sign-request
+
+   # --- WW3 (S2SW/S2SWA-family tests, plus hafs_regional_atm_wav / hafs_regional_storm_following_1nest_atm_ocn_wav_mom6) ---
+   aws s3 sync ${BUCKET}/WW3_input_data_20260811/ ${INPUTDATA_ROOT_WW3} --no-sign-request
+
+   # Not needed for container tests:
+   #   GEFS/ (BMIC tests), FV3_input_data384/ (C384), FV3_fix_tiled/C384mx025, LM4_input_data/ (datm_cdeps_lm4_*),
+   #   FV3_regional/ (regional_* tests), INPUT_hafs_regional_atm/ (empty in S3; HAFS uses FV3_hafs_input_data/INPUT_hafs_regional_atm)
+
+The ``+container`` tests do not need the following data, which can be skipped:
+
+* ``LM4_input_data`` (``INPUTDATA_LM4``), used by the ``datm_cdeps_lm4_*`` tests.
+* The GFS v17 operational data set ``GFSv17opn_20251014`` (``INPUTDATA_GFSv17opn``) and the
+  ``BM_IC-20220207`` data set; both are separate from ``input-data-20260617``.
+* ``GEFS``, ``FV3_input_data384``, ``FV3_fix_tiled/C384mx025``, and ``FV3_regional``.
+* The other top-level directories of ``input-data-20260617`` not listed in the commands above, such as
+  ``AQM``, ``MPAS``, ``HSD_input_data``, ``FV3_input_data768``, ``FV3_input_data_L149``,
+  ``FV3_regional_rrfs_a``, ``HYCOM_regional_input_data``, and the older ``WW3_input_data_2025*`` directories.
+
 Set ``INPUTDATA_ROOT`` (and, if needed, ``INPUTDATA_ROOT_WW3``) in line 4 of the platform definition file
 (see :numref:`Section %s <container-rt-conf>`) to the download location.
 
