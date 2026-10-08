@@ -1,0 +1,45 @@
+name: Cache Historical Data
+
+on:
+  push: 
+    branches:
+      - develop
+      - test-actions
+
+defaults:
+  run:
+    shell: bash -eo pipefail {0}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env: 
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  MACHINES: "gaeac6 hercules orion ursa wcoss2"
+  #BASE_URL: https://api.github.com/repos/ufs-community/ufs-weather-model
+  BASE_URL: https://api.github.com/repos/NOAA-EPIC/ufs-weather-model
+
+jobs:
+  get-historical-data:  
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: write
+    steps: 
+      - name: Checkout feature branch
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 #v7.0.1
+      - name: Install dependencies
+        run: |
+          pip install requests numpy
+          mkdir -p data
+      - name: Cache historical data & machine stats
+        id: cache-stats
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 #v6.1.0
+        with:
+          path: ${{ github.workspace }}/data
+          key: hist-stats-${{ github.sha }}
+      - name: Get historical data
+        run: |
+          mkdir -p data
+          python -m tests-dev.scripts.set_historical_log_stats
