@@ -2,7 +2,7 @@ help([[
 loads UFS Model prerequisites for Ursa/GNU
 ]])
 
-prepend_path("MODULEPATH", "/contrib/spack-stack/spack-stack-2.1.0/envs/ue-gcc-12.4.0/modules/Core")
+prepend_path("MODULEPATH", "/contrib/spack-stack/spack-stack-2.1.1/envs/ue-gcc-12.4.0/modules/Core")
 
 stack_gnu_ver=os.getenv("stack_gnu_ver") or "12.4.0"
 load(pathJoin("stack-gcc", stack_gnu_ver))
