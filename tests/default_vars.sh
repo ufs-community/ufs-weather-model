@@ -164,7 +164,7 @@ if [[ ${MACHINE_ID} = wcoss2 || ${MACHINE_ID} = acorn ]]; then
 
 elif [[ ${MACHINE_ID} = wcoss3 ]]; then
 
-  TPN=128
+  TPN=192
   INPES_dflt=3
   JNPES_dflt=8
   INPES_thrd=3
