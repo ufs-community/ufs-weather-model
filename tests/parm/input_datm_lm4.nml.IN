@@ -48,7 +48,7 @@
        ntiles = 6
        blocksize = -1
 	dt_lnd_slow = 3600
-	restart_interval = 0,0,0,6,0,0
+	restart_interval = @[LM4_RESTART_INTERVAL]
 /
 
  &cana_nml                                                                                                                                         
@@ -192,7 +192,7 @@
 &river_nml
        do_rivers   = .true.
        stop_on_mask_mismatch = .false.       
-       dt_slow     = 86400.
+       dt_slow     = @[LM4_RIVER_DT_SLOW]
        land_area_called_cellarea = .true.
        all_big_outlet_ctn0 = .true.
        ave_DHG_exp = 0.55, 0.45, 0.0
