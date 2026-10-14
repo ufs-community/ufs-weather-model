@@ -1089,10 +1089,13 @@ new run starts. A symlink ``tests/run_dir`` points to ``RUNDIR_ROOT``.
 Log files are written to the ``tests/logs/`` directory, as for Tier 1 runs
 (see :numref:`Section %s <log-files>`):
 
-* ``RegressionTests_<PLATFORM_NAME>.log`` — summary of the run. For a default run
-  without ``-c`` or ``-m``, the file is named ``RegressionTests_weekly_<PLATFORM_NAME>.log``
-  because the comparison step is skipped.
+* ``RegressionTests_<PLATFORM_NAME>.log`` — summary of the run.
 * ``log_<PLATFORM_NAME>/`` — detailed compile and test logs.
+
+A container holds only one compiler, so for the container option the compiler is added to both
+names: ``RegressionTests_container_<compiler>.log`` and ``log_container_<compiler>/``
+(for example, ``RegressionTests_container_intel.log`` and ``log_container_intel/``). Runs with the
+GNU and Intel containers therefore keep separate logs.
 
 For sequential runs, a ``COMPILE/TEST SUMMARY`` with PASS/FAIL for each compile and test
 is also printed to the terminal when all tests have finished.

@@ -207,7 +207,7 @@ EOF
     echo "* (-P) - COMMUNITY PLATFORM: ${MACHINE_ID} (${COMMUNITY_PLATFORM_FILE}); ${platform_baseline_note}" >> "${REGRESSIONTEST_LOG}"
   fi
   [[ ${delete_rundir} == true ]] && echo "* (-d) - DELETE RUN DIRECTORY" >> "${REGRESSIONTEST_LOG}"
-  [[ ${skip_check_results} == true ]] && echo "* (-w) - SKIP RESULTS CHECK" >> "${REGRESSIONTEST_LOG}"
+  [[ ${skip_check_results} == true && ${COMMUNITY_PLATFORM} == false ]] && echo "* (-w) - SKIP RESULTS CHECK" >> "${REGRESSIONTEST_LOG}"
   [[ ${KEEP_RUNDIR} == true ]] && echo "* (-k) - KEEP RUN DIRECTORY" >> "${REGRESSIONTEST_LOG}"
   [[ ${ROCOTO} == true ]] && echo "* (-r) - USE ROCOTO" >> "${REGRESSIONTEST_LOG}"
   [[ ${ECFLOW} == true ]] && echo "* (-e) - USE ECFLOW" >> "${REGRESSIONTEST_LOG}"
@@ -252,7 +252,13 @@ EOF
         COMPILE_TIME=""
         RT_COMPILE_TIME=""
         COMPILE_WARNINGS=""
-        if [[ ! -f "${LOG_DIR}/compile_${COMPILE_ID}.log" ]]; then
+        if [[ ${COMMUNITY_PLATFORM} == true && ! -f "${LOG_DIR}/compile_${COMPILE_ID}.log" \
+              && -x "${PATHTR}/tests/fv3_${COMPILE_ID}.exe" ]]; then
+          # A community platform (-P) run skips a compile whose executable is
+          # already present; this is not a failure, and its tests still run.
+          COMPILE_RESULT="SKIPPED: EXECUTABLE ALREADY PRESENT"
+          COMPILE_COUNTER=$((COMPILE_COUNTER-1))
+        elif [[ ! -f "${LOG_DIR}/compile_${COMPILE_ID}.log" ]]; then
           COMPILE_RESULT="FAILED: UNABLE TO START COMPILE"
           FAIL_LOG="N/A"
         elif [[ -f fail_compile_${COMPILE_ID} ]]; then
@@ -1256,10 +1262,20 @@ if [[ ${CREATE_BASELINE} == true ]]; then
 
 fi
 
-if [[ ${skip_check_results} == true ]]; then
+# A container (-P with a container image) holds only one compiler, so its
+# log file and log directory are named per compiler, e.g.
+# RegressionTests_container_intel.log and logs/log_container_intel/.
+LOG_SUFFIX=''
+if [[ ${COMMUNITY_PLATFORM} == true && ${CONTAINER_USE} == true ]]; then
+  LOG_SUFFIX="_${COMMUNITY_PLATFORM_COMPILER}"
+fi
+
+# A community platform (-P) run skips the comparison by default, but it is
+# not a weekly (-w) run; keep its log name RegressionTests_<platform>.log.
+if [[ ${skip_check_results} == true && ${COMMUNITY_PLATFORM} == false ]]; then
   REGRESSIONTEST_LOG=${PATHRT}/logs/RegressionTests_weekly_${MACHINE_ID}.log
 else
-  REGRESSIONTEST_LOG=${PATHRT}/logs/RegressionTests_${MACHINE_ID}.log
+  REGRESSIONTEST_LOG=${PATHRT}/logs/RegressionTests_${MACHINE_ID}${LOG_SUFFIX}.log
 fi
 
 [ -f "${REGRESSIONTEST_LOG}" ] && cp "${REGRESSIONTEST_LOG}" "${REGRESSIONTEST_LOG}.bak"
@@ -1273,7 +1289,7 @@ source default_vars.sh
 COMPILE_COUNTER=0
 rm -f fail_test* fail_compile*
 
-LOG_DIR=${PATHRT}/logs/log_${MACHINE_ID}
+LOG_DIR=${PATHRT}/logs/log_${MACHINE_ID}${LOG_SUFFIX}
 export LOG_DIR
 
 rm -rf "${LOG_DIR}"
