@@ -11,68 +11,98 @@ export TEST_DESCR="Active Atmosphere and GFDL Land Model 4, restart test"
 export CNTL_DIR=control_p8_atmlm4
 
 export LIST_FILES="\
-       RESTART/cana.res.tile1.nc \
-       RESTART/cana.res.tile2.nc \
-       RESTART/cana.res.tile3.nc \
-       RESTART/cana.res.tile4.nc \
-       RESTART/cana.res.tile5.nc \
-       RESTART/cana.res.tile6.nc \
-       RESTART/glac.res.tile1.nc \
-       RESTART/glac.res.tile2.nc \
-       RESTART/glac.res.tile3.nc \
-       RESTART/glac.res.tile4.nc \
-       RESTART/glac.res.tile5.nc \
-       RESTART/glac.res.tile6.nc \
-       RESTART/lake.res.tile1.nc \
-       RESTART/lake.res.tile2.nc \
-       RESTART/lake.res.tile3.nc \
-       RESTART/lake.res.tile4.nc \
-       RESTART/lake.res.tile5.nc \
-       RESTART/lake.res.tile6.nc \
-       RESTART/land.res.tile1.nc \
-       RESTART/land.res.tile2.nc \
-       RESTART/land.res.tile3.nc \
-       RESTART/land.res.tile4.nc \
-       RESTART/land.res.tile5.nc \
-       RESTART/land.res.tile6.nc \
-       RESTART/landuse.res	  \
-       RESTART/snow.res.tile1.nc \
-       RESTART/snow.res.tile2.nc \
-       RESTART/snow.res.tile3.nc \
-       RESTART/snow.res.tile4.nc \
-       RESTART/snow.res.tile5.nc \
-       RESTART/snow.res.tile6.nc \
-       RESTART/soil.res.tile1.nc \
-       RESTART/soil.res.tile2.nc \
-       RESTART/soil.res.tile3.nc \
-       RESTART/soil.res.tile4.nc \
-       RESTART/soil.res.tile5.nc \
-       RESTART/soil.res.tile6.nc \
-       RESTART/vegn1.res.tile1.nc\
-       RESTART/vegn1.res.tile2.nc\
-       RESTART/vegn1.res.tile3.nc\
-       RESTART/vegn1.res.tile4.nc\
-       RESTART/vegn1.res.tile5.nc\
-       RESTART/vegn1.res.tile6.nc\
-       RESTART/vegn2.res.tile1.nc\
-       RESTART/vegn2.res.tile2.nc\
-       RESTART/vegn2.res.tile3.nc\
-       RESTART/vegn2.res.tile4.nc\
-       RESTART/vegn2.res.tile5.nc\
-       RESTART/vegn2.res.tile6.nc" 
+      sfcf048.tile1.nc \
+      sfcf048.tile2.nc \
+      sfcf048.tile3.nc \
+      sfcf048.tile4.nc \
+      sfcf048.tile5.nc \
+      sfcf048.tile6.nc \
+      atmf048.tile1.nc \
+      atmf048.tile2.nc \
+      atmf048.tile3.nc \
+      atmf048.tile4.nc \
+      atmf048.tile5.nc \
+      atmf048.tile6.nc \
+      RESTART/cana.res.tile1.nc \
+      RESTART/cana.res.tile2.nc \
+      RESTART/cana.res.tile3.nc \
+      RESTART/cana.res.tile4.nc \
+      RESTART/cana.res.tile5.nc \
+      RESTART/cana.res.tile6.nc \
+      RESTART/glac.res.tile1.nc \
+      RESTART/glac.res.tile2.nc \
+      RESTART/glac.res.tile3.nc \
+      RESTART/glac.res.tile4.nc \
+      RESTART/glac.res.tile5.nc \
+      RESTART/glac.res.tile6.nc \
+      RESTART/lake.res.tile1.nc \
+      RESTART/lake.res.tile2.nc \
+      RESTART/lake.res.tile3.nc \
+      RESTART/lake.res.tile4.nc \
+      RESTART/lake.res.tile5.nc \
+      RESTART/lake.res.tile6.nc \
+      RESTART/land.res.tile1.nc \
+      RESTART/land.res.tile2.nc \
+      RESTART/land.res.tile3.nc \
+      RESTART/land.res.tile4.nc \
+      RESTART/land.res.tile5.nc \
+      RESTART/land.res.tile6.nc \
+      RESTART/landuse.res	  \
+      RESTART/snow.res.tile1.nc \
+      RESTART/snow.res.tile2.nc \
+      RESTART/snow.res.tile3.nc \
+      RESTART/snow.res.tile4.nc \
+      RESTART/snow.res.tile5.nc \
+      RESTART/snow.res.tile6.nc \
+      RESTART/soil.res.tile1.nc \
+      RESTART/soil.res.tile2.nc \
+      RESTART/soil.res.tile3.nc \
+      RESTART/soil.res.tile4.nc \
+      RESTART/soil.res.tile5.nc \
+      RESTART/soil.res.tile6.nc \
+      RESTART/vegn1.res.tile1.nc\
+      RESTART/vegn1.res.tile2.nc\
+      RESTART/vegn1.res.tile3.nc\
+      RESTART/vegn1.res.tile4.nc\
+      RESTART/vegn1.res.tile5.nc\
+      RESTART/vegn1.res.tile6.nc\
+      RESTART/vegn2.res.tile1.nc\
+      RESTART/vegn2.res.tile2.nc\
+      RESTART/vegn2.res.tile3.nc\
+      RESTART/vegn2.res.tile4.nc\
+      RESTART/vegn2.res.tile5.nc\
+      RESTART/vegn2.res.tile6.nc" 
+
+# # currently needs to start on 00z
+export SYEAR=2021
+export SMONTH=03
+export SDAY=22
+export SHOUR=00
+
+export FHROT=24
+export FHMAX=48
+
+export RESTART_N=24
+export RESTART_INTERVAL="${RESTART_N} -1"
+RST_HOUR=$(( FHROT + SHOUR ))
+if [[ $RST_HOUR -ge 24 ]]; then
+  RST_HOUR=$(( RST_HOUR - 24 ))
+  RST_DAY=$(( SDAY + 1 ))
+fi
+
+export RESTART_FILE_PREFIX="${SYEAR}${SMONTH}${RST_DAY}.$(printf "%02d" $RST_HOUR)0000"
+export RESTART_FILE_SUFFIX_SECS="${SYEAR}-${SMONTH}-${RST_DAY}-$(printf "%05d" $(( RST_HOUR* 3600 )))"
 
 
-export RESTART_FILE_PREFIX="${SYEAR}${SMONTH}${SDAY}.$(printf "%02d" $(( ${FHROT} + ${SHOUR} )))0000"
-export RESTART_FILE_SUFFIX_SECS="${SYEAR}-${SMONTH}-${SDAY}-$(printf "%05d" $(( (${FHROT}+${SHOUR})*3600 )))"
 # expected checkpoint restarts are named like: YYYYMMDD.HHMMSS.*.res*
-export LM4_RESTART_PREFIX=${SYEAR}${SMONTH}${SDAY}.$(printf "%02d" $(( ${FHROT}+ ${SHOUR} )))0000
-
+export LM4_RESTART_PREFIX=${RESTART_FILE_PREFIX}
 
 export FV3_RUN="control_run.IN lm4_common.IN"
 
 export FIELD_TABLE_ADDITIONAL=field_table_lm4
 
 export DIAG_TABLE=diag_table_cpld.IN
+export DIAG_TABLE_ADDITIONAL=diag_additional_cpld_lm4.IN
 
 export INPUT_NML="input_atm_lm4.nml.IN"
 
@@ -81,6 +111,8 @@ export CPLLND=.true.
 export CPLLM4=.true.
 export CPLLND2ATM=.true.
 export CPLFLX=.false.  
+export ULTRALOW=.false.
+
 
 export UFS_CONFIGURE=ufs.configure.atm_lm4.IN
 
