@@ -2147,6 +2147,13 @@ export_datm_cdeps() {
   RT_SUFFIX=""
 }
 
+export_lm4() {
+  # lm4_nml restart_interval (years,months,days,hours,minutes,seconds)
+  LM4_RESTART_INTERVAL="0,0,0,6,0,0"
+  # river_nml dt_slow (s), river slow time step default is daily
+  LM4_RIVER_DT_SLOW=86400.
+}
+
 export_hafs_datm_cdeps() {
   FV3=false
   S2S=false
