@@ -1,10 +1,13 @@
 &atmos_model_nml
   blocksize = 32
-  dycore_only = .false.
+  dycore_only = @[DYCORE_ONLY]
   ccpp_suite = '@[CCPP_SUITE]'
   ic_filename = '@[IC_FILENAME]'
+  oro_filename = '@[ORO_FILENAME]'
   stream_list_history = '@[STREAM_LIST_HISTORY]'
   stream_list_restart = '@[STREAM_LIST_RESTART]'
+  stream_list_diag    = '@[STREAM_LIST_DIAG]'
+  phys_diag = @[PHYS_DIAG]
 /
 
 &fms_nml
@@ -21,7 +24,7 @@
   mpas_time_integration_order   = 2
   mpas_dt                       = 720.0
   mpas_split_dynamics_transport = true
-  mpas_number_of_sub_steps      = 2
+  mpas_number_of_sub_steps      = 4
   mpas_dynamics_split_steps     = 3
   mpas_horiz_mixing             = '2d_smagorinsky'
   mpas_visc4_2dsmag             = 0.05
@@ -62,6 +65,12 @@
   mpas_print_global_minmax_sca   = .false.
 /
 
+&mpas_physics
+  mpas_sfc_albedo  = .false.
+  mpas_frac_seaice = .true.
+  mpas_lsm_scheme  = 'sf_ruc'
+/
+
 &mpas_nam_stochy
   mpas_do_sppt       = @[MPAS_DO_SPPT]
   mpas_do_skeb       = @[MPAS_DO_SKEB]
@@ -94,7 +103,7 @@
   fhcyc        = @[FHCYC]
   use_ufo      = .true.
   pre_rad      = .false.
-  imp_physics  = 8
+  imp_physics  = @[IMP_PHYSICS]
   pdfcld       = .false.
   fhswr        = 3600.
   fhlwr        = 3600.
@@ -157,6 +166,15 @@
   cplwav       = @[CPLWAV]
   cplwav2atm   = @[CPLWAV2ATM]
   effr_in      = .true.
+  gwd_opt      = @[GWD_OPT]
+  do_gsl_drag_ls_bl    = @[DO_GSL_DRAG_LS_BL]
+  do_gsl_drag_ss       = @[DO_GSL_DRAG_SS]
+  do_gsl_drag_tofd     = @[DO_GSL_DRAG_TOFD]
+  do_ugwp_v0           = @[DO_UGWP_V0]
+  do_ugwp_v0_orog_only = @[DO_UGWP_V0_OROG_ONLY]
+  do_ugwp_v0_nst_only  = @[DO_UGWP_V0_NST_ONLY]
+  do_ugwp_v1           = @[DO_UGWP_V1]
+  do_ugwp_v1_w_gsldrag = @[DO_UGWP_V1_W_GSLDRAG]
   ldiag_ugwp   = .false.
   do_ugwp      = .false.
   do_tofd      = .true.
@@ -180,70 +198,33 @@
   rrtmgp_lw_phys_blksz = 16
   doGP_lwscat        = @[DOGP_LWSCAT]
   progsigma    = @[PROGSIGMA]
-/
-
-&gfdl_cloud_microphysics_nml
-  sedi_transport = .true.
-  do_sedi_heat = .false.
-  rad_snow = .true.
-  rad_graupel = .true.
-  rad_rain = .true.
-  const_vi = .false.
-  const_vs = .false.
-  const_vg = .false.
-  const_vr = .false.
-  vi_max = 1.
-  vs_max = 2.
-  vg_max = 12.
-  vr_max = 12.
-  qi_lim = 1.
-  prog_ccn = .false.
-  do_qa = .true.
-  fast_sat_adj = .true.
-  tau_l2v = 225.
-  tau_v2l = 150.
-  tau_g2v = 900.
-  rthresh = 10.e-6  ! This is a key parameter for cloud water
-  dw_land  = 0.16
-  dw_ocean = 0.10
-  ql_gen = 1.0e-3
-  ql_mlt = 1.0e-3
-  qi0_crt = 8.0E-5
-  qs0_crt = 1.0e-3
-  tau_i2s = 1000.
-  c_psaci = 0.05
-  c_pgacs = 0.01
-  rh_inc = 0.30
-  rh_inr = 0.30
-  rh_ins = 0.30
-  ccn_l = 300.
-  ccn_o = 100.
-  c_paut = 0.5
-  c_cracw = 0.8
-  use_ppm = .false.
-  use_ccn = .true.
-  mono_prof = .true.
-  z_slope_liq  = .true.
-  z_slope_ice  = .true.
-  de_ice = .false.
-  fix_negative = .true.
-  icloud_f = 1
-  mp_time = 150.
-  reiflag = 2
+  tend_opt_swrad = 4
+  tend_opt_lwrad = 4
+  tend_opt_rad_scaler = 2
+  tend_opt_photochem = 2
+  tend_opt_gwd = 2
+  tend_opt_mp = 2
 /
 
 &cires_ugwp_nml
-  knob_ugwp_solver  = 2
-  knob_ugwp_source  = 1,1,0,0
-  knob_ugwp_wvspec  = 1,25,25,25
-  knob_ugwp_azdir   = 2,4,4,4
-  knob_ugwp_stoch   = 0,0,0,0
-  knob_ugwp_effac   = 1,1,1,1
-  knob_ugwp_doaxyz  = 1
-  knob_ugwp_doheat  = 1
-  knob_ugwp_dokdis  = 1
-  knob_ugwp_ndx4lh  = 1
-  knob_ugwp_version = 0
-  launch_level      = 54
+  knob_ugwp_solver   = 2
+  knob_ugwp_source   = 1,1,0,0
+  knob_ugwp_wvspec   = 1,25,25,25
+  knob_ugwp_azdir    = 2,4,4,4
+  knob_ugwp_stoch    = 0,0,0,0
+  knob_ugwp_effac    = 1,1,1,1
+  knob_ugwp_doaxyz   = 1
+  knob_ugwp_doheat   = 1
+  knob_ugwp_dokdis   = 2
+  knob_ugwp_ndx4lh   = 4
+  knob_ugwp_version  = 1
+  knob_ugwp_palaunch = 275.0e2
+  knob_ugwp_nslope   = 1
+  knob_ugwp_lzmax    = 15.750e3
+  knob_ugwp_lzmin    = 0.75e3
+  knob_ugwp_lzstar   = 2.0e3
+  knob_ugwp_taumin   = 0.25e-3
+  knob_ugwp_tauamp   = 3.0e-3
+  knob_ugwp_lhmet    = 200.0e3
+  knob_ugwp_orosolv  = 'pss-1986'
 /
-

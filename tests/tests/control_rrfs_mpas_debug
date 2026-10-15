@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# RRFS test with MPAS dynamical core in DEBUG mode
+# RRFS test with MPAS dynamical core and CCPP Physics in DEBUG mode
 #
 ###############################################################################
 
@@ -8,17 +8,48 @@ TEST_DESCR="Build UWM with MPAS dynamical core for RRFS application"
 
 CNTL_DIR=control_rrfs_mpas_debug
 
-LIST_FILES=""
+LIST_FILES="history.2023-03-10_16.00.00.nc   \
+            history.2023-03-10_17.00.00.nc   \
+            history.2023-03-10_18.00.00.nc   \
+            history.2023-03-10_19.00.00.nc   \
+            history.2023-03-10_20.00.00.nc   \
+            history.2023-03-10_21.00.00.nc   \
+            diag_phys.2023-03-10_16.00.00.nc \
+            diag_phys.2023-03-10_17.00.00.nc \
+            diag_phys.2023-03-10_18.00.00.nc \
+            diag_phys.2023-03-10_19.00.00.nc \
+            diag_phys.2023-03-10_20.00.00.nc \
+            diag_phys.2023-03-10_21.00.00.nc \
+            restart.2023-03-10_21.00.00.nc"
 
 export_mpas_rrfs
 
-FHMAX=4
+FHMAX=6
 OUTPUT_FH="1 -1"
+RESTART_FH="6 -1"
 
+IMP_PHYSICS=88
 ATM_compute_tasks=4
 FV3_RUN=rrfs_mpas_run.IN
-CCPP_SUITE=MPAS_RRFS
+CCPP_SUITE=MPAS_RRFSv2_alpha
 INPUT_NML=control_rrfs_mpas.nml.IN
-IC_FILENAME=x1.40962.init.nc
-LBC_FILENAME=x1.40962.lbc.nc
+ORO_FILENAME=mpas.gsl.gsl.conus.120km.ugwp_oro_data.nc
+IC_FILENAME=mpas.gsl.gsl.conus.120km.gfs.init.2023-03-10_15.00.00.nc
+LBC_FILENAME=mpas.gsl.gsl.conus.120km.gfs.lbc.2023-03-10_15.00.00.nc
 GRID_FILENAME=conus.120km.graph.info.part.
+STREAM_LIST_HISTORY=stream_list.atmosphere.output
+STREAM_LIST_RESTART=stream_list.atmosphere.restart
+STREAM_LIST_DIAG=stream_list.atmosphere.diag_phys
+PHYS_DIAG=.true.
+REGIONAL=.true.
+
+#GWD
+LDIAG_UGWP=.true.
+
+DO_MYNNSFCLAY=.true.
+SFCLAY_COMPUTE_FLUX=.true.
+DO_MYNNEDMF=.true.
+
+if [[ $MACHINE_ID = ursa ]]; then
+   MEM_PER_NODE_OPT="#SBATCH --mem=300G"
+fi
