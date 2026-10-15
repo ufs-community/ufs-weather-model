@@ -8,14 +8,14 @@
 <!--
 - Check off completed items. Use [X] for a filled in checkbox or leave it [ ] for an empty checkbox
 - Your pull request (PR) will not be considered until all requirements are met.
-- THIS IS YOUR RESPONSIBILITY
- -->
+-->
 - [ ] This PR addresses a relevant WM issue (if not, create an issue). 
-- [ ] All subcomponent pull requests (if any) have been reviewed by their code managers.
+- [ ] All subcomponent pull requests (if any) have been reviewed by their code managers. (Developers should request reviews when they believe their development and testing are complete.)
 - [ ] Run the full Intel+GNU RT suite (compared to current baselines), preferably on Ursa (Hercules is also an acceptable alternative). **Exceptions:** documentation-only PRs, CI-only PRs, etc.
    - [ ] Commit log file w/full results from RT suite run (if applicable).
    - [ ] Verify that `test_changes.list` indicates which tests, if any, are changed by this PR. Commit `test_changes.list`, even if it is empty. Ensure that syncs w/develop do not overwrite this file. 
 - [ ] All CI is passing. 
+  - Note that any increase in compile warnings must be investigated and solved before a PR can be processed. 
 - Transparency in the use of generative AI is required by NOAA policy. Was GenAI used in this work?
    - [ ] No.
    - [ ] Yes. [Generative AI tool (insert name, if any)] was used to assist with developing this code. 
@@ -168,7 +168,6 @@ CMs are waiting on the following items before this PR can be scheduled for the c
 - [ ] Updated Ursa logs (or Hercules)
 - [ ] `test_changes.list` file reflecting changes in the developers PR (do not overwrite when sync'ing w/`develop`)
 - [ ] Passing CI in WM and all subcomponent PRs (if CI is expected to fail, note the reason in the relevant (sub-)PR)
-  - Note that any increase in compile warnings must be investigated and solved before a PR can be processed. 
 - [ ] Updated `.gitmodules` file points to developer's branch at every level
 - [ ] Commit message (a short message for the WM and every affected subcomponent)
 - [ ] Updated hashes? - It is the developer's responsibility to keep their PR up-to-date with WM `develop`.
