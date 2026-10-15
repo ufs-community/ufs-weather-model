@@ -23,7 +23,7 @@ outside of the standard Tier 1 software stacks. Both use the regression test scr
 
 The container option has been tested on the community platform Stampede3 (TACC, University of
 Texas) with both GNU-based and Intel-based software containers. An example platform definition
-file for Stampede3, ``tests/stampede.def``, is included (see :numref:`Section %s <container-rt-conf>`).
+file for Stampede3, ``tests/container.def``, is included (see :numref:`Section %s <container-rt-conf>`).
 The container option has also been tested on NOAA RDHPC Tier 1 platforms with the same method
 (``-P <platform.def>``), by adapting the platform definition file for each platform and container
 (GNU- or Intel-based).
@@ -356,20 +356,24 @@ For example, on Hercules or Orion the Intel image is at:
 
 .. _container-rt-binddirs:
 
-Bind Directories for Tier 1 Platforms
+Bind Directories for Various Platforms
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The following table lists the typical bind directories for NOAA RDHPC Tier 1 platforms.
-These paths should be provided as a comma-separated list in the ``BIND_DIRS`` field of
-line 1 of the platform definition file (see :numref:`Section %s <container-rt-conf>`):
+The following table lists the typical bind directories for several platforms, including
+NOAA RDHPC Tier 1. These paths should be provided as a comma-separated list in the
+``BIND_DIRS`` field of line 1 of the platform definition file
+(see :numref:`Section %s <container-rt-conf>`):
 
-.. list-table:: Typical bind directories on NOAA RDHPC Tier 1 platforms
+.. list-table:: Typical bind directories on several tested platforms
    :widths: 25 35 40
    :header-rows: 1
 
    * - Machine
      - Main bind directory
      - Additional bind directory
+   * - Stampede3
+     - ``/work2``
+     - ``/scratch``
    * - Derecho
      - ``/glade``
      - none
@@ -725,7 +729,7 @@ The following platform definition files are provided in the ``tests/`` directory
      - Description
    * - ``platform.def``
      - Template with a description of every field. Copy it and edit the copy for a new platform.
-   * - ``stampede.def``
+   * - ``container.def``
      - Example for GNU or Intel container runs on Stampede3 (TACC, University of Texas).
 
 To set up a new platform:
@@ -741,7 +745,7 @@ To set up a new platform:
 
    .. code-block:: console
 
-      ./rt.sh -a <account> -P myplatform.def -l rt.conf
+      ./rt.sh -a <account> -P platform.def -l rt.conf
 
 The file uses ``|`` as a field separator. Blank lines and lines starting with ``#`` are
 skipped. ``rt.sh`` reads four required data lines, in the order described in
@@ -761,7 +765,7 @@ lines to edit:
    :language: text
 
 **Container option example** (Stampede3, GNU container). These are the data lines of
-``tests/stampede.def``; the full file also contains the same entry descriptions as the
+``tests/container.def``; the full file also contains the same entry descriptions as the
 template:
 
 .. code-block:: text
@@ -909,11 +913,13 @@ Tests are launched by running ``rt.sh`` with ``-P`` from the ``tests/`` director
    cd ${WM_HOME}/tests
    ./rt.sh -a <account> -P <platform.def> [options]
 
-For example, to run all ``+container`` tests in ``rt.conf`` with the Stampede3 example:
+For example, to run a single test ``<test>`` marked ``+container`` in ``rt.conf`` for a
+specific compiler ``<compiler>``, use the platform definition file that specifies the compiler
+and container image, for Stampede3 example:
 
 .. code-block:: console
 
-   ./rt.sh -a <account> -P stampede.def -l rt.conf
+   ./rt.sh -a <account> -P container.def -n "<test> <compiler>" -l rt.conf
 
 Command-Line Options
 --------------------
