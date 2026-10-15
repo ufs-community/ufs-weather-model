@@ -1,0 +1,13 @@
+-- ufs_container.runtime.lua
+-- Host-side runtime module for the container option of rt.sh (-P <platform.def>).
+--
+-- This file is loaded on the HOST (not inside the container) before
+-- apptainer/singularity is invoked, by the container compile/run job cards
+-- (tests/fv3_conf/*_container) or by rt.sh itself when no scheduler is used.
+-- Load here the container software module, and any host modules needed by
+-- the MPI launcher, if they are not already available on the host by default.
+--
+-- Placeholder -- uncomment and adapt for your system, e.g.:
+-- load("tacc-apptainer")     -- Stampede3
+-- load("apptainer")
+-- load("singularity")
