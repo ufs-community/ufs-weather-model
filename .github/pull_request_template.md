@@ -23,6 +23,8 @@
 - [ ] Fill out all sections of this template.
 
 **NOTE:** Keep PR in draft mode until all requirements are complete. 
+For questions, take a look at [Expectations for Developers](https://github.com/ufs-community/ufs-weather-model/wiki/Expectations-for-Developers) and tag a code manager (CM) with any remaining questions. 
+Current WM CMs: @BrianCurtis-NOAA, @dpsarmie, @gspetro-NOAA, @NickSzapiro-NOAA
 
 ---
 
@@ -170,6 +172,7 @@ CMs are waiting on the following items before this PR can be scheduled for the c
 - [ ] Updated `.gitmodules` file points to developer's branch at every level
 - [ ] Commit message (a short message for the WM and every affected subcomponent)
 - [ ] Updated hashes? - It is the developer's responsibility to keep their PR up-to-date with WM `develop`.
+- [ ] Other: 
 
 If the developer is unable to complete any of these items, tag a WM CM (e.g., @gspetro-NOAA) for help. 
 
