@@ -1,0 +1,20 @@
+# tests/container.def - a platform definition for running containerized tests using rt.sh
+# ------------------------------------------------------------------------
+# Modulefiles and job templates to review/adapt before running:
+#
+# Container option (MACHINE_ID=container):
+#   ./modulefiles/ufs_container.<compiler>.lua   (inside-container build/run module)
+#   ./modulefiles/ufs_container.runtime.lua      (host-side runtime module)
+#   ./tests/fv3_conf/compile_slurm.IN_container  (or compile_qsub.IN_container)
+#   ./tests/fv3_conf/fv3_slurm.IN_container      (or fv3_qsub.IN_container)
+#
+# Community platform option (MACHINE_ID=<platform>):
+#   ./modulefiles/ufs_<platform>.<compiler>.lua (build/run module for the platform)
+#   ./tests/fv3_conf/compile_slurm.IN_<platform> (or compile_qsub.IN_<platform>)
+#   ./tests/fv3_conf/fv3_slurm.IN_<platform>     (or fv3_qsub.IN_<platform>)
+
+container | intel | /work2/10000/nperlin/stampede3/rocky9-oneapi2024.2-ss192.sif | /work2,/scratch
+#container | gnu | /work2/10000/nperlin/stampede3/rocky9-gcc13-ss192-ompi416.sif  | /work2,/scratch
+48 | slurm | skx-dev | | mpirun
+/scratch/10000/nperlin/UFS-WM/RUNDIRS_intel
+/work2/10000/nperlin/stampede3/ufs-wm_input/input-data-20260617 |  |  |
