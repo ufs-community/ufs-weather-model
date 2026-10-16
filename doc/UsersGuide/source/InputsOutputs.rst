@@ -1248,7 +1248,7 @@ LM4 is configured through ``input.nml`` (templates ``input_datm_lm4*.nml.IN`` an
      - Export some fluxes to the atmosphere in kinematic units
    * - implicit_atm
      - ``.false.``
-     - Implicit (``.true.``) or explicit coupling to the atmosphere
+     - Implicit coupling to the atmosphere. Not functional yet; ``.true.`` aborts the run
    * - lm4_debug
      - 0
      - Debug level (0 off, 1 low, 2 high)
