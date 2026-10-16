@@ -190,7 +190,7 @@
 /
 
 &river_nml
-       do_rivers   = .true.
+       do_rivers   = @[LM4_DO_RIVERS]
        stop_on_mask_mismatch = .false.       
        dt_slow     = @[LM4_RIVER_DT_SLOW]
        land_area_called_cellarea = .true.
@@ -313,10 +313,10 @@
 /
 
 &topo_rough_nml
-       use_topo_rough    = .true.
+       use_topo_rough    = @[LM4_USE_TOPO_ROUGH]
        max_topo_rough    = 100.0
        topo_rough_factor = 0.01
-       topo_rough_source = 'input',
+       topo_rough_source = '@[LM4_TOPO_ROUGH_SOURCE]',
        topo_rough_file = 'INPUT/topo_rough_land.nc',
 /
 
