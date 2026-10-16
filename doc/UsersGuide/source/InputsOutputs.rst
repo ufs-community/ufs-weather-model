@@ -31,6 +31,8 @@ mediator). Currently, supported configurations include:
      - :term:`ATM` coupled to :term:`AQM`
    * - ATML
      - Coupled :term:`ATM` - :term:`NOAHMP` - :term:`CMEPS` - :term:`CDEPS`
+   * - ATML-LM4
+     - Coupled :term:`ATM` - :term:`CMEPS` - :term:`LM4`
    * - ATMF
      - :term:`ATM` coupled to the Community Fire Behavior Model (aka :term:`UFS FIRE`) 
    * - ATM_DS2S
@@ -1147,6 +1149,141 @@ Additional Files
 
 The LND component uses atmospheric forcing files, data assimilation files, and restart files, which are also listed in :numref:`Table %s <LndInputFiles>`. 
 
+.. _lm4-in:
+
+--------------------------------
+LM4 (LND-LM4 and ATML-LM4)
+--------------------------------
+
+The NOAA-GFDL Land Model version 4 (:term:`LM4`) is coupled through the CMEPS mediator, either to the CDEPS data atmosphere (``LND-LM4``) or to the active FV3 atmosphere (``ATML-LM4``). LM4 data for the regression tests is in ``INPUTDATA_LM4`` (see :numref:`Section %s <DataLocations>`). The run directory is staged by ``tests/fv3_conf/lm4_common.IN``.
+
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Static Datasets
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+These files are resolution independent and located in ``${INPUTDATA_LM4}/common_LM4``:
+
+.. list-table:: *LM4 static input files*
+   :widths: 30 70
+   :header-rows: 1
+
+   * - File
+     - Description
+   * - biodata.nc
+     - Vegetation physiology parameters
+   * - cover_type.nc
+     - Land cover type
+   * - geohydrology.nc, geohydrology_table_2a2n.nc
+     - Hillslope geohydrology fields and lookup table
+   * - ground_type.nc
+     - Ground (bedrock) type
+   * - landuse.nc
+     - Land use transitions
+   * - soil_brdf.nc
+     - Soil bidirectional reflectance parameters
+   * - soil_type_hwsd_5minute.nc
+     - Soil type (HWSD, linked as ``soil_type.nc``)
+
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Grid and Hydrography Files
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+LM4 reads an FMS exchange-grid mosaic (``grid_spec.nc``, atmosphere/land/ocean mosaics and exchange-grid files), a land roughness/topography file, and river hydrography:
+
+* **C96**: grid from ``${INPUTDATA_LM4}/c96_grid``, ``c96_topo_rough_land.nc`` from ``${INPUTDATA_LM4}/c96_LM4``, and hydrography from ``${LM4_HYDRO_PATH}``.
+* **C24, C48**: mosaic files from ``${LM4_GRID_INPUTDATA}/a<LNDRES>o<OCNRES>`` (for example, ``aC48o100``).
+
+.. note::
+   ``LM4_HYDRO_PATH`` and ``LM4_GRID_INPUTDATA`` are not yet in ``INPUTDATA_ROOT``. They are set per machine in ``rt.sh`` or from the environment.
+
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Initial Conditions and Restarts
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+LM4 cold starts from the static datasets. In a warm start, LM4 reads its FMS restart files from ``INPUT/``:
+
+.. code-block:: console
+
+   cana.res.tile*.nc   glac.res.tile*.nc   lake.res.tile*.nc   land.res.tile*.nc
+   snow.res.tile*.nc   soil.res.tile*.nc   vegn1.res.tile*.nc  vegn2.res.tile*.nc
+   river.res.tile*.nc  landuse.res
+
+Restarts are written to ``RESTART/`` at the end of the run. Intermediate restarts are prefixed by the time stamp (``YYYYMMDD.HHMMSS.``) and are written every ``restart_interval`` (``lm4_nml``, default in the tests ``LM4_RESTART_INTERVAL="0,0,0,6,0,0"``). ``river.res`` is only written when the river model has taken a slow time step (``river_nml`` ``dt_slow``, ``LM4_RIVER_DT_SLOW``).
+
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Atmospheric Forcing (LND-LM4)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The data atmosphere uses the CDEPS ``CLMNCEP`` mode with GSWP3 0.5° forcing (``clmforc.GSWP3.c2011.0.5x0.5.{Solr,Prec,TPQWL}.YYYY-MM.nc``) and topography (``topodata_0.9x1.25_USGS_070110_stream_c151201.nc``). These are in the CDEPS DATM input data.
+
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Namelists
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+LM4 is configured through ``input.nml`` (templates ``input_datm_lm4*.nml.IN`` and ``input_atm_lm4*.nml.IN``). The cap reads ``lm4_nml``:
+
+.. list-table:: *lm4_nml options*
+   :widths: 25 20 55
+   :header-rows: 1
+
+   * - Option
+     - Default
+     - Description
+   * - grid, npx, npy, ntiles, layout, blocksize
+     - ``'none'``, 0, 0, 0, 0,0, -1
+     - FMS domain; must match the atmosphere for ``ATML-LM4``
+   * - dt_lnd_slow
+     - 86400
+     - Time step (s) for slow land processes. The fast time step is the coupling interval.
+   * - restart_interval
+     - 0,0,0,0,0,0
+     - Intermediate restart interval (Y,M,D,h,m,s); all zero disables
+   * - cpl2atm
+     - ``.false.``
+     - Export surface fluxes and states to an active atmosphere (``ATML-LM4``)
+   * - kinematic_flux
+     - ``.true.``
+     - Export some fluxes to the atmosphere in kinematic units
+   * - implicit_atm
+     - ``.false.``
+     - Implicit (``.true.``) or explicit coupling to the atmosphere
+   * - lm4_debug
+     - 0
+     - Debug level (0 off, 1 low, 2 high)
+
+The cap also reads ``flux_exchange_nml`` (``z_ref_heat``, ``z_ref_mom``), ``atmos_prescr_nml`` (``gust_to_use``, ``gustiness``, ``gust_min``), and ``surface_flux_nml``. The remaining namelists (``land_model_nml``, ``soil_nml``, ``vegn_nml``, ``river_nml``, etc.) are standard LM4 namelists.
+
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Coupling with the Atmosphere
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+With ``LND-LM4``, LM4 imports bottom-layer atmospheric state, radiation, and precipitation and exports only the land fraction (``Sl_lfrin``). With ``ATML-LM4`` (``cpl2atm = .true.``), LM4 computes the land surface fluxes itself and also exports them to FV3 through CMEPS: latent, sensible, and ground heat fluxes, evaporation, runoff, surface and reference temperature and humidity, exchange coefficients (``Sl_cmm``, ``Sl_chh``, ``Sl_zvfun``), snow fraction, and four-band albedos. In the CCPP physics, these replace the land surface model over land points (``cpllnd``, ``cpllnd2atm`` in ``gfs_physics_nml``; ``cpl2atm`` in ``lm4_nml``; test variables ``CPLLND``, ``CPLLND2ATM``, ``CPLLM4``).
+
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+LM4 history is written by the FMS diag manager. Fields are requested in the ``diag_table`` (``diag_table_datm_lm4`` for ``LND-LM4``; ``diag_additional_cpld_lm4.IN`` appended for ``ATML-LM4``). The field table additions are in ``field_table_lm4``.
+
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Regression Tests
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. list-table:: *LM4 regression tests*
+   :widths: 40 60
+   :header-rows: 1
+
+   * - Test
+     - Description
+   * - datm_cdeps_lm4_gswp3{,_c48,_c24}
+     - ``LND-LM4``, C96/C48/C24, 48 h cold start from 2000-01-01 with GSWP3 forcing
+   * - datm_cdeps_lm4_gswp3_rst{,_c48,_c24}
+     - ``LND-LM4`` restart test, compared with the control
+   * - control_p8_atmlm4{,_c48}
+     - ``ATML-LM4``, GFS v17 P8 physics, C96/C48, 48 h from 2021-03-22
+   * - control_restart_p8_atmlm4{,_c48}
+     - ``ATML-LM4`` restart test, compared with the control
+
 .. _model-config-files:
 
 ==========================
@@ -1673,6 +1810,7 @@ However, ``ufs.configure`` files for other configurations of the Weather Model a
    * `S2SW <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/ufs.configure.s2sw.IN>`_ (fully coupled ``S2SW`` configuration)
    * `S2SWA <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/ufs.configure.s2swa.IN>`_ (coupled GOCART in the S2SAW configuration)
    * `ATM-LND <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/ufs.configure.atm_lnd.IN>`_ (ATML configuration)
+   * `ATM-LM4 <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/ufs.configure.atm_lm4.IN>`_ (ATML-LM4 and LND-LM4 configurations)
 
    * For more HAFS, HAFSW, and HAFS-ALL configurations please see the following ``ufs.configure`` templates:
 
