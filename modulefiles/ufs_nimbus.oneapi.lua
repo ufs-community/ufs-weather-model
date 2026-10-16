@@ -32,7 +32,7 @@ local ufs_modules = {
   {["w3emc"]           = "2.13.0"},
   {["gftl-shared"]     = "1.12.0"},
   {["mapl"]            = "2.53.4-esmf-8.8.0"},
-  {["scotch"]          = "7.0.10"},
+  {["scotch"]          = "7.0.7"},
 }
 
 for i = 1, #ufs_modules do

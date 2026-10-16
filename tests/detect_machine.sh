@@ -61,7 +61,7 @@ case $(hostname -f) in
 
   discover3[1-5].prv.cube) MACHINE_ID=discover ;; ### discover31-35
 
-  wcoss3-login-*.internal) MACHINE_ID=wcoss3 ;; ### nimbus
+  wcoss3-login-*.internal) MACHINE_ID=nimbus ;; ### nimbus
 
   *) MACHINE_ID=UNKNOWN ;;  # Unknown platform
 esac

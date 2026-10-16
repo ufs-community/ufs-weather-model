@@ -162,7 +162,7 @@ if [[ ${MACHINE_ID} = wcoss2 || ${MACHINE_ID} = acorn ]]; then
   WPG_cpl_atmw_gdas=24
   WAV_tasks_atmw_gdas=248
 
-elif [[ ${MACHINE_ID} = wcoss3 ]]; then
+elif [[ ${MACHINE_ID} = nimbus ]]; then
 
   TPN=192
   INPES_dflt=3
