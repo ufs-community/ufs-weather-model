@@ -143,7 +143,7 @@ The umbrella repository for the UFS WM is named ``ufs-weather-model``. Under thi
     ├── LICENSE.md
     ├── LM4-driver 
     │    ├── (LM4)                                  -------- NOAA-GFDL Land Model version 4
-    │    └── (nuopc_cap)                            -------- NUOPC LM4 cap and surface flux
+    │    └── (nuopc_cap)                            -------- NUOPC LM4 cap and surface fluxes
     ├── modulefiles                                 -------- system module files for supported HPC systems
     ├── MOM6-interface
     │    └── MOM6

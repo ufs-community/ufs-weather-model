@@ -1155,7 +1155,7 @@ The LND component uses atmospheric forcing files, data assimilation files, and r
 LM4 (LND-LM4 and ATML-LM4)
 --------------------------------
 
-The NOAA-GFDL Land Model version 4 (:term:`LM4`) is coupled through the CMEPS mediator, either to the CDEPS data atmosphere (``LND-LM4``) or to the active FV3 atmosphere (``ATML-LM4``). LM4 data for the regression tests is in ``INPUTDATA_LM4`` (see :numref:`Section %s <DataLocations>`). The run directory is staged by ``tests/fv3_conf/lm4_common.IN``.
+The NOAA-GFDL Land Model version 4 (:term:`LM4`) is coupled through the CMEPS mediator, either to the CDEPS data atmosphere (``LND-LM4``) or to the FV3 atmosphere (``ATML-LM4``). LM4 data for the regression tests is in ``INPUTDATA_LM4`` (see :numref:`Section %s <DataLocations>`). The run directory is staged by ``tests/fv3_conf/lm4_common.IN``.
 
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Static Datasets
@@ -1187,6 +1187,8 @@ These files are resolution independent and located in ``${INPUTDATA_LM4}/common_
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Grid and Hydrography Files
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+TODO!!! REVIEW IF LOW RES ARE TO BE INCLUDED
 
 LM4 reads an FMS exchange-grid mosaic (``grid_spec.nc``, atmosphere/land/ocean mosaics and exchange-grid files), a land roughness/topography file, and river hydrography:
 
@@ -1257,7 +1259,7 @@ The cap also reads ``flux_exchange_nml`` (``z_ref_heat``, ``z_ref_mom``), ``atmo
 Coupling with the Atmosphere
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-With ``LND-LM4``, LM4 imports bottom-layer atmospheric state, radiation, and precipitation and exports only the land fraction (``Sl_lfrin``). With ``ATML-LM4`` (``cpl2atm = .true.``), LM4 computes the land surface fluxes itself and also exports them to FV3 through CMEPS: latent, sensible, and ground heat fluxes, evaporation, runoff, surface and reference temperature and humidity, exchange coefficients (``Sl_cmm``, ``Sl_chh``, ``Sl_zvfun``), snow fraction, and four-band albedos. In the CCPP physics, these replace the land surface model over land points (``cpllnd``, ``cpllnd2atm`` in ``gfs_physics_nml``; ``cpl2atm`` in ``lm4_nml``; test variables ``CPLLND``, ``CPLLND2ATM``, ``CPLLM4``).
+With ``LND-LM4``, LM4 imports bottom-layer atmospheric state, radiation, and precipitation and exports only the land fraction (``Sl_lfrin``) for the mediator. With ``ATML-LM4`` (``cpl2atm = .true.``), The LM4 NUOPC cap computes the land surface fluxes analogous to the FMS Coupler: latent, sensible, and ground heat fluxes, evaporation, runoff, surface and reference temperature and humidity, exchange coefficients (``Sl_cmm``, ``Sl_chh``, ``Sl_zvfun``), snow fraction, and four-band albedos. In the CCPP physics, these replace the land surface model over land points (``cpllnd``, ``cpllnd2atm`` in ``gfs_physics_nml``; ``cpl2atm`` in ``lm4_nml``; test variables ``CPLLND``, ``CPLLND2ATM``, ``CPLLM4``).
 
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Output
@@ -1268,6 +1270,8 @@ LM4 history is written by the FMS diag manager. Fields are requested in the ``di
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Regression Tests
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+TODO: REVIEW IF LOW RES ARE TO BE INCLUDED
 
 .. list-table:: *LM4 regression tests*
    :widths: 40 60
