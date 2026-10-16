@@ -13,17 +13,13 @@ set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -diag-disable 8291")
 # warning #5194: Source line truncated.
 set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -diag-disable 5194")
 
-if(CMAKE_Platform STREQUAL "derecho.intel")
-  set(CMAKE_Fortran_LINK_FLAGS "-Wl,--copy-dt-needed-entries")
-endif()
-
 if(NOT 32BIT)
     set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -real-size 64")
 endif()
 
 if(DEBUG)
     add_definitions(-DDEBUG)
-    set(CMAKE_Fortran_FLAGS_DEBUG "${CMAKE_Fortran_FLAGS_DEBUG} -O0 -check all -check noarg_temp_created -check nopointer -warn -warn noerrors -fp-stack-check -fstack-protector-all -fpe0 -debug minimal -ftrapuv -init=snan,arrays")
+    set(CMAKE_Fortran_FLAGS_DEBUG "${CMAKE_Fortran_FLAGS_DEBUG} -O0 -check all -check noarg_temp_created -check nopointer -warn -warn noerrors -fstack-protector-all -fpe0 -debug minimal -ftrapuv -init=snan,arrays")
     set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -O0 -ftrapuv")
 else()
     if(FASTER)
@@ -61,4 +57,9 @@ endif()
 
 if(WARN_AS_ERROR)
   set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -warn errors")
+endif()
+
+# Link to issue here
+if(CMAKE_Platform STREQUAL "derecho.oneapi")
+  string(REGEX REPLACE "(^| )-g( |$)" " -g1 " CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS}")
 endif()
