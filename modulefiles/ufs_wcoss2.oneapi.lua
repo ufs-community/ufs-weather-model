@@ -1,0 +1,1 @@
+ufs_wcoss2.intel.lua
