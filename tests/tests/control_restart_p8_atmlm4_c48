@@ -91,10 +91,11 @@ export SDAY=22
 export SHOUR=06
 
 
-export FHROT=24
+export FHROT=18
 export FHMAX=48
 
-export RESTART_N=24
+# restart at 00Z (18 h after the 06Z start): LM4 daily-averaged state is not in sub-daily restarts
+export RESTART_N=18
 export RESTART_INTERVAL="${RESTART_N} -1"
 RST_HOUR=$(( FHROT + SHOUR ))
 if [[ $RST_HOUR -ge 24 ]]; then
