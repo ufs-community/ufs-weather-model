@@ -176,7 +176,7 @@ def generateStage(nodeLabel) {
     }
 }
 
-def parallelStagesMap = modifiedLabels.collectEntries + baselineLabels.collectEntries {
+def parallelStagesMap = modifiedLabels.collectEntries {
     ["${it}" : generateStage(it)]
 }
 
