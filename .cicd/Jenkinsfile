@@ -176,9 +176,8 @@ def generateStage(nodeLabel) {
     }
 }
 
-def parallelStagesMap = modifiedLabels.collectEntries {
-    ["${it}" : generateStage(it)]
-}
+def allLabels = modifiedLabels + baselineLabels 
+def parallelStagesMap = allLabels.collectEntries { ["${it}" : generateStage(it)] }
 
 pipeline {
     agent none
