@@ -151,7 +151,7 @@ function create_baseline() {
 		    echo "Creating baselines on ${machine}"
 		    export ACCNR=epic
 		    sed "s|QUEUE=batch|QUEUE=windfall|g" -i rt.sh
-		    local workflow="-r"
+		    local workflow="-e"
 		    ./rt.sh -a "${ACCNR}" -c "${workflow}" "${opt}" "${suite}" | tee "${WORKSPACE}/tests/logs/RT-run-${machine}.log"
 		    status=${PIPESTATUS[0]}
 		    export DISKNM=/scratch3/NAGAPE/epic/role.epic/UFS-WM_RT
