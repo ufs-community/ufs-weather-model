@@ -37,7 +37,22 @@
                               'INPUT/MOM_override' /
 
 
-
+&nam_stochy
+new_lscale=.true.,
+OCNSPPT=@[OCN_SPPT],
+OCNSPPT_LSCALE=500e3,
+OCNSPPT_TAU=21600,
+ISEED_OCNSPPT=201601010012,
+EPBL=@[EPBL],
+EPBL_LSCALE=500e3,
+EPBL_TAU=21600,
+ISEED_EPBL=201601010023,
+/
+&MOM_outputlog_nml
+  outputlog_fh = @[MOM6_HISTFREQ_N]
+/
+&nam_sfcperts
+/
 
 &lm4_nml
        lm4_debug = 1
@@ -392,19 +407,4 @@
 	gust_to_use  = 'prescribed'
        !gustiness    = 5.0     ! m/s, wind gustiness if gust_to_use = 'prescribed'
        !gust_min     = 0.01    ! m/s, min. gustiness when gust_to_use = 'computed'
-/
-
-&nam_stochy
-       new_lscale=.true.,
-       OCNSPPT=@[OCN_SPPT],
-       OCNSPPT_LSCALE=500e3,
-       OCNSPPT_TAU=21600,
-       ISEED_OCNSPPT=201601010012,
-       EPBL=@[EPBL],
-       EPBL_LSCALE=500e3,
-       EPBL_TAU=21600,
-       ISEED_EPBL=201601010023,
-/
-
-&nam_sfcperts
 /
