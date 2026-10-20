@@ -1738,6 +1738,7 @@ export_cice6() {
   CICE_tr_fsd=.false.
   CICE_restart_fsd=.false.
   CICE_wave_spec_type=none
+  CICE_TSCALE_PND_DRAIN=10.0
   # SlenderX2
   CICE_NPROC=${ICE_tasks}
   np2=$((CICE_NPROC / 2))
