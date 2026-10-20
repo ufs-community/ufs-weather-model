@@ -23,10 +23,13 @@ matchedNode = matchedNode.unique()
 ciRunningNode = ciRunningNode.unique()
 matchedNode = matchedNode - ciRunningNode
 
+generateBaselineNode = generateBaselineNode.unique()
+generateBaselineNode = generateBaselineNode - ciRunningNode
+
 modifiedLabels = matchedNode.collect{"'" + it + "'"} 
 baselineLabels = generateBaselineNode.collect{"'" + it + "'"} 
 
-if (modifiedLabels.isEmpty()) {
+if (modifiedLabels.isEmpty() && baselineLabels.isEmpty()) {
    echo "No new labels. Skipping build."
    currentBuild.result = 'NOT_BUILT'
    return // Exits the stage/script early
