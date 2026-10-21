@@ -85,14 +85,8 @@ export FHMAX=48
 
 export RESTART_N=24
 export RESTART_INTERVAL="${RESTART_N} -1"
-RST_HOUR=$(( FHROT + SHOUR ))
-if [[ $RST_HOUR -ge 24 ]]; then
-  RST_HOUR=$(( RST_HOUR - 24 ))
-  RST_DAY=$(( SDAY + 1 ))
-fi
-
-export RESTART_FILE_PREFIX="${SYEAR}${SMONTH}${RST_DAY}.$(printf "%02d" $RST_HOUR)0000"
-export RESTART_FILE_SUFFIX_SECS="${SYEAR}-${SMONTH}-${RST_DAY}-$(printf "%05d" $(( RST_HOUR* 3600 )))"
+export RESTART_FILE_PREFIX=$(set_restart_file_prefix)
+export RESTART_FILE_SUFFIX_SECS=$(set_restart_file_suffix_secs)
 
 
 # expected checkpoint restarts are named like: YYYYMMDD.HHMMSS.*.res*
