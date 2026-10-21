@@ -1,4 +1,5 @@
 # tests/container.def - a platform definition for running containerized tests using rt.sh
+# (Stampede3 example; see tests/platform.def for a description of every entry)
 # ------------------------------------------------------------------------
 # Modulefiles and job templates to review/adapt before running:
 #
@@ -12,9 +13,27 @@
 #   ./modulefiles/ufs_<platform>.<compiler>.lua (build/run module for the platform)
 #   ./tests/fv3_conf/compile_slurm.IN_<platform> (or compile_qsub.IN_<platform>)
 #   ./tests/fv3_conf/fv3_slurm.IN_<platform>     (or fv3_qsub.IN_<platform>)
+# ------------------------------------------------------------------------
 
-container | intel | /work2/10000/nperlin/stampede3/rocky9-oneapi2024.2-ss192.sif | /work2,/scratch
-#container | gnu | /work2/10000/nperlin/stampede3/rocky9-gcc13-ss192-ompi416.sif  | /work2,/scratch
-48 | slurm | skx-dev | | mpirun
-/scratch/10000/nperlin/UFS-WM/RUNDIRS_intel
-/work2/10000/nperlin/stampede3/ufs-wm_input/input-data-20260617 |  |  |
+PLATFORM_NAME=container
+RT_COMPILER=intel
+CONTAINER_IMG=/work2/10000/nperlin/stampede3/rocky9-oneapi2024.2-ss192.sif
+#RT_COMPILER=gnu
+#CONTAINER_IMG=/work2/10000/nperlin/stampede3/rocky9-gcc13-ss192-ompi416.sif
+BIND_DIRS='/work2,/scratch'
+
+TPN=48
+SCHEDULER=slurm
+PARTITION=skx-dev
+QUEUE=
+MPI_LAUNCH=mpirun
+
+RUNDIR_ROOT=/scratch/10000/nperlin/UFS-WM/RUNDIRS_intel
+
+INPUTDATA_ROOT=/work2/10000/nperlin/stampede3/ufs-wm_input/input-data-20260617
+INPUTDATA_ROOT_WW3=
+INPUTDATA_LM4=
+INPUTDATA_GFSv17opn=
+
+ROCOTO_SCHEDULER=
+WORKFLOW_MODULE_CMD=

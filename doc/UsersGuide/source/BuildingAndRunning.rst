@@ -652,10 +652,10 @@ native software stack:
 
    ./rt.sh -a <account> -P <platform.def> -l rt.conf
 
-The platform definition file consists of four required lines that specify the platform name
-(``container`` for container-based runs), the compiler to be used, the full path to the container
+The platform definition file is a bash file of ``KEY=value`` assignments that specify the platform
+name (``container`` for container-based runs), the compiler to be used, the full path to the container
 image (left blank for a native stack), the platform's job scheduler, the run directory
-(``RUNDIR_ROOT``), and the paths to the locally staged input data. An optional fifth line specifies
+(``RUNDIR_ROOT``), and the paths to the locally staged input data. Optional entries specify
 the workflow manager (Rocoto or ecFlow) and the module command needed to load it. The template
 ``tests/platform.def`` describes every field and can be adapted for other platforms. See
 :numref:`Section %s <container-rt-conf>` for a detailed description of the platform definition file.
@@ -663,8 +663,8 @@ the workflow manager (Rocoto or ecFlow) and the module command needed to load it
 Only ``COMPILE``/``RUN`` lines tagged for the platform in their **Machines** column are run
 (see :numref:`Section %s <rt-conf>`):
 
-* ``+<PLATFORM_NAME>`` marks a line to run on the platform, where ``<PLATFORM_NAME>`` is the
-  name in line 1 of the platform definition file. The tests enabled for container runs are
+* ``+<PLATFORM_NAME>`` marks a line to run on the platform, where it is the same name as the
+  ``PLATFORM_NAME`` given in the platform definition file. The tests enabled for container runs are
   tagged ``+container``.
 * ``-<PLATFORM_NAME>`` explicitly excludes a line, even if ``+<PLATFORM_NAME>`` is also present.
 

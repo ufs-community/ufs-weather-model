@@ -618,62 +618,57 @@ resolve_container_image() {
   return 0
 }
 
-# Parses a -P community-platform definition file (a 4-line pipe-delimited
-# header; rt.conf remains the only test source, so there is no compile/test
-# list here). Sets MACHINE_ID, RT_COMPILER (the platform's one and only
-# compiler), and the platform's paths/scheduler info.
+# Parses a -P community-platform definition file: a bash file of KEY=value
+# assignments (rt.conf remains the only test source, so there is no
+# compile/test list here). The file is sourced in a subshell and only the
+# keys below are read back, so it cannot overwrite rt.sh's own variables
+# (several of its key names, e.g. RT_COMPILER and TPN, are also rt.sh
+# working variables). Sets MACHINE_ID, COMMUNITY_PLATFORM_COMPILER (the
+# platform's one and only compiler), and the platform's paths/scheduler info.
 parse_platform_def() {
   local file=$1
-  local line header_lines_read=0
-  local f1 f2 f3 f4 f5 _rest
-  while IFS= read -r line || [[ -n "${line}" ]]; do
-    line=$(sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' <<< "${line}")
-    [[ -z ${line} ]] && continue
-    [[ ${line} == \#* ]] && continue
+  local keys=(PLATFORM_NAME RT_COMPILER CONTAINER_IMG BIND_DIRS
+              TPN SCHEDULER PARTITION QUEUE MPI_LAUNCH
+              RUNDIR_ROOT
+              INPUTDATA_ROOT INPUTDATA_ROOT_WW3 INPUTDATA_LM4 INPUTDATA_GFSv17opn
+              ROCOTO_SCHEDULER WORKFLOW_MODULE_CMD)
+  local defs
+  # shellcheck disable=SC1090
+  defs=$(
+    unset "${keys[@]}"
+    set +u
+    source "${file}" > /dev/null || exit 1
+    for k in "${keys[@]}"; do
+      printf 'local def_%s=%q\n' "${k}" "${!k:-}"
+    done
+  ) || die "${file}: failed to source platform definition file"
+  eval "${defs}"
 
-    case ${header_lines_read} in
-      0)
-        IFS='|' read -r f1 f2 f3 f4 _rest <<< "${line}"
-        MACHINE_ID=$(sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' <<< "${f1:-}")
-        COMMUNITY_PLATFORM_COMPILER=$(sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' <<< "${f2:-}")
-        COMMUNITY_PLATFORM_CONTAINER_IMG=$(sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' <<< "${f3:-}")
-        CONTAINER_BIND_DIRS=$(sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' <<< "${f4:-}")
-        ;;
-      1)
-        IFS='|' read -r f1 f2 f3 f4 f5 _rest <<< "${line}"
-        PLATFORM_TPN=$(sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' <<< "${f1:-}")
-        SCHEDULER=$(sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' <<< "${f2:-}")
-        PARTITION=$(sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' <<< "${f3:-}")
-        QUEUE=$(sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' <<< "${f4:-}")
-        MPI_LAUNCH=$(sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' <<< "${f5:-mpirun}")
-        ;;
-      2)
-        RUNDIR_ROOT=${line}
-        ;;
-      3)
-        IFS='|' read -r f1 f2 f3 f4 _rest <<< "${line}"
-        INPUTDATA_ROOT=$(sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' <<< "${f1:-}")
-        INPUTDATA_ROOT_WW3=$(sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' <<< "${f2:-}")
-        INPUTDATA_LM4=$(sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' <<< "${f3:-}")
-        INPUTDATA_GFSv17opn=$(sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' <<< "${f4:-}")
-        ;;
-      4)
-        # Optional: only needed to use -r/-e with -P.
-        IFS='|' read -r f1 f2 _rest <<< "${line}"
-        ROCOTO_SCHEDULER=$(sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' <<< "${f1:-}")
-        WORKFLOW_MODULE_CMD=$(sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' <<< "${f2:-}")
-        ;;
-    esac
-    header_lines_read=$((header_lines_read + 1))
-    [[ ${header_lines_read} -ge 5 ]] && break
-  done < "${file}"
+  MACHINE_ID=${def_PLATFORM_NAME:-}
+  COMMUNITY_PLATFORM_COMPILER=${def_RT_COMPILER:-}
+  COMMUNITY_PLATFORM_CONTAINER_IMG=${def_CONTAINER_IMG:-}
+  CONTAINER_BIND_DIRS=${def_BIND_DIRS:-}
+  PLATFORM_TPN=${def_TPN:-}
+  SCHEDULER=${def_SCHEDULER:-}
+  PARTITION=${def_PARTITION:-}
+  QUEUE=${def_QUEUE:-}
+  MPI_LAUNCH=${def_MPI_LAUNCH:-mpirun}
+  RUNDIR_ROOT=${def_RUNDIR_ROOT:-}
+  INPUTDATA_ROOT=${def_INPUTDATA_ROOT:-}
+  INPUTDATA_ROOT_WW3=${def_INPUTDATA_ROOT_WW3:-}
+  INPUTDATA_LM4=${def_INPUTDATA_LM4:-}
+  INPUTDATA_GFSv17opn=${def_INPUTDATA_GFSv17opn:-}
+  # Optional: only needed to use -r/-e with -P.
+  ROCOTO_SCHEDULER=${def_ROCOTO_SCHEDULER:-}
+  WORKFLOW_MODULE_CMD=${def_WORKFLOW_MODULE_CMD:-}
 
-  [[ ${header_lines_read} -ge 4 ]] || die "${file}: expected 4 data lines, found ${header_lines_read}"
-  [[ -n ${MACHINE_ID} ]] || die "${file}: platform name (line 1, field 1) is required"
-  [[ -n ${COMMUNITY_PLATFORM_COMPILER} ]] || die "${file}: compiler (line 1, field 2) is required"
-  [[ -n ${SCHEDULER} ]] || die "${file}: scheduler (line 2, field 2) is required"
-  [[ -n ${RUNDIR_ROOT} ]] || die "${file}: RUNDIR_ROOT (line 3) is required"
-  [[ -n ${INPUTDATA_ROOT} ]] || die "${file}: INPUTDATA_ROOT (line 4, field 1) is required"
+  [[ -n ${MACHINE_ID} ]] || die "${file}: PLATFORM_NAME is required"
+  [[ -n ${COMMUNITY_PLATFORM_COMPILER} ]] || die "${file}: RT_COMPILER is required"
+  [[ -n ${PLATFORM_TPN} ]] || die "${file}: TPN is required"
+  [[ ${PLATFORM_TPN} =~ ^[0-9]+$ ]] || die "${file}: TPN must be numeric, got '${PLATFORM_TPN}'"
+  [[ -n ${SCHEDULER} ]] || die "${file}: SCHEDULER is required"
+  [[ -n ${RUNDIR_ROOT} ]] || die "${file}: RUNDIR_ROOT is required"
+  [[ -n ${INPUTDATA_ROOT} ]] || die "${file}: INPUTDATA_ROOT is required"
 
   if [[ -n ${COMMUNITY_PLATFORM_CONTAINER_IMG} ]]; then
     CONTAINER_USE=true
@@ -837,7 +832,7 @@ COMMUNITY_PLATFORM_FILE=''
 COMMUNITY_PLATFORM_COMPILER=''
 COMMUNITY_PLATFORM_CONTAINER_IMG=''
 PLATFORM_TAG='container'
-# Optional (line 5); only set if -P's file declares them, needed
+# Optional; only set if -P's file declares them, needed
 # only to use -r/-e with -P.
 ROCOTO_SCHEDULER=''
 WORKFLOW_MODULE_CMD=''
@@ -976,7 +971,7 @@ if [[ ${COMMUNITY_PLATFORM} == true ]]; then
   parse_platform_def "${COMMUNITY_PLATFORM_FILE}"
   PLATFORM_TAG=${MACHINE_ID}
   if [[ ${ROCOTO} == true && -z ${ROCOTO_SCHEDULER:-} ]]; then
-    die "-P with -r requires ROCOTO_SCHEDULER (line 5) in ${COMMUNITY_PLATFORM_FILE}"
+    die "-P with -r requires ROCOTO_SCHEDULER in ${COMMUNITY_PLATFORM_FILE}"
   fi
 else
   source detect_machine.sh
@@ -1321,7 +1316,11 @@ fi
 INPUTDATA_ROOT=${INPUTDATA_ROOT:-${DISKNM}/NEMSfv3gfs/input-data-20260617}
 INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT_WW3:-${INPUTDATA_ROOT}/WW3_input_data_20260811}
 INPUTDATA_LM4=${INPUTDATA_LM4:-${INPUTDATA_ROOT}/LM4_input_data}
-INPUTDATA_GFSv17opn=${INPUTDATA_GFSv17opn:-${DISKNM}/NEMSfv3gfs/GFSv17opn_20251014}
+# A community platform (-P) has no DISKNM, so INPUTDATA_GFSv17opn is left
+# blank unless the -P file sets it; run_test.sh stops a test that needs it.
+if [[ ${COMMUNITY_PLATFORM} == false ]]; then
+  INPUTDATA_GFSv17opn=${INPUTDATA_GFSv17opn:-${DISKNM}/NEMSfv3gfs/GFSv17opn_20251014}
+fi
 
 shift $((OPTIND-1))
 if [[ $# -gt 1 ]]; then

@@ -48,7 +48,7 @@ as Tier 1 platforms:
   same conventions as ``rt.conf``.
 * A ``COMPILE`` or ``RUN`` line in ``rt.conf`` runs on the platform only when its
   **Machines** column contains ``+<PLATFORM_NAME>``, where ``<PLATFORM_NAME>`` is the name
-  given in line 1/ field 1 of the platform definition file. ``-<PLATFORM_NAME>`` excludes the line
+  given by ``PLATFORM_NAME`` in the platform definition file. ``-<PLATFORM_NAME>`` excludes the line
   even if ``+<PLATFORM_NAME>`` is also present. The tests currently enabled for the container
   option are tagged ``+container`` in ``rt.conf``.
 * The same ``rt.sh`` options are used, for example ``-a``, ``-l``, ``-n``, ``-o``, ``-c``,
@@ -66,7 +66,7 @@ under the platform user's runtime directory, and are separate from the Tier 1 ba
 By default, a ``-P`` run is **sequential**: ``rt.sh`` compiles each configuration and then
 runs its tests in turn, which keeps it simple for interactive debugging. The Rocoto (``-r``)
 or ecFlow (``-e``) workflow managers can be used instead when the platform definition file
-provides the optional line 5 (see :numref:`Section %s <container-rt-conf>`).
+sets the optional ``ROCOTO_SCHEDULER`` and ``WORKFLOW_MODULE_CMD`` entries (see :numref:`Section %s <container-rt-conf>`).
 
 Users are expected to adapt the platform definition file to their computing platform and job
 scheduler (if any): the container image, the run directory, the location of the staged input
@@ -361,7 +361,7 @@ Bind Directories for Various Platforms
 
 The following table lists the typical bind directories for several platforms, including
 NOAA RDHPC Tier 1. These paths should be provided as a comma-separated list in the
-``BIND_DIRS`` field of line 1 of the platform definition file
+``BIND_DIRS`` entry of the platform definition file
 (see :numref:`Section %s <container-rt-conf>`):
 
 .. list-table:: Typical bind directories on several tested platforms
@@ -397,8 +397,8 @@ Input Data
 
 Container and community platform runs use the same input datasets as the standard RT framework.
 On Level 1 and Level 2 systems these are pre-staged; see :numref:`Section %s <DataLocations>` for
-the ``DISKNM`` and ``INPUTDATA_ROOT`` paths for each platform. These paths are set in
-line 4 of the platform definition file (see :numref:`Section %s <container-rt-conf>`).
+the ``DISKNM`` and ``INPUTDATA_ROOT`` paths for each platform. These paths are set by the
+``INPUTDATA_*`` entries of the platform definition file (see :numref:`Section %s <container-rt-conf>`).
 
 For Level 3–4 systems, input data is publicly available in the `UFS WM Data Bucket <https://registry.opendata.aws/noaa-ufs-regtests/>`__.
 The current input data sets are ``input-data-20260617`` (``INPUTDATA_ROOT``), with WaveWatch III data in
@@ -531,7 +531,7 @@ The ``+container`` tests do not need the following data, which can be skipped:
   ``AQM``, ``MPAS``, ``HSD_input_data``, ``FV3_input_data768``, ``FV3_input_data_L149``,
   ``FV3_regional_rrfs_a``, ``HYCOM_regional_input_data``, and the older ``WW3_input_data_2025*`` directories.
 
-Set ``INPUTDATA_ROOT`` (and, if needed, ``INPUTDATA_ROOT_WW3``) in line 4 of the platform definition file
+Set ``INPUTDATA_ROOT`` (and, if needed, ``INPUTDATA_ROOT_WW3``) in the platform definition file
 (see :numref:`Section %s <container-rt-conf>`) to the download location.
 
 .. _container-rt-setup:
@@ -692,7 +692,7 @@ the compile and run stages and sets up the compiler toolchain, MPI library, and 
 required software libraries available on the host system.
 
 The file must be named ``modulefiles/ufs_<PLATFORM_NAME>.<compiler>.lua``, where
-``<PLATFORM_NAME>`` matches the platform name in line 1 of the platform definition file and
+``<PLATFORM_NAME>`` matches ``PLATFORM_NAME`` in the platform definition file and
 ``<compiler>`` is ``intel`` or ``gnu``. ``compile.sh`` loads this module for the build and
 saves a copy next to the executable, which is then loaded for each test run.
 
@@ -734,11 +734,11 @@ The following platform definition files are provided in the ``tests/`` directory
 
 To set up a new platform:
 
-#. Copy ``platform.def``, keeping the original as a reference, and edit the data lines of the
+#. Copy ``platform.def``, keeping the original as a reference, and edit the values in the
    copy for the new platform.
 #. Tag the ``COMPILE`` and ``RUN`` lines to run on the platform with ``+<PLATFORM_NAME>`` in
    the **Machines** column of ``rt.conf`` (or of the file given with ``-l``), using the
-   name given in line 1 of the platform definition file. ``-<PLATFORM_NAME>``
+   name given by ``PLATFORM_NAME`` in the platform definition file. ``-<PLATFORM_NAME>``
    excludes a line from the platform even if ``+<PLATFORM_NAME>`` is also present. With
    ``PLATFORM_NAME`` set to ``container``, the lines already tagged ``+container`` are used.
 #. Run ``rt.sh`` with the new file:
@@ -747,46 +747,70 @@ To set up a new platform:
 
       ./rt.sh -a <account> -P platform.def -l rt.conf
 
-The file uses ``|`` as a field separator. Blank lines and lines starting with ``#`` are
-skipped. ``rt.sh`` reads four required data lines, in the order described in
-:numref:`Section %s <container-rt-conf-fields>`, and an optional fifth line that is
-needed only for the Rocoto (``-r``) and ecFlow (``-e``) workflow managers. Tests are not
+The file is a bash file of ``KEY=value`` assignments, with ``#`` comments. Values containing
+spaces must be quoted. ``rt.sh`` sources it in a subshell and reads back only the entries
+described in :numref:`Section %s <container-rt-conf-fields>`; any other variables or commands
+in the file do not affect ``rt.sh``. The ``ROCOTO_SCHEDULER`` and ``WORKFLOW_MODULE_CMD``
+entries are optional and needed only for the Rocoto (``-r``) and ecFlow (``-e``) workflow
+managers. Tests are not
 listed in this file; they are selected from ``rt.conf``.
 
 By default, a run with a platform definition file is sequential and does not compare results
 against baselines: it is a portability check that the model builds and runs on the platform,
 not a regression test. The ``-c`` and ``-m`` options create and compare against baselines,
-and ``-r`` and ``-e`` use Rocoto or ecFlow (these need line 5).
+and ``-r`` and ``-e`` use Rocoto or ecFlow (these need ``ROCOTO_SCHEDULER`` and/or ``WORKFLOW_MODULE_CMD``).
 
-**Template** ``tests/platform.def``. The comments describe every entry, followed by the data
-lines to edit:
+**Template** ``tests/platform.def``. The comments describe every entry, each followed by
+the values to edit:
 
 .. literalinclude:: ../../../tests/platform.def
-   :language: text
+   :language: bash
 
-**Container option example** (Stampede3, GNU container). These are the data lines of
-``tests/container.def``; the full file also contains the same entry descriptions as the
-template:
+**Container option example** (Stampede3, Intel container). These are the values set in
+``tests/container.def``:
 
-.. code-block:: text
+.. code-block:: bash
 
-   #container | intel | /work2/10000/nperlin/stampede3/rocky9-oneapi2024.2-ss192.sif | /work,/work2,/scratch
-   container | gnu | /work2/10000/nperlin/stampede3/rocky9-gcc13-ss192-ompi416.sif  | /work,/work2,/scratch
-   48 | slurm | skx-dev | myqueue | mpirun
-   /scratch/10000/nperlin/UFS-WM/RUNDIR_RT
-   /work2/10000/nperlin/stampede3/ufs-wm_input/input-data-20260617 |  |  |
-   #slurm | module load rocoto/1.3.7
+   PLATFORM_NAME=container
+   RT_COMPILER=intel
+   CONTAINER_IMG=/work2/10000/nperlin/stampede3/rocky9-oneapi2024.2-ss192.sif
+   #RT_COMPILER=gnu
+   #CONTAINER_IMG=/work2/10000/nperlin/stampede3/rocky9-gcc13-ss192-ompi416.sif
+   BIND_DIRS='/work2,/scratch'
+
+   TPN=48
+   SCHEDULER=slurm
+   PARTITION=skx-dev
+   QUEUE=
+   MPI_LAUNCH=mpirun
+
+   RUNDIR_ROOT=/scratch/10000/nperlin/UFS-WM/RUNDIRS_intel
+
+   INPUTDATA_ROOT=/work2/10000/nperlin/stampede3/ufs-wm_input/input-data-20260617
+   INPUTDATA_ROOT_WW3=
+   INPUTDATA_LM4=
+   INPUTDATA_GFSv17opn=
+
+   ROCOTO_SCHEDULER=
+   WORKFLOW_MODULE_CMD=
 
 In this example:
 
-* Line 1 selects the GNU container image and binds ``/work``, ``/work2``, and
-  ``/scratch`` into the container. To use the Intel container instead, comment out this
-  line and uncomment the ``intel`` line above it.
-* Line 2 gives 48 MPI tasks per node (Stampede3 SKX nodes) and the Slurm partition
+* The Intel container image is selected, and ``/work2`` and ``/scratch`` are bound into
+  the container. To use the GNU container instead, uncomment the ``gnu`` lines (a later
+  assignment overrides an earlier one) and give it its own ``RUNDIR_ROOT``.
+* ``TPN=48`` gives 48 MPI tasks per node (Stampede3 SKX nodes), with the Slurm partition
   ``skx-dev``.
-* Line 3 is the run directory, and line 4 gives only ``INPUTDATA_ROOT``; the
-  other input data directories use their defaults.
-* Line 5 is commented out, so the tests run sequentially. Uncomment it to use ``-r``.
+* Only ``INPUTDATA_ROOT`` is given; the other input data directories use their defaults.
+
+  .. note::
+
+     ``INPUTDATA_GFSv17opn`` has no default on a platform run and is left blank here.
+     To run a test that uses GFS v17 operational input data (``GFSv17opn=.true.`` in its
+     test definition, e.g., ``cpld_control_c1152_v17``), set ``INPUTDATA_GFSv17opn``
+     explicitly in the platform definition file. Otherwise, the test stops with an error
+     asking for it.
+* ``ROCOTO_SCHEDULER`` is blank, so the tests run sequentially. Set it to ``slurm`` to use ``-r``.
 
 The container software must be available before ``rt.sh`` is started (on Stampede3:
 ``module load tacc-apptainer``; see :numref:`Section %s <container-rt-apptainer>`).
@@ -796,13 +820,13 @@ The container software must be available before ``rt.sh`` is started (on Stamped
 Platform Definition Fields
 --------------------------
 
-**Line 1:** ``PLATFORM_NAME | RT_COMPILER | CONTAINER_IMG | BIND_DIRS``
+**Platform and container**
 
 .. list-table::
    :widths: 20 60
    :header-rows: 1
 
-   * - Field
+   * - Entry
      - Description
    * - ``PLATFORM_NAME``
      - Required. Becomes ``MACHINE_ID`` for the run, and is the name used in the
@@ -825,38 +849,38 @@ Platform Definition Fields
        See :numref:`Section %s <container-rt-binddirs>` for typical values on Tier 1 platforms.
        Ignored for a native stack.
 
-**Line 2:** ``TPN | SCHEDULER | PARTITION | QUEUE | MPI_LAUNCH``
+**Scheduler**
 
 .. list-table::
    :widths: 20 60
    :header-rows: 1
 
-   * - Field
+   * - Entry
      - Description
    * - ``TPN``
      - Required. Tasks per node: the number of MPI tasks per node on this platform
        (a numeric value, e.g., ``48`` on Stampede3).
    * - ``SCHEDULER``
      - Required. ``slurm``, ``pbs``, or ``none`` for interactive runs without a scheduler.
-       This field cannot be left blank.
+       This entry cannot be left blank.
    * - ``PARTITION``
      - Slurm partition name (leave blank for PBS or ``none``).
    * - ``QUEUE``
      - Slurm QOS / PBS queue name (leave blank for ``none``).
    * - ``MPI_LAUNCH``
      - MPI launch command used when ``SCHEDULER`` is ``none`` and in PBS job cards:
-       ``mpirun`` or ``mpiexec``. Defaults to ``mpirun`` if omitted.
+       ``mpirun`` or ``mpiexec``. Defaults to ``mpirun`` if blank.
 
 The scheduler account (project) is not set in this file. It is always given on the command
 line with ``rt.sh -a <account>``.
 
-**Line 3:** ``RUNDIR_ROOT``
+**Run directory**
 
 .. list-table::
    :widths: 20 60
    :header-rows: 1
 
-   * - Field
+   * - Entry
      - Description
    * - ``RUNDIR_ROOT``
      - Required. Top-level directory where compile and test run directories are created.
@@ -864,13 +888,13 @@ line with ``rt.sh -a <account>``.
        ``rt.sh`` uses this directory exactly as given and does not delete it at the end of
        the run. A symlink ``tests/run_dir`` pointing to it is created.
 
-**Line 4:** ``INPUTDATA_ROOT | INPUTDATA_ROOT_WW3 | INPUTDATA_LM4 | INPUTDATA_GFSv17opn``
+**Input data**
 
 .. list-table::
    :widths: 20 60
    :header-rows: 1
 
-   * - Field
+   * - Entry
      - Description
    * - ``INPUTDATA_ROOT``
      - Required. Input data directory, e.g., ``.../input-data-20260617``
@@ -885,13 +909,13 @@ line with ``rt.sh -a <account>``.
      - Optional. GFS v17 operational input data directory, needed only by tests that
        use it. None of the ``+container`` tests need it.
 
-**Line 5** (optional; needed only for ``-r`` or ``-e``): ``ROCOTO_SCHEDULER | WORKFLOW_MODULE_CMD``
+**Workflow manager** (optional; needed only for ``-r`` or ``-e``)
 
 .. list-table::
    :widths: 20 60
    :header-rows: 1
 
-   * - Field
+   * - Entry
      - Description
    * - ``ROCOTO_SCHEDULER``
      - Rocoto's name for the scheduler, which is not always the same as ``SCHEDULER``
@@ -957,7 +981,7 @@ and community platform runs are:
        ``${RUNDIR_ROOT}/REGRESSION_TEST``.
    * - ``-r`` / ``-e``
      - Use the Rocoto or ecFlow workflow manager instead of running sequentially.
-       Requires line 5 of the platform definition file.
+       Requires ``ROCOTO_SCHEDULER`` (for ``-r``) in the platform definition file.
    * - ``-d``
      - Delete run directories that are not used by other tests.
    * - ``-v``
@@ -1032,7 +1056,7 @@ On **PBS** systems the command may look similar to:
    qsub -I -l walltime=<time> -A <account> -q <queue> -l select=1:ncpus=<cores>:mpiprocs=<cores>
 
 After the allocation is granted (and connecting via ``ssh`` to the compute node if required),
-run ``rt.sh``. The model is started with the ``MPI_LAUNCH`` command from line 2 of the
+run ``rt.sh``. The model is started with the ``MPI_LAUNCH`` command from the
 platform definition file.
 
 .. code-block:: console

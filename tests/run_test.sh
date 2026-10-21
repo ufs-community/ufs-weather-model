@@ -192,6 +192,12 @@ else
   export HIDE_UGWPV1='!'
 fi
 
+if [[ ${GFSv17opn} == .true. && -z ${INPUTDATA_GFSv17opn:-} ]]; then
+  echo "ERROR: ${TEST_NAME} needs GFSv17 operational input data:" >&2
+  echo "       set INPUTDATA_GFSv17opn in the platform definition file (-P)" >&2
+  exit 1
+fi
+
 # Set IAU Global workflow related tags to ' '
 if [[ ${GFSv17opn} == .true. ]] ; then
     export HIDE_AIAU=' '
