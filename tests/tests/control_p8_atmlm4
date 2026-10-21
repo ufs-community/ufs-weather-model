@@ -7,11 +7,11 @@
 source tests/control_p8
 export_lm4
 
-export TEST_DESCR="Active Atmosphere and GFDL Land Model 4"
+TEST_DESCR="Active Atmosphere and GFDL Land Model 4"
 
-export CNTL_DIR=control_p8_atmlm4
+CNTL_DIR=control_p8_atmlm4
 
-export LIST_FILES="\
+LIST_FILES="\
       sfcf000.tile1.nc \
       sfcf000.tile2.nc \
       sfcf000.tile3.nc \
@@ -100,74 +100,74 @@ export LIST_FILES="\
 
 
 # currently needs to start on 00z
-export SYEAR=2021
-export SMONTH=03
-export SDAY=22
-export SHOUR=00
+SYEAR=2021
+SMONTH=03
+SDAY=22
+SHOUR=00
 
-export FHMAX=48
-export RESTART_N=24
-export RESTART_INTERVAL="${RESTART_N} -1"
-export FV3_RUN="control_run.IN lm4_common.IN"
+FHMAX=48
+RESTART_N=24
+RESTART_INTERVAL="${RESTART_N} -1"
+FV3_RUN="control_run.IN lm4_common.IN"
 
-export FIELD_TABLE_ADDITIONAL=field_table_lm4
+FIELD_TABLE_ADDITIONAL=field_table_lm4
 
-export DIAG_TABLE=diag_table_cpld.IN
-export DIAG_TABLE_ADDITIONAL=diag_additional_cpld_lm4.IN
+DIAG_TABLE=diag_table_cpld.IN
+DIAG_TABLE_ADDITIONAL=diag_additional_cpld_lm4.IN
 
-export INPUT_NML="input_atm_lm4.nml.IN"
-
-
-export CPLLND=.true.
-export CPLLM4=.true.
-export CPLLND2ATM=.true.
-export CPLFLX=.false.  
-export ULTRALOW=.false.
+INPUT_NML="input_atm_lm4.nml.IN"
 
 
-export UFS_CONFIGURE=ufs.configure.atm_lm4.IN
+CPLLND=.true.
+CPLLM4=.true.
+CPLLND2ATM=.true.
+CPLFLX=.false.  
+ULTRALOW=.false.
 
-export med_model=cmeps
-export atm_model=fv3
-export lnd_model=lm4
-export CMEPS_PIO_FORMAT='pnetcdf'
-export CMEPS_PIO_STRIDE=4
-export CMEPS_PIO_IOTASKS=-99
-export CMEPS_PIO_REARR='box'
-export CMEPS_PIO_ROOT=-99
-export CPLMODE=ufs.frac
-export RUNTYPE=startup
-export READRESTART=.false.
-export CMEPS_RESTART_DIR=./RESTART/
-export cap_dbug_flag=0
-export ATM_tasks=144
-export LND_tasks=144
-export lnd_ic_type=sfc
-export CALC_SNET=.false.
-export layout_x=3
-export layout_y=8
-export OCNRES=100
-export LNDRES=C96
-export coupling_interval_sec=720
-export snow_albedo_option=1
-export precip_partition_option=4
-export initial_albedo=0.2
-export WRITE_DOPOST=.false.
-export OUTPUT_GRID=cubed_sphere_grid
-export ZSTANDARD_LEVEL=0
-export OUTPUT_FH="1 -1"
-export FV3_END_FMS_DIAG=.false.
+
+UFS_CONFIGURE=ufs.configure.atm_lm4.IN
+
+med_model=cmeps
+atm_model=fv3
+lnd_model=lm4
+CMEPS_PIO_FORMAT='pnetcdf'
+CMEPS_PIO_STRIDE=4
+CMEPS_PIO_IOTASKS=-99
+CMEPS_PIO_REARR='box'
+CMEPS_PIO_ROOT=-99
+CPLMODE=ufs.frac
+RUNTYPE=startup
+READRESTART=.false.
+CMEPS_RESTART_DIR=./RESTART/
+cap_dbug_flag=0
+ATM_tasks=144
+LND_tasks=144
+lnd_ic_type=sfc
+CALC_SNET=.false.
+layout_x=3
+layout_y=8
+OCNRES=100
+LNDRES=C96
+coupling_interval_sec=720
+snow_albedo_option=1
+precip_partition_option=4
+initial_albedo=0.2
+WRITE_DOPOST=.false.
+OUTPUT_GRID=cubed_sphere_grid
+ZSTANDARD_LEVEL=0
+OUTPUT_FH="1 -1"
+FV3_END_FMS_DIAG=.false.
 
 if [[ "$ATMRES" = "$LNDRES" ]]; then
-  export lnd_input_dir="INPUT/"
-  export mosaic_file="INPUT/${LNDRES}_mosaic.nc"
-  export samegrid_atmlnd=.true.
+  lnd_input_dir="INPUT/"
+  mosaic_file="INPUT/${LNDRES}_mosaic.nc"
+  samegrid_atmlnd=.true.
 else
-  export lnd_input_dir="INPUT/${LNDRES}/"
-  export mosaic_file="INPUT/${LNDRES}/${LNDRES}_mosaic.nc"
-  export samegrid_atmlnd=.false.
+  lnd_input_dir="INPUT/${LNDRES}/"
+  mosaic_file="INPUT/${LNDRES}/${LNDRES}_mosaic.nc"
+  samegrid_atmlnd=.false.
 fi
 
-export MOM6_TOPOEDITS=""
+MOM6_TOPOEDITS=""
 
 

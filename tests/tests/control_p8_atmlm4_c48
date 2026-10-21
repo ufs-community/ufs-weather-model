@@ -6,11 +6,11 @@
 
 source tests/control_p8
 
-export TEST_DESCR="Active Atmosphere and GFDL Land Model 4, C48L127"
+TEST_DESCR="Active Atmosphere and GFDL Land Model 4, C48L127"
 
-export CNTL_DIR=control_p8_atmlm4_c48
+CNTL_DIR=control_p8_atmlm4_c48
 
-export LIST_FILES="\
+LIST_FILES="\
       sfcf000.nc \
       sfcf024.nc \
       sfcf048.nc \
@@ -72,23 +72,23 @@ export_tiled
 export_lm4_lowres
 if [[ $RT_COMPILER != gnu ]]; then
   export_ugwpv1
-  export CCPP_SUITE=FV3_GFS_v17_p8_ugwpv1
+  CCPP_SUITE=FV3_GFS_v17_p8_ugwpv1
 fi
 # export_fv3 resets this to .true.; quilted FV3 restarts fail the checksum on read in the restart test
-export QUILTING_RESTART=.false.
+QUILTING_RESTART=.false.
 
-export INPES=2
-export JNPES=3
-export WRTTASK_PER_GROUP=2
-export NPZ=127
-export NPZP=128
-export NPX=49
-export NPY=49
+INPES=2
+JNPES=3
+WRTTASK_PER_GROUP=2
+NPZ=127
+NPZP=128
+NPX=49
+NPY=49
 
-export DT_ATMOS=1200
-export DT_INNER=${DT_ATMOS}
+DT_ATMOS=1200
+DT_INNER=${DT_ATMOS}
 
-export NSTF_NAME='2,0,0,0,0'
+NSTF_NAME='2,0,0,0,0'
 
 # currently needs to start on 00z
 # export SYEAR=2021
@@ -96,81 +96,81 @@ export NSTF_NAME='2,0,0,0,0'
 # export SDAY=22
 # export SHOUR=00
 ## But temp revert to get ICs from 2021032206 for now, until we can get the restart files for 2021032200
-export SYEAR=2021
-export SMONTH=03
-export SDAY=22
-export SHOUR=06
+SYEAR=2021
+SMONTH=03
+SDAY=22
+SHOUR=06
 
-export FHMAX=48
+FHMAX=48
 # restart at 00Z (18 h after the 06Z start): LM4 daily-averaged state is not in sub-daily restarts
-export RESTART_N=18
-export RESTART_INTERVAL="${RESTART_N} -1"
-export FV3_RUN="control_run.IN lm4_common.IN"
+RESTART_N=18
+RESTART_INTERVAL="${RESTART_N} -1"
+FV3_RUN="control_run.IN lm4_common.IN"
 
-export FIELD_TABLE_ADDITIONAL=field_table_lm4
+FIELD_TABLE_ADDITIONAL=field_table_lm4
 
-export DIAG_TABLE=diag_table_cpld.IN
-export DIAG_TABLE_ADDITIONAL=diag_additional_cpld_lm4.IN
+DIAG_TABLE=diag_table_cpld.IN
+DIAG_TABLE_ADDITIONAL=diag_additional_cpld_lm4.IN
 
-export INPUT_NML="input_atm_lm4.nml.IN"
+INPUT_NML="input_atm_lm4.nml.IN"
 
 
-export CPLLND=.true.
-export CPLLM4=.true.
-export CPLLND2ATM=.true.
-export CPLFLX=.false.  
+CPLLND=.true.
+CPLLM4=.true.
+CPLLND2ATM=.true.
+CPLFLX=.false.  
 
-export UFS_CONFIGURE=ufs.configure.atm_lm4.IN
+UFS_CONFIGURE=ufs.configure.atm_lm4.IN
 
-export med_model=cmeps
-export atm_model=fv3
-export lnd_model=lm4
-export CMEPS_PIO_FORMAT='pnetcdf'
-export CMEPS_PIO_STRIDE=4
-export CMEPS_PIO_IOTASKS=-99
-export CMEPS_PIO_REARR='box'
-export CMEPS_PIO_ROOT=-99
-export CPLMODE=ufs.frac
-export RUNTYPE=startup
-export READRESTART=.false.
-export CMEPS_RESTART_DIR=./RESTART/
-export cap_dbug_flag=0
-export lnd_ic_type=sfc
-export CALC_SNET=.false.
-export ULTRALOW=.true.
-export ATMRES=C48
-export LNDRES=C48
-export OCNRES=500
-export coupling_interval_fast_sec=${DT_ATMOS}
-export coupling_interval_sec=${DT_ATMOS}
-export snow_albedo_option=1
-export precip_partition_option=4
-export initial_albedo=0.2
-export WRITE_DOPOST=.false.
-export OUTPUT_FH="6 -1"
-export IAER=5111
-export IOVR=3
-export IMO=192
-export JMO=94
+med_model=cmeps
+atm_model=fv3
+lnd_model=lm4
+CMEPS_PIO_FORMAT='pnetcdf'
+CMEPS_PIO_STRIDE=4
+CMEPS_PIO_IOTASKS=-99
+CMEPS_PIO_REARR='box'
+CMEPS_PIO_ROOT=-99
+CPLMODE=ufs.frac
+RUNTYPE=startup
+READRESTART=.false.
+CMEPS_RESTART_DIR=./RESTART/
+cap_dbug_flag=0
+lnd_ic_type=sfc
+CALC_SNET=.false.
+ULTRALOW=.true.
+ATMRES=C48
+LNDRES=C48
+OCNRES=500
+coupling_interval_fast_sec=${DT_ATMOS}
+coupling_interval_sec=${DT_ATMOS}
+snow_albedo_option=1
+precip_partition_option=4
+initial_albedo=0.2
+WRITE_DOPOST=.false.
+OUTPUT_FH="6 -1"
+IAER=5111
+IOVR=3
+IMO=192
+JMO=94
 
-export FNSMCC_control="'global_soilmgldas.statsgo.t92.192.94.grb'"
-export FNMSKH_control="'global_slmask.t62.192.94.grb'"
-export FNSMCC=${FNSMCC_control}
-export FNMSKH=${FNMSKH_control}
+FNSMCC_control="'global_soilmgldas.statsgo.t92.192.94.grb'"
+FNMSKH_control="'global_slmask.t62.192.94.grb'"
+FNSMCC=${FNSMCC_control}
+FNMSKH=${FNMSKH_control}
 
-export OUTPUT_GRID='gaussian_grid'
-export ZSTANDARD_LEVEL=0
-export OUTPUT_FH="6 -1"
-export FV3_END_FMS_DIAG=.false.
+OUTPUT_GRID='gaussian_grid'
+ZSTANDARD_LEVEL=0
+OUTPUT_FH="6 -1"
+FV3_END_FMS_DIAG=.false.
 
 if [[ "$ATMRES" = "$LNDRES" ]]; then
-  export lnd_input_dir="INPUT/"
-  export mosaic_file="INPUT/${LNDRES}_mosaic.nc"
-  export samegrid_atmlnd=.true.
+  lnd_input_dir="INPUT/"
+  mosaic_file="INPUT/${LNDRES}_mosaic.nc"
+  samegrid_atmlnd=.true.
 else
-  export lnd_input_dir="INPUT/${LNDRES}/"
-  export mosaic_file="INPUT/${LNDRES}/${LNDRES}_mosaic.nc"
-  export samegrid_atmlnd=.false.
+  lnd_input_dir="INPUT/${LNDRES}/"
+  mosaic_file="INPUT/${LNDRES}/${LNDRES}_mosaic.nc"
+  samegrid_atmlnd=.false.
 fi
 
-export MOM6_TOPOEDITS=""
+MOM6_TOPOEDITS=""
