@@ -146,11 +146,11 @@ if [[ ${ROCOTO} = 'false' ]]; then
       echo "ERROR: neither apptainer nor singularity found on this host" >&2
       exit 1
     fi
-    BIND_FLAGS="${CONTAINER_BIND_FLAGS:-}"
+    read -r -a BIND_FLAGS <<< "${CONTAINER_BIND_FLAGS:-}"
     CONTAINER="${CONTAINERBIN^^}"
     export "${CONTAINER}_SHELL=/bin/bash"
     export "${CONTAINER}ENV_RTVERBOSE=${RTVERBOSE:-false}"
-    ${CONTAINERBIN} exec -e ${BIND_FLAGS} "${CONTAINER_IMG}" "${RUNDIR}/job_card"
+    "${CONTAINERBIN}" exec -e "${BIND_FLAGS[@]}" "${CONTAINER_IMG}" "${RUNDIR}/job_card"
     echo -n " $( date +%s )," >> job_timestamp.txt
   elif [[ ${SCHEDULER:-none} = 'none' && "${COMMUNITY_PLATFORM:-false}" == true ]]; then
     echo -n "$( date +%s )," > job_timestamp.txt

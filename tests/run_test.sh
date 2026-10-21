@@ -528,7 +528,7 @@ if [[ ${SCHEDULER:-none} = 'none' ]]; then
       echo "ERROR: neither apptainer nor singularity found on this host" >&2
       exit 1
     fi
-    BIND_FLAGS="${CONTAINER_BIND_FLAGS:-}"
+    read -r -a BIND_FLAGS <<< "${CONTAINER_BIND_FLAGS:-}"
     # Pass runtime environment into the container via APPTAINER/SINGULARITY ENV_ variables.
     CONTAINER="${CONTAINERBIN^^}"  # APPTAINER or SINGULARITY
     export "${CONTAINER}_SHELL=/bin/bash"
@@ -561,7 +561,7 @@ module list
 ${MPI_LAUNCH} -n ${TASKS} ./fv3.exe
 RUN_EOF
     chmod u+x fv3_container_run.sh
-    redirect_out_err ${CONTAINERBIN} exec ${BIND_FLAGS} "${CONTAINER_IMG}" "${PWD}/fv3_container_run.sh"
+    redirect_out_err "${CONTAINERBIN}" exec "${BIND_FLAGS[@]}" "${CONTAINER_IMG}" "${PWD}/fv3_container_run.sh"
   elif [[ "${COMMUNITY_PLATFORM:-false}" == true ]]; then
     MPI_LAUNCH=${MPI_LAUNCH:-mpirun}
     echo "NOTE: running ${TASKS} MPI tasks on community platform via ${MPI_LAUNCH}"
@@ -621,7 +621,7 @@ if [[ ${skip_check_results} == false ]]; then
         echo "ERROR: neither apptainer nor singularity found on this host" >&2
         exit 1
       fi
-      BIND_FLAGS="${CONTAINER_BIND_FLAGS:-}"
+      read -r -a BIND_FLAGS <<< "${CONTAINER_BIND_FLAGS:-}"
     fi
 
     for i in ${LIST_FILES} ; do
@@ -654,7 +654,7 @@ if [[ ${skip_check_results} == false ]]; then
               if [[ -n "${nccmp_exclude// }" ]]; then nccmp_args+=("${nccmp_exclude}"); fi
               if [[ -n "${nccmp_exclude_attr// }" ]]; then nccmp_args+=("${nccmp_exclude_attr}"); fi
               if [[ -n ${CONTAINER_IMG:-} ]]; then
-                "${CONTAINERBIN}" exec ${BIND_FLAGS} "${CONTAINER_IMG}" bash -c "
+                "${CONTAINERBIN}" exec "${BIND_FLAGS[@]}" "${CONTAINER_IMG}" bash -c "
                   set -e
                   MACHINE_ID=container
                   source ${PWD}/module-setup.sh

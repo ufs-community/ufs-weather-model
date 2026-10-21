@@ -149,16 +149,46 @@ update_rtconf() {
   fi
 }
 
+print_results() {
+  [[ -z "${1:-}" ]] && return 0
+  local -n failures="${1}"
+  if [[ "${#failures[@]}" -ne "0" ]]; then
+    if [[ "${1}" == "ASSOCIATED_COMPILE_FAILED" ]]; then
+      local category="ASSOCIATED COMPILE FAILED: TESTS NOT RUN"
+    else
+      local category="${1//_/ }"
+    fi
+
+    echo "${category} " >> "${REGRESSIONTEST_LOG}"
+    echo "" >> "${REGRESSIONTEST_LOG}"
+    for item in "${failures[@]}"; do
+      echo "  * ${item}" >> "${REGRESSIONTEST_LOG}"
+    done
+    echo "" >> "${REGRESSIONTEST_LOG}"
+  fi
+}
+
 generate_log() {
   echo "rt.sh: Generating Regression Testing Log..."
   COMPILE_COUNTER=0
-  FAILED_COMPILES=()
+  FAILED_COMPILES=0
   TEST_COUNTER=0
-  FAILED_TESTS=()
-  SKIPPED_TESTS=()
+  FAILED_TESTS=0
+  SKIPPED_TESTS=0
   FAILED_TEST_ID=()
-  FAILED_COMPILE_LOGS=()
-  FAILED_TEST_LOGS=()
+  UNABLE_TO_START_COMPILE=()
+  UNABLE_TO_FINISH_COMPILE=()
+  COMPILE_DISK_QUOTA_ISSUE=()
+  COMPILE_TIMED_OUT=()
+  TESTS_SKIPPED_FOR_COMPILE_FAIL=()
+  DOES_NOT_GENERATE_BASELINE=()
+  ASSOCIATED_COMPILE_FAILED=()
+  UNABLE_TO_START_TEST=()
+  MISSING_BASELINE=()
+  BASELINE_NOT_IDENTICAL=()
+  RUN_DID_NOT_COMPLETE=()
+  TEST_DISK_QUOTA_ISSUE=()
+  TEST_TIMED_OUT=()
   TEST_CHANGES_LOG="test_changes.list"
   TEST_END_TIME="$(date '+%Y%m%d %T')"
   GIT_HASHES=$(git rev-parse HEAD)
@@ -252,6 +282,7 @@ EOF
         COMPILE_TIME=""
         RT_COMPILE_TIME=""
         COMPILE_WARNINGS=""
+
         if [[ ${COMMUNITY_PLATFORM} == true && ! -f "${LOG_DIR}/compile_${COMPILE_ID}.log" \
               && -x "${PATHTR}/tests/fv3_${COMPILE_ID}.exe" ]]; then
           # A community platform (-P) run skips a compile whose executable is
@@ -261,15 +292,19 @@ EOF
         elif [[ ! -f "${LOG_DIR}/compile_${COMPILE_ID}.log" ]]; then
           COMPILE_RESULT="FAILED: UNABLE TO START COMPILE"
           FAIL_LOG="N/A"
+          UNABLE_TO_START_COMPILE+=("${COMPILE_ID}")
         elif [[ -f fail_compile_${COMPILE_ID} ]]; then
           COMPILE_RESULT="FAILED: UNABLE TO FINISH COMPILE"
           FAIL_LOG="${LOG_DIR}/compile_${COMPILE_ID}.log"
+          UNABLE_TO_FINISH_COMPILE+=("${COMPILE_ID}")
           if grep -q "quota" "${LOG_DIR}/compile_${COMPILE_ID}.log"; then
             COMPILE_RESULT="FAILED: DISK QUOTA ISSUE"
             FAIL_LOG="${LOG_DIR}/compile_${COMPILE_ID}.log"
+            COMPILE_DISK_QUOTA_ISSUE+=("${COMPILE_ID}")
           elif grep -q "TIME LIMIT" "${RUNDIR_ROOT}/compile_${COMPILE_ID}/err"; then
             COMPILE_RESULT="FAILED: COMPILE TIMED OUT"
             FAIL_LOG="${RUNDIR_ROOT}/compile_${COMPILE_ID}/err"
+            COMPILE_TIMED_OUT+=("${COMPILE_ID}")
           fi
         else
           COMPILE_RESULT="PASS"
@@ -309,8 +344,7 @@ EOF
         fi
         echo >> "${REGRESSIONTEST_LOG}"
         echo "${COMPILE_RESULT} -- COMPILE '${COMPILE_ID}' [${RT_COMPILE_TIME}, ${COMPILE_TIME}]${COMPILE_WARNINGS}" >> "${REGRESSIONTEST_LOG}"
-        [[ -n ${FAIL_LOG} ]] && FAILED_COMPILES+=("COMPILE ${COMPILE_ID}: ${COMPILE_RESULT}")
-        [[ -n ${FAIL_LOG} ]] && FAILED_COMPILE_LOGS+=("${FAIL_LOG}")
+        [[ -n ${FAIL_LOG} ]] && ((FAILED_COMPILES+=1))
       fi
 
     elif [[ ${line} =~ RUN ]]; then
@@ -344,36 +378,45 @@ EOF
         RT_TEST_MEM=""
         if [[ ${CREATE_BASELINE} == true && ${GEN_BASELINE} != "baseline" ]]; then
           TEST_RESULT="SKIPPED: TEST DOES NOT GENERATE BASELINE"
-          SKIPPED_TESTS+=("TEST ${TEST_NAME}_${COMPILER}: ${TEST_RESULT}")
+          ((SKIPPED_TESTS+=1))
+          DOES_NOT_GENERATE_BASELINE+=("${TEST_NAME}_${COMPILER}")
         elif [[ ${COMPILE_RESULT} =~ FAILED ]]; then
           TEST_RESULT="SKIPPED: ASSOCIATED COMPILE FAILED"
-          SKIPPED_TESTS+=("TEST ${TEST_NAME}_${COMPILER}: ${TEST_RESULT}")
+          ((SKIPPED_TESTS+=1))
+          TESTS_SKIPPED_FOR_COMPILE_FAIL+=("${TEST_NAME} ${COMPILER}")
+          ASSOCIATED_COMPILE_FAILED+=("${TEST_NAME}_${COMPILER}")
+          # Switch to associated_compile_failed? ^
         elif [[ ! -f "${LOG_DIR}/run_${TEST_NAME}_${COMPILER}.log" ]]; then
           TEST_RESULT="FAILED: UNABLE TO START TEST"
           FAIL_LOG="N/A"
+          UNABLE_TO_START_TEST+=("${TEST_NAME} ${COMPILER}")
         elif [[ -f fail_test_${TEST_NAME}_${COMPILER} ]]; then
-          if [[ -f "${LOG_DIR}/rt_${TEST_NAME}_${COMPILER}.log" ]]; then
-            if grep -q "FAIL" "${LOG_DIR}/rt_${TEST_NAME}_${COMPILER}.log"; then
-              TEST_RESULT="FAILED: UNABLE TO COMPLETE COMPARISON"
+          if grep -q "quota" "${LOG_DIR}/run_${TEST_NAME}_${COMPILER}.log"; then
+            TEST_RESULT="FAILED: DISK QUOTA ISSUE"
+            FAIL_LOG="${LOG_DIR}/run_${TEST_NAME}_${COMPILER}.log"
+            TEST_DISK_QUOTA_ISSUE+=("${TEST_NAME} ${COMPILER}")
+          elif grep -q "TIME LIMIT" "${RUNDIR_ROOT}/${TEST_NAME}_${COMPILER}/err"; then
+            TEST_RESULT="FAILED: TEST TIMED OUT"
+            FAIL_LOG="${RUNDIR_ROOT}/${TEST_NAME}_${COMPILER}/err"
+            TEST_TIMED_OUT+=("${TEST_NAME} ${COMPILER}")
+          elif [[ -f "${LOG_DIR}/rt_${TEST_NAME}_${COMPILER}.log" ]]; then
+            if grep -q "MISSING baseline" "${LOG_DIR}/rt_${TEST_NAME}_${COMPILER}.log"; then
+              TEST_RESULT="FAILED: MISSING BASELINE"
               FAIL_LOG="${LOG_DIR}/run_${TEST_NAME}_${COMPILER}.log"
+              MISSING_BASELINE+=("${TEST_NAME} ${COMPILER}")
+            elif grep -q "NOT IDENTICAL" "${LOG_DIR}/rt_${TEST_NAME}_${COMPILER}.log"; then
+              TEST_RESULT="FAILED: BASELINE NOT IDENTICAL"
+              FAIL_LOG="${LOG_DIR}/rt_${TEST_NAME}_${COMPILER}.log"
+              BASELINE_NOT_IDENTICAL+=("${TEST_NAME} ${COMPILER}")
             # We need to catch a "PASS" in rt_*.log even if a fail_test_* files exists
             # I am not sure why this can happen.
             elif grep -q "PASS" "${LOG_DIR}/rt_${TEST_NAME}_${COMPILER}.log"; then
               TEST_RESULT="PASS"
-            else
-              TEST_RESULT="FAILED: UNSUCCESSFUL BASELINE COMPARISON"
-              FAIL_LOG="${LOG_DIR}/rt_${TEST_NAME}_${COMPILER}.log"
             fi
           else
             TEST_RESULT="FAILED: RUN DID NOT COMPLETE"
             FAIL_LOG="${LOG_DIR}/run_${TEST_NAME}_${COMPILER}.log"
-          fi
-          if grep -q "quota" "${LOG_DIR}/run_${TEST_NAME}_${COMPILER}.log"; then
-            TEST_RESULT="FAILED: DISK QUOTA ISSUE"
-            FAIL_LOG="${LOG_DIR}/run_${TEST_NAME}_${COMPILER}.log"
-          elif grep -q "TIME LIMIT" "${RUNDIR_ROOT}/${TEST_NAME}_${COMPILER}/err"; then
-            TEST_RESULT="FAILED: TEST TIMED OUT"
-            FAIL_LOG="${RUNDIR_ROOT}/${TEST_NAME}_${COMPILER}/err"
+            RUN_DID_NOT_COMPLETE+=("${TEST_NAME} ${COMPILER}")
           fi
         else
           TEST_RESULT="PASS"
@@ -400,8 +443,7 @@ EOF
         fi
 
         echo "${TEST_RESULT} -- TEST '${TEST_NAME}_${COMPILER}' [${RT_TEST_TIME}, ${TEST_TIME}](${RT_TEST_MEM} MB)" >> "${REGRESSIONTEST_LOG}"
-        [[ -n ${FAIL_LOG} ]] && FAILED_TESTS+=("TEST ${TEST_NAME}_${COMPILER}: ${TEST_RESULT}")
-        [[ -n ${FAIL_LOG} ]] && FAILED_TEST_LOGS+=("${FAIL_LOG}")
+        [[ -n ${FAIL_LOG} ]] && ((FAILED_TESTS+=1))
         [[ -n ${FAIL_LOG} ]] && FAILED_TEST_ID+=("${TEST_NAME} ${COMPILER}")
       fi
     fi
@@ -415,37 +457,62 @@ SYNOPSIS:
 Starting Date/Time: ${TEST_START_TIME}
 Ending Date/Time: ${TEST_END_TIME}
 Total Time: ${elapsed_time}
-Compiles Completed: $((COMPILE_COUNTER-${#FAILED_COMPILES[@]}))/${COMPILE_COUNTER}
-Tests Completed: $((TEST_COUNTER-${#FAILED_TESTS[@]}-${#SKIPPED_TESTS[@]}))/${TEST_COUNTER}
+Compiles Completed: $((COMPILE_COUNTER-FAILED_COMPILES))/${COMPILE_COUNTER}
+Tests Completed: $((TEST_COUNTER-FAILED_TESTS-SKIPPED_TESTS))/${TEST_COUNTER}
+
+LOGPATH: ${LOG_DIR}
+  * Compile logs located at: compile_<compile_name>_<compiler>.log
+  * Test logs located at: run_<test_name>_<compiler>.log
+
 EOF
   # PRINT FAILED COMPILES
-  if [[ "${#FAILED_COMPILES[@]}" -ne "0" ]]; then
-    echo "Failed Compiles:" >> "${REGRESSIONTEST_LOG}"
-    for i in "${!FAILED_COMPILES[@]}"; do
-      echo "* ${FAILED_COMPILES[${i}]}" >> "${REGRESSIONTEST_LOG}"
-      echo "-- LOG: ${FAILED_COMPILE_LOGS[${i}]}" >> "${REGRESSIONTEST_LOG}"
-    done
+  if [[ ${FAILED_COMPILES} -gt 0 ]]; then
+    {
+      echo ""
+      echo "*** FAILED COMPILES ***"
+      echo "" 
+    } >> "${REGRESSIONTEST_LOG}"
   fi
+
+  print_results UNABLE_TO_START_COMPILE
+  print_results UNABLE_TO_FINISH_COMPILE
+  print_results COMPILE_DISK_QUOTA_ISSUE
+  print_results COMPILE_TIMED_OUT
+
 
   # PRINT FAILED TESTS
-  if [[ "${#FAILED_TESTS[@]}" -ne "0" ]]; then
-
-    echo "Failed Tests:" >> "${REGRESSIONTEST_LOG}"
-    for j in "${!FAILED_TESTS[@]}"; do
-      echo "* ${FAILED_TESTS[${j}]}" >> "${REGRESSIONTEST_LOG}"
-      echo "-- LOG: ${FAILED_TEST_LOGS[${j}]}" >> "${REGRESSIONTEST_LOG}"
-    done
-
+  if [[ ${FAILED_TESTS} -gt 0 ]]; then
+    {
+      echo ""
+      echo "*** FAILED TESTS ***"
+      echo ""
+    } >> "${REGRESSIONTEST_LOG}"
   fi
 
+  print_results RUN_DID_NOT_COMPLETE
+  print_results TEST_DISK_QUOTA_ISSUE
+  print_results TEST_TIMED_OUT
+  print_results UNABLE_TO_START_TEST
+  print_results BASELINE_NOT_IDENTICAL
+  print_results MISSING_BASELINE
+  print_results ASSOCIATED_COMPILE_FAILED
+  print_results DOES_NOT_GENERATE_BASELINE
+
   # WRITE FAILED_TEST_ID LIST TO TEST_CHANGES_LOG
-  if [[ "${#FAILED_TESTS[@]}" -ne "0" ]]; then
+  if [[ ${FAILED_TESTS} -gt 0 ]]; then
     for item in "${FAILED_TEST_ID[@]}"; do
       echo "${item}" >> "${TEST_CHANGES_LOG}"
     done
   fi
 
-  if [[ "${#FAILED_COMPILES[@]}" -eq "0" && "${#FAILED_TESTS[@]}" -eq "0" ]]; then
+  # WRITE TESTS WHOSE ASSOCIATED COMPILE FAILED TO TEST_CHANGES_LOG
+  if [[ "${#TESTS_SKIPPED_FOR_COMPILE_FAIL[@]}" -ne "0" ]]; then
+    for item in "${TESTS_SKIPPED_FOR_COMPILE_FAIL[@]}"; do
+      echo "${item}" >> "${TEST_CHANGES_LOG}"
+    done
+  fi
+
+  if [[ ${FAILED_COMPILES} -eq 0 && ${FAILED_TESTS} -eq 0 ]]; then
     cat << EOF >> "${REGRESSIONTEST_LOG}"
 
 NOTES:
@@ -488,23 +555,34 @@ EOF
 }
 
 # Whether a COMPILE/RUN line's MACHINES field allows it under the real
-# MACHINE_ID and the current -P state. "+<tag>"/"-<tag>" (PLATFORM_TAG -- the
-# -P file's declared platform name) explicitly mark a line to run (or not
-# run) on the current platform.
+# MACHINE_ID and the current -P state. A token with a sign attached directly
+# to a name ("+<tag>"/"-<tag>", no space) is a platform tag for -P runs:
+# "+<PLATFORM_TAG>"/"-<PLATFORM_TAG>" (the -P file's declared platform name)
+# mark a line to run (or not run) on that platform. All such tags are left
+# out of the native (Tier 1) machine list, whose own sign is followed by a
+# space ("+ hera ursa", "- noaacloud").
 machines_allow_run() {
   local machines=$1
   local has_tag=false
   local has_no_tag=false
-  [[ ${machines} == *"+${PLATFORM_TAG}"* ]] && has_tag=true
-  [[ ${machines} == *"-${PLATFORM_TAG}"* ]] && has_no_tag=true
+  local native_machines=''
+  local token
+  local -a tokens=()
+  read -r -a tokens <<< "${machines}"
+  for token in ${tokens[@]+"${tokens[@]}"}; do
+    if [[ ${token} =~ ^[+-][^+-] ]]; then
+      [[ ${token} == "+${PLATFORM_TAG}" ]] && has_tag=true
+      [[ ${token} == "-${PLATFORM_TAG}" ]] && has_no_tag=true
+    else
+      native_machines+="${token} "
+    fi
+  done
 
   if [[ ${COMMUNITY_PLATFORM} == true ]]; then
     [[ ${has_tag} == true && ${has_no_tag} == false ]] && return 0 || return 1
   fi
 
-  local native_machines=${machines//"+${PLATFORM_TAG}"/}
-  native_machines=${native_machines//"-${PLATFORM_TAG}"/}
-  native_machines=$(sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' <<< "${native_machines}")
+  native_machines=${native_machines% }
   [[ ${native_machines} == '+' || ${native_machines} == '-' ]] && native_machines=''
 
   [[ ${native_machines} == '' ]] && return 0
@@ -547,7 +625,7 @@ resolve_container_image() {
 parse_platform_def() {
   local file=$1
   local line header_lines_read=0
-  local f1 f2 f3 f4 f5 f6 _rest
+  local f1 f2 f3 f4 f5 _rest
   while IFS= read -r line || [[ -n "${line}" ]]; do
     line=$(sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' <<< "${line}")
     [[ -z ${line} ]] && continue
@@ -752,11 +830,8 @@ RT_CONTAINER_IMG=''
 
 # PLATFORM_TAG is the "+<tag>"/"-<tag>" name machines_allow_run() checks in
 # rt.conf; it is set to the platform's own declared name once -P is parsed.
-# The 'container' placeholder below is never used to gate anything before
-# then (COMMUNITY_PLATFORM is false) -- it only needs to be a non-empty,
-# harmless string so stripping "+container"/"-container" out of a plain
-# native MACHINES field (where it's just an inert, ignorable substring)
-# doesn't collapse to stripping every literal "+"/"-" character instead.
+# For native (Tier 1) runs it is not used: every "+<tag>"/"-<tag>" token is
+# left out of the native machine list regardless of its name.
 COMMUNITY_PLATFORM=false
 COMMUNITY_PLATFORM_FILE=''
 COMMUNITY_PLATFORM_COMPILER=''
@@ -1587,6 +1662,7 @@ EOF
       if [[ ${COMMUNITY_PLATFORM} == true ]]; then
         cat << EOF >> "${RUNDIR_ROOT}/run_test_${TEST_ID}.env"
 export TPN=${PLATFORM_TPN:-}
+export MPI_LAUNCH=${MPI_LAUNCH:-mpirun}
 EOF
       fi
 
