@@ -1,0 +1,175 @@
+###############################################################################
+#
+#  Global control test GFSv16 atmosphere-land only at C48L127, P8 configuration
+#
+###############################################################################
+
+source tests/control_restart_p8
+export_lm4_lowres
+
+TEST_DESCR="Active Atmosphere and GFDL Land Model 4, C48L127, restart test"
+
+CNTL_DIR=control_p8_atmlm4_c48
+
+LIST_FILES="\
+      sfcf048.nc \
+      atmf048.nc \
+       RESTART/cana.res.tile1.nc \
+       RESTART/cana.res.tile2.nc \
+       RESTART/cana.res.tile3.nc \
+       RESTART/cana.res.tile4.nc \
+       RESTART/cana.res.tile5.nc \
+       RESTART/cana.res.tile6.nc \
+       RESTART/glac.res.tile1.nc \
+       RESTART/glac.res.tile2.nc \
+       RESTART/glac.res.tile3.nc \
+       RESTART/glac.res.tile4.nc \
+       RESTART/glac.res.tile5.nc \
+       RESTART/glac.res.tile6.nc \
+       RESTART/lake.res.tile1.nc \
+       RESTART/lake.res.tile2.nc \
+       RESTART/lake.res.tile3.nc \
+       RESTART/lake.res.tile4.nc \
+       RESTART/lake.res.tile5.nc \
+       RESTART/lake.res.tile6.nc \
+       RESTART/land.res.tile1.nc \
+       RESTART/land.res.tile2.nc \
+       RESTART/land.res.tile3.nc \
+       RESTART/land.res.tile4.nc \
+       RESTART/land.res.tile5.nc \
+       RESTART/land.res.tile6.nc \
+       RESTART/landuse.res	  \
+       RESTART/snow.res.tile1.nc \
+       RESTART/snow.res.tile2.nc \
+       RESTART/snow.res.tile3.nc \
+       RESTART/snow.res.tile4.nc \
+       RESTART/snow.res.tile5.nc \
+       RESTART/snow.res.tile6.nc \
+       RESTART/soil.res.tile1.nc \
+       RESTART/soil.res.tile2.nc \
+       RESTART/soil.res.tile3.nc \
+       RESTART/soil.res.tile4.nc \
+       RESTART/soil.res.tile5.nc \
+       RESTART/soil.res.tile6.nc \
+       RESTART/vegn1.res.tile1.nc\
+       RESTART/vegn1.res.tile2.nc\
+       RESTART/vegn1.res.tile3.nc\
+       RESTART/vegn1.res.tile4.nc\
+       RESTART/vegn1.res.tile5.nc\
+       RESTART/vegn1.res.tile6.nc\
+       RESTART/vegn2.res.tile1.nc\
+       RESTART/vegn2.res.tile2.nc\
+       RESTART/vegn2.res.tile3.nc\
+       RESTART/vegn2.res.tile4.nc\
+       RESTART/vegn2.res.tile5.nc\
+       RESTART/vegn2.res.tile6.nc" 
+
+INPES=2
+JNPES=3
+WRTTASK_PER_GROUP=2
+NPZ=127
+NPZP=128
+NPX=49
+NPY=49
+
+DT_ATMOS=1200
+DT_INNER=${DT_ATMOS}
+# match control_p8_atmlm4_c48, where export_ugwpv1 sets K_SPLIT=1 for C48
+K_SPLIT=1
+
+NSTF_NAME='2,0,0,0,0'
+
+# # currently needs to start on 00z
+# export SYEAR=2021
+# export SMONTH=03
+# export SDAY=22
+# export SHOUR=00
+## But temp revert to get ICs from 2021032206 for now, until we can get the restart files for 2021032200
+SYEAR=2021
+SMONTH=03
+SDAY=22
+SHOUR=06
+
+
+FHROT=18
+FHMAX=48
+
+# restart at 00Z (18 h after the 06Z start): LM4 daily-averaged state is not in sub-daily restarts
+RESTART_N=18
+RESTART_INTERVAL="${RESTART_N} -1"
+RESTART_FILE_PREFIX=$(set_restart_file_prefix)
+RESTART_FILE_SUFFIX_SECS=$(set_restart_file_suffix_secs)
+
+
+# expected checkpoint restarts are named like: YYYYMMDD.HHMMSS.*.res*
+LM4_RESTART_PREFIX=${RESTART_FILE_PREFIX}
+
+FV3_RUN="control_run.IN lm4_common.IN"
+
+FIELD_TABLE_ADDITIONAL=field_table_lm4
+
+DIAG_TABLE=diag_table_cpld.IN
+DIAG_TABLE_ADDITIONAL=diag_additional_cpld_lm4.IN
+
+INPUT_NML="input_atm_lm4.nml.IN"
+
+
+CPLLND=.true.
+CPLLM4=.true.
+CPLLND2ATM=.true.
+CPLFLX=.false.  
+
+UFS_CONFIGURE=ufs.configure.atm_lm4.IN
+
+med_model=cmeps
+atm_model=fv3
+lnd_model=lm4
+CMEPS_PIO_FORMAT='pnetcdf'
+CMEPS_PIO_STRIDE=4
+CMEPS_PIO_IOTASKS=-99
+CMEPS_PIO_REARR='box'
+CMEPS_PIO_ROOT=-99
+CPLMODE=ufs.frac
+RUNTYPE=continue
+READRESTART=.true.
+CMEPS_RESTART_DIR=./RESTART/
+cap_dbug_flag=0
+lnd_ic_type=sfc
+CALC_SNET=.false.
+ULTRALOW=.true.
+ATMRES=C48
+LNDRES=C48
+OCNRES=500
+coupling_interval_fast_sec=${DT_ATMOS}
+coupling_interval_sec=${DT_ATMOS}
+snow_albedo_option=1
+precip_partition_option=4
+initial_albedo=0.2
+WRITE_DOPOST=.false.
+OUTPUT_FH="6 -1"
+IAER=5111
+IOVR=3
+IMO=192
+JMO=94
+
+FNSMCC_control="'global_soilmgldas.statsgo.t92.192.94.grb'"
+FNMSKH_control="'global_slmask.t62.192.94.grb'"
+FNSMCC=${FNSMCC_control}
+FNMSKH=${FNMSKH_control}
+
+OUTPUT_GRID='gaussian_grid'
+ZSTANDARD_LEVEL=0
+OUTPUT_FH="6 -1"
+FV3_END_FMS_DIAG=.false.
+
+if [[ "$ATMRES" = "$LNDRES" ]]; then
+  lnd_input_dir="INPUT/"
+  mosaic_file="INPUT/${LNDRES}_mosaic.nc"
+  samegrid_atmlnd=.true.
+else
+  lnd_input_dir="INPUT/${LNDRES}/"
+  mosaic_file="INPUT/${LNDRES}/${LNDRES}_mosaic.nc"
+  samegrid_atmlnd=.false.
+fi
+
+MOM6_TOPOEDITS=""

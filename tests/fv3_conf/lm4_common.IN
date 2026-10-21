@@ -1,0 +1,156 @@
+## Put common FV3_RUN setup for LM4 here, shared between coupled and datm configurations.
+
+mkdir -p INPUT $CMEPS_RESTART_DIR 
+
+V2_SFC_FILE=${V2_SFC_FILE:-false}
+
+
+if [[ $ATMRES == C24 ]] || [[ $ATMRES == C12 ]]; then
+    LEVELS=L41
+else
+    LEVELS=L127
+fi
+
+if [[ $DATM_CDEPS == false ]] ; then 
+  if [[ $ATMRES == 'C96' ]]; then
+      FV3_DIR=FV3_input_data
+  else
+      FV3_DIR=FV3_input_data${ATMRES#C}
+  fi
+
+  # IC input directories
+  if [[ ${BMIC} == .true. ]]; then
+      FV3_IC=@[INPUTDATA_ROOT]/GEFS/${SYEAR}${SMONTH}${SDAY}${SHOUR}
+  elif [[ $ULTRALOW == .true. ]]; then
+      FV3_IC=@[INPUTDATA_ROOT]/${FV3_DIR}/INPUT_${LEVELS}_mx${OCNRES}/${SYEAR}${SMONTH}${SDAY}${SHOUR}
+  else
+      if [ "$V2_SFC_FILE" = "true" ]; then
+          FV3_IC=@[INPUTDATA_ROOT]/${FV3_DIR}/INPUT_L127_mx${OCNRES}_v2_sfc
+      else
+          FV3_IC=@[INPUTDATA_ROOT]/${FV3_DIR}/INPUT_L127_mx${OCNRES}
+      fi
+  fi  
+else 
+  if [[ $LNDRES == 'C96' ]]; then
+    FV3_DIR=FV3_input_data
+  else
+    FV3_DIR=FV3_input_data${LNDRES#C}
+  fi
+fi
+
+
+
+## LM4-specific setup
+
+# LM4 expects aXl referenced in grid_spec.nc for grid land area.
+
+# check if ATMRES or LNDRES is equal to C96:
+if [[ $ATMRES == 'C96' || $LNDRES == 'C96' ]]; then
+  tar -xf @[INPUTDATA_LM4]/c96_grid/c96_OM4_025_grid_No_mg_drag_v20160808.tar -C ./INPUT/ \
+    --wildcards "C96_mosaic_tile?XC96_mosaic_tile?.nc"
+
+  tar -xvf @[INPUTDATA_LM4]/c96_LM4/c96_topo_rough_land.nc.tar -C ./INPUT/
+
+  # For rivers. TEMP, SHOULD BE IN INPUTDATA_LM4 IF USING RIVERS
+  tar -xvf  @[LM4_HYDRO_PATH]/c96_OM4_025_hydrography_v20170413.tar -C ./INPUT/ \
+    --wildcards "river_data.tile?.nc"
+
+   # get these if don't already have:
+     rsync -arv @[INPUTDATA_ROOT]/CPL_FIX/a@[LNDRES]o@[OCNRES]/grid_spec.nc ./INPUT
+     rsync -arv @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT/@[LNDRES]_grid*.nc ./INPUT
+     rsync -arv @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT/grid_spec.nc ./INPUT/@[LNDRES]_mosaic.nc
+     rsync -arv @[INPUTDATA_ROOT]/MOM6_FIX/@[OCNRES]/* ./INPUT
+
+else
+   echo "Using LM4 grid files from @[LM4_GRID_INPUTDATA]/a@[LNDRES]o@[OCNRES] (C24, C48)"
+
+
+    rsync -arv @[LM4_GRID_INPUTDATA]/a@[LNDRES]o@[OCNRES]/* ./INPUT
+fi
+
+ln -s @[INPUTDATA_LM4]/common_LM4/biodata.nc                 ./INPUT/biodata.nc
+ln -s @[INPUTDATA_LM4]/common_LM4/cover_type.nc              ./INPUT/cover_type.nc
+ln -s @[INPUTDATA_LM4]/common_LM4/geohydrology.nc            ./INPUT/geohydrology.nc
+ln -s @[INPUTDATA_LM4]/common_LM4/geohydrology_table_2a2n.nc ./INPUT/geohydrology_table_2a2n.nc
+ln -s @[INPUTDATA_LM4]/common_LM4/ground_type.nc             ./INPUT/ground_type.nc
+ln -s @[INPUTDATA_LM4]/common_LM4/landuse.nc                 ./INPUT/landuse.nc
+ln -s @[INPUTDATA_LM4]/common_LM4/soil_brdf.nc               ./INPUT/soil_brdf.nc
+ln -s @[INPUTDATA_LM4]/common_LM4/soil_type_hwsd_5minute.nc  ./INPUT/soil_type.nc
+
+
+
+
+
+SUFFIX=${RT_SUFFIX}
+
+
+
+if [ $DATM_CDEPS == true ]; then
+  if [ $WARM_START = .true. ]; then
+    # CDEPS restart and pointer files
+    RFILE2=ufs.cpld.datm.r.${RESTART_FILE_SUFFIX_SECS}.nc
+    cp ../${DEP_RUN}${SUFFIX}/${RFILE2} RESTART/.
+    ls -1 "RESTART/${RFILE2}">rpointer.atm
+  fi
+else # DATM_CDEPS false
+  # Initial condition
+  if [ $WARM_START = .false. ]; then
+      # IC
+      cp -r ${FV3_IC}/sfc_data*.nc INPUT/.
+      cp -r ${FV3_IC}/gfs_data*.nc INPUT/.
+      cp -r ${FV3_IC}/gfs_ctrl*.nc INPUT/.
+    #if [ "$V2_SFC_FILE" = "true" ]; then
+    #    cp -r @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT_L127_mx${OCNRES}_v2_sfc/sfc_data*.nc INPUT/.
+    #    cp -r @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT_L127_mx${OCNRES}_v2_sfc/gfs_data*.nc INPUT/.
+    #    cp -r @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT_L127_mx${OCNRES}_v2_sfc/gfs_ctrl.nc INPUT/.
+    #  else
+    #    cp -r @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT_L127_mx${OCNRES}/sfc_data*.nc INPUT/.
+    #    cp -r @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT_L127_mx${OCNRES}/gfs_data*.nc INPUT/.
+    #    cp -r @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT_L127_mx${OCNRES}/gfs_ctrl*.nc INPUT/.
+    #  fi
+  else # WARM_START true
+    # FV3 related restart files
+    cp -r ../${DEP_RUN}${SUFFIX}/INPUT/* INPUT/.
+    cp -r ../${DEP_RUN}${SUFFIX}/RESTART/${RESTART_FILE_PREFIX}.* INPUT/.
+    for RFILE in INPUT/${RESTART_FILE_PREFIX}.*; do
+      [ -e $RFILE ] || exit 1
+      RFILE_OLD=$(basename $RFILE)
+          mv -f $RFILE INPUT/"${RFILE_OLD//${RESTART_FILE_PREFIX}./}"
+    done
+    if [[ $IAU_OFFSET == 6 ]] && [[ $FHROT -le 6 ]]; then
+      cp @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT_L127_mx${OCNRES}/fv_increment*.nc INPUT/.
+    fi
+  fi
+fi
+
+
+if [ $WARM_START = .true. ]; then
+
+  # LM4 restart files
+  # expected checkpoint restarts are named like: YYYYMMDD.HHMMSS.*.res.tile?.nc
+
+  cp ../${DEP_RUN}${RT_SUFFIX}/${CMEPS_RESTART_DIR}/${LM4_RESTART_PREFIX}.landuse.res        ./INPUT/
+  cp ../${DEP_RUN}${RT_SUFFIX}/${CMEPS_RESTART_DIR}/${LM4_RESTART_PREFIX}.cana.res.tile*.nc  ./INPUT/
+  cp ../${DEP_RUN}${RT_SUFFIX}/${CMEPS_RESTART_DIR}/${LM4_RESTART_PREFIX}.glac.res.tile*.nc  ./INPUT/
+  cp ../${DEP_RUN}${RT_SUFFIX}/${CMEPS_RESTART_DIR}/${LM4_RESTART_PREFIX}.lake.res.tile*.nc  ./INPUT/
+  cp ../${DEP_RUN}${RT_SUFFIX}/${CMEPS_RESTART_DIR}/${LM4_RESTART_PREFIX}.land.res.tile*.nc  ./INPUT/
+  cp ../${DEP_RUN}${RT_SUFFIX}/${CMEPS_RESTART_DIR}/${LM4_RESTART_PREFIX}.snow.res.tile*.nc  ./INPUT/
+  cp ../${DEP_RUN}${RT_SUFFIX}/${CMEPS_RESTART_DIR}/${LM4_RESTART_PREFIX}.soil.res.tile*.nc  ./INPUT/
+  cp ../${DEP_RUN}${RT_SUFFIX}/${CMEPS_RESTART_DIR}/${LM4_RESTART_PREFIX}.vegn1.res.tile*.nc ./INPUT/
+  cp ../${DEP_RUN}${RT_SUFFIX}/${CMEPS_RESTART_DIR}/${LM4_RESTART_PREFIX}.vegn2.res.tile*.nc ./INPUT/
+  if ls ../${DEP_RUN}${RT_SUFFIX}/${CMEPS_RESTART_DIR}/${LM4_RESTART_PREFIX}.river.res.tile*.nc* 1> /dev/null 2>&1; then
+    cp ../${DEP_RUN}${RT_SUFFIX}/${CMEPS_RESTART_DIR}/${LM4_RESTART_PREFIX}.river.res.tile*.nc* ./INPUT/
+  fi
+
+  # remove datestamp
+  rename ${LM4_RESTART_PREFIX}. "" INPUT/${LM4_RESTART_PREFIX}.*.res*
+
+  # CMEPS restart and pointer files
+  RFILE1=ufs.cpld.cpl.r.${RESTART_FILE_SUFFIX_SECS}.nc
+  cp ../${DEP_RUN}${SUFFIX}/${CMEPS_RESTART_DIR}/${RFILE1} RESTART/.  
+  ls -1 "RESTART/${RFILE1}">rpointer.cpl
+fi
+
+
+
+

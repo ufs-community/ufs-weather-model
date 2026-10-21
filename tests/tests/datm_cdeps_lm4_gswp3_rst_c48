@@ -1,0 +1,128 @@
+#
+#  DATM_CDEPS_LM4_GSWP test, C48 land
+#
+
+TEST_DESCR="DATM_CDEPS_LM4_GSWP3_RST_C48 - control restart, C48 land"
+
+CNTL_DIR="datm_cdeps_lm4_gswp3_c48"
+
+LIST_FILES="\
+            RESTART/cana.res.tile1.nc \
+            RESTART/cana.res.tile2.nc \
+            RESTART/cana.res.tile3.nc \
+            RESTART/cana.res.tile4.nc \
+            RESTART/cana.res.tile5.nc \
+            RESTART/cana.res.tile6.nc \
+            RESTART/glac.res.tile1.nc \
+            RESTART/glac.res.tile2.nc \
+            RESTART/glac.res.tile3.nc \
+            RESTART/glac.res.tile4.nc \
+            RESTART/glac.res.tile5.nc \
+            RESTART/glac.res.tile6.nc \
+            RESTART/lake.res.tile1.nc \
+            RESTART/lake.res.tile2.nc \
+            RESTART/lake.res.tile3.nc \
+            RESTART/lake.res.tile4.nc \
+            RESTART/lake.res.tile5.nc \
+            RESTART/lake.res.tile6.nc \
+            RESTART/land.res.tile1.nc \
+            RESTART/land.res.tile2.nc \
+            RESTART/land.res.tile3.nc \
+            RESTART/land.res.tile4.nc \
+            RESTART/land.res.tile5.nc \
+            RESTART/land.res.tile6.nc \
+            RESTART/landuse.res       \
+            RESTART/snow.res.tile1.nc \
+            RESTART/snow.res.tile2.nc \
+            RESTART/snow.res.tile3.nc \
+            RESTART/snow.res.tile4.nc \
+            RESTART/snow.res.tile5.nc \
+            RESTART/snow.res.tile6.nc \
+            RESTART/soil.res.tile1.nc \
+            RESTART/soil.res.tile2.nc \
+            RESTART/soil.res.tile3.nc \
+            RESTART/soil.res.tile4.nc \
+            RESTART/soil.res.tile5.nc \
+            RESTART/soil.res.tile6.nc \
+            RESTART/vegn1.res.tile1.nc\
+            RESTART/vegn1.res.tile2.nc\
+            RESTART/vegn1.res.tile3.nc\
+            RESTART/vegn1.res.tile4.nc\
+            RESTART/vegn1.res.tile5.nc\
+            RESTART/vegn1.res.tile6.nc\
+            RESTART/vegn2.res.tile1.nc\
+            RESTART/vegn2.res.tile2.nc\
+            RESTART/vegn2.res.tile3.nc\
+            RESTART/vegn2.res.tile4.nc\
+            RESTART/vegn2.res.tile5.nc\
+            RESTART/vegn2.res.tile6.nc"
+
+export_datm_cdeps
+export_lm4_lowres
+
+# these are not in export_datm_cdeps, but needed with LM4
+LNDRES=C48
+# C48 LM4 grid files are staged from a${LNDRES}o${OCNRES} (see lm4_common.IN)
+OCNRES=500
+#export INPES=$INPES_cpl_dflt
+#export JNPES=$JNPES_cpl_dflt
+INPES=2
+JNPES=2
+THRD=$THRD_cpl_dflt
+WRTTASK_PER_GROUP=$WPG_cpl_dflt
+NPX=49
+NPY=49
+
+SYEAR=2000
+SMONTH=01
+SDAY=02
+SHOUR=00
+FHMAX=24
+FHROT=0
+
+DATM_IN_CONFIGURE=datm_in.IN
+MESH_ATM=fv1.9x2.5_141008_ESMFmesh.nc
+atm_datamode=CLMNCEP
+ATM_NX_GLB=144
+ATM_NY_GLB=96
+EXPORT_ALL=.true.
+
+DATM_STREAM_CONFIGURE=datm.streams.multi.IN
+MESH_ATM_DATA="INPUT/clmforc.GSWP3.c2011.0.5x0.5.TPQWL.SCRIP.210520_ESMFmesh.nc"
+MESH_ATM_TOPO="INPUT/topodata_0.9x1.SCRIP.210520_ESMFmesh.nc"
+SDATE=1999
+EDATE=2000
+DATA_ATM01="\"INPUT/clmforc.GSWP3.c2011.0.5x0.5.Solr.1999-12.nc\" \"INPUT/clmforc.GSWP3.c2011.0.5x0.5.Solr.2000-01.nc\""
+DATA_ATM02="\"INPUT/clmforc.GSWP3.c2011.0.5x0.5.Prec.1999-12.nc\" \"INPUT/clmforc.GSWP3.c2011.0.5x0.5.Prec.2000-01.nc\""
+DATA_ATM03="\"INPUT/clmforc.GSWP3.c2011.0.5x0.5.TPQWL.1999-12.nc\" \"INPUT/clmforc.GSWP3.c2011.0.5x0.5.TPQWL.2000-01.nc\""
+DATA_ATM04="\"INPUT/topodata_0.9x1.25_USGS_070110_stream_c151201.nc\""
+
+UFS_CONFIGURE="ufs.configure.atm_lm4.IN"
+med_model="cmeps"
+atm_model="datm"
+lnd_model="lm4"
+samegrid_atmlnd=.false.
+CPLMODE=ufs.nfrac.aoflux
+RUNTYPE="continue"
+READRESTART=.false.
+ATM_compute_tasks=24
+OCN_tasks=0
+ICE_tasks=0
+LND_tasks=24
+lnd_ic_type='custom'
+CALC_SNET=.true.
+layout_x=2
+layout_y=2
+mosaic_file="INPUT/${LNDRES}_mosaic.nc"
+coupling_interval_sec=3600
+TOPOEDITS=""
+WARM_START=.true.
+RESTART_FILE_SUFFIX_SECS=$(set_restart_file_suffix_secs)
+# expected checkpoint restarts are named like: YYYYMMDD.HHMMSS.*.res*
+LM4_RESTART_PREFIX=$(set_restart_file_prefix)
+
+#export FV3_RUN="lnd_datm_cdeps_gswp.IN lm4_run.IN"
+FV3_RUN="lm4_common.IN lm4_datm_cdeps_gswp.IN"
+DIAG_TABLE="diag_table_datm_lm4.IN"
+INPUT_NML="input_datm_lm4.nml.IN"
+FIELD_TABLE_ADDITIONAL=field_table_lm4

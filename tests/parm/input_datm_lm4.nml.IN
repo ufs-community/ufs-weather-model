@@ -27,7 +27,6 @@
   clock_flags='NONE'
   domains_stack_size = 5000000
   stack_size =0
-  print_memory_usage = .false.
 /
 &MOM_input_nml
          output_directory = '@[MOM6_OUTPUT_DIR]',
@@ -64,7 +63,7 @@ ISEED_EPBL=201601010023,
        ntiles = 6
        blocksize = -1
 	dt_lnd_slow = 3600
-	restart_interval = 0,0,0,6,0,0
+	restart_interval = @[LM4_RESTART_INTERVAL]
 /
 
  &cana_nml                                                                                                                                         
@@ -76,7 +75,6 @@ ISEED_EPBL=201601010023,
 /     
 
 &glac_data_nml
-       input_cover_types = 99
        use_lm2_awc = .true.,
        rsa_exp_global = 10.,
        f_iso_cold = 0.92, 0.58
@@ -161,7 +159,7 @@ ISEED_EPBL=201601010023,
        K_z_background  = 15.e-5
 /
 
- &land_conservation_nml                                                                                                                            
+&land_conservation_nml                                                                                                                            
        do_check_conservation=.true.                                                                                                                
        water_cons_tol  = 1e-8                                                                                                                      
        carbon_cons_tol = 1e-6                                                                                                                      
@@ -173,11 +171,13 @@ ISEED_EPBL=201601010023,
 
 &land_model_nml
        ! layout = $lnd_layout
-       ! io_layout = $lnd_io_layout
+       io_layout = 1,1
        tau_snow_T_adj = 604800.
        prohibit_negative_canopy_water=.false.
        min_frac = 1e-8
-       npes_io_group = 18
+       npes_io_group = 0
+       con_fac_small = 0.0
+       con_fac_large = 1.0e2       
 /
 
 &landuse_nml
@@ -205,8 +205,9 @@ ISEED_EPBL=201601010023,
 /
 
 &river_nml
-       do_rivers   = .FALSE.
-       dt_slow     = 86400.
+       do_rivers   = @[LM4_DO_RIVERS]
+       stop_on_mask_mismatch = .false.       
+       dt_slow     = @[LM4_RIVER_DT_SLOW]
        land_area_called_cellarea = .true.
        all_big_outlet_ctn0 = .true.
        ave_DHG_exp = 0.55, 0.45, 0.0
@@ -327,10 +328,10 @@ ISEED_EPBL=201601010023,
 /
 
 &topo_rough_nml
-       use_topo_rough    = .true.
+       use_topo_rough    = @[LM4_USE_TOPO_ROUGH]
        max_topo_rough    = 100.0
        topo_rough_factor = 0.01
-       topo_rough_source = 'input',
+       topo_rough_source = '@[LM4_TOPO_ROUGH_SOURCE]',
        topo_rough_file = 'INPUT/topo_rough_land.nc',
 /
 

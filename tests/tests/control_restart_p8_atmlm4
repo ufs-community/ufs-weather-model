@@ -1,0 +1,158 @@
+###############################################################################
+#
+#  Global control test GFSv16 atmosphere-land only at C96L127, P8 configuration
+#
+###############################################################################
+
+source tests/control_restart_p8
+export_lm4
+
+TEST_DESCR="Active Atmosphere and GFDL Land Model 4, restart test"
+
+CNTL_DIR=control_p8_atmlm4
+
+LIST_FILES="\
+      sfcf048.tile1.nc \
+      sfcf048.tile2.nc \
+      sfcf048.tile3.nc \
+      sfcf048.tile4.nc \
+      sfcf048.tile5.nc \
+      sfcf048.tile6.nc \
+      atmf048.tile1.nc \
+      atmf048.tile2.nc \
+      atmf048.tile3.nc \
+      atmf048.tile4.nc \
+      atmf048.tile5.nc \
+      atmf048.tile6.nc \
+      RESTART/cana.res.tile1.nc \
+      RESTART/cana.res.tile2.nc \
+      RESTART/cana.res.tile3.nc \
+      RESTART/cana.res.tile4.nc \
+      RESTART/cana.res.tile5.nc \
+      RESTART/cana.res.tile6.nc \
+      RESTART/glac.res.tile1.nc \
+      RESTART/glac.res.tile2.nc \
+      RESTART/glac.res.tile3.nc \
+      RESTART/glac.res.tile4.nc \
+      RESTART/glac.res.tile5.nc \
+      RESTART/glac.res.tile6.nc \
+      RESTART/lake.res.tile1.nc \
+      RESTART/lake.res.tile2.nc \
+      RESTART/lake.res.tile3.nc \
+      RESTART/lake.res.tile4.nc \
+      RESTART/lake.res.tile5.nc \
+      RESTART/lake.res.tile6.nc \
+      RESTART/land.res.tile1.nc \
+      RESTART/land.res.tile2.nc \
+      RESTART/land.res.tile3.nc \
+      RESTART/land.res.tile4.nc \
+      RESTART/land.res.tile5.nc \
+      RESTART/land.res.tile6.nc \
+      RESTART/landuse.res	  \
+      RESTART/snow.res.tile1.nc \
+      RESTART/snow.res.tile2.nc \
+      RESTART/snow.res.tile3.nc \
+      RESTART/snow.res.tile4.nc \
+      RESTART/snow.res.tile5.nc \
+      RESTART/snow.res.tile6.nc \
+      RESTART/soil.res.tile1.nc \
+      RESTART/soil.res.tile2.nc \
+      RESTART/soil.res.tile3.nc \
+      RESTART/soil.res.tile4.nc \
+      RESTART/soil.res.tile5.nc \
+      RESTART/soil.res.tile6.nc \
+      RESTART/vegn1.res.tile1.nc\
+      RESTART/vegn1.res.tile2.nc\
+      RESTART/vegn1.res.tile3.nc\
+      RESTART/vegn1.res.tile4.nc\
+      RESTART/vegn1.res.tile5.nc\
+      RESTART/vegn1.res.tile6.nc\
+      RESTART/vegn2.res.tile1.nc\
+      RESTART/vegn2.res.tile2.nc\
+      RESTART/vegn2.res.tile3.nc\
+      RESTART/vegn2.res.tile4.nc\
+      RESTART/vegn2.res.tile5.nc\
+      RESTART/vegn2.res.tile6.nc" 
+
+# # currently needs to start on 00z
+SYEAR=2021
+SMONTH=03
+SDAY=22
+SHOUR=00
+
+FHROT=24
+FHMAX=48
+
+RESTART_N=24
+RESTART_INTERVAL="${RESTART_N} -1"
+RESTART_FILE_PREFIX=$(set_restart_file_prefix)
+RESTART_FILE_SUFFIX_SECS=$(set_restart_file_suffix_secs)
+
+
+# expected checkpoint restarts are named like: YYYYMMDD.HHMMSS.*.res*
+LM4_RESTART_PREFIX=${RESTART_FILE_PREFIX}
+
+FV3_RUN="control_run.IN lm4_common.IN"
+
+FIELD_TABLE_ADDITIONAL=field_table_lm4
+
+DIAG_TABLE=diag_table_cpld.IN
+DIAG_TABLE_ADDITIONAL=diag_additional_cpld_lm4.IN
+
+INPUT_NML="input_atm_lm4.nml.IN"
+
+
+CPLLND=.true.
+CPLLM4=.true.
+CPLLND2ATM=.true.
+CPLFLX=.false.  
+ULTRALOW=.false.
+
+
+UFS_CONFIGURE=ufs.configure.atm_lm4.IN
+
+med_model=cmeps
+atm_model=fv3
+lnd_model=lm4
+CMEPS_PIO_FORMAT='pnetcdf'
+CMEPS_PIO_STRIDE=4
+CMEPS_PIO_IOTASKS=-99
+CMEPS_PIO_REARR='box'
+CMEPS_PIO_ROOT=-99
+CPLMODE=ufs.frac
+RUNTYPE=continue
+READRESTART=.true.
+CMEPS_RESTART_DIR=./RESTART/
+cap_dbug_flag=0
+ATM_tasks=144
+LND_tasks=144
+lnd_ic_type=sfc
+CALC_SNET=.false.
+layout_x=3
+layout_y=8
+LNDRES=C96
+coupling_interval_sec=720
+snow_albedo_option=1
+precip_partition_option=4
+initial_albedo=0.2
+ZSTANDARD_LEVEL=0
+WRITE_DOPOST=.false.
+OUTPUT_GRID=cubed_sphere_grid
+OUTPUT_FH="1 -1"
+FV3_END_FMS_DIAG=.false.
+
+if [[ "$ATMRES" = "$LNDRES" ]]; then
+  lnd_input_dir="INPUT/"
+  mosaic_file="INPUT/${LNDRES}_mosaic.nc"
+  samegrid_atmlnd=.true.
+else
+  lnd_input_dir="INPUT/${LNDRES}/"
+  mosaic_file="INPUT/${LNDRES}/${LNDRES}_mosaic.nc"
+  samegrid_atmlnd=.false.
+fi
+
+MOM6_TOPOEDITS=""
+
+# needed to get grid spec files
+OCNRES=100
+

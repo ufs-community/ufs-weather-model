@@ -32,6 +32,12 @@ LIST_FILES="\
             RESTART/land.res.tile5.nc \
             RESTART/land.res.tile6.nc \
             RESTART/landuse.res       \
+            RESTART/river.res.tile1.nc\
+            RESTART/river.res.tile2.nc\
+            RESTART/river.res.tile3.nc\
+            RESTART/river.res.tile4.nc\
+            RESTART/river.res.tile5.nc\
+            RESTART/river.res.tile6.nc\
             RESTART/snow.res.tile1.nc \
             RESTART/snow.res.tile2.nc \
             RESTART/snow.res.tile3.nc \
@@ -58,6 +64,7 @@ LIST_FILES="\
             RESTART/vegn2.res.tile6.nc"
 
 export_datm_cdeps
+export_lm4
 
 # these are not in export_datm_cdeps, but needed with LM4
 LNDRES=C96
@@ -109,11 +116,11 @@ lnd_ic_type='custom'
 CALC_SNET=.true.
 layout_x=2
 layout_y=2
-mosaic_file="INPUT/C96_mosaic.nc"
+mosaic_file="INPUT/${LNDRES}_mosaic.nc"
 coupling_interval_sec=3600
 TOPOEDITS=""
 #export FV3_RUN="lnd_datm_cdeps_gswp.IN lm4_run.IN"
-FV3_RUN="lm4_run.IN"
+FV3_RUN="lm4_common.IN lm4_datm_cdeps_gswp.IN"
 DIAG_TABLE="diag_table_datm_lm4.IN"
 FIELD_TABLE_ADDITIONAL=field_table_lm4
 INPUT_NML="input_datm_lm4.nml.IN"
