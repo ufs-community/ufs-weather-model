@@ -618,49 +618,32 @@ resolve_container_image() {
   return 0
 }
 
-# Parses a -P community-platform definition file: a bash file of KEY=value
-# assignments (rt.conf remains the only test source, so there is no
-# compile/test list here). The file is sourced in a subshell and only the
-# keys below are read back, so it cannot overwrite rt.sh's own variables
-# (several of its key names, e.g. RT_COMPILER and TPN, are also rt.sh
-# working variables). Sets MACHINE_ID, COMMUNITY_PLATFORM_COMPILER (the
-# platform's one and only compiler), and the platform's paths/scheduler info.
+# Sources a -P platform definition file (KEY=value assignments) and checks
+# its required keys. A few keys are copied to rt.sh's own names, e.g.
+# RT_COMPILER -> COMMUNITY_PLATFORM_COMPILER, since RT_COMPILER is reset
+# for each rt.conf line.
 parse_platform_def() {
   local file=$1
-  local keys=(PLATFORM_NAME RT_COMPILER CONTAINER_IMG BIND_DIRS
-              TPN SCHEDULER PARTITION QUEUE MPI_LAUNCH
-              RUNDIR_ROOT
-              INPUTDATA_ROOT INPUTDATA_ROOT_WW3 INPUTDATA_LM4 INPUTDATA_GFSv17opn
-              ROCOTO_SCHEDULER WORKFLOW_MODULE_CMD)
-  local defs
   # shellcheck disable=SC1090
-  defs=$(
-    unset "${keys[@]}"
-    set +u
-    source "${file}" > /dev/null || exit 1
-    for k in "${keys[@]}"; do
-      printf 'local def_%s=%q\n' "${k}" "${!k:-}"
-    done
-  ) || die "${file}: failed to source platform definition file"
-  eval "${defs}"
+  source "${file}" || die "${file}: failed to source platform definition file"
 
-  MACHINE_ID=${def_PLATFORM_NAME:-}
-  COMMUNITY_PLATFORM_COMPILER=${def_RT_COMPILER:-}
-  COMMUNITY_PLATFORM_CONTAINER_IMG=${def_CONTAINER_IMG:-}
-  CONTAINER_BIND_DIRS=${def_BIND_DIRS:-}
-  PLATFORM_TPN=${def_TPN:-}
-  SCHEDULER=${def_SCHEDULER:-}
-  PARTITION=${def_PARTITION:-}
-  QUEUE=${def_QUEUE:-}
-  MPI_LAUNCH=${def_MPI_LAUNCH:-mpirun}
-  RUNDIR_ROOT=${def_RUNDIR_ROOT:-}
-  INPUTDATA_ROOT=${def_INPUTDATA_ROOT:-}
-  INPUTDATA_ROOT_WW3=${def_INPUTDATA_ROOT_WW3:-}
-  INPUTDATA_LM4=${def_INPUTDATA_LM4:-}
-  INPUTDATA_GFSv17opn=${def_INPUTDATA_GFSv17opn:-}
+  MACHINE_ID=${PLATFORM_NAME:-}
+  COMMUNITY_PLATFORM_COMPILER=${RT_COMPILER:-}
+  COMMUNITY_PLATFORM_CONTAINER_IMG=${CONTAINER_IMG:-}
+  CONTAINER_BIND_DIRS=${BIND_DIRS:-}
+  PLATFORM_TPN=${TPN:-}
+  SCHEDULER=${SCHEDULER:-}
+  PARTITION=${PARTITION:-}
+  QUEUE=${QUEUE:-}
+  MPI_LAUNCH=${MPI_LAUNCH:-mpirun}
+  RUNDIR_ROOT=${RUNDIR_ROOT:-}
+  INPUTDATA_ROOT=${INPUTDATA_ROOT:-}
+  INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT_WW3:-}
+  INPUTDATA_LM4=${INPUTDATA_LM4:-}
+  INPUTDATA_GFSv17opn=${INPUTDATA_GFSv17opn:-}
   # Optional: only needed to use -r/-e with -P.
-  ROCOTO_SCHEDULER=${def_ROCOTO_SCHEDULER:-}
-  WORKFLOW_MODULE_CMD=${def_WORKFLOW_MODULE_CMD:-}
+  ROCOTO_SCHEDULER=${ROCOTO_SCHEDULER:-}
+  WORKFLOW_MODULE_CMD=${WORKFLOW_MODULE_CMD:-}
 
   [[ -n ${MACHINE_ID} ]] || die "${file}: PLATFORM_NAME is required"
   [[ -n ${COMMUNITY_PLATFORM_COMPILER} ]] || die "${file}: RT_COMPILER is required"
