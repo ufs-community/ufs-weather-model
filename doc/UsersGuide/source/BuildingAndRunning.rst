@@ -93,7 +93,7 @@ the data required to run the WM RTs are already available at the following ``DIS
 
    * - Machine
      - File location
-   * - Derecho
+   * - Derecho (Level 2)
      - /glade/derecho/scratch/epicufsrt/ufs-weather-model/RT/
    * - Gaea-C6
      - /gpfs/f6/bil-fire8/world-shared/role.epic/UFS-WM_RT
