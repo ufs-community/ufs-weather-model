@@ -18,8 +18,8 @@ On other systems, users will need to build the prerequisite libraries using :ter
 
 .. note::
 
-   Regression tests can also be run inside a software container, or on other systems with
-   a native :term:`spack-stack` install, using the ``rt.sh -P <platform.def>`` option; see
+   Regression tests can also be run inside a software container, using the
+   ``rt.sh -P container.def`` option; see
    :numref:`Section %s <rt-container>` in this chapter. Full instructions, including how to
    obtain or build a container image, are given in :numref:`Chapter %s <container-rt-tests>`.
 
@@ -140,7 +140,7 @@ No AWS account is needed; with the AWS CLI, add ``--no-sign-request`` to each co
 
 The complete input dataset is large (several hundred GiB), so users on Level 3-4 systems are encouraged
 to download only the subdirectories required by the tests they plan to run. Download steps to obtain
-the subsets needed for the tests tagged ``+container`` in ``rt.conf`` are given in
+the subsets needed for the tests enabled for the container in ``rt.conf`` are given in
 :numref:`Section %s <container-rt-data>`.
 
 Detailed information on input files can be found in :numref:`Chapter %s <InputsOutputs>`. 
@@ -179,13 +179,13 @@ run the WM directly. Most users on Tier 1 platforms should instead skip to
 :numref:`Section %s <run-wm>` to build/run the WM with the RT framework.
 
 Users on other (non-Tier 1) platforms, or anyone who wants a portable, containerized
-build environment, can instead run the RT framework with the ``rt.sh -P <platform.def>``
+build environment, can instead run the RT framework with the ``rt.sh -P container.def``
 option described in :numref:`Chapter %s <container-rt-tests>`. It uses the same ``rt.sh``
-script, ``rt.conf`` file, and test definitions. By default, a ``-P <platform.def>`` run
+script, ``rt.conf`` file, and test definitions. By default, a ``-P container.def`` run
 confirms that the WM has been ported, built, and run successfully on the user's own
 platform, without comparing results against baselines. Creating baselines (``-c``) and
 running regression tests against them (``-m``) are still supported with
-``-P <platform.def>``; these baselines are kept on the user's platform, separate from the
+``-P container.def``; these baselines are kept on the user's platform, separate from the
 baselines maintained on Tier 1.
 
 ----------------------------
@@ -462,10 +462,10 @@ The ``rt.conf`` file is a pipe-separated values (PSV) file grouped into sections
    #. **Machines** to run on (``-`` is used to ignore specified machines, ``+`` is used to run only on specified machines). For example:
 
       * ``+ ursa orion gaeac6``: Compile will only run on Ursa, Orion, and Gaea-C6 machines
-      * ``- wcoss2 acorn``: Compile will NOT be run on WCOSS2 or Acorn
-      * ``+container``/``-container`` opt a line in or out of container runs with
-        ``-P``; more generally, ``+<PLATFORM_NAME>``/``-<PLATFORM_NAME>`` opt a line in or out
-        of runs on the platform named in the ``-P`` file. See :numref:`Section %s <rt-container>`.
+      * ``- wcoss2 acorn``: Compile will NOT be run on WCOSS2 or Acorn; it will run on all other machines and in for a container option.
+      * ``- noaacloud container``: Line will NOT be run on NOAA Cloud or for a container option; it will run on all other machines.
+        Container runs (``-P``) use the machine name ``container``.
+        See :numref:`Section %s <rt-container>`.
 
    #. ``fv3``: Set as fv3. Previously, this was used to run a test without compiling code (e.g., if FV3 was already present).
 
@@ -473,27 +473,56 @@ After each compile line is one or more ``RUN`` lines. ``RUN`` lines have five co
 
    #. ``RUN`` indicator
    #. **Test name** -- indicates which test in the :wm-repo:`tests/tests <tree/develop/tests/tests>` directory should be sourced.
-   #. **Machines** to run on (``+``) or ignore (``-``); ``+container``/``-container`` (or ``+<PLATFORM_NAME>``/``-<PLATFORM_NAME>``) are also accepted here, same as in the ``COMPILE`` line.
+   #. **Machines** to run on (``+``) or ignore (``-``), same as in the ``COMPILE`` line (``container`` for container runs).
    #. **Baseline Creation** -- controls whether the run creates its own baseline or uses the baseline from a different (control) test (see information on ``-c`` option :ref:`below <cmd-line-opts>` for more).
    #. **Comparison Test** -- Test name to compare baselines with if not itself.
 
 The order of lines in ``rt.conf`` matters since ``rt.sh`` processes them sequentially; a ``RUN`` line should be preceeded
 by a ``COMPILE`` line that builds the model used in the test. The following
-``rt.conf`` file excerpt builds the standalone ATM model with GFS_v16 physics 
-in 32-bit mode and then runs the ``control`` test:
+``rt.conf`` file excerpt builds the coupled S2SW model (atmosphere, ocean, sea ice, and
+waves) with GFS v17 physics in 32-bit mode and then runs the ``cpld_control_gfsv17`` test and
+tests that depend on it:
 
 .. code-block:: console
 
-   COMPILE | s2swa_32bit_pdlib  | intel | -DAPP=S2SWA -D32BIT=ON -DCCPP_SUITES=FV3_GFS_v17_coupled_p8_ugwpv1 -DPDLIB=ON | - noaacloud | fv3 |
-   RUN | cpld_control_gfsv17                               | - noaacloud                          | baseline |
-   RUN | cpld_control_gfsv17_iau                           | - noaacloud                          | baseline | cpld_control_gfsv17
-   RUN | cpld_restart_gfsv17                               | - noaacloud                          |          | cpld_control_gfsv17
-   RUN | cpld_restart_gfsv17_iau                           | - noaacloud                          |          | cpld_control_gfsv17_iau
-   RUN | cpld_mpi_gfsv17                                   | - noaacloud                          |          |
+   COMPILE | s2sw_32bit_pdlib  | intel | -DAPP=S2SW -D32BIT=ON -DCCPP_SUITES=FV3_GFS_v17_coupled_p8_ugwpv1 -DPDLIB=ON -DUFS_TRACING=ON | - noaacloud            | fv3 |
+   RUN | cpld_control_gfsv17                               | - noaacloud                           | baseline |
+   RUN | cpld_control_gfsv17_iau                           | - noaacloud container                | baseline | cpld_control_gfsv17
+   RUN | cpld_restart_gfsv17                               | - noaacloud container                |          | cpld_control_gfsv17
+   RUN | cpld_restart_gfsv17_iau                           | - noaacloud container                |          | cpld_control_gfsv17_iau
+   RUN | cpld_mpi_gfsv17                                   | - noaacloud container                |          |
+
+None of these lines run on NOAA Cloud (``noaacloud``). The ``COMPILE`` line and the
+``cpld_control_gfsv17`` test also run in a container (``-P``), while the other tests list
+``container`` to exclude it (see :numref:`Section %s <rt-container>`).
 
 The ``rt.conf`` file includes a large number of tests. If the user wants to run
-only specific tests, s/he can either (1) comment out the tests to be skipped (using the ``#`` prefix)
-or (2) create a new file (e.g., ``my_rt.conf``), add the tests, and execute ``./rt.sh -a  <account> -l my_rt.conf``.
+only specific tests, s/he can either (1) comment out the tests to be skipped (using the ``#`` prefix),
+(2) create a new file (e.g., ``my_rt.conf``), add the tests, and execute ``./rt.sh -a  <account> -l my_rt.conf``,
+or (3) list the tests to run in a file and execute ``./rt.sh -a <account> -s <file>``.
+
+The file given with ``-s`` lists one test per line: the test name (as in the ``RUN`` line of
+``rt.conf``), a single space, and the compiler (as in the ``COMPILE`` line above that ``RUN``
+line). For example:
+
+.. code-block:: text
+
+   control_c48 intel
+   control_p8 gnu
+
+``rt.sh`` then compiles only the builds that the listed tests need, and runs those tests.
+``-s`` can be combined with ``-l``, e.g., ``./rt.sh -a <account> -l my_rt.conf -s <file>``;
+the listed tests and their ``COMPILE`` lines are then taken from ``my_rt.conf`` instead of
+``rt.conf``. Unlisted tests that a listed test depends on (e.g., ``control_p8`` is needed
+to run ``control_restart_p8``) still come from ``rt.conf``, so list them too.
+A listed test is skipped if its ``RUN`` line is not enabled for the machine (or for
+``container``, with ``-P``) in the **Machines** column, or, with ``-P``, if its compiler
+differs from the one in the platform definition file. Make sure that the ``COMPILE`` line
+above the test is enabled for the same machine (or container) as well; otherwise the test
+may run with the executable of a different build. After each run, the failed
+tests are written to ``test_changes.list`` in the same format, so
+``./rt.sh -a <account> -s test_changes.list`` reruns only those tests. ``-s`` cannot be
+combined with ``-n`` or ``-x``.
 
 For the most up-to-date list of supported tests see the :wm-repo:`rt.conf <blob/develop/tests/rt.conf>` file. 
 
@@ -566,7 +595,7 @@ To display detailed information on how to use ``rt.sh``, users can simply run ``
 
 .. code-block:: console
 
-   ./rt.sh -a <account> | -c | -d | -e | -h | -k | -l <file> | -m | -n <name> | -o | -P <platform.def> | -r | -s <file> | -v | -w | -x
+   ./rt.sh -a <account> | -c | -d | -e | -h | -k | -l <file> | -m | -n <name> | -o | -P <container.def> | -r | -s <file> | -v | -w | -x
      -a  <account> to use on for HPC queue
      -c  create new baseline results
      -d  delete run directories that are not used by other tests
@@ -577,9 +606,9 @@ To display detailed information on how to use ``rt.sh``, users can simply run ``
      -m  compare against new baseline results
      -n  run single test <name>
      -o  compile only, skip tests
-     -P  <platform.def> build and run on a platform (container or native stack)
-         defined in <platform.def>; sequential by default, or -r/-e if
-         <platform.def> declares a ROCOTO_SCHEDULER. By default a portability
+     -P  <container.def> build and run in a container on a platform
+         defined in <container.def>; sequential by default, or -r/-e if
+         <container.def> declares a ROCOTO_SCHEDULER. By default a portability
          check only (no comparison); -c/-m create/compare against a baseline
          under that platform's own $RUNDIR_ROOT/REGRESSION_TEST
      -r  use Rocoto workflow manager
@@ -641,32 +670,46 @@ Then, users can adjust the information in ``rt.sh`` accordingly.
 
 .. _rt-container:
 
-Container and Community Platform Runs (``-P``)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Container Runs (``-P``)
+^^^^^^^^^^^^^^^^^^^^^^^
 
-The ``-P <platform.def>`` option compiles and runs the selected tests on a platform described by a
-*platform definition file*, either inside a Singularity/Apptainer container or with a
-native software stack:
+The ``-P container.def`` option compiles and runs the selected tests on a platform described by a
+*platform definition file*, inside a Singularity/Apptainer container:
 
 .. code-block:: console
 
-   ./rt.sh -a <account> -P <platform.def> -l rt.conf
+   ./rt.sh -a <account> -P container.def [-l rt.conf] [-s my_test.list]
+
+``-l`` and ``-s`` are optional: ``-l`` gives the file with the list of tests (``rt.conf`` by
+default, or your own file such as ``my_rt.conf``), and ``-s`` runs only the tests listed in
+``my_test.list``.
 
 The platform definition file is a bash file of ``KEY=value`` assignments that specify the platform
-name (``container`` for container-based runs), the compiler to be used, the full path to the container
-image (left blank for a native stack), the platform's job scheduler, the run directory
+name (always ``container``), the compiler to be used, the full path to the container
+image, the platform's job scheduler, the run directory
 (``RUNDIR_ROOT``), and the paths to the locally staged input data. Optional entries specify
 the workflow manager (Rocoto or ecFlow) and the module command needed to load it. The template
-``tests/platform.def`` describes every field and can be adapted for other platforms. See
+``tests/container.def`` describes every entry and can be adapted for other platforms. See
 :numref:`Section %s <container-rt-conf>` for a detailed description of the platform definition file.
 
-Only ``COMPILE``/``RUN`` lines tagged for the platform in their **Machines** column are run
-(see :numref:`Section %s <rt-conf>`):
+A container run uses the machine name ``container``, which is matched in the **Machines**
+column of ``rt.conf`` like any other machine name (see :numref:`Section %s <rt-conf>`):
+``+ ... container`` runs a line in the container, and ``- ... container`` excludes it. The
+tests enabled for the container are listed in :numref:`Section %s <container-rt-tested>`.
 
-* ``+<PLATFORM_NAME>`` marks a line to run on the platform, where it is the same name as the
-  ``PLATFORM_NAME`` given in the platform definition file. The tests enabled for container runs are
-  tagged ``+container``.
-* ``-<PLATFORM_NAME>`` explicitly excludes a line, even if ``+<PLATFORM_NAME>`` is also present.
+.. note::
+
+   Running a subset of the container tests with ``-s <file>`` is often the preferred way to
+   run containerized tests. The file lists one test per line as the test name and the
+   compiler separated by a single space, for example:
+
+   .. code-block:: text
+
+      control_c48 intel
+      control_p8 intel
+
+   and is passed with ``./rt.sh -a <account> -P container.def -s <file> -l rt.conf``. See
+   :numref:`Section %s <container-rt-subset>` for details.
 
 Lines that use a different compiler than the one in the platform definition file are skipped.
 By default, a ``-P`` run is sequential and does not compare results against baselines; it
@@ -677,7 +720,7 @@ optional Rocoto/ecFlow line.
 
 See :numref:`Chapter %s <container-rt-tests>` for the full description of the platform
 definition file, the required modulefiles, the container images, and the input data needed
-for the ``+container`` tests.
+for the container tests.
 
 .. _log-files:
 

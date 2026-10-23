@@ -76,7 +76,7 @@ fi
 mkdir -p "${RUNDIR}"
 cd "${RUNDIR}"
 
-if [[ ${MACHINE_ID} = container || -n ${CONTAINER_IMG:-} ]]; then
+if [[ ${MACHINE_ID} = container ]]; then
     mkdir -p modulefiles
     if [[ -f "${PATHTR}/modulefiles/ufs_container.${RT_COMPILER}.lua" ]]; then
         cp "${PATHTR}/modulefiles/ufs_container.${RT_COMPILER}.lua" "modulefiles/modules.fv3.lua"
@@ -151,12 +151,6 @@ if [[ ${ROCOTO} = 'false' ]]; then
     export "${CONTAINER}_SHELL=/bin/bash"
     export "${CONTAINER}ENV_RTVERBOSE=${RTVERBOSE:-false}"
     "${CONTAINERBIN}" exec -e "${BIND_FLAGS[@]}" "${CONTAINER_IMG}" "${RUNDIR}/job_card"
-    echo -n " $( date +%s )," >> job_timestamp.txt
-  elif [[ ${SCHEDULER:-none} = 'none' && "${COMMUNITY_PLATFORM:-false}" == true ]]; then
-    echo -n "$( date +%s )," > job_timestamp.txt
-    # Community platform: call compile.sh directly; module loading is handled
-    # by compile.sh's case block for this MACHINE_ID.
-    "${PATHRT}/compile.sh" "${MACHINE_ID}" "${MAKE_OPT}" "${COMPILE_ID}" "${RT_COMPILER}"
     echo -n " $( date +%s )," >> job_timestamp.txt
   else
     submit_and_wait job_card

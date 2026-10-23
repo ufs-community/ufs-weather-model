@@ -1,36 +1,33 @@
 .. _container-rt-tests:
 
-******************************************************************************
-Container and Community Platform Options to Test and Run the UFS Weather Model
-******************************************************************************
+*****************************************************************
+Container Option to Test and Run the UFS Weather Model
+*****************************************************************
 
-This chapter describes two ways to build and run the UFS Weather Model (:term:`WM`)
-outside of the standard Tier 1 software stacks. Both use the regression test script
-``tests/rt.sh`` with the ``-P <platform.def>`` option, where ``<platform.def>`` is a
-*platform definition file* that describes the platform (see :numref:`Section %s <container-rt-conf>`):
-
-* **Container option**: The model is compiled and run inside a
-  Singularity/Apptainer software container that bundles the prerequisite compilers,
-  MPI, and all required third-party libraries. The UFS WM source code is checked out
-  from standard GitHub repositories and built inside the container environment,
-  eliminating the need to install :term:`spack-stack` or host-specific modules.
-  This option is selected when the platform definition file gives a container image.
-
-* **Community platform option** (native software stack): No container is used.
-  The model is compiled and run natively using a software stack already installed on
-  the host system and exposed through a user-provided Lmod modulefile. This option
-  is selected when the container image field in the platform definition file is left blank.
+This chapter explains how to build and run the UFS Weather Model (:term:`WM`) using
+Singularity/Apptainer containers on any general HPC system or cloud instance, beyond the
+standard Tier 1 platforms with preinstalled software stacks. The container already has the
+compilers, MPI, and all libraries the model needs, so you do not need to install
+:term:`spack-stack`, and you may not need host compiler or MPI modules. One exception: for
+runs across several nodes, the host's MPI launcher must be compatible with the MPI inside
+the container (see :numref:`Section %s <container-rt-runtime-mod>`). The model code is
+cloned from GitHub as usual, then built and run inside container instances launched on the
+host platform.
+Singularity or Apptainer must be installed on the host to run the containers (see
+:numref:`Section %s <container-rt-apptainer>`). To run the tests, use ``tests/rt.sh`` with
+``-P container.def``, where ``container.def`` is a *platform definition file* that
+describes your platform and container (see :numref:`Section %s <container-rt-conf>`).
 
 The container option has been tested on the community platform Stampede3 (TACC, University of
 Texas) with both GNU-based and Intel-based software containers. An example platform definition
-file for Stampede3, ``tests/container.def``, is included (see :numref:`Section %s <container-rt-conf>`).
+file for Stampede3, ``tests/stampede.def``, is included (see :numref:`Section %s <container-rt-conf>`).
 The container option has also been tested on NOAA RDHPC Tier 1 platforms with the same method
-(``-P <platform.def>``), by adapting the platform definition file for each platform and container
+(``-P container.def``), by adapting the platform definition file for each platform and container
 (GNU- or Intel-based).
 
 .. attention::
 
-   This chapter covers ``rt.sh`` runs with the ``-P <platform.def>`` option. For standard Tier 1
+   This chapter covers ``rt.sh`` runs with the ``-P container.def`` option. For standard Tier 1
    regression testing, see :numref:`Section %s <UsingRegressionTest>`. A summary of
    the ``-P`` option is also given in :numref:`Section %s <rt-container>`.
 
@@ -40,17 +37,18 @@ The container option has also been tested on NOAA RDHPC Tier 1 platforms with th
 Relationship to the Regression Test (RT) Framework
 ==========================================================
 
-Container and community platform runs use the same Regression Test (:term:`RT`) framework
-as Tier 1 platforms:
+Container runs use the same Regression Test (:term:`RT`) framework as Tier 1 platforms:
 
 * Tests are selected from ``tests/rt.conf`` (or from another file given with ``-l``), and the
   test definitions are the same files under ``tests/tests``. CMake build options follow the
   same conventions as ``rt.conf``.
-* A ``COMPILE`` or ``RUN`` line in ``rt.conf`` runs on the platform only when its
-  **Machines** column contains ``+<PLATFORM_NAME>``, where ``<PLATFORM_NAME>`` is the name
-  given by ``PLATFORM_NAME`` in the platform definition file. ``-<PLATFORM_NAME>`` excludes the line
-  even if ``+<PLATFORM_NAME>`` is also present. The tests currently enabled for the container
-  option are tagged ``+container`` in ``rt.conf``.
+* A container run uses the machine name ``container`` (``MACHINE_ID=container``), which is
+  matched in the **Machines** column of ``rt.conf`` like any other machine name: an empty
+  column runs the line everywhere, ``+ <machines>`` runs it only on the listed machines, and
+  ``- <machines>`` runs it everywhere except the listed machines. For example,
+  ``+ hera ursa container`` runs a line in the container, and ``- noaacloud container``
+  excludes it. The tests currently enabled for the container are listed in
+  :numref:`Section %s <container-rt-tested>`.
 * The same ``rt.sh`` options are used, for example ``-a``, ``-l``, ``-n``, ``-o``, ``-c``,
   ``-m``, ``-r``, and ``-e`` (see :numref:`Section %s <container-rt-run>`).
 
@@ -59,7 +57,7 @@ The goal of a ``-P`` run differs from a Tier 1 run. By default, a ``-P`` run is 
 successfully** on the platform, with the same input data, model configuration(s), and
 test case definitions as the Tier 1 platforms. The ``-P`` run is not intended to be a
 The platform may be a Tier 1 system, another community/HPC center system, a cloud instance,
-or a laptop/workstation, with or without container software. Baselines can still be created
+or a laptop/workstation with Singularity/Apptainer installed. Baselines can still be created
 (``-c``) and compared against (``-m``) on the same platform. These baselines are kept
 under the platform user's runtime directory, and are separate from the Tier 1 baselines.
 
@@ -73,6 +71,160 @@ scheduler (if any): the container image, the run directory, the location of the 
 data, and the host-system runtime modules all need to match the local environment. Users are
 encouraged to further tailor these runs to fit their own modeling needs beyond running
 predefined test cases.
+
+.. _container-rt-tested:
+
+=====================================
+Tests Run Successfully in a Container
+=====================================
+
+The following tests have been run successfully with ``rt.sh -P`` in the Intel-based and/or
+GNU-based containers. In ``rt.conf`` these lines run on ``container``, and all other lines
+exclude it (see :numref:`Section %s <container-rt-vs-rt>`). Each entry gives the ``rt.conf``
+compile name (build) the test uses; a blank entry means that the test is not enabled for the
+container with that compiler.
+
+.. list-table:: Tests run successfully in a container
+   :widths: 46 27 27
+   :header-rows: 1
+
+   * - Test
+     - Intel build
+     - GNU build
+   * - ``cpld_control_p8``
+     - ``s2swa_32bit``
+     - ``s2swa_32bit``
+   * - ``cpld_control_gfsv17``
+     - ``s2sw_32bit_pdlib``
+     - ``s2sw_32bit_pdlib``
+   * - ``cpld_control_sfs``
+     - ``s2s_32bit_sfs``
+     - 
+   * - ``cpld_debug_sfs``
+     - ``s2s_32bit_sfs_debug``
+     - ``s2s_32bit_sfs_debug``
+   * - ``cpld_control_p8_lnd``
+     - ``s2swl``
+     - 
+   * - ``cpld_control_noaero_p8_agrid``
+     - ``s2s_aoflux``
+     - 
+   * - ``cpld_control_c48_5deg``
+     - ``s2sw_pdlib``
+     - 
+   * - ``cpld_warmstart_c48_5deg``
+     - ``s2sw_pdlib``
+     - 
+   * - ``cpld_control_c24_5deg``
+     - ``s2sw_pdlib``
+     - 
+   * - ``cpld_warmstart_c24_5deg``
+     - ``s2sw_pdlib``
+     - 
+   * - ``cpld_control_c24_9deg``
+     - ``s2sw_pdlib``
+     - 
+   * - ``cpld_control_c12_9deg``
+     - ``s2sw_pdlib``
+     - 
+   * - ``control_CubedSphereGrid``
+     - ``atm_dyn32``
+     - 
+   * - ``control_c48``
+     - ``atm_dyn32``
+     - ``atm``
+   * - ``control_c192``
+     - ``atm_dyn32``
+     - 
+   * - ``control_p8``
+     - ``atm_dyn32``
+     - ``atm``
+   * - ``control_p8.v2.sfc``
+     - ``atm_dyn32``
+     - 
+   * - ``control_p8_rrtmgp_rad32``
+     - ``atm_dyn32_rad32``
+     - 
+   * - ``rap_control``
+     - ``rrfs``
+     - ``rrfs``
+   * - ``hrrr_control``
+     - ``rrfs``
+     - ``rrfs``
+   * - ``rrfs_v1beta``
+     - ``rrfs``
+     - ``rrfs``
+   * - ``control_wam``
+     - ``wam``
+     - 
+   * - ``control_wam_debug``
+     - ``wam_debug``
+     - ``wam_debug``
+   * - ``rap_control_dyn32_phy32``
+     - ``rrfs_dyn32_phy32``
+     - ``rrfs_dyn32_phy32``
+   * - ``hrrr_control_dyn32_phy32``
+     - ``rrfs_dyn32_phy32``
+     - ``rrfs_dyn32_phy32``
+   * - ``hrrr_control_2threads_dyn32_phy32``
+     - ``rrfs_dyn32_phy32``
+     - ``rrfs_dyn32_phy32``
+   * - ``conus13km_control``
+     - ``rrfs_dyn32_phy32``
+     - ``rrfs_dyn32_phy32``
+   * - ``rap_control_dyn64_phy32``
+     - ``rrfs_dyn64_phy32``
+     - 
+   * - ``hafs_regional_atm``
+     - ``hafsw``
+     - 
+   * - ``hafs_regional_atm_wav``
+     - ``hafsw``
+     - 
+   * - ``hafs_global_1nest_atm``
+     - ``hafsw``
+     - 
+   * - ``hafs_global_multiple_4nests_atm``
+     - ``hafsw``
+     - 
+   * - ``hafs_regional_storm_following_1nest_atm_ocn_wav_mom6``
+     - ``hafs_mom6w``
+     - 
+   * - ``hafs_regional_docn``
+     - ``hafs_all``
+     - ``hafs_all``
+   * - ``hafs_regional_docn_oisst``
+     - ``hafs_all``
+     - ``hafs_all``
+   * - ``datm_cdeps_control_cfsr``
+     - ``datm_cdeps``
+     - ``datm_cdeps``
+   * - ``datm_cdeps_control_gefs``
+     - ``datm_cdeps``
+     - 
+   * - ``datm_cdeps_ciceC_cfsr``
+     - ``datm_cdeps``
+     - 
+   * - ``datm_cdeps_gfs``
+     - ``datm_cdeps``
+     - 
+   * - ``datm_cdeps_lnd_gswp3``
+     - ``datm_cdeps_land``
+     - 
+   * - ``atm_ds2s_docn_pcice``
+     - ``atm_ds2s_docn_pcice``
+     - 
+   * - ``atmaero_control_p8``
+     - ``atmaero``
+     - 
+
+A ``COMPILE`` line runs on ``container`` only when at least one of its ``RUN`` lines does.
+To try another test in a container, remove ``container`` from the **Machines** column of its
+``RUN`` line and of its ``COMPILE`` line (or add it to a ``+`` list), as described in
+:numref:`Section %s <container-rt-vs-rt>`.
+
+To run only some of these tests, list them in a file and pass it to ``rt.sh`` with
+``-s <file>`` (see :numref:`Section %s <container-rt-subset>`).
 
 .. _container-rt-prereqs:
 
@@ -395,7 +547,7 @@ NOAA RDHPC Tier 1. These paths should be provided as a comma-separated list in t
 Input Data
 ----------
 
-Container and community platform runs use the same input datasets as the standard RT framework.
+Container runs use the same input datasets as the standard RT framework.
 On Level 1 and Level 2 systems these are pre-staged; see :numref:`Section %s <DataLocations>` for
 the ``DISKNM`` and ``INPUTDATA_ROOT`` paths for each platform. These paths are set by the
 ``INPUTDATA_*`` entries of the platform definition file (see :numref:`Section %s <container-rt-conf>`).
@@ -405,8 +557,8 @@ The current input data sets are ``input-data-20260617`` (``INPUTDATA_ROOT``), wi
 ``input-data-20260617/WW3_input_data_20260811`` (``INPUTDATA_ROOT_WW3``) and LM4 data in
 ``input-data-20260617/LM4_input_data`` (``INPUTDATA_LM4``).
 
-The complete ``input-data-20260617`` data set is large. To run only the tests tagged ``+container`` in
-``tests/rt.conf``, a subset of about 121 GiB is enough. The data can be downloaded with the AWS CLI;
+The complete ``input-data-20260617`` data set is large. To run only the tests enabled for the container in
+``tests/rt.conf`` (see :numref:`Section %s <container-rt-tested>`), a subset of about 121 GiB is enough. The data can be downloaded with the AWS CLI;
 no AWS account is needed when ``--no-sign-request`` is used.
 
 Before downloading, the contents of the data bucket can be listed to check which directories
@@ -421,13 +573,13 @@ are available, for example:
 The trailing ``/`` is needed to list the contents of a directory; without it, ``aws s3 ls`` shows only
 the directory name itself.
 
-The following commands download only the input data needed by the ``+container`` tests. Run them
+The following commands download only the input data needed by the container tests. Run them
 from the directory where ``input-data-20260617`` is to be created. The comments name the tests that
 use each subdirectory, and the ``--exclude`` options skip subdirectories that these tests do not use.
 
 .. code-block:: bash
 
-   # Input data needed ONLY for the tests marked "+container" in tests/rt.conf
+   # Input data needed ONLY for the tests enabled for "container" in tests/rt.conf
    export INPUTDATA_ROOT=$PWD/input-data-20260617
    export BUCKET=s3://noaa-ufs-regtests-pds/input-data-20260617
    export INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT}/WW3_input_data_20260811
@@ -443,7 +595,7 @@ use each subdirectory, and the ``--exclude`` options skip subdirectories that th
 
    # --- MOM6 / CICE6 fix files (025: SFS, 100: C96/DATM, 500/900: low-res coupled) ---
    #     050: not used by container tests; kept for cpld_control_c192_p8/cpld_restart_c192_p8
-   #     (C192 + 1/2-deg ocean), in case they are enabled for container/community platform runs
+   #     (C192 + 1/2-deg ocean), in case they are enabled for container runs
    #     (CICE_IC/050/ is also downloaded below)
    for r in 025 050 100 500 900; do
      aws s3 sync ${BUCKET}/MOM6_FIX/${r}/ ${INPUTDATA_ROOT}/MOM6_FIX/${r}/ --no-sign-request
@@ -521,7 +673,7 @@ use each subdirectory, and the ``--exclude`` options skip subdirectories that th
    #   GEFS/ (BMIC tests), FV3_input_data384/ (C384), FV3_fix_tiled/C384mx025, LM4_input_data/ (datm_cdeps_lm4_*),
    #   FV3_regional/ (regional_* tests), INPUT_hafs_regional_atm/ (empty in S3; HAFS uses FV3_hafs_input_data/INPUT_hafs_regional_atm)
 
-The ``+container`` tests do not need the following data, which can be skipped:
+The container tests do not need the following data, which can be skipped:
 
 * ``LM4_input_data`` (``INPUTDATA_LM4``), used by the ``datm_cdeps_lm4_*`` tests.
 * The GFS v17 operational data set ``GFSv17opn_20251014`` (``INPUTDATA_GFSv17opn``) and the
@@ -554,16 +706,7 @@ All further steps in this section assume the working directory is the root of th
 Required Modulefiles
 --------------------
 
-The modulefiles required depend on the option selected. The container option
-requires a user-adapted modulefile to load any host system modules needed at runtime.
-The community platform option (native software stack) requires a modulefile that loads
-all the required software stack libraries on the platform. All modulefiles are placed in the
-``modulefiles/`` directory at the root of the repository.
-
-.. _container-rt-modulefiles-container:
-
-Container Option
-~~~~~~~~~~~~~~~~
+The modulefiles are placed in the ``modulefiles/`` directory at the root of the repository.
 
 The container option uses two modulefiles. Only ``ufs_container.runtime.lua``
 **must be adapted** by the user. The ``ufs_container.<compiler>.lua`` build module
@@ -574,7 +717,7 @@ a test in a container.
 .. _container-rt-runtime-mod:
 
 ``ufs_container.runtime.lua`` — Host-Side Runtime Module
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 This modulefile is loaded **on the host** by the compile and run job cards (or by
 ``rt.sh`` itself when no scheduler is used). **Users must create and adapt this file**
@@ -626,7 +769,7 @@ supplementary host libraries needed by the MPI launcher.
 .. _container-rt-build-mod:
 
 ``ufs_container.<compiler>.lua`` — Inside-Container Build Module
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 This modulefile is loaded **inside the container** during both the compile and run stages.
 It sets up the compiler toolchain, MPI library, and all required software libraries
@@ -673,49 +816,14 @@ container on Hercules/Orion):
 
 where ``<container-image>`` is the path to the container image file (``*.sif``) on the host.
 
-.. _container-rt-modulefiles-community:
-
-Community Platform Option (Native Software Stack)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-When the container image field of the platform definition file is left blank, the model is
-built and run natively on the host — no container is involved. A natively installed software
-stack is expected to be present.
-
-.. _container-rt-community-mod:
-
-``ufs_<PLATFORM_NAME>.<compiler>.lua`` — Platform Module
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-**Users must create and adapt this file** for their platform. It is loaded during both
-the compile and run stages and sets up the compiler toolchain, MPI library, and all
-required software libraries available on the host system.
-
-The file must be named ``modulefiles/ufs_<PLATFORM_NAME>.<compiler>.lua``, where
-``<PLATFORM_NAME>`` matches ``PLATFORM_NAME`` in the platform definition file and
-``<compiler>`` is ``intel`` or ``gnu``. ``compile.sh`` loads this module for the build and
-saves a copy next to the executable, which is then loaded for each test run.
-
-An example for a GNU-based native stack:
-
-.. code-block:: lua
-
-   -- modulefiles/ufs_myplatform.gnu.lua
-   whatis("Native build/run environment for UFS-WM (GNU)")
-
-   prepend_path("MODULEPATH", "/path/to/spack-stack/envs/ufs-wm/install/modulefiles/Core")
-   load("stack-gcc/13.3.0")
-   load("stack-openmpi/4.1.6")
-   load("ufs-weather-model-env")
-
 .. _container-rt-conf:
 
 ====================================
 The Platform Definition File
 ====================================
 
-The platform definition file passed to ``rt.sh -P <platform.def>`` describes the platform: its name,
-compiler, container image (if any), scheduler, run directory, and input data locations.
+The platform definition file passed to ``rt.sh -P container.def`` describes the platform: the
+compiler, container image, scheduler, run directory, and input data locations.
 It does **not** list tests; tests are always selected from ``rt.conf`` (or the file given
 with ``-l``), as described in :numref:`Section %s <container-rt-vs-rt>`.
 
@@ -727,30 +835,32 @@ The following platform definition files are provided in the ``tests/`` directory
 
    * - File
      - Description
-   * - ``platform.def``
-     - Template with a description of every field. Copy it and edit the copy for a new platform.
    * - ``container.def``
+     - Template with a description of every entry. Edit it for your platform.
+   * - ``stampede.def``
      - Example for GNU or Intel container runs on Stampede3 (TACC, University of Texas).
 
 To set up a new platform:
 
-#. Copy ``platform.def``, keeping the original as a reference, and edit the values in the
-   copy for the new platform.
-#. Tag the ``COMPILE`` and ``RUN`` lines to run on the platform with ``+<PLATFORM_NAME>`` in
-   the **Machines** column of ``rt.conf`` (or of the file given with ``-l``), using the
-   name given by ``PLATFORM_NAME`` in the platform definition file. ``-<PLATFORM_NAME>``
-   excludes a line from the platform even if ``+<PLATFORM_NAME>`` is also present. With
-   ``PLATFORM_NAME`` set to ``container``, the lines already tagged ``+container`` are used.
-#. Run ``rt.sh`` with the new file:
+#. Edit the values in ``container.def`` for your platform (keep a copy of the original as a
+   reference).
+#. Optionally, enable or disable tests for the container in the **Machines** column of
+   ``rt.conf`` (or of the file given with ``-l``), using the machine name ``container``
+   (see :numref:`Section %s <container-rt-vs-rt>`). By default, the tests listed in
+   :numref:`Section %s <container-rt-tested>` are run.
+#. Run ``rt.sh`` with the file:
 
    .. code-block:: console
 
-      ./rt.sh -a <account> -P platform.def -l rt.conf
+      ./rt.sh -a <account> -P container.def [-l rt.conf] [-s my_test.list]
+
+   ``-l`` and ``-s`` are optional. ``-l`` gives the file with the list of tests (``rt.conf`` is
+   the default), and ``-s`` runs only the tests listed in ``my_test.list`` (see
+   :numref:`Section %s <container-rt-subset>`).
 
 The file is a bash file of ``KEY=value`` assignments, with ``#`` comments. Values containing
-spaces must be quoted. ``rt.sh`` sources it in a subshell and reads back only the entries
-described in :numref:`Section %s <container-rt-conf-fields>`; any other variables or commands
-in the file do not affect ``rt.sh``. The ``ROCOTO_SCHEDULER`` and ``WORKFLOW_MODULE_CMD``
+spaces must be quoted. ``rt.sh`` sources the file and uses the entries described in
+:numref:`Section %s <container-rt-conf-fields>`. The ``ROCOTO_SCHEDULER`` and ``WORKFLOW_MODULE_CMD``
 entries are optional and needed only for the Rocoto (``-r``) and ecFlow (``-e``) workflow
 managers. Tests are not
 listed in this file; they are selected from ``rt.conf``.
@@ -760,14 +870,14 @@ against baselines: it is a portability check that the model builds and runs on t
 not a regression test. The ``-c`` and ``-m`` options create and compare against baselines,
 and ``-r`` and ``-e`` use Rocoto or ecFlow (these need ``ROCOTO_SCHEDULER`` and/or ``WORKFLOW_MODULE_CMD``).
 
-**Template** ``tests/platform.def``. The comments describe every entry, each followed by
+**Template** ``tests/container.def``. The comments describe every entry, each followed by
 the values to edit:
 
-.. literalinclude:: ../../../tests/platform.def
+.. literalinclude:: ../../../tests/container.def
    :language: bash
 
 **Container option example** (Stampede3, Intel container). These are the values set in
-``tests/container.def``:
+``tests/stampede.def``:
 
 .. code-block:: bash
 
@@ -829,25 +939,19 @@ Platform Definition Fields
    * - Entry
      - Description
    * - ``PLATFORM_NAME``
-     - Required. Becomes ``MACHINE_ID`` for the run, and is the name used in the
-       ``+<PLATFORM_NAME>``/``-<PLATFORM_NAME>`` tags in ``rt.conf``. Use ``container`` for
-       container runs: this selects the ``+container`` tests in ``rt.conf`` and the container
-       job card templates in ``tests/fv3_conf/``. For a native stack, use a name that matches
-       the platform modulefile (see :numref:`Section %s <container-rt-community-mod>`).
+     - Required. Must be ``container``. Becomes ``MACHINE_ID`` for the run: the machine
+       name matched in the **Machines** column of ``rt.conf``, and the suffix of the container
+       job card templates in ``tests/fv3_conf/`` and of the container modulefiles.
    * - ``RT_COMPILER``
-     - Required. The platform's only compiler: ``intel`` or ``gnu``. ``rt.conf`` lines that
-       are tagged for the platform but use the other compiler are skipped with a notice.
+     - Required. The container's only compiler: ``intel`` or ``gnu``. ``rt.conf`` lines that
+       are enabled for the container but use the other compiler are skipped with a notice.
    * - ``CONTAINER_IMG``
-     - Absolute path to the Singularity/Apptainer image file (``*.sif``) on the host.
-       Leave blank to build and run with a native software stack instead, using the
-       modulefile ``modulefiles/ufs_<PLATFORM_NAME>.<compiler>.lua``, which may need to be
-       adapted for the user's platform. If the image file does
-       not exist, the lines that need it are skipped.
+     - Required. Absolute path to the Singularity/Apptainer image file (``*.sif``) on the
+       host. If the image file does not exist, the lines that need it are skipped.
    * - ``BIND_DIRS``
      - Comma-separated list of host directories to bind/mount to the container.
        Include all filesystems containing the source tree, input data, and run directory.
        See :numref:`Section %s <container-rt-binddirs>` for typical values on Tier 1 platforms.
-       Ignored for a native stack.
 
 **Scheduler**
 
@@ -907,7 +1011,7 @@ line with ``rt.sh -a <account>``.
        ``${INPUTDATA_ROOT}/LM4_input_data`` if left blank.
    * - ``INPUTDATA_GFSv17opn``
      - Optional. GFS v17 operational input data directory, needed only by tests that
-       use it. None of the ``+container`` tests need it.
+       use it. None of the container tests need it.
 
 **Workflow manager** (optional; needed only for ``-r`` or ``-e``)
 
@@ -935,21 +1039,71 @@ Tests are launched by running ``rt.sh`` with ``-P`` from the ``tests/`` director
 .. code-block:: console
 
    cd ${WM_HOME}/tests
-   ./rt.sh -a <account> -P <platform.def> [options]
+   ./rt.sh -a <account> -P container.def [-l rt.conf] [-s my_test.list]
 
-For example, to run a single test ``<test>`` marked ``+container`` in ``rt.conf`` for a
+``-l`` and ``-s`` are optional: ``-l`` gives the file with the list of tests (``rt.conf`` by
+default, or your own file such as ``my_rt.conf``), and ``-s`` runs only the tests listed in
+``my_test.list`` (see :numref:`Section %s <container-rt-subset>`). Other options can be added
+as well (see the table below).
+
+For example, to run a single test ``<test>`` enabled for the container in ``rt.conf`` for a
 specific compiler ``<compiler>``, use the platform definition file that specifies the compiler
 and container image, for Stampede3 example:
 
 .. code-block:: console
 
-   ./rt.sh -a <account> -P container.def -n "<test> <compiler>" -l rt.conf
+   ./rt.sh -a <account> -P stampede.def -n "<test> <compiler>" -l rt.conf
+
+.. _container-rt-subset:
+
+Running a Subset of Tests (``-s <file>``)
+-----------------------------------------
+
+Running every test enabled for the container can take a long time, so selecting a subset of
+tests with ``-s <file>`` is often the preferred way to run containerized tests, for example
+to check a new container image or platform, or to rerun only the tests that failed:
+
+.. code-block:: console
+
+   ./rt.sh -a <account> -P container.def -s container_tests.list -l rt.conf
+
+The file lists one test per line: the test name, a single space, and the compiler. The test
+name is the name in the ``RUN`` line of ``rt.conf`` (and of the test file in ``tests/tests/``),
+and the compiler is ``intel`` or ``gnu``, as in the ``COMPILE`` line above that ``RUN`` line.
+For example, a file ``container_tests.list`` for the Intel container:
+
+.. code-block:: text
+
+   control_c48 intel
+   control_p8 intel
+   rap_control intel
+   cpld_control_c48_5deg intel
+   datm_cdeps_control_cfsr intel
+
+``rt.sh`` compiles only the builds that the listed tests need, and then runs those tests.
+
+.. note::
+
+   * Each line is matched exactly against ``"<test name> <compiler>"``, so extra spaces or
+     tabs make a line match nothing.
+   * Only tests enabled for the container in ``rt.conf`` (see
+     :numref:`Section %s <container-rt-tested>`) and built with the compiler set by
+     ``RT_COMPILER`` in the platform definition file are run; other listed tests are skipped.
+     If none of the listed tests can be run, ``rt.sh`` stops with an error.
+   * After each run, ``rt.sh`` writes the failed tests to ``tests/test_changes.list`` in the
+     same format, so ``-s test_changes.list`` reruns only the tests that failed.
+   * With ``-l <conf file>``, tests are taken from ``<conf file>`` instead of ``rt.conf``.
+     Unlisted tests that a listed test depends on still come from ``rt.conf``, so list them
+     too.
+   * ``-s`` cannot be combined with ``-n`` or with the dry run ``-x``. To dry-run a container
+     test, use ``-n`` with ``-x`` instead, one test at a time, for example
+     ``./rt.sh -a <account> -P container.def -n "control_c48 intel" -x -l rt.conf``.
 
 Command-Line Options
 --------------------
 
 The usual ``rt.sh`` options can be combined with ``-P``. The ones most useful for container
-and community platform runs are:
+runs are:
 
 .. list-table::
    :widths: 15 60
@@ -959,19 +1113,21 @@ and community platform runs are:
      - Description
    * - ``-a <account>``
      - Scheduler account/project. Always required.
-   * - ``-P <platform.def>``
+   * - ``-P <container.def>``
      - Platform definition file (see :numref:`Section %s <container-rt-conf>`).
    * - ``-l <file>``
      - Use ``<file>`` instead of ``rt.conf`` to select tests.
    * - ``-n "<test> <compiler>"``
      - Run a single test, for example ``-n "control_c48 intel"``. Its compile still runs.
    * - ``-s <file>``
-     - Run only the subset of tests listed in ``<file>``.
+     - Run only the subset of tests listed in ``<file>``, one ``<test name> <compiler>`` per
+       line (see :numref:`Section %s <container-rt-subset>`). Often the preferred way to run
+       containerized tests.
    * - ``-o``
      - Compile only; skip all tests.
    * - ``-x``
      - Dry run. With ``-P``, ``rt.sh`` still compiles; for each test it then checks the
-       compiled executable, stages the input data, checks the container (if any), and prepares
+       compiled executable, stages the input data, checks the container, and prepares
        the job card, but does not submit the job. Results are reported as
        ``DRY RUN SUCCESS``/``DRY RUN FAIL``.
    * - ``-c``
@@ -1005,16 +1161,13 @@ Job Script Templates
 --------------------
 
 When ``SCHEDULER`` is ``slurm`` or ``pbs``, compile and test jobs are created from job
-script templates in ``tests/fv3_conf/``, selected by scheduler and ``PLATFORM_NAME``:
+script templates in ``tests/fv3_conf/``, selected by scheduler:
 
-- ``compile_slurm.IN_<PLATFORM_NAME>`` — Slurm compile job card
-- ``fv3_slurm.IN_<PLATFORM_NAME>`` — Slurm run job card
-- ``compile_qsub.IN_<PLATFORM_NAME>`` — PBS compile job card
-- ``fv3_qsub.IN_<PLATFORM_NAME>`` — PBS run job card
+- ``compile_slurm.IN_container`` — Slurm compile job card
+- ``fv3_slurm.IN_container`` — Slurm run job card
+- ``compile_qsub.IN_container`` — PBS compile job card
+- ``fv3_qsub.IN_container`` — PBS run job card
 
-Templates for the container option (``PLATFORM_NAME=container``) are provided in the
-repository. For a native stack with a scheduler, users must create templates for their
-platform name, following the container or Tier 1 templates in ``tests/fv3_conf/``.
 When ``SCHEDULER`` is ``none``, no template is used and compile and run steps execute
 directly on the current host.
 
@@ -1030,7 +1183,7 @@ definition file and run ``rt.sh`` from a login node:
 
 .. code-block:: console
 
-   ./rt.sh -a <account> -P <platform.def> -l rt.conf
+   ./rt.sh -a <account> -P container.def [-l rt.conf] [-s my_test.list]
 
 By default, ``rt.sh`` submits each compile and test job to the scheduler and waits for it to
 finish before submitting the next one. With ``-r`` or ``-e``, the jobs are managed by Rocoto
@@ -1062,13 +1215,12 @@ platform definition file.
 .. code-block:: console
 
    cd tests
-   ./rt.sh -a <account> -P <platform.def> -l rt.conf
+   ./rt.sh -a <account> -P container.def [-l rt.conf] [-s my_test.list]
 
 .. note::
 
-   For the **container option**, ``rt.sh`` starts the software container first, and then
-   runs the MPI tasks entirely inside it, which is the correct approach for single-node
-   interactive runs. Interactive container runs require ``PLATFORM_NAME=container``.
+   ``rt.sh`` starts the software container first, and then runs the MPI tasks entirely
+   inside it, which is the correct approach for single-node interactive runs.
 
    The ``--mpi=pmi2`` flag is a Slurm ``srun``-specific option and should **not** be used
    with ``mpirun`` or ``mpiexec``. When ``SCHEDULER`` is ``none``, ``srun`` is not used.
@@ -1080,8 +1232,6 @@ Run Directory and Log Files
 =============================
 
 ``rt.sh`` creates the following structure under ``RUNDIR_ROOT``:
-
-**Container option** (``PLATFORM_NAME=container``):
 
 .. code-block:: text
 
@@ -1097,21 +1247,6 @@ Run Directory and Log Files
    │   └── out / err                        # job stdout and stderr files
    └── REGRESSION_TEST/                     # baseline, only with -c
 
-**Community platform option** (native software stack):
-
-.. code-block:: text
-
-   ${RUNDIR_ROOT}/
-   ├── compile_<compile_name>_<compiler>/   # compile working directory
-   │   ├── job_card                         # compile job script (scheduler runs)
-   │   └── out / err                        # job stdout and stderr files
-   ├── <test_name>_<compiler>/              # test working directory
-   │   ├── job_card                         # test job script (scheduler runs)
-   │   ├── fv3_run.sh                       # native run script (no scheduler)
-   │   ├── modulefiles/                     # modulefile staged for the run
-   │   └── out / err                        # job stdout and stderr files
-   └── REGRESSION_TEST/                     # baseline, only with -c
-
 Because ``RUNDIR_ROOT`` is reused from run to run, a compile or test directory left from an
 earlier run is not deleted. It is renamed to ``<directory>_old_<YYYYMMDDHHMM>`` before the
 new run starts. A symlink ``tests/run_dir`` points to ``RUNDIR_ROOT``.
@@ -1119,12 +1254,11 @@ new run starts. A symlink ``tests/run_dir`` points to ``RUNDIR_ROOT``.
 Log files are written to the ``tests/logs/`` directory, as for Tier 1 runs
 (see :numref:`Section %s <log-files>`):
 
-* ``RegressionTests_<PLATFORM_NAME>.log`` — summary of the run.
-* ``log_<PLATFORM_NAME>/`` — detailed compile and test logs.
+* ``RegressionTests_container_<compiler>.log`` — summary of the run.
+* ``log_container_<compiler>/`` — detailed compile and test logs.
 
-A container holds only one compiler, so for the container option the compiler is added to both
-names: ``RegressionTests_container_<compiler>.log`` and ``log_container_<compiler>/``
-(for example, ``RegressionTests_container_intel.log`` and ``log_container_intel/``). Runs with the
+A container holds only one compiler, so the compiler is part of both names (for example,
+``RegressionTests_container_intel.log`` and ``log_container_intel/``). Runs with the
 GNU and Intel containers therefore keep separate logs.
 
 For sequential runs, a ``COMPILE/TEST SUMMARY`` with PASS/FAIL for each compile and test

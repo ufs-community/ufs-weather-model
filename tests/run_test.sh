@@ -109,7 +109,7 @@ if [[ ${DRY_RUN:-false} == false || ${COMMUNITY_PLATFORM:-false} == true ]]; the
   mkdir -p modulefiles
   if [[ ${MACHINE_ID} == linux ]]; then
     cp "${PATHRT}/modules.fv3_${COMPILE_ID}" "./modulefiles/modules.fv3"
-  elif [[ ${MACHINE_ID} == container || -n ${CONTAINER_IMG:-} ]]; then
+  elif [[ ${MACHINE_ID} == container ]]; then
     # Host-side runtime modulefile — loaded on the host before the container launches.
     cp "${PATHTR}/modulefiles/ufs_container.runtime.lua"  "./modulefiles/modules.fv3.runtime.lua"
     # Inside-container build/run modulefile — loaded by fv3_container_run.sh inside the container.
@@ -132,13 +132,10 @@ if [[ ${DRY_RUN:-false} == false || ${COMMUNITY_PLATFORM:-false} == true ]]; the
   # Get the shell file that loads the "module" command and purges modules:
   cp "${PATHRT}/module-setup.sh" "module-setup.sh"
   
-  host_side_machine_id=${MACHINE_ID}
-  [[ -n ${CONTAINER_IMG:-} ]] && host_side_machine_id=container
-
   # Some system module or completion scripts reference unset variables, so
   # nounset (set -u) is temporarily disabled while they are loaded.
   set +u
-  case ${host_side_machine_id} in
+  case ${MACHINE_ID} in
     wcoss2|acorn)
       module load intel/19.1.3.304
       module load craype/2.7.13 cray-mpich/8.1.12
@@ -568,18 +565,6 @@ ${MPI_LAUNCH} -n ${TASKS} ./fv3.exe
 RUN_EOF
     chmod u+x fv3_container_run.sh
     redirect_out_err "${CONTAINERBIN}" exec "${BIND_FLAGS[@]}" "${CONTAINER_IMG}" "${PWD}/fv3_container_run.sh"
-  elif [[ "${COMMUNITY_PLATFORM:-false}" == true ]]; then
-    MPI_LAUNCH=${MPI_LAUNCH:-mpirun}
-    echo "NOTE: running ${TASKS} MPI tasks on community platform via ${MPI_LAUNCH}"
-    cat > fv3_run.sh << RUN_EOF
-#!/bin/bash
-set -e
-module use "${PWD}/modulefiles"
-module load modules.fv3
-${MPI_LAUNCH} -n ${TASKS} ./fv3.exe
-RUN_EOF
-    chmod u+x fv3_run.sh
-    redirect_out_err bash "${PWD}/fv3_run.sh"
   elif [[ ${CI_TEST} = 'true' ]]; then
     eval "${OMP_ENV}" redirect_out_err mpiexec -n "${TASKS}" ./fv3.exe
   else
@@ -648,11 +633,9 @@ if [[ ${skip_check_results} == false ]]; then
 
       else
         if [[ ${i##*.} == nc* ]] ; then
-          # A community platform (-P) is never in this fixed Tier-1 host
-          # list -- its MACHINE_ID is whatever name the platform-definition
-          # file declares -- but nccmp is just as required there (see the
-          # container/native branch right below), so always use it for -P.
-          if [[ ${COMMUNITY_PLATFORM:-false} == true || " orion hercules hera ursa wcoss2 acorn derecho gaeac5 gaeac6 noaacloud " =~ ${MACHINE_ID} ]]; then
+          # A container run (-P, MACHINE_ID=container) also uses nccmp, from
+          # inside the container (see the branch right below).
+          if [[ " orion hercules hera ursa wcoss2 acorn derecho gaeac5 gaeac6 noaacloud container " =~ ${MACHINE_ID} ]]; then
             echo "USING NCCMP.." >> "${RT_LOG}"
             echo "USING NCCMP.."
               nccmp_args=(-d -S -q -f -B --Attribute=checksum --warn=format)

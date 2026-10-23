@@ -11,7 +11,7 @@ die() { echo "$@" >&2; exit 1; }
 usage() {
   set +x #No reason to print out a bunch of echo statements here
   echo
-  echo "Usage: $0 -a <account> | -c | -d | -e | -h | -k | -l <file> | -m | -n <name> | -o | -P <platform.def> | -r | -s <file> | -v | -w | -x"
+  echo "Usage: $0 -a <account> | -c | -d | -e | -h | -k | -l <file> | -m | -n <name> | -o | -P <container.def> | -r | -s <file> | -v | -w | -x"
   echo
   echo "  -a  <account> to use on for HPC queue"
   echo "  -c  create new baseline results"
@@ -23,9 +23,9 @@ usage() {
   echo "  -m  compare against new baseline results"
   echo "  -n  run single test <name>"
   echo "  -o  compile only, skip tests"
-  echo "  -P  <platform.def> build and run on a platform (container or native stack)"
-  echo "      defined in <platform.def>; sequential by default, or -r/-e if"
-  echo "      <platform.def> declares a ROCOTO_SCHEDULER. By default a portability"
+  echo "  -P  <container.def> build and run in a container on a platform"
+  echo "      defined in <container.def>; sequential by default, or -r/-e if"
+  echo "      <container.def> declares a ROCOTO_SCHEDULER. By default a portability"
   echo "      check only (no comparison); -c/-m create/compare against a baseline"
   echo "      under that platform's own \$RUNDIR_ROOT/REGRESSION_TEST"
   echo "  -r  use Rocoto workflow manager"
@@ -92,8 +92,14 @@ update_rtconf() {
       MACHINES=$(sed -e 's/^ *//' -e 's/ *$//' <<< "${MACHINES}")
       RT_COMPILER_IN=$(cut -d'|' -f3 <<< "${line}")
       RT_COMPILER_IN=$(sed -e 's/^ *//' -e 's/ *$//' <<< "${RT_COMPILER_IN}")
-      machines_allow_run "${MACHINES}" && compile_line=${line}
-      COMPILE_LINE_USED=false
+      if [[ ${MACHINES} == '' ]]; then
+        compile_line=${line}
+        COMPILE_LINE_USED=false
+      elif [[ ${MACHINES} == -* ]]; then
+        [[ ${MACHINES} =~ ${MACHINE_ID} ]] || compile_line=${line}; COMPILE_LINE_USED=false
+      elif [[ ${MACHINES} == +* ]]; then
+        [[ ${MACHINES} =~ ${MACHINE_ID} ]] && compile_line=${line}; COMPILE_LINE_USED=false
+      fi
 
     fi
 
@@ -103,7 +109,13 @@ update_rtconf() {
       tmp_test=$(sed -e 's/^ *//' -e 's/ *$//' <<< "${tmp_test}")
       MACHINES=$(cut -d'|' -f3 <<< "${line}")
       MACHINES=$(sed -e 's/^ *//' -e 's/ *$//' <<< "${MACHINES}")
-      machines_allow_run "${MACHINES}" && to_run_test=true
+      if [[ ${MACHINES} == '' ]]; then
+        to_run_test=true
+      elif [[ ${MACHINES} == -* ]]; then
+        [[ ${MACHINES} =~ ${MACHINE_ID} ]] || to_run_test=true
+      elif [[ ${MACHINES} == +* ]]; then
+        [[ ${MACHINES} =~ ${MACHINE_ID} ]] && to_run_test=true
+      fi
       if [[ ${to_run_test} == true ]]; then
         TEST_IDX=$(set -e; find_match "${tmp_test} ${RT_COMPILER_IN}" "${TEST_WITH_COMPILE[@]}")
 
@@ -267,7 +279,13 @@ EOF
 
       COMPILE_ID=${COMPILE_NAME}_${COMPILER}
 
-      machines_allow_run "${CMACHINES}" && valid_compile=true
+      if [[ ${CMACHINES} == '' ]]; then
+        valid_compile=true
+      elif [[ ${CMACHINES} == -* ]]; then
+        [[ ${CMACHINES} =~ ${MACHINE_ID} ]] || valid_compile=true
+      elif [[ ${CMACHINES} == +* ]]; then
+        [[ ${CMACHINES} =~ ${MACHINE_ID} ]] && valid_compile=true
+      fi
 
       if [[ ${COMMUNITY_PLATFORM} == true && ${valid_compile} == true ]]; then
         RT_COMPILER=${COMPILER}
@@ -360,7 +378,13 @@ EOF
       GEN_BASELINE=$(cut -d '|' -f4 <<< "${line}")
       GEN_BASELINE=$(sed -e 's/^ *//' -e 's/ *$//' <<< "${GEN_BASELINE}")
 
-      machines_allow_run "${RMACHINES}" && valid_test=true
+      if [[ ${RMACHINES} == '' ]]; then
+        valid_test=true
+      elif [[ ${RMACHINES} == -* ]]; then
+        [[ ${RMACHINES} =~ ${MACHINE_ID} ]] || valid_test=true
+      elif [[ ${RMACHINES} == +* ]]; then
+        [[ ${RMACHINES} =~ ${MACHINE_ID} ]] && valid_test=true
+      fi
 
       if [[ ${COMMUNITY_PLATFORM} == true && ${valid_test} == true ]]; then
         RT_COMPILER=${COMPILER}
@@ -554,59 +578,14 @@ EOF
 
 }
 
-# Whether a COMPILE/RUN line's MACHINES field allows it under the real
-# MACHINE_ID and the current -P state. A token with a sign attached directly
-# to a name ("+<tag>"/"-<tag>", no space) is a platform tag for -P runs:
-# "+<PLATFORM_TAG>"/"-<PLATFORM_TAG>" (the -P file's declared platform name)
-# mark a line to run (or not run) on that platform. All such tags are left
-# out of the native (Tier 1) machine list, whose own sign is followed by a
-# space ("+ hera ursa", "- noaacloud").
-machines_allow_run() {
-  local machines=$1
-  local has_tag=false
-  local has_no_tag=false
-  local native_machines=''
-  local token
-  local -a tokens=()
-  read -r -a tokens <<< "${machines}"
-  for token in ${tokens[@]+"${tokens[@]}"}; do
-    if [[ ${token} =~ ^[+-][^+-] ]]; then
-      [[ ${token} == "+${PLATFORM_TAG}" ]] && has_tag=true
-      [[ ${token} == "-${PLATFORM_TAG}" ]] && has_no_tag=true
-    else
-      native_machines+="${token} "
-    fi
-  done
-
-  if [[ ${COMMUNITY_PLATFORM} == true ]]; then
-    [[ ${has_tag} == true && ${has_no_tag} == false ]] && return 0 || return 1
-  fi
-
-  native_machines=${native_machines% }
-  [[ ${native_machines} == '+' || ${native_machines} == '-' ]] && native_machines=''
-
-  [[ ${native_machines} == '' ]] && return 0
-  if [[ ${native_machines} == -* ]]; then
-    [[ ${native_machines} =~ ${MACHINE_ID} ]] && return 1 || return 0
-  elif [[ ${native_machines} == +* ]]; then
-    [[ ${native_machines} =~ ${MACHINE_ID} ]] && return 0 || return 1
-  else
-    echo "MACHINES=|${machines}|" >&2
-    die "MACHINES spec must be either an empty string or start with either '+' or '-'"
-  fi
-}
-
 # Resolves RT_CONTAINER_IMG for the current RT_COMPILER; returns 1 if the
-# line's compiler doesn't match the community platform's one declared
-# compiler. A community platform may have no container at all (a native
-# stack), in which case RT_CONTAINER_IMG is left empty.
+# line's compiler doesn't match the container's one declared compiler, or
+# the container image is missing.
 resolve_container_image() {
   RT_CONTAINER_IMG=''
 
   [[ ${RT_COMPILER} == "${COMMUNITY_PLATFORM_COMPILER}" ]] || return 1
   RT_CONTAINER_IMG=${COMMUNITY_PLATFORM_CONTAINER_IMG}
-
-  [[ -z ${RT_CONTAINER_IMG} ]] && return 0
 
   # A dry run (-x) still verifies the container is actually present, since
   # that is one of its pre-flight checks.
@@ -645,19 +624,14 @@ parse_platform_def() {
   ROCOTO_SCHEDULER=${ROCOTO_SCHEDULER:-}
   WORKFLOW_MODULE_CMD=${WORKFLOW_MODULE_CMD:-}
 
-  [[ -n ${MACHINE_ID} ]] || die "${file}: PLATFORM_NAME is required"
+  [[ ${MACHINE_ID} == container ]] || die "${file}: PLATFORM_NAME must be 'container', got '${MACHINE_ID}'"
   [[ -n ${COMMUNITY_PLATFORM_COMPILER} ]] || die "${file}: RT_COMPILER is required"
+  [[ -n ${COMMUNITY_PLATFORM_CONTAINER_IMG} ]] || die "${file}: CONTAINER_IMG is required"
   [[ -n ${PLATFORM_TPN} ]] || die "${file}: TPN is required"
   [[ ${PLATFORM_TPN} =~ ^[0-9]+$ ]] || die "${file}: TPN must be numeric, got '${PLATFORM_TPN}'"
   [[ -n ${SCHEDULER} ]] || die "${file}: SCHEDULER is required"
   [[ -n ${RUNDIR_ROOT} ]] || die "${file}: RUNDIR_ROOT is required"
   [[ -n ${INPUTDATA_ROOT} ]] || die "${file}: INPUTDATA_ROOT is required"
-
-  if [[ -n ${COMMUNITY_PLATFORM_CONTAINER_IMG} ]]; then
-    CONTAINER_USE=true
-  else
-    CONTAINER_USE=false
-  fi
 }
 
 create_or_run_compile_task() {
@@ -678,7 +652,6 @@ export LOG_DIR=${LOG_DIR}
 export RTVERBOSE=${RTVERBOSE}
 export CONTAINER_IMG=${RT_CONTAINER_IMG}
 export CONTAINER_BIND_FLAGS="${CONTAINER_BIND_FLAGS}"
-export CONTAINER_USE=${CONTAINER_USE}
 export COMMUNITY_PLATFORM=${COMMUNITY_PLATFORM}
 EOF
 
@@ -798,23 +771,16 @@ export STOP_ECFLOW_AT_END=false
 export DRY_RUN=false
 ACCNR=${ACCNR:-""}
 
-# -P <platform.def>: build/run on a platform (container or native stack) defined in
-# <platform.def>. CONTAINER_USE is derived in parse_platform_def() from whether the
-# file declares a container image -- it is not a CLI flag.
-CONTAINER_USE=false
+# -P <container.def>: build/run in a container on a platform defined in
+# <container.def>, with MACHINE_ID=container.
 CONTAINER_BIND_DIRS=''
 PLATFORM_TPN=''
 RT_CONTAINER_IMG=''
 
-# PLATFORM_TAG is the "+<tag>"/"-<tag>" name machines_allow_run() checks in
-# rt.conf; it is set to the platform's own declared name once -P is parsed.
-# For native (Tier 1) runs it is not used: every "+<tag>"/"-<tag>" token is
-# left out of the native machine list regardless of its name.
 COMMUNITY_PLATFORM=false
 COMMUNITY_PLATFORM_FILE=''
 COMMUNITY_PLATFORM_COMPILER=''
 COMMUNITY_PLATFORM_CONTAINER_IMG=''
-PLATFORM_TAG='container'
 # Optional; only set if -P's file declares them, needed
 # only to use -r/-e with -P.
 ROCOTO_SCHEDULER=''
@@ -952,7 +918,6 @@ fi
 
 if [[ ${COMMUNITY_PLATFORM} == true ]]; then
   parse_platform_def "${COMMUNITY_PLATFORM_FILE}"
-  PLATFORM_TAG=${MACHINE_ID}
   if [[ ${ROCOTO} == true && -z ${ROCOTO_SCHEDULER:-} ]]; then
     die "-P with -r requires ROCOTO_SCHEDULER in ${COMMUNITY_PLATFORM_FILE}"
   fi
@@ -1319,11 +1284,11 @@ if [[ ${CREATE_BASELINE} == true ]]; then
 
 fi
 
-# A container (-P with a container image) holds only one compiler, so its
-# log file and log directory are named per compiler, e.g.
+# A container (-P) holds only one compiler, so its log file and log
+# directory are named per compiler, e.g.
 # RegressionTests_container_intel.log and logs/log_container_intel/.
 LOG_SUFFIX=''
-if [[ ${COMMUNITY_PLATFORM} == true && ${CONTAINER_USE} == true ]]; then
+if [[ ${COMMUNITY_PLATFORM} == true ]]; then
   LOG_SUFFIX="_${COMMUNITY_PLATFORM_COMPILER}"
 fi
 
@@ -1513,7 +1478,16 @@ while read -r -u 3 line || [[ -n "${line}" ]]; do
 
     [[ ${CREATE_BASELINE} == true && ${CB} != *fv3* ]] && continue
 
-    machines_allow_run "${MACHINES}" || continue
+    if [[ ${MACHINES} != '' ]]; then
+      if [[ ${MACHINES} == -* ]]; then
+        [[ ${MACHINES} =~ ${MACHINE_ID} ]] && continue
+      elif [[ ${MACHINES} == +* ]]; then
+        [[ ${MACHINES} =~ ${MACHINE_ID} ]] || continue
+      else
+        echo "MACHINES=|${MACHINES}|"
+        die "MACHINES spec must be either an empty string or start with either '+' or '-'"
+      fi
+    fi
 
     if [[ ${COMMUNITY_PLATFORM} == true ]] && ! resolve_container_image; then
       [[ ${RUN_SINGLE_TEST} == true ]] && die "No ${RT_COMPILER} container/platform match on ${MACHINE_ID} for -n test"
@@ -1561,7 +1535,16 @@ while read -r -u 3 line || [[ -n "${line}" ]]; do
     [[ -e "tests/${TEST_NAME}" ]] || die "run test file tests/${TEST_NAME} does not exist"
     [[ ${CREATE_BASELINE} == true && ${CB} != *baseline* ]] && continue
 
-    machines_allow_run "${MACHINES}" || continue
+    if [[ ${MACHINES} != '' ]]; then
+      if [[ ${MACHINES} == -* ]]; then
+        [[ ${MACHINES} =~ ${MACHINE_ID} ]] && continue
+      elif [[ ${MACHINES} == +* ]]; then
+        [[ ${MACHINES} =~ ${MACHINE_ID} ]] || continue
+      else
+        echo "MACHINES=|${MACHINES}|"
+        die "MACHINES spec must be either an empty string or start with either '+' or '-'"
+      fi
+    fi
 
     if [[ ${COMMUNITY_PLATFORM} == true ]] && ! resolve_container_image; then
       echo "rt.sh: SKIP test ${TEST_ID} -- compiler ${RT_COMPILER} not available on MACHINE_ID=${MACHINE_ID}"
@@ -1637,7 +1620,6 @@ export WLCLK=${WLCLK}
 export DRY_RUN=${DRY_RUN}
 export CONTAINER_IMG=${RT_CONTAINER_IMG}
 export CONTAINER_BIND_FLAGS="${CONTAINER_BIND_FLAGS}"
-export CONTAINER_USE=${CONTAINER_USE}
 export COMMUNITY_PLATFORM=${COMMUNITY_PLATFORM}
 EOF
 

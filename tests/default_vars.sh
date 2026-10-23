@@ -371,9 +371,9 @@ elif [[ ${MACHINE_ID} = noaacloud ]]; then
   ICE_tasks_cpl_thrd=10
   WAV_tasks_cpl_thrd=12
 
-elif [[ ${MACHINE_ID} = container || ${COMMUNITY_PLATFORM} = 'true' ]]; then
+elif [[ ${MACHINE_ID} = container ]]; then
 
-  # Running in a container or on a community platform.  TPN is provided at
+  # Running in a container.  TPN is provided at
   # runtime via the job .env file; use it if already set, else fall back to 80.
   TPN=${TPN:-80}
   EXCLUSIVE_NODES=.true.

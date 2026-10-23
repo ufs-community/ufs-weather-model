@@ -1,5 +1,5 @@
 -- ufs_container.runtime.lua
--- Host-side runtime module for the container option of rt.sh (-P <platform.def>).
+-- Host-side runtime module for the container option of rt.sh (-P container.def).
 --
 -- This file is loaded on the HOST (not inside the container) before
 -- apptainer/singularity is invoked, by the container compile/run job cards
