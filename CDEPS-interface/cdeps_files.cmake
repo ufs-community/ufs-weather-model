@@ -16,6 +16,7 @@ list(APPEND cdeps_share_files
   CDEPS/share/shr_file_mod.F90
   CDEPS/share/shr_kind_mod.F90
   CDEPS/share/shr_log_mod.F90
+  CDEPS/share/shr_lnd2rof_tracers_mod.F90
   CDEPS/share/shr_nl_mod.F90
   CDEPS/share/shr_orb_mod.F90
   CDEPS/share/shr_precip_mod.F90
@@ -39,6 +40,7 @@ list(APPEND cdeps_dshr_files
   CDEPS/dshr/dshr_dfield_mod.F90
   CDEPS/dshr/dshr_fldlist_mod.F90
   CDEPS/dshr/dshr_mod.F90
+  CDEPS/dshr/dshr_global_sums_mod.F90
 )
 
 list(APPEND cdeps_datm_files
@@ -50,6 +52,10 @@ list(APPEND cdeps_datm_files
   CDEPS/datm/datm_datamode_gefs_mod.F90
   CDEPS/datm/datm_datamode_jra_mod.F90
   CDEPS/datm/datm_datamode_simple_mod.F90
+  CDEPS/datm/datm_pres_aero_mod.F90
+  CDEPS/datm/datm_pres_co2_mod.F90
+  CDEPS/datm/datm_pres_ndep_mod.F90
+  CDEPS/datm/datm_pres_o3_mod.F90
 )
 
 list(APPEND cdeps_dice_files
@@ -61,26 +67,31 @@ list(APPEND cdeps_dice_files
 
 list(APPEND cdeps_dlnd_files
   CDEPS/dlnd/lnd_comp_nuopc.F90
+  CDEPS/dlnd/dlnd_datamode_glc_forcing_mod.F90
+  CDEPS/dlnd/dlnd_datamode_rof_forcing_mod.F90
 )
 
 list(APPEND cdeps_docn_files
   CDEPS/docn/docn_datamode_aquaplanet_mod.F90
-  CDEPS/docn/docn_datamode_copyall_mod.F90
-  CDEPS/docn/docn_datamode_iaf_mod.F90
+  CDEPS/docn/docn_datamode_sstdata_mod.F90
   CDEPS/docn/docn_datamode_som_mod.F90
   CDEPS/docn/docn_datamode_cplhist_mod.F90
   CDEPS/docn/docn_datamode_multilev_mod.F90
-  CDEPS/docn/docn_datamode_multilev_dom_mod.F90
+  CDEPS/docn/docn_datamode_multilev_sstdata_mod.F90
+  CDEPS/docn/docn_datamode_multilev_cplhist_mod.F90
   CDEPS/docn/docn_import_data_mod.F90
   CDEPS/docn/ocn_comp_nuopc.F90
 )
 
 list(APPEND cdeps_drof_files
   CDEPS/drof/rof_comp_nuopc.F90
+  CDEPS/drof/drof_datamode_copyall_mod.F90
+  CDEPS/drof/drof_datamode_cplhist_mod.F90
 )
 
 list(APPEND cdeps_dwav_files
   CDEPS/dwav/wav_comp_nuopc.F90
+  CDEPS/dwav/dwav_datamode_copyall_mod.F90
 )
 
 list(APPEND cdeps_dglc_files
