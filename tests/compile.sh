@@ -60,28 +60,23 @@ case ${MACHINE_ID} in
     # shellcheck source=/github/workspace/modulefiles/ufs_ursa.intelllvm.lua
     source "${PATHTR}/modulefiles/ufs_${MACHINE_ID}.${RT_COMPILER}"
     ;;
-  *)
-    # Activate lua environment for gaea c5
-    if [[ ${MACHINE_ID} == gaeac5 ]]; then
-      module reset
-    fi
-    if [[ ${MACHINE_ID} == gaeac6 ]]; then
-      module reset
-    elif [[ ${MACHINE_ID} == container ]]; then
-      # shellcheck disable=SC1091
-      source /usr/lmod/lmod/init/bash
-      module purge
-    elif [[ ${MACHINE_ID} == hercules ]]; then
-      module purge
-    elif [[ ${MACHINE_ID} == "aws-ec2" ]]; then
-      module purge
-    fi
-
+  ursa|hera|hercules|orion|gaeac5|gaeac6|derecho|aws-ec2)
+    # shellcheck disable=SC1091
+    source "${PATHTR}/tests/module-setup.sh"
     # Load fv3 module
     module use "${PATHTR}/modulefiles"
     modulefile="ufs_${MACHINE_ID}.${RT_COMPILER}"
     module load "${modulefile}"
     module list
+    ;;
+  *) # for any other machine, try to load the module from the modulefiles directory
+    # shellcheck disable=SC1091
+    # Load fv3 module
+    module use "${PATHTR}/modulefiles"
+    modulefile="ufs_${MACHINE_ID}.${RT_COMPILER}"
+    module load "${modulefile}"
+    module list
+    ;;
 esac
 set -x
 

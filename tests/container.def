@@ -1,0 +1,112 @@
+# tests/container.def -- container platform definition template for rt.sh
+# (see tests/stampede.def for a filled-in example for Stampede3)
+#
+# Usage:
+#   1. Edit the values below for your own platform (keep a copy of the
+#      original as a reference).
+#   2. Run:
+#        ./rt.sh -a <account> -P container.def [-l rt.conf] [-s my_test.list]
+#
+#      -l rt.conf       file with the list of tests (rt.conf is the default);
+#                       can also be your own file, e.g. -l my_rt.conf
+#      -s my_test.list  optional: run only the tests listed in my_test.list,
+#                       one "<test name> <compiler>" per line, for example:
+#                         control_c48 intel
+#                         control_p8 intel
+#
+# Tests are selected from rt.conf (or -l <file>) with the machine name
+# "container" in the Machines column, like any other machine:
+# "+ ... container" runs a line in the container, "- ... container"
+# excludes it, and an empty column runs it everywhere.
+#
+# This file is a bash file of KEY=value assignments, sourced by rt.sh.
+# Quote values containing spaces. By default a container run is sequential
+# and skips baseline comparison: a portability check ("does the model build
+# and run here at all?"), not a regression test. -c/-m opt into baseline
+# creation/comparison; -r/-e opt into Rocoto/ecFlow (needs ROCOTO_SCHEDULER
+# and/or WORKFLOW_MODULE_CMD). See the User's Guide chapter "Container
+# Option to Test and Run the UFS Weather Model" for the full field reference.
+# ------------------------------------------------------------------------
+# Platform and container
+#
+#   PLATFORM_NAME  Required. Must be "container". Becomes MACHINE_ID for
+#                  this run: the machine name matched in rt.conf, and the
+#                  suffix of the *_container job-card templates and
+#                  modulefiles.
+#   RT_COMPILER    Required. The container's one and only compiler:
+#                  "intel" or "gnu". rt.conf lines enabled for the
+#                  container but built with the other compiler are skipped
+#                  with a notice, not an error.
+#   CONTAINER_IMG  Required. Absolute path to a Singularity/Apptainer
+#                  image (*.sif) on this host.
+#   BIND_DIRS      Comma-separated host directories to bind-mount into the
+#                  container (must cover the source tree, input data, and
+#                  RUNDIR_ROOT below).
+# ------------------------------------------------------------------------
+PLATFORM_NAME=container
+RT_COMPILER=intel
+CONTAINER_IMG=/path/to/containers/rocky9-oneapi2024.2-ss192.sif
+BIND_DIRS='/path1,/path2,/path3'
+
+# ------------------------------------------------------------------------
+# Scheduler
+#
+#   TPN         Required. Tasks-Per-Node: MPI tasks per node on this
+#               platform, a numeric entry (e.g., 48 on Stampede3).
+#   SCHEDULER   Required. "slurm", "pbs", or "none" for an
+#               interactive/no-scheduler run.
+#   PARTITION   Slurm partition name (blank for PBS or no scheduler).
+#   QUEUE       Slurm QOS / PBS queue name (blank for no scheduler).
+#   MPI_LAUNCH  MPI launch command used when SCHEDULER is "none" and in
+#               PBS job cards: "mpirun" or "mpiexec" (defaults to
+#               "mpirun" if blank).
+#
+#   The scheduler account/project is set only with rt.sh's own -a <account>
+#   on the command line.
+# ------------------------------------------------------------------------
+TPN=192
+SCHEDULER=slurm
+PARTITION=mypartition
+QUEUE=myqueue
+MPI_LAUNCH=mpirun
+
+# ------------------------------------------------------------------------
+# Run directory
+#
+#   RUNDIR_ROOT  Required. Top-level directory where compile and test run
+#                directories are created. Should be a user-writable path,
+#                preferably on a scratch or work filesystem.
+# ------------------------------------------------------------------------
+RUNDIR_ROOT=/path/to/runtime_dir
+
+# ------------------------------------------------------------------------
+# Input data
+#
+#   INPUTDATA_ROOT       Required. Staged input-data directory (fix files
+#                        and other RT input data).
+#   INPUTDATA_ROOT_WW3   Optional. Defaults to a WW3_input_data_* sibling
+#                        directory under INPUTDATA_ROOT if left blank.
+#   INPUTDATA_LM4        Optional. Defaults to an LM4_input_data
+#                        subdirectory of INPUTDATA_ROOT if left blank.
+#   INPUTDATA_GFSv17opn  Optional. Only needed by tests that explicitly
+#                        require GFSv17 operational input data.
+# ------------------------------------------------------------------------
+INPUTDATA_ROOT=/path/to/input-data
+INPUTDATA_ROOT_WW3=
+INPUTDATA_LM4=
+INPUTDATA_GFSv17opn=
+
+# ------------------------------------------------------------------------
+# Workflow manager (optional; only needed to use -r or -e)
+#
+#   ROCOTO_SCHEDULER    Rocoto's own scheduler-driver name -- not always the
+#                       same as SCHEDULER above (e.g. plain PBS is "pbs" but
+#                       PBS Professional is "pbspro"). Required to use -r.
+#   WORKFLOW_MODULE_CMD A shell command run to put rocoto's or ecflow's
+#                       command-line tools on PATH (e.g. "module load
+#                       rocoto/1.3.7"). Leave blank if already on PATH.
+# ------------------------------------------------------------------------
+ROCOTO_SCHEDULER=
+WORKFLOW_MODULE_CMD=
+#ROCOTO_SCHEDULER=slurm
+#WORKFLOW_MODULE_CMD='module load rocoto/1.3.7'
