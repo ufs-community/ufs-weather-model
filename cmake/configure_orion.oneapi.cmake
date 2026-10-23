@@ -1,0 +1,1 @@
+set(PARALLEL_NETCDF ON  CACHE BOOL "Enable parallel NetCDF" FORCE)
