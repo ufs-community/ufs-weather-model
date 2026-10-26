@@ -4,7 +4,7 @@
 
 # ESMF #
 logKindFlag:            ESMF_LOGKIND_MULTI
-globalResourceControl:  @[ESMF_THREADING]
+globalResourceControl:  false
 
 # EARTH #
 EARTH_component_list: MED ATM OCN ICE
@@ -15,12 +15,10 @@ EARTH_attributes::
 # MED #
 MED_model:                      @[med_model]
 MED_petlist_bounds:             @[med_petlist_bounds]
-MED_omp_num_threads:            @[med_omp_num_threads]
 
 # ATM #
 ATM_model:                      @[atm_model]
 ATM_petlist_bounds:             @[atm_petlist_bounds]
-ATM_omp_num_threads:            @[atm_omp_num_threads]
 ATM_attributes::
   Verbosity = 0
   DumpFields = false
@@ -36,7 +34,6 @@ ATM_attributes::
 # OCN #
 OCN_model:                      @[ocn_model]
 OCN_petlist_bounds:             @[ocn_petlist_bounds]
-OCN_omp_num_threads:            @[ocn_omp_num_threads]
 OCN_attributes::
   Verbosity = 0
   DumpFields = false
@@ -45,15 +42,11 @@ OCN_attributes::
   mesh_ocn = @[MESH_OCN]
   use_coldstart = @[use_coldstart]
   use_mommesh = @[use_mommesh]
-  mom6_output_dir = @[MOM6_OUTPUT_DIR]
-  mom6_output_fh = @[MOM6_HISTFREQ_N]
-  mom6_restart_dir = @[MOM6_RESTART_DIR]
 ::
 
 # ICE #
 ICE_model:                      @[ice_model]
 ICE_petlist_bounds:             @[ice_petlist_bounds]
-ICE_omp_num_threads:            @[ice_omp_num_threads]
 ICE_attributes::
   Verbosity = 0
   DumpFields = false
@@ -130,7 +123,6 @@ ALLCOMP_attributes::
       write_restart_at_endofrun = @[WRITE_ENDOFRUN_RESTART]
       dbug_flag = @[cap_dbug_flag]
       coldair_outbreak_mod = .false.
-      flds_wiso = .false.
       flux_convergence = @[flux_convergence]
       flux_max_iteration = @[flux_iteration]
       ocn_surface_flux_scheme = @[flux_scheme]
