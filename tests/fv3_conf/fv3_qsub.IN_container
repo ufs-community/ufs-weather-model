@@ -79,13 +79,15 @@ source ${PWD}/module-setup.sh
 module purge
 module use ${PWD}/modulefiles
 module load modules.fv3
-module list
+#module list
 exec "$@"
 RUN_EOF
 chmod u+x fv3_container_run.sh
 
-@[MPI_LAUNCH] -n @[UFS_TASKS] --hostfile $PBS_NODEFILE \
-  ${CONTAINERBIN} exec ${BIND_FLAGS} "@[CONTAINER_IMG]" "${PWD}/fv3_container_run.sh" ./fv3.exe
+LAUNCH_CMD=(@[MPI_LAUNCH] -n @[UFS_TASKS] --hostfile ${PBS_NODEFILE}
+  ${CONTAINERBIN} exec ${BIND_FLAGS} "@[CONTAINER_IMG]" "${PWD}/fv3_container_run.sh" ./fv3.exe)
+echo "Launching: ${LAUNCH_CMD[*]}"
+"${LAUNCH_CMD[@]}"
 
 echo "Model ended:    " $(date)
 echo -n " $( date +%s )," >> job_timestamp.txt

@@ -548,7 +548,13 @@ Result: SUCCESS
 ====END OF ${MACHINE_ID^^} REGRESSION TESTING LOG====
 EOF
     echo "Performing Cleanup..."
-    rm -f fv3_*.x fv3_*.exe modules.fv3_* modulefiles/modules.fv3_* keep_tests.tmp
+    # With -P -k, keep fv3_*.exe and their modules.fv3_* files in ./tests so
+    # that a later -P run can reuse them and skip the compile step.
+    if [[ ${COMMUNITY_PLATFORM} == true && ${KEEP_RUNDIR} == true ]]; then
+      rm -f fv3_*.x keep_tests.tmp
+    else
+      rm -f fv3_*.x fv3_*.exe modules.fv3_* modulefiles/modules.fv3_* keep_tests.tmp
+    fi
     # A community platform's (-P) RUNDIR_ROOT is the user's own persistent
     # platform directory, not a throwaway rt_$$ one -- and NEW_BASELINE now
     # lives under it, so auto-deleting it here would destroy a baseline a

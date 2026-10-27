@@ -11,7 +11,6 @@
 
 set -eu
 [[ "${RTVERBOSE:-false}" == true ]] && set -x
-PMI="--mpi=pmi2"
 echo -n " $( date +%s )," > job_timestamp.txt
 
 echo "Model started:  " $(date)
@@ -85,13 +84,15 @@ source ${PWD}/module-setup.sh
 module purge
 module use ${PWD}/modulefiles
 module load modules.fv3
-module list
+#module list
 exec "$@"
 RUN_EOF
 chmod u+x fv3_container_run.sh
 
-srun ${PMI} --label --distribution=block:block -n @[TASKS] \
-  ${CONTAINERBIN} exec ${BIND_FLAGS} "@[CONTAINER_IMG]" "${PWD}/fv3_container_run.sh" ./fv3.exe
+LAUNCH_CMD=(srun --mpi=pmi2 --label --distribution=block:block -n @[TASKS]
+  ${CONTAINERBIN} exec ${BIND_FLAGS} "@[CONTAINER_IMG]" "${PWD}/fv3_container_run.sh" ./fv3.exe)
+echo "Launching: ${LAUNCH_CMD[*]}"
+"${LAUNCH_CMD[@]}"
 
 echo "Model ended:    " $(date)
 echo -n " $( date +%s )," >> job_timestamp.txt
