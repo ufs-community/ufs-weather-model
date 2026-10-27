@@ -2096,9 +2096,6 @@ export_datm_cdeps() {
 
   # required but unused
   WARM_START=.false.
-  CPLWAV=.false.
-  WW3_MODDEF=mod_def.glo_1deg
-  MESH_WAV=mesh.glo_1deg.nc
   CPLCHM=.false.
 
   # atm/ocn/ice resolution
@@ -2129,7 +2126,9 @@ export_datm_cdeps() {
   MOM6_USE_LI2016=False
   MOM6_USE_WAVES=False
   WW3_DOMAIN=''
-
+  CPLWAV=.false.
+  WW3_MODDEF=''
+  MESH_WAV=''
   
   # Set CMEPS component defaults
   export_cmeps
