@@ -59,6 +59,8 @@ LIST_FILES="\
 
 export_datm_cdeps
 export_lm4_lowres
+# LM4 intermediate restarts only at 24 h, used by the _rst test
+LM4_RESTART_INTERVAL="0,0,0,24,0,0"
 
 # these are not in export_datm_cdeps, but needed with LM4
 LNDRES=C48
@@ -107,12 +109,6 @@ READRESTART=.false.
 ATM_compute_tasks=24
 OCN_tasks=0
 ICE_tasks=0
-LND_tasks=24
-lnd_ic_type='custom'
-CALC_SNET=.true.
-layout_x=2
-layout_y=2
-mosaic_file="INPUT/${LNDRES}_mosaic.nc"
 coupling_interval_sec=3600
 TOPOEDITS=""
 #export FV3_RUN="lnd_datm_cdeps_gswp.IN lm4_run.IN"

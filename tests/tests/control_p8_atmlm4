@@ -18,36 +18,36 @@ LIST_FILES="\
       sfcf000.tile4.nc \
       sfcf000.tile5.nc \
       sfcf000.tile6.nc \
-      sfcf024.tile1.nc \
-      sfcf024.tile2.nc \
-      sfcf024.tile3.nc \
-      sfcf024.tile4.nc \
-      sfcf024.tile5.nc \
-      sfcf024.tile6.nc \
-      sfcf048.tile1.nc \
-      sfcf048.tile2.nc \
-      sfcf048.tile3.nc \
-      sfcf048.tile4.nc \
-      sfcf048.tile5.nc \
-      sfcf048.tile6.nc \
+      sfcf018.tile1.nc \
+      sfcf018.tile2.nc \
+      sfcf018.tile3.nc \
+      sfcf018.tile4.nc \
+      sfcf018.tile5.nc \
+      sfcf018.tile6.nc \
+      sfcf042.tile1.nc \
+      sfcf042.tile2.nc \
+      sfcf042.tile3.nc \
+      sfcf042.tile4.nc \
+      sfcf042.tile5.nc \
+      sfcf042.tile6.nc \
       atmf000.tile1.nc \
       atmf000.tile2.nc \
       atmf000.tile3.nc \
       atmf000.tile4.nc \
       atmf000.tile5.nc \
       atmf000.tile6.nc \
-      atmf024.tile1.nc \
-      atmf024.tile2.nc \
-      atmf024.tile3.nc \
-      atmf024.tile4.nc \
-      atmf024.tile5.nc \
-      atmf024.tile6.nc \
-      atmf048.tile1.nc \
-      atmf048.tile2.nc \
-      atmf048.tile3.nc \
-      atmf048.tile4.nc \
-      atmf048.tile5.nc \
-      atmf048.tile6.nc \
+      atmf018.tile1.nc \
+      atmf018.tile2.nc \
+      atmf018.tile3.nc \
+      atmf018.tile4.nc \
+      atmf018.tile5.nc \
+      atmf018.tile6.nc \
+      atmf042.tile1.nc \
+      atmf042.tile2.nc \
+      atmf042.tile3.nc \
+      atmf042.tile4.nc \
+      atmf042.tile5.nc \
+      atmf042.tile6.nc \
        RESTART/cana.res.tile1.nc \
        RESTART/cana.res.tile2.nc \
        RESTART/cana.res.tile3.nc \
@@ -99,15 +99,21 @@ LIST_FILES="\
        RESTART/vegn2.res.tile6.nc" 
 
 
-# currently needs to start on 00z
+# Since LM4 restarts only reproduce if written at 00Z, cold LM4 starts at 06Z for ATM ICs and restarts at 00Z (+18 hr),
+# and runs to the next 00Z (+42 hr) so the restart test can start and end at 00Zs to compare.
 SYEAR=2021
 SMONTH=03
 SDAY=22
-SHOUR=00
+SHOUR=06
 
-FHMAX=48
-RESTART_N=24
-RESTART_INTERVAL="${RESTART_N} -1"
+FHMAX=42
+RESTART_N=18
+RESTART_INTERVAL="${RESTART_N}"
+# LM4 intermediate restarts only at RESTART_N
+LM4_RESTART_INTERVAL="0,0,0,${RESTART_N},0,0"
+# LM4 river slow step counts from cold start, so use a
+# matching step divides 18 for the restart to reproduce. 
+LM4_RIVER_DT_SLOW=21600.
 FV3_RUN="control_run.IN lm4_common.IN"
 
 FIELD_TABLE_ADDITIONAL=field_table_lm4
@@ -140,31 +146,18 @@ RUNTYPE=startup
 READRESTART=.false.
 CMEPS_RESTART_DIR=./RESTART/
 cap_dbug_flag=0
-ATM_tasks=144
-LND_tasks=144
-lnd_ic_type=sfc
-CALC_SNET=.false.
-layout_x=3
-layout_y=8
 OCNRES=100
 LNDRES=C96
 coupling_interval_sec=720
-snow_albedo_option=1
-precip_partition_option=4
-initial_albedo=0.2
 WRITE_DOPOST=.false.
 OUTPUT_GRID=cubed_sphere_grid
 ZSTANDARD_LEVEL=0
-OUTPUT_FH="1 -1"
+OUTPUT_FH="0 18 42"
 FV3_END_FMS_DIAG=.false.
 
 if [[ "$ATMRES" = "$LNDRES" ]]; then
-  lnd_input_dir="INPUT/"
-  mosaic_file="INPUT/${LNDRES}_mosaic.nc"
   samegrid_atmlnd=.true.
 else
-  lnd_input_dir="INPUT/${LNDRES}/"
-  mosaic_file="INPUT/${LNDRES}/${LNDRES}_mosaic.nc"
   samegrid_atmlnd=.false.
 fi
 

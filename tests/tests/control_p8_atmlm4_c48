@@ -12,11 +12,11 @@ CNTL_DIR=control_p8_atmlm4_c48
 
 LIST_FILES="\
       sfcf000.nc \
-      sfcf024.nc \
-      sfcf048.nc \
+      sfcf018.nc \
+      sfcf042.nc \
       atmf000.nc \
-      atmf024.nc \
-      atmf048.nc \
+      atmf018.nc \
+      atmf042.nc \
        RESTART/cana.res.tile1.nc \
        RESTART/cana.res.tile2.nc \
        RESTART/cana.res.tile3.nc \
@@ -67,6 +67,11 @@ LIST_FILES="\
        RESTART/vegn2.res.tile5.nc\
        RESTART/vegn2.res.tile6.nc" 
 
+# Need to set resolutions before export_fv3/export_tiled, which use ATMRES
+ATMRES=C48
+LNDRES=C48
+OCNRES=500
+
 export_fv3
 export_tiled
 export_lm4_lowres
@@ -77,8 +82,8 @@ fi
 # export_fv3 resets this to .true.; quilted FV3 restarts fail the checksum on read in the restart test
 QUILTING_RESTART=.false.
 
-INPES=2
-JNPES=3
+INPES=3
+JNPES=4
 WRTTASK_PER_GROUP=2
 NPZ=127
 NPZP=128
@@ -88,23 +93,20 @@ NPY=49
 DT_ATMOS=1200
 DT_INNER=${DT_ATMOS}
 
-NSTF_NAME='2,0,0,0,0'
+NSTF_NAME='2,1,0,0,0'
 
-# currently needs to start on 00z
-# export SYEAR=2021
-# export SMONTH=03
-# export SDAY=22
-# export SHOUR=00
-## But temp revert to get ICs from 2021032206 for now, until we can get the restart files for 2021032200
+# Since LM4 restarts only reproduce if written at 00Z, cold LM4 starts at 06Z for ATM ICs and restarts at 00Z (+18 hr),
+# and runs to the next 00Z (+42 hr) so the restart test can start and end at 00Zs to compare.
 SYEAR=2021
 SMONTH=03
 SDAY=22
 SHOUR=06
 
-FHMAX=48
-# restart at 00Z (18 h after the 06Z start): LM4 daily-averaged state is not in sub-daily restarts
+FHMAX=42
 RESTART_N=18
-RESTART_INTERVAL="${RESTART_N} -1"
+RESTART_INTERVAL="${RESTART_N}"
+# LM4 intermediate restarts only at RESTART_N
+LM4_RESTART_INTERVAL="0,0,0,${RESTART_N},0,0"
 FV3_RUN="control_run.IN lm4_common.IN"
 
 FIELD_TABLE_ADDITIONAL=field_table_lm4
@@ -135,19 +137,10 @@ RUNTYPE=startup
 READRESTART=.false.
 CMEPS_RESTART_DIR=./RESTART/
 cap_dbug_flag=0
-lnd_ic_type=sfc
-CALC_SNET=.false.
 ULTRALOW=.true.
-ATMRES=C48
-LNDRES=C48
-OCNRES=500
 coupling_interval_fast_sec=${DT_ATMOS}
 coupling_interval_sec=${DT_ATMOS}
-snow_albedo_option=1
-precip_partition_option=4
-initial_albedo=0.2
 WRITE_DOPOST=.false.
-OUTPUT_FH="6 -1"
 IAER=5111
 IOVR=3
 IMO=192
@@ -160,16 +153,12 @@ FNMSKH=${FNMSKH_control}
 
 OUTPUT_GRID='gaussian_grid'
 ZSTANDARD_LEVEL=0
-OUTPUT_FH="6 -1"
+OUTPUT_FH="0 18 42"
 FV3_END_FMS_DIAG=.false.
 
 if [[ "$ATMRES" = "$LNDRES" ]]; then
-  lnd_input_dir="INPUT/"
-  mosaic_file="INPUT/${LNDRES}_mosaic.nc"
   samegrid_atmlnd=.true.
 else
-  lnd_input_dir="INPUT/${LNDRES}/"
-  mosaic_file="INPUT/${LNDRES}/${LNDRES}_mosaic.nc"
   samegrid_atmlnd=.false.
 fi
 

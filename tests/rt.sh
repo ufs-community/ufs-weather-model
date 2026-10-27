@@ -860,9 +860,8 @@ case ${MACHINE_ID} in
     PTMP=${PTMP:-${dprefix}/RT_RUNDIRS}
 
     SCHEDULER="slurm"
-    # TEMP: LM4 input paths not yet in INPUTDATA_ROOT
-    LM4_HYDRO_PATH=${LM4_HYDRO_PATH:-/gpfs/f6/gfdl_a/world-shared/model_gen5/inputs/c96_LM4}
-    LM4_GRID_INPUTDATA=${LM4_GRID_INPUTDATA:-/gpfs/f6/gfdl_b/scratch/Justin.Perket/grid_specs/created_mosaic/input-data-20251015}
+    # TEMP: LM4 C24/C48 exchange grids not yet in INPUTDATA_ROOT
+    LM4_GRID_INPUTDATA=${LM4_GRID_INPUTDATA:-/gpfs/f6/gfdl_b/scratch/Justin.Perket/grid_specs/created_mosaic/input-data-20260617}
     ;;
   hera)
     echo "rt.sh: Setting up hera..."
@@ -913,9 +912,8 @@ case ${MACHINE_ID} in
     PTMP="${PTMP:-${dprefix}/RT_RUNDIRS}"
 
     SCHEDULER=slurm
-    # TEMP: LM4 input paths not yet in INPUTDATA_ROOT
-    LM4_HYDRO_PATH=${LM4_HYDRO_PATH:-/scratch4/GFDL/gfdlscr/Justin.Perket/from_gaea/model_gen5/inputs/c96_LM4}
-    LM4_GRID_INPUTDATA=${LM4_GRID_INPUTDATA:-/scratch4/GFDL/gfdlscr/Justin.Perket/grid_specs/created_mosaic/input-data-20251015}
+    # TEMP: LM4 C24/C48 exchange grids not yet in INPUTDATA_ROOT
+    LM4_GRID_INPUTDATA=${LM4_GRID_INPUTDATA:-/scratch4/GFDL/gfdlscr/Justin.Perket/grid_specs/created_mosaic/input-data-20260617}
 
     ;;
   orion)
@@ -943,6 +941,8 @@ case ${MACHINE_ID} in
     PTMP="${dprefix}/stmp"
 
     SCHEDULER="slurm"
+    # TEMP: LM4 C24/C48 exchange grids not yet in INPUTDATA_ROOT
+    LM4_GRID_INPUTDATA=${LM4_GRID_INPUTDATA:-/work/noaa/gfdlscr/jperket/grid_specs/created_mosaic/input-data-20260617}
 
     cp fv3_conf/fv3_slurm.IN_orion fv3_conf/fv3_slurm.IN
     cp fv3_conf/compile_slurm.IN_orion fv3_conf/compile_slurm.IN
@@ -1076,8 +1076,7 @@ fi
 INPUTDATA_ROOT=${INPUTDATA_ROOT:-${DISKNM}/NEMSfv3gfs/input-data-20260617}
 INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT}/WW3_input_data_20260811
 INPUTDATA_LM4=${INPUTDATA_LM4:-${INPUTDATA_ROOT}/LM4_input_data}
-# LM4 input paths not yet in INPUTDATA_ROOT, set per machine above or in the environment
-LM4_HYDRO_PATH=${LM4_HYDRO_PATH:-${INPUTDATA_LM4}/c96_LM4}
+# TEMP: LM4 C24/C48 exchange grids not yet in INPUTDATA_ROOT, set per machine above or in the environment
 LM4_GRID_INPUTDATA=${LM4_GRID_INPUTDATA:-}
 [[ -n ${LM4_GRID_INPUTDATA} ]] || echo "WARNING: LM4_GRID_INPUTDATA is not set, C24/C48 LM4 tests will fail"
 INPUTDATA_GFSv17opn=${INPUTDATA_GFSv17opn:-${DISKNM}/NEMSfv3gfs/GFSv17opn_20251014}
@@ -1348,7 +1347,6 @@ export RTPWD=${RTPWD}
 export INPUTDATA_ROOT=${INPUTDATA_ROOT}
 export INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT_WW3}
 export INPUTDATA_LM4=${INPUTDATA_LM4}
-export LM4_HYDRO_PATH=${LM4_HYDRO_PATH}
 export LM4_GRID_INPUTDATA=${LM4_GRID_INPUTDATA}
 export INPUTDATA_GFSv17opn=${INPUTDATA_GFSv17opn}
 export PATHRT=${PATHRT}

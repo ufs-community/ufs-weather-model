@@ -51,8 +51,8 @@ if [[ $ATMRES == 'C96' || $LNDRES == 'C96' ]]; then
 
   tar -xvf @[INPUTDATA_LM4]/c96_LM4/c96_topo_rough_land.nc.tar -C ./INPUT/
 
-  # For rivers. TEMP, SHOULD BE IN INPUTDATA_LM4 IF USING RIVERS
-  tar -xvf  @[LM4_HYDRO_PATH]/c96_OM4_025_hydrography_v20170413.tar -C ./INPUT/ \
+  # For rivers
+  tar -xvf @[INPUTDATA_LM4]/c96_LM4/c96_OM4_025_hydrography_v20170413.tar -C ./INPUT/ \
     --wildcards "river_data.tile?.nc"
 
    # get these if don't already have:
@@ -62,10 +62,13 @@ if [[ $ATMRES == 'C96' || $LNDRES == 'C96' ]]; then
      rsync -arv @[INPUTDATA_ROOT]/MOM6_FIX/@[OCNRES]/* ./INPUT
 
 else
-   echo "Using LM4 grid files from @[LM4_GRID_INPUTDATA]/a@[LNDRES]o@[OCNRES] (C24, C48)"
-
-
-    rsync -arv @[LM4_GRID_INPUTDATA]/a@[LNDRES]o@[OCNRES]/* ./INPUT
+  # C24, C48: shared grid files from the default UFS input data,
+  # TEMP UNTIL PR: LM4-only exchange grids from LM4_GRID_INPUTDATA
+  rsync -arv @[INPUTDATA_ROOT]/CPL_FIX/a@[LNDRES]o@[OCNRES]/grid_spec.nc ./INPUT
+  rsync -arv @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT/@[LNDRES]_grid.tile*.nc ./INPUT
+  rsync -arv @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT/grid_spec.nc ./INPUT/@[LNDRES]_mosaic.nc
+  rsync -arv @[INPUTDATA_ROOT]/MOM6_FIX/@[OCNRES]/* ./INPUT
+  rsync -arv @[LM4_GRID_INPUTDATA]/a@[LNDRES]o@[OCNRES]/@[LNDRES]_mosaic_tile?X*.nc ./INPUT
 fi
 
 ln -s @[INPUTDATA_LM4]/common_LM4/biodata.nc                 ./INPUT/biodata.nc
