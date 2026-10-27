@@ -2097,6 +2097,8 @@ export_datm_cdeps() {
   # required but unused
   WARM_START=.false.
   CPLWAV=.false.
+  WW3_MODDEF=mod_def.glo_1deg
+  MESH_WAV=mesh.glo_1deg.nc
   CPLCHM=.false.
 
   # atm/ocn/ice resolution
