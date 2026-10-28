@@ -63,6 +63,7 @@ function create_baseline() {
 		    export dprefix=/work2/noaa/${ACCNR}/${USER}
 		    sed "s|/noaa/stmp/|/noaa/${ACCNR}/stmp/|g" -i rt.sh
 		    export ACCNR=epic
+		    ./rt.sh -a "${ACCNR}" "${workflow}"cs test_changes.list | tee "${WORKSPACE}/tests/logs/RT-run-${machine}.log"
 		    ./rt.sh -a "${ACCNR}" -c "${workflow}" "${opt}" "${suite}" | tee "${WORKSPACE}/tests/logs/RT-run-${machine}.log"
 		    status=${PIPESTATUS[0]}
 		    export DISKNM=/work/noaa/epic/hercules/UFS-WM_RT
@@ -98,6 +99,7 @@ function create_baseline() {
 		    sed "s|/noaa/stmp/|/noaa/${ACCNR}/stmp/|g" -i rt.sh
 		    export ACCNR=epic
 		    ./rt.sh -a "${ACCNR}" -c "${workflow}" "${opt}" "${suite}" | tee "${WORKSPACE}/tests/logs/RT-run-${machine}.log"
+		    ./rt.sh -a "${ACCNR}" "${workflow}"cs test_changes.list | tee "${WORKSPACE}/tests/logs/RT-run-${machine}.log"
 		    status=${PIPESTATUS[0]}
 		    export DISKNM=/work/noaa/epic/UFS-WM_RT
 		    cd ${DISKNM}/NEMSfv3gfs/
@@ -123,7 +125,7 @@ function create_baseline() {
 		elif [[ ${machine} =~ "Gaea" ]]
 		then
 		    echo "Creating baselines on ${machine}"
-		    ./rt.sh -a "${ACCNR}" -c "${workflow}" "${opt}" "${suite}" | tee "${WORKSPACE}/tests/logs/RT-run-${machine}.log"
+		    ./rt.sh -a "${ACCNR}" "${workflow}"cs test_changes.list | tee "${WORKSPACE}/tests/logs/RT-run-${machine}.log"
 		    status=${PIPESTATUS[0]}
 		    unset LD_LIBRARY_PATH
 		    export DISKNM=/gpfs/f5/epic/world-shared/UFS-WM_RT
@@ -152,7 +154,7 @@ function create_baseline() {
 		    export ACCNR=epic
 		    sed "s|QUEUE=batch|QUEUE=windfall|g" -i rt.sh
 		    local workflow="-e"
-		    ./rt.sh -a "${ACCNR}" -ecs test_changes.list | tee "${WORKSPACE}/tests/logs/RT-run-${machine}.log"
+		    ./rt.sh -a "${ACCNR}" "${workflow}"cs test_changes.list | tee "${WORKSPACE}/tests/logs/RT-run-${machine}.log"
 		    status=${PIPESTATUS[0]}
 		    export DISKNM=/scratch3/NAGAPE/epic/role.epic/UFS-WM_RT
 		    cd ${DISKNM}/NEMSfv3gfs/
@@ -175,8 +177,8 @@ function create_baseline() {
 		    cd "${WORKSPACE}/tests/"	
 		else
 		    echo "Creating baselines on ${machine}"
-		    local workflow="-r"
-		    ./rt.sh -a "${ACCNR}" -c "${workflow}" "${opt}" "${suite}" | tee "${WORKSPACE}/tests/logs/RT-run-${machine}.log"
+		    local workflow="-e"
+		    ./rt.sh -a "${ACCNR}" "${workflow}"cs test_changes.list | tee "${WORKSPACE}/tests/logs/RT-run-${machine}.log"
 		    status=${PIPESTATUS[0]}
 		fi
 
