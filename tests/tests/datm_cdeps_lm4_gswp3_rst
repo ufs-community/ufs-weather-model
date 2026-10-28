@@ -32,6 +32,12 @@ LIST_FILES="\
             RESTART/land.res.tile5.nc \
             RESTART/land.res.tile6.nc \
             RESTART/landuse.res       \
+            RESTART/river.res.tile1.nc\
+            RESTART/river.res.tile2.nc\
+            RESTART/river.res.tile3.nc\
+            RESTART/river.res.tile4.nc\
+            RESTART/river.res.tile5.nc\
+            RESTART/river.res.tile6.nc\
             RESTART/snow.res.tile1.nc \
             RESTART/snow.res.tile2.nc \
             RESTART/snow.res.tile3.nc \
@@ -58,6 +64,8 @@ LIST_FILES="\
             RESTART/vegn2.res.tile6.nc"
 
 export_datm_cdeps
+export_lm4
+LM4_RESTART_INTERVAL="0,0,0,24,0,0"
 
 # these are not in export_datm_cdeps, but needed with LM4
 LNDRES=C96
@@ -105,12 +113,6 @@ READRESTART=.false.
 ATM_compute_tasks=24
 OCN_tasks=0
 ICE_tasks=0
-LND_tasks=24
-lnd_ic_type='custom'
-CALC_SNET=.true.
-layout_x=2
-layout_y=2
-mosaic_file="INPUT/C96_mosaic.nc"
 coupling_interval_sec=3600
 TOPOEDITS=""
 WARM_START=.true.
@@ -119,7 +121,7 @@ RESTART_FILE_SUFFIX_SECS=$(set_restart_file_suffix_secs)
 LM4_RESTART_PREFIX=$(set_restart_file_prefix)
 
 #export FV3_RUN="lnd_datm_cdeps_gswp.IN lm4_run.IN"
-FV3_RUN="lm4_run.IN"
+FV3_RUN="lm4_common.IN lm4_datm_cdeps_gswp.IN"
 DIAG_TABLE="diag_table_datm_lm4.IN"
 INPUT_NML="input_datm_lm4.nml.IN"
 FIELD_TABLE_ADDITIONAL=field_table_lm4

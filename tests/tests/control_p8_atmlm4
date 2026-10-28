@@ -1,0 +1,166 @@
+###############################################################################
+#
+#  Global control test GFSv16 atmosphere-land only at C96L127, P8 configuration
+#
+###############################################################################
+
+source tests/control_p8
+export_lm4
+
+TEST_DESCR="Active Atmosphere and GFDL Land Model 4"
+
+CNTL_DIR=control_p8_atmlm4
+
+LIST_FILES="\
+      sfcf000.tile1.nc \
+      sfcf000.tile2.nc \
+      sfcf000.tile3.nc \
+      sfcf000.tile4.nc \
+      sfcf000.tile5.nc \
+      sfcf000.tile6.nc \
+      sfcf018.tile1.nc \
+      sfcf018.tile2.nc \
+      sfcf018.tile3.nc \
+      sfcf018.tile4.nc \
+      sfcf018.tile5.nc \
+      sfcf018.tile6.nc \
+      sfcf042.tile1.nc \
+      sfcf042.tile2.nc \
+      sfcf042.tile3.nc \
+      sfcf042.tile4.nc \
+      sfcf042.tile5.nc \
+      sfcf042.tile6.nc \
+      atmf000.tile1.nc \
+      atmf000.tile2.nc \
+      atmf000.tile3.nc \
+      atmf000.tile4.nc \
+      atmf000.tile5.nc \
+      atmf000.tile6.nc \
+      atmf018.tile1.nc \
+      atmf018.tile2.nc \
+      atmf018.tile3.nc \
+      atmf018.tile4.nc \
+      atmf018.tile5.nc \
+      atmf018.tile6.nc \
+      atmf042.tile1.nc \
+      atmf042.tile2.nc \
+      atmf042.tile3.nc \
+      atmf042.tile4.nc \
+      atmf042.tile5.nc \
+      atmf042.tile6.nc \
+       RESTART/cana.res.tile1.nc \
+       RESTART/cana.res.tile2.nc \
+       RESTART/cana.res.tile3.nc \
+       RESTART/cana.res.tile4.nc \
+       RESTART/cana.res.tile5.nc \
+       RESTART/cana.res.tile6.nc \
+       RESTART/glac.res.tile1.nc \
+       RESTART/glac.res.tile2.nc \
+       RESTART/glac.res.tile3.nc \
+       RESTART/glac.res.tile4.nc \
+       RESTART/glac.res.tile5.nc \
+       RESTART/glac.res.tile6.nc \
+       RESTART/lake.res.tile1.nc \
+       RESTART/lake.res.tile2.nc \
+       RESTART/lake.res.tile3.nc \
+       RESTART/lake.res.tile4.nc \
+       RESTART/lake.res.tile5.nc \
+       RESTART/lake.res.tile6.nc \
+       RESTART/land.res.tile1.nc \
+       RESTART/land.res.tile2.nc \
+       RESTART/land.res.tile3.nc \
+       RESTART/land.res.tile4.nc \
+       RESTART/land.res.tile5.nc \
+       RESTART/land.res.tile6.nc \
+       RESTART/landuse.res	  \
+       RESTART/snow.res.tile1.nc \
+       RESTART/snow.res.tile2.nc \
+       RESTART/snow.res.tile3.nc \
+       RESTART/snow.res.tile4.nc \
+       RESTART/snow.res.tile5.nc \
+       RESTART/snow.res.tile6.nc \
+       RESTART/soil.res.tile1.nc \
+       RESTART/soil.res.tile2.nc \
+       RESTART/soil.res.tile3.nc \
+       RESTART/soil.res.tile4.nc \
+       RESTART/soil.res.tile5.nc \
+       RESTART/soil.res.tile6.nc \
+       RESTART/vegn1.res.tile1.nc\
+       RESTART/vegn1.res.tile2.nc\
+       RESTART/vegn1.res.tile3.nc\
+       RESTART/vegn1.res.tile4.nc\
+       RESTART/vegn1.res.tile5.nc\
+       RESTART/vegn1.res.tile6.nc\
+       RESTART/vegn2.res.tile1.nc\
+       RESTART/vegn2.res.tile2.nc\
+       RESTART/vegn2.res.tile3.nc\
+       RESTART/vegn2.res.tile4.nc\
+       RESTART/vegn2.res.tile5.nc\
+       RESTART/vegn2.res.tile6.nc" 
+
+
+# Since LM4 restarts only reproduce if written at 00Z, cold LM4 starts at 06Z for ATM ICs and restarts at 00Z (+18 hr),
+# and runs to the next 00Z (+42 hr) so the restart test can start and end at 00Zs to compare.
+SYEAR=2021
+SMONTH=03
+SDAY=22
+SHOUR=06
+
+FHMAX=42
+RESTART_N=18
+RESTART_INTERVAL="${RESTART_N}"
+# LM4 intermediate restarts only at RESTART_N
+LM4_RESTART_INTERVAL="0,0,0,${RESTART_N},0,0"
+# LM4 river slow step counts from cold start, so use a
+# matching step divides 18 for the restart to reproduce. 
+LM4_RIVER_DT_SLOW=21600.
+FV3_RUN="control_run.IN lm4_common.IN"
+
+FIELD_TABLE_ADDITIONAL=field_table_lm4
+
+DIAG_TABLE=diag_table_cpld.IN
+DIAG_TABLE_ADDITIONAL=diag_additional_cpld_lm4.IN
+
+INPUT_NML="input_atm_lm4.nml.IN"
+
+
+CPLLND=.true.
+CPLLM4=.true.
+CPLLND2ATM=.true.
+CPLFLX=.false.  
+ULTRALOW=.false.
+
+
+UFS_CONFIGURE=ufs.configure.atm_lm4.IN
+
+med_model=cmeps
+atm_model=fv3
+lnd_model=lm4
+CMEPS_PIO_FORMAT='pnetcdf'
+CMEPS_PIO_STRIDE=4
+CMEPS_PIO_IOTASKS=-99
+CMEPS_PIO_REARR='box'
+CMEPS_PIO_ROOT=-99
+CPLMODE=ufs.frac
+RUNTYPE=startup
+READRESTART=.false.
+CMEPS_RESTART_DIR=./RESTART/
+cap_dbug_flag=0
+OCNRES=100
+LNDRES=C96
+coupling_interval_sec=720
+WRITE_DOPOST=.false.
+OUTPUT_GRID=cubed_sphere_grid
+ZSTANDARD_LEVEL=0
+OUTPUT_FH="0 18 42"
+FV3_END_FMS_DIAG=.false.
+
+if [[ "$ATMRES" = "$LNDRES" ]]; then
+  samegrid_atmlnd=.true.
+else
+  samegrid_atmlnd=.false.
+fi
+
+MOM6_TOPOEDITS=""
+
+
