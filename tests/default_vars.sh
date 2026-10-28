@@ -392,109 +392,6 @@ DumpFields="false"
 MED_history_n=1000000
 RESTART_FH=" "
 
-# shellcheck disable=2329
-export_mpas ()
-{
-    export_gfs_physics
-    # ufs.configure defaults
-    UFS_CONFIGURE=ufs.configure.atm.IN
-    atm_model=mpas
-
-    #
-    MPAS=true
-    FV3=false
-    S2S=false
-    HAFS=false
-    AQM=false
-    FIRE_BEHAVIOR=false
-    DATM_CDEPS=false
-    DOCN_CDEPS=false
-    DICE_CDEPS=false
-    CICE_PRESCRIBED=false
-    CDEPS_INLINE=false
-    POSTAPP='global'
-    USE_MERRA2=.true.
-    NESTED=.false.
-    BLOCKSIZE=32
-    CHKSUM_DEBUG=.false.
-    DYCORE_ONLY=.false
-
-    # MPAS dynamical core defaults for RRFS
-    MPAS_RESOLUTION=120
-
-    ATM_compute_tasks=4
-
-    #DJS2025 START: We don't need this for MPAS, but to setup the tests we do. CLEAN THIS UP!!!
-    #Set defaults if ATMRES and DT_ATMOS are not set
-    ATMRES=${ATMRES:-"C96"}
-    DT_ATMOS=${DT_ATMOS:-"1800"}
-
-    DAYS=1
-    ENS_NUM=1
-    SYEAR=2016
-    SMONTH=10
-    SDAY=03
-    SHOUR=00
-    SECS=$(( SHOUR*3600 ))
-    FHMAX=$(( DAYS*24 ))
-    FHCYC=0
-    FHROT=0
-    LDIAG3D=.false.
-    QDIAG3D=.false.
-    PRINT_DIFF_PGR=.false.
-    MAX_OUTPUT_FIELDS=310
-    UPDATE_FULL_OMEGA=.false.
-    FHZERO=6
-    FHCYC=0
-    CPLWAV=.false.
-    CPLCHM=.false.
-    CPLWAV2ATM=.false.
-
-    #DT_INNER=(Time step)/2
-    DT_INNER_c96=360
-    DT_INNER_c192=300
-    DT_INNER_c384=150
-    DT_INNER_c768=75
-
-    if [[ ${DT_ATMOS} = 1800 ]]; then
-     default_dt_atmos=1
-     DT_INNER=${DT_INNER_c96}
-    else
-     default_dt_atmos=0
-     DT_INNER=${DT_ATMOS}
-    fi
-    #DJS2025 END:
-
-    # DJS2025: This is needed by rt_utils.sh, but not applicable to MPAS forecasts yet...
-    NTILES=1
-    QUILTING=.false.
-    QUILTING_RESTART=.false.
-
-    # stochastic phsyics (NOT USED in MPAS yet)
-    DO_SPPT=.false.
-    DO_SHUM=.false.
-    DO_SKEB=.false.
-    LNDP_TYPE=0
-    N_VAR_LNDP=0
-
-    INPES=${INPES_dflt}
-    JNPES=${JNPES_dflt}
-
-    # DJS2025: Needed for mpasatm_configure
-    RESTART_INTERVAL=0
-    ITASKS=1
-    OUTPUT_HISTORY=.true.
-    HISTORY_FILE_ON_NATIVE_GRID=.true.
-    NUM_FILES=2
-    FV3ATM_OUTPUT_DIR="./"
-    FILENAME_BASE="'atm' 'sfc'"
-    OUTPUT_GRID="'mpas'"
-    OUTPUT_FILE="'netcdf'"
-    ZSTANDARD_LEVEL=0
-
-    DOMAINS_STACK_SIZE=3000000
-}
-
 export_mpas_stochy ()
 {
     MPAS_DO_SPPT=.false.
@@ -630,7 +527,7 @@ export_mpas() {
   #DJS2025 START: We don't need this for MPAS, but to setup the tests we do. CLEAN THIS UP!!!
   #Set defaults if ATMRES and DT_ATMOS are not set
   ATMRES=${ATMRES:-"C96"}
-  DT_ATMOS=${DT_ATMOS:-"1800"}
+  DT_ATMOS=${DT_ATMOS:-"720"}
 
   DAYS=1
   ENS_NUM=1
@@ -696,17 +593,39 @@ export_mpas() {
   ZSTANDARD_LEVEL=0
 
   DOMAINS_STACK_SIZE=3000000
+
+  ORO_FILENAME="none"
 }
 export_mpas_rrfs() {
   # RRFS agnostic MPAS settings
   export_mpas
 
   # RRFS specific MPAS settings.
-  DIAG_TABLE=diag_table_mpas
-  FIELD_TABLE=field_table_rrfs_mpas
   FV3_RUN=rrfs_mpas_run.IN
   INPUT_NML=control_rrfs_mpas.nml.IN
-  CCPP_SUITE=MPAS_RRFS
+  CCPP_SUITE=MPAS_RRFSv2_alpha
+
+  # Same as HRRR/RAP defaults below
+  GWD_OPT=3
+  DO_UGWP_V0=.false.
+  DO_UGWP_V0_OROG_ONLY=.false.
+  DO_GSL_DRAG_LS_BL=.true.
+  DO_GSL_DRAG_SS=.true.
+  DO_GSL_DRAG_TOFD=.true.
+  DO_UGWP_V1=.false.
+  DO_UGWP_V1_OROG_ONLY=.false.
+  LDIAG_UGWP=.false.
+
+  # GWG resolution dependent settings
+  # DJS: Not sure what these should be for MPAS mesh size?
+  #CDMBGWD_c48='0.071,2.1,1.0,1.0'
+  #CDMBGWD_c96='0.14,1.8,1.0,1.0'
+  #CDMBGWD_c192='0.23,1.5,1.0,1.0'
+  #CDMBGWD_c384='1.1,0.72,1.0,1.0'
+  #CDMBGWD_c768='4.0,0.15,1.0,1.0'
+
+  # set default
+  CDMBGWD='23,2.42,1.0,1.0'
 
   # Stochastic physics
   export_mpas_stochy
@@ -719,13 +638,22 @@ export_mpas_gfs() {
   export_mpas
 
   # GFS specific MPAS setting
-  DIAG_TABLE=diag_table_mpas
-  FIELD_TABLE=field_table_gfsv17_mpas
   FV3_RUN=gfs_mpas_run.IN
   INPUT_NML=control_gfs_mpas.nml.IN
-  # Use regional physics for now.
-  CCPP_SUITE=MPAS_RRFS
+  CCPP_SUITE=MPAS_GFSv17
 
+  # Same as GFSv17 defaults below
+  GWD_OPT=2
+  DO_UGWP_v0=.false.
+  DO_UGWP_v0_OROG_ONLY=.false.
+  DO_UGWP_v0_NST_ONL=.false.
+  DO_GSL_DRAG_LS_BL=.true.
+  DO_GSL_DRAG_SS=.true.
+  DO_GSL_DRAG_TOFD=.true.
+  DO_UGWP_v1=.true.
+  DO_UGWP_v1_W_GFSLDRAG=.true.
+  LDIAG_UGWP=.false.
+  
   # Stochastic physics
   export_mpas_stochy
 
