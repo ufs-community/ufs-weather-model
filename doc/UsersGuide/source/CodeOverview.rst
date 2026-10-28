@@ -28,7 +28,6 @@ Currently, Level 1 (or Tier-1) platforms for regression testing are:
    * Ursa (Intel/GNU compilers)
    * Orion (Intel)
    * Hercules (Intel/GNU compilers)
-   * Derecho (Intel/GNU compilers)
    
 More information is available in the :wm-wiki:`UFS WM wiki <Regression-Test-Policy-for-Weather-Model-Platforms-and-Compilers>`. 
 
