@@ -21,6 +21,14 @@ cp    @[INPUTDATA_ROOT]/CICE_FIX/@[OCNRES]/grid_cice_NEMS_mx@[OCNRES].nc .
 cp    @[INPUTDATA_ROOT]/CICE_FIX/@[OCNRES]/kmtu_cice_NEMS_mx@[OCNRES].nc .
 cp    @[INPUTDATA_ROOT]/CICE_FIX/@[OCNRES]/mesh.mx@[OCNRES].nc .
 
+# WW3 fix/input
+if [[ $CPLWAV == .true. ]]; then
+  cp @[INPUTDATA_ROOT_WW3]/@[WW3_MODDEF] mod_def.ww3
+  if [[ ${WW3_DOMAIN:0:2} != mx ]]; then
+    cp @[INPUTDATA_ROOT_WW3]/@[MESH_WAV] .
+  fi
+fi
+
 if [ $WARM_START = .false. ]; then
 # cold start
  if [[ $OCNRES == '025' ]]; then
@@ -48,4 +56,19 @@ else
  RFILE="DATM_${DATM_SRC}.datm.r.2021-03-22-64800.nc"
  cp ../${DEP_RUN}${RT_SUFFIX}/${RFILE} ./INPUT
  ls -1 "./INPUT/"${RFILE}>rpointer.atm
+
+# WAVE restart file
+ if [[ $CPLWAV == .true. ]]; then
+   RFILE=ufs.cpld.ww3.r.2011-10-01-43200.nc
+   cp ../${DEP_RUN}${RT_SUFFIX}/${RFILE} .
+   ls -1 ${RFILE}>rpointer.wav
+   if [[ $WW3_DOMAIN == 'global_270k' ]]; then
+     if [[ -f ../${DEP_RUN}${SUFFIX}/out.pnt_wght.ww3.nc ]]; then
+       cp ../${DEP_RUN}${SUFFIX}/out.pnt_wght.ww3.nc pnt_wght.ww3.nc
+     else
+       cp ../${DEP_RUN}${SUFFIX}/pnt_wght.ww3.nc pnt_wght.ww3.nc
+     fi
+   fi
+ fi
+
 fi
