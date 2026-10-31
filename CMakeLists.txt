@@ -72,6 +72,7 @@ set(CCPP_32BIT      OFF CACHE BOOL "Enable CCPP_32BIT (single precision arithmet
 set(SAMFCNV_32BIT   OFF CACHE BOOL "Enable SAMFCNV_32BIT (single precision arithmetic in SAMF convection)")
 set(RRTMGP_32BIT    OFF CACHE BOOL "Enable 32BIT (single precision arithmetic in rte-rrtmgp radiation)")
 set(FASTER          ON  CACHE BOOL "Enable faster optimization compiler flags")
+set(XHOST           ON  CACHE BOOL "Enable xHost instruction set")
 set(AVX2            ON  CACHE BOOL "Enable AVX2 instruction set")
 set(AVX             OFF CACHE BOOL "Enable AVX-I instruction set")
 set(SIMDMULTIARCH   OFF CACHE BOOL "Enable multi-target SIMD instruction sets")
@@ -201,7 +202,12 @@ if(CMEPS OR CDEPS)
 endif()
 
 find_package(bacio 2.4.0 REQUIRED)
-find_package(sp 2.3.3 REQUIRED)
+if(NOT TARGET bacio::bacio_4)
+  add_library(bacio::bacio_4 ALIAS bacio::bacio)
+else()
+  add_library(bacio::bacio ALIAS bacio::bacio_4)
+endif()
+find_package(ip 5 REQUIRED)
 find_package(w3emc 2.9.2 REQUIRED)
 
 if(MPAS)
@@ -259,6 +265,32 @@ endif()
 ###############################################################################
 if(UFS_GOCART)
   add_subdirectory(GOCART)
+  # This ugly hack is necessary to avoid the error from buggy fpp in Intel compiler version 2025.2.1
+  #
+  #   If:
+  # 1) we are on Gaea C6 AND
+  # 2) the Fortran compiler is IntelLLVM version 2025.2.1 AND
+  # 3) an fpp from an earlier compiler version exists THEN
+  #   explicitly set the name of the fpp preprocessor executable for all targets in GOCART
+  #
+  # Once newer Intel compiler (with fixed fpp) is installed on Gaea C6 this should be removed
+  #
+  if(CMAKE_Platform STREQUAL "gaeac6.oneapi" AND
+     CMAKE_Fortran_COMPILER_ID STREQUAL "IntelLLVM" AND CMAKE_Fortran_COMPILER_VERSION VERSION_EQUAL 2025.2.1 AND
+     EXISTS "/opt/intel/oneapi/compiler/2025.0/bin/fpp")
+
+    target_compile_options(Process_Library   PRIVATE -fpp-name=/opt/intel/oneapi/compiler/2025.0/bin/fpp -Qoption,fpp,-P)
+    target_compile_options(Chem_Shared2G     PRIVATE -fpp-name=/opt/intel/oneapi/compiler/2025.0/bin/fpp -Qoption,fpp,-P)
+    target_compile_options(GA_Environment    PRIVATE -fpp-name=/opt/intel/oneapi/compiler/2025.0/bin/fpp -Qoption,fpp,-P)
+    target_compile_options(CA2G_GridComp     PRIVATE -fpp-name=/opt/intel/oneapi/compiler/2025.0/bin/fpp -Qoption,fpp,-P)
+    target_compile_options(DU2G_GridComp     PRIVATE -fpp-name=/opt/intel/oneapi/compiler/2025.0/bin/fpp -Qoption,fpp,-P)
+    target_compile_options(NI2G_GridComp     PRIVATE -fpp-name=/opt/intel/oneapi/compiler/2025.0/bin/fpp -Qoption,fpp,-P)
+    target_compile_options(SS2G_GridComp     PRIVATE -fpp-name=/opt/intel/oneapi/compiler/2025.0/bin/fpp -Qoption,fpp,-P)
+    target_compile_options(SU2G_GridComp     PRIVATE -fpp-name=/opt/intel/oneapi/compiler/2025.0/bin/fpp -Qoption,fpp,-P)
+    target_compile_options(GOCART2G_GridComp PRIVATE -fpp-name=/opt/intel/oneapi/compiler/2025.0/bin/fpp -Qoption,fpp,-P)
+    target_compile_options(Aerosol_GridComp  PRIVATE -fpp-name=/opt/intel/oneapi/compiler/2025.0/bin/fpp -Qoption,fpp,-P)
+    target_compile_options(UFS_Aerosols      PRIVATE -fpp-name=/opt/intel/oneapi/compiler/2025.0/bin/fpp -Qoption,fpp,-P)
+  endif()
 endif()
 
 ###############################################################################

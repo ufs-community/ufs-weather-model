@@ -16,7 +16,7 @@ load(pathJoin("cmake", cmake_ver))
 
 load("ufs_common")
 
-nccmp_ver=os.getenv("nccmp_ver") or "1.9.1.0"
+nccmp_ver=os.getenv("nccmp_ver") or "1.9.0.1"
 load(pathJoin("nccmp", nccmp_ver))
 
 setenv("CC", "mpiicx")
