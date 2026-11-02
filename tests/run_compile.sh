@@ -85,7 +85,8 @@ if [[ ${MACHINE_ID} = container ]]; then
         echo "       Provide ${PATHTR}/modulefiles/ufs_container.${RT_COMPILER}.lua" >&2
         exit 1
     fi
-    cp "${PATHTR}/modulefiles/ufs_container.runtime.lua" "modulefiles/ufs_container.runtime.lua"
+    # Host-side runtime modulefile — loaded on the host before the container launches.
+    cp "${PATHTR}/modulefiles/ufs_container.runtime.lua" "modulefiles/modules.fv3.runtime.lua"
     [[ -f "${PATHTR}/modulefiles/ufs_common.lua" ]] && \
         cp "${PATHTR}/modulefiles/ufs_common.lua" "modulefiles/ufs_common.lua"
     cp "${PATHRT}/module-setup.sh" "module-setup.sh"
@@ -135,7 +136,7 @@ if [[ ${ROCOTO} = 'false' ]]; then
     # nounset (set -u) is temporarily disabled while they are loaded.
     set +u
     module use modulefiles
-    module load ufs_container.runtime
+    module load modules.fv3.runtime
     set -u
     # Run compile interactively inside the container.
     if command -v apptainer &>/dev/null; then
