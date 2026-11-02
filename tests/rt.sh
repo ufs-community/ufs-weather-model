@@ -1281,7 +1281,7 @@ if [[ "${CREATE_BASELINE}" == false && ( ${COMMUNITY_PLATFORM} == false || ${RTP
 fi
 
 INPUTDATA_ROOT=${INPUTDATA_ROOT:-${DISKNM}/NEMSfv3gfs/input-data-20260617}
-INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT_WW3:-${INPUTDATA_ROOT}/WW3_input_data_20260811}
+INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT_WW3:-${INPUTDATA_ROOT}/WW3_input_data_20261020}
 INPUTDATA_LM4=${INPUTDATA_LM4:-${INPUTDATA_ROOT}/LM4_input_data}
 # A community platform (-P) has no DISKNM, so INPUTDATA_GFSv17opn is left
 # blank unless the -P file sets it; run_test.sh stops a test that needs it.
