@@ -548,7 +548,7 @@ the ``DISKNM`` and ``INPUTDATA_ROOT`` paths for each platform. These paths are s
 
 For Level 3–4 systems, input data is publicly available in the `UFS WM Data Bucket <https://registry.opendata.aws/noaa-ufs-regtests/>`__.
 The current input data sets are ``input-data-20260617`` (``INPUTDATA_ROOT``), with WaveWatch III data in
-``input-data-20260617/WW3_input_data_20260811`` (``INPUTDATA_ROOT_WW3``) and LM4 data in
+``input-data-20260617/WW3_input_data_20261020`` (``INPUTDATA_ROOT_WW3``) and LM4 data in
 ``input-data-20260617/LM4_input_data`` (``INPUTDATA_LM4``).
 
 The complete ``input-data-20260617`` data set is large. To run only the tests enabled for the container in
@@ -576,7 +576,7 @@ use each subdirectory, and the ``--exclude`` options skip subdirectories that th
    # Input data needed ONLY for the tests enabled for "container" in tests/rt.conf
    export INPUTDATA_ROOT=$PWD/input-data-20260617
    export BUCKET=s3://noaa-ufs-regtests-pds/input-data-20260617
-   export INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT}/WW3_input_data_20260811
+   export INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT}/WW3_input_data_20261020
 
    # --- FV3 static fix files (global fix: grids, orography, climatology, Thompson tables) ---
    aws s3 sync ${BUCKET}/FV3_fix/ ${INPUTDATA_ROOT}/FV3_fix/ --no-sign-request
@@ -661,7 +661,7 @@ use each subdirectory, and the ``--exclude`` options skip subdirectories that th
    aws s3 sync ${BUCKET}/FV3_input_data_L149_wam/ ${INPUTDATA_ROOT}/FV3_input_data_L149_wam/ --no-sign-request
 
    # --- WW3 (S2SW/S2SWA-family tests, plus hafs_regional_atm_wav / hafs_regional_storm_following_1nest_atm_ocn_wav_mom6) ---
-   aws s3 sync ${BUCKET}/WW3_input_data_20260811/ ${INPUTDATA_ROOT_WW3} --no-sign-request
+   aws s3 sync ${BUCKET}/WW3_input_data_20261020/ ${INPUTDATA_ROOT_WW3} --no-sign-request
 
    # Not needed for container tests:
    #   GEFS/ (BMIC tests), FV3_input_data384/ (C384), FV3_fix_tiled/C384mx025, LM4_input_data/ (datm_cdeps_lm4_*),
@@ -1005,7 +1005,7 @@ line with ``rt.sh -a <account>``.
        (see :numref:`Section %s <container-rt-data>`).
    * - ``INPUTDATA_ROOT_WW3``
      - Optional. WaveWatch III input data directory. Defaults to
-       ``${INPUTDATA_ROOT}/WW3_input_data_20260811`` if left blank.
+       ``${INPUTDATA_ROOT}/WW3_input_data_20261020`` if left blank.
    * - ``INPUTDATA_LM4``
      - Optional. LM4 land model input data directory. Defaults to
        ``${INPUTDATA_ROOT}/LM4_input_data`` if left blank.
