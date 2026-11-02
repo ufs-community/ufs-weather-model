@@ -13,21 +13,20 @@
 # ------------------------------------------------------------------------
 
 PLATFORM_NAME=container
-RT_COMPILER=intel
-CONTAINER_IMG=/work2/10000/nperlin/stampede3/rocky9-oneapi2024.2-ss192.sif
-#RT_COMPILER=gnu
-#CONTAINER_IMG=/work2/10000/nperlin/stampede3/rocky9-gcc13-ss192-ompi416.sif
-BIND_DIRS='/work2,/scratch'
+CONTAINER_IMG_INTEL=/scratch/10000/nperlin/rocky9-oneapi2024.2-ss192.sif
+CONTAINER_IMG_GNU=/scratch/10000/nperlin/rocky9-gcc13-ss192-ompi416.sif
+BIND_DIRS='/work,/scratch'
 
 TPN=48
 SCHEDULER=slurm
 PARTITION=skx-dev
 QUEUE=
-MPI_LAUNCH=mpirun
+MPI_LAUNCH_INTEL=
+MPI_LAUNCH_GNU=
 
-RUNDIR_ROOT=/scratch/10000/nperlin/UFS-WM/RUNDIRS_intel
+RUNDIR_ROOT=/scratch/10000/nperlin/UFS-WM/RUNDIRS
 
-INPUTDATA_ROOT=/work2/10000/nperlin/stampede3/ufs-wm_input/input-data-20260617
+INPUTDATA_ROOT=/work/10000/nperlin/stampede3/ufs-wm_input/input-data-20260617
 INPUTDATA_ROOT_WW3=
 INPUTDATA_LM4=
 INPUTDATA_GFSv17opn=

@@ -16,6 +16,9 @@ echo "Model started:  " $(date)
 
 export OMP_NUM_THREADS=@[THRD]
 export OMP_STACKSIZE=512M
+# Some hosts (e.g., Hercules, Orion) have a small default stack limit, which
+# causes segfaults in CICE.
+ulimit -s unlimited
 export ESMF_RUNTIME_COMPLIANCECHECK=OFF:depth=4
 export ESMF_RUNTIME_PROFILE=ON
 export ESMF_RUNTIME_PROFILE_OUTPUT="SUMMARY"
@@ -31,8 +34,13 @@ if [ "${JOB_SHOULD_FAIL:-NO}" = WHEN_RUNNING ] ; then
 fi
 
 # Load the host-side runtime module (makes apptainer/singularity and host MPI available).
-module use "@[PATHTR]/modulefiles"
-module load ufs_container.runtime
+# Some system module or completion scripts reference unset variables, so
+# nounset (set -u) is temporarily disabled while they are loaded.
+set +u
+module use $PWD/modulefiles
+module load modules.fv3.runtime
+set -u
+module list
 
 # Locate the container runtime on the host.
 if command -v apptainer &>/dev/null; then
@@ -54,6 +62,7 @@ export "${CONTAINER}ENV_FI_PROVIDER=tcp"
 export "${CONTAINER}ENV_RTVERBOSE=${RTVERBOSE:-false}"
 if [[ "@[RT_COMPILER]" == intel ]]; then
   [[ -n "${FI_PROVIDER_PATH:-}" ]] && export "${CONTAINER}ENV_FI_PROVIDER_PATH=${FI_PROVIDER_PATH}"
+  unset I_MPI_PMI_LIBRARY
 elif [[ "@[RT_COMPILER]" == gnu ]]; then
   export "${CONTAINER}ENV_PMIX_MCA_gds=hash"
   export "${CONTAINER}ENV_PMIX_MCA_psec=native"

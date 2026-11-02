@@ -584,18 +584,24 @@ EOF
 
 }
 
-# Resolves RT_CONTAINER_IMG for the current RT_COMPILER; returns 1 if the
-# line's compiler doesn't match the container's one declared compiler, or
-# the container image is missing.
+# Resolves RT_CONTAINER_IMG and MPI_LAUNCH for the current RT_COMPILER;
+# returns 1 if no container image is set for the line's compiler.
 resolve_container_image() {
-  RT_CONTAINER_IMG=''
+  case ${RT_COMPILER} in
+    intel)
+      RT_CONTAINER_IMG=${RT_CONTAINER_IMG_INTEL}
+      MPI_LAUNCH=${RT_MPI_LAUNCH_INTEL}
+      ;;
+    gnu)
+      RT_CONTAINER_IMG=${RT_CONTAINER_IMG_GNU}
+      MPI_LAUNCH=${RT_MPI_LAUNCH_GNU}
+      ;;
+    *)
+      RT_CONTAINER_IMG=''
+      ;;
+  esac
 
-  [[ ${RT_COMPILER} == "${COMMUNITY_PLATFORM_COMPILER}" ]] || return 1
-  RT_CONTAINER_IMG=${COMMUNITY_PLATFORM_CONTAINER_IMG}
-
-  # A dry run (-x) still verifies the container is actually present, since
-  # that is one of its pre-flight checks.
-  [[ -f ${RT_CONTAINER_IMG} ]] || return 1
+  [[ -n ${RT_CONTAINER_IMG} ]] || return 1
   [[ -f ${PATHTR}/modulefiles/ufs_container.${RT_COMPILER}.lua ]] \
     || die "modulefiles/ufs_container.${RT_COMPILER}.lua not found under ${PATHTR}"
   [[ -f ${PATHTR}/modulefiles/ufs_container.runtime.lua ]] \
@@ -605,22 +611,22 @@ resolve_container_image() {
 
 # Sources a -P platform definition file (KEY=value assignments) and checks
 # its required keys. A few keys are copied to rt.sh's own names, e.g.
-# RT_COMPILER -> COMMUNITY_PLATFORM_COMPILER, since RT_COMPILER is reset
-# for each rt.conf line.
+# CONTAINER_IMG_INTEL -> RT_CONTAINER_IMG_INTEL.
 parse_platform_def() {
   local file=$1
   # shellcheck disable=SC1090
   source "${file}" || die "${file}: failed to source platform definition file"
 
   MACHINE_ID=${PLATFORM_NAME:-}
-  COMMUNITY_PLATFORM_COMPILER=${RT_COMPILER:-}
-  COMMUNITY_PLATFORM_CONTAINER_IMG=${CONTAINER_IMG:-}
+  RT_CONTAINER_IMG_INTEL=${CONTAINER_IMG_INTEL:-}
+  RT_CONTAINER_IMG_GNU=${CONTAINER_IMG_GNU:-}
   CONTAINER_BIND_DIRS=${BIND_DIRS:-}
   PLATFORM_TPN=${TPN:-}
   SCHEDULER=${SCHEDULER:-}
   PARTITION=${PARTITION:-}
   QUEUE=${QUEUE:-}
-  MPI_LAUNCH=${MPI_LAUNCH:-mpirun}
+  RT_MPI_LAUNCH_INTEL=${MPI_LAUNCH_INTEL:-mpiexec}
+  RT_MPI_LAUNCH_GNU=${MPI_LAUNCH_GNU:-mpirun}
   RUNDIR_ROOT=${RUNDIR_ROOT:-}
   INPUTDATA_ROOT=${INPUTDATA_ROOT:-}
   INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT_WW3:-}
@@ -631,8 +637,13 @@ parse_platform_def() {
   WORKFLOW_MODULE_CMD=${WORKFLOW_MODULE_CMD:-}
 
   [[ ${MACHINE_ID} == container ]] || die "${file}: PLATFORM_NAME must be 'container', got '${MACHINE_ID}'"
-  [[ -n ${COMMUNITY_PLATFORM_COMPILER} ]] || die "${file}: RT_COMPILER is required"
-  [[ -n ${COMMUNITY_PLATFORM_CONTAINER_IMG} ]] || die "${file}: CONTAINER_IMG is required"
+  [[ -n ${RT_CONTAINER_IMG_INTEL}${RT_CONTAINER_IMG_GNU} ]] \
+    || die "${file}: set at least one of CONTAINER_IMG_INTEL, CONTAINER_IMG_GNU"
+  # A wrong path must stop the run here, not silently skip that compiler's tests.
+  local img
+  for img in "${RT_CONTAINER_IMG_INTEL}" "${RT_CONTAINER_IMG_GNU}"; do
+    [[ -z ${img} || -f ${img} ]] || die "${file}: container image not found: ${img}"
+  done
   [[ -n ${PLATFORM_TPN} ]] || die "${file}: TPN is required"
   [[ ${PLATFORM_TPN} =~ ^[0-9]+$ ]] || die "${file}: TPN must be numeric, got '${PLATFORM_TPN}'"
   [[ -n ${SCHEDULER} ]] || die "${file}: SCHEDULER is required"
@@ -782,11 +793,13 @@ ACCNR=${ACCNR:-""}
 CONTAINER_BIND_DIRS=''
 PLATFORM_TPN=''
 RT_CONTAINER_IMG=''
+RT_CONTAINER_IMG_INTEL=''
+RT_CONTAINER_IMG_GNU=''
+RT_MPI_LAUNCH_INTEL=''
+RT_MPI_LAUNCH_GNU=''
 
 COMMUNITY_PLATFORM=false
 COMMUNITY_PLATFORM_FILE=''
-COMMUNITY_PLATFORM_COMPILER=''
-COMMUNITY_PLATFORM_CONTAINER_IMG=''
 # Optional; only set if -P's file declares them, needed
 # only to use -r/-e with -P.
 ROCOTO_SCHEDULER=''
@@ -1290,20 +1303,12 @@ if [[ ${CREATE_BASELINE} == true ]]; then
 
 fi
 
-# A container (-P) holds only one compiler, so its log file and log
-# directory are named per compiler, e.g.
-# RegressionTests_container_intel.log and logs/log_container_intel/.
-LOG_SUFFIX=''
-if [[ ${COMMUNITY_PLATFORM} == true ]]; then
-  LOG_SUFFIX="_${COMMUNITY_PLATFORM_COMPILER}"
-fi
-
 # A community platform (-P) run skips the comparison by default, but it is
 # not a weekly (-w) run; keep its log name RegressionTests_<platform>.log.
 if [[ ${skip_check_results} == true && ${COMMUNITY_PLATFORM} == false ]]; then
   REGRESSIONTEST_LOG=${PATHRT}/logs/RegressionTests_weekly_${MACHINE_ID}.log
 else
-  REGRESSIONTEST_LOG=${PATHRT}/logs/RegressionTests_${MACHINE_ID}${LOG_SUFFIX}.log
+  REGRESSIONTEST_LOG=${PATHRT}/logs/RegressionTests_${MACHINE_ID}.log
 fi
 
 [ -f "${REGRESSIONTEST_LOG}" ] && cp "${REGRESSIONTEST_LOG}" "${REGRESSIONTEST_LOG}.bak"
@@ -1317,7 +1322,7 @@ source default_vars.sh
 COMPILE_COUNTER=0
 rm -f fail_test* fail_compile*
 
-LOG_DIR=${PATHRT}/logs/log_${MACHINE_ID}${LOG_SUFFIX}
+LOG_DIR=${PATHRT}/logs/log_${MACHINE_ID}
 export LOG_DIR
 
 rm -rf "${LOG_DIR}"

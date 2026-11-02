@@ -336,7 +336,6 @@ The container option requires a Singularity/Apptainer image (``*.sif``). Both GN
 Intel-based images are supported. Users can either build their own image from the Docker Hub
 images (see :numref:`Section %s <container-rt-image-build>`), or use an existing ``*.sif`` image
 if one is already staged on the system (see :numref:`Section %s <container-rt-image-tier1>`).
-Pre-built images on Stampede3 a staged in a user's directory providing an example. 
 Container images are also staged on NOAA RDHPC Tier 1 platforms in common locations maintained by EPIC.
 
 .. note::
@@ -458,8 +457,6 @@ both GNU and Intel toolchains are staged in the following directories:
 
    * - Machine
      - Directory
-   * - Stampede3 (*)
-     - ``/work2/10000/nperlin/stampede3``
    * - Ursa
      - ``/scratch3/NCEPDEV/nems/role.epic/containers``
    * - Gaea-C6
@@ -470,9 +467,6 @@ both GNU and Intel toolchains are staged in the following directories:
      - ``/glade/work/epicufsrt/contrib/containers``
    * - NOAA Cloud
      - ``/contrib/EPIC/containers``
-
-(*) - The Stampede3 images are staged in a user's directory, not in a common location
-maintained by EPIC. The Tier 1 locations are common locations maintained by EPIC.
 
 The container image file names are:
 
@@ -524,7 +518,7 @@ NOAA RDHPC Tier 1. These paths should be provided as a comma-separated list in t
      - Main bind directory
      - Additional bind directory
    * - Stampede3
-     - ``/work2``
+     - ``/work``
      - ``/scratch``
    * - Derecho
      - ``/glade``
@@ -838,7 +832,7 @@ The following platform definition files are provided in the ``tests/`` directory
    * - ``container.def``
      - Template with a description of every entry. Edit it for your platform.
    * - ``stampede.def``
-     - Example for GNU or Intel container runs on Stampede3 (TACC, University of Texas).
+     - Example for GNU and Intel container runs on Stampede3 (TACC, University of Texas).
 
 To set up a new platform:
 
@@ -876,27 +870,26 @@ the values to edit:
 .. literalinclude:: ../../../tests/container.def
    :language: bash
 
-**Container option example** (Stampede3, Intel container). These are the values set in
+**Container option example** (Stampede3, Intel and GNU containers). These are the values set in
 ``tests/stampede.def``:
 
 .. code-block:: bash
 
    PLATFORM_NAME=container
-   RT_COMPILER=intel
-   CONTAINER_IMG=/work2/10000/nperlin/stampede3/rocky9-oneapi2024.2-ss192.sif
-   #RT_COMPILER=gnu
-   #CONTAINER_IMG=/work2/10000/nperlin/stampede3/rocky9-gcc13-ss192-ompi416.sif
-   BIND_DIRS='/work2,/scratch'
+   CONTAINER_IMG_INTEL=/scratch/10000/nperlin/rocky9-oneapi2024.2-ss192.sif
+   CONTAINER_IMG_GNU=/scratch/10000/nperlin/rocky9-gcc13-ss192-ompi416.sif
+   BIND_DIRS='/work,/scratch'
 
    TPN=48
    SCHEDULER=slurm
    PARTITION=skx-dev
    QUEUE=
-   MPI_LAUNCH=mpirun
+   MPI_LAUNCH_INTEL=
+   MPI_LAUNCH_GNU=
 
-   RUNDIR_ROOT=/scratch/10000/nperlin/UFS-WM/RUNDIRS_intel
+   RUNDIR_ROOT=/scratch/10000/nperlin/UFS-WM/RUNDIRS
 
-   INPUTDATA_ROOT=/work2/10000/nperlin/stampede3/ufs-wm_input/input-data-20260617
+   INPUTDATA_ROOT=/work/10000/nperlin/stampede3/ufs-wm_input/input-data-20260617
    INPUTDATA_ROOT_WW3=
    INPUTDATA_LM4=
    INPUTDATA_GFSv17opn=
@@ -906,9 +899,9 @@ the values to edit:
 
 In this example:
 
-* The Intel container image is selected, and ``/work2`` and ``/scratch`` are bound into
-  the container. To use the GNU container instead, uncomment the ``gnu`` lines (a later
-  assignment overrides an earlier one) and give it its own ``RUNDIR_ROOT``.
+* Both container images are set, so Intel tests use the Intel image and GNU tests use the
+  GNU image. To run only one compiler, comment out or remove the other image.
+* ``/work`` and ``/scratch`` are bound into the container.
 * ``TPN=48`` gives 48 MPI tasks per node (Stampede3 SKX nodes), with the Slurm partition
   ``skx-dev``.
 * Only ``INPUTDATA_ROOT`` is given; the other input data directories use their defaults.
@@ -942,12 +935,16 @@ Platform Definition Fields
      - Required. Must be ``container``. Becomes ``MACHINE_ID`` for the run: the machine
        name matched in the **Machines** column of ``rt.conf``, and the suffix of the container
        job card templates in ``tests/fv3_conf/`` and of the container modulefiles.
-   * - ``RT_COMPILER``
-     - Required. The container's only compiler: ``intel`` or ``gnu``. ``rt.conf`` lines that
-       are enabled for the container but use the other compiler are skipped with a notice.
-   * - ``CONTAINER_IMG``
-     - Required. Absolute path to the Singularity/Apptainer image file (``*.sif``) on the
-       host. If the image file does not exist, the lines that need it are skipped.
+   * - ``CONTAINER_IMG_INTEL``
+     - Absolute path to an Intel Singularity/Apptainer image file (``*.sif``) on the host.
+       ``rt.conf`` lines with the ``intel`` compiler use this image.
+   * - ``CONTAINER_IMG_GNU``
+     - Absolute path to a GNU Singularity/Apptainer image file (``*.sif``) on the host.
+       ``rt.conf`` lines with the ``gnu`` compiler use this image.
+
+       At least one of the two images is required. ``rt.sh`` stops with an error if neither
+       is set, or if a path that is set does not exist. ``rt.conf`` lines for a compiler with
+       no image are skipped with a notice.
    * - ``BIND_DIRS``
      - Comma-separated list of host directories to bind/mount to the container.
        Include all filesystems containing the source tree, input data, and run directory.
@@ -971,9 +968,12 @@ Platform Definition Fields
      - Slurm partition name (leave blank for PBS or ``none``).
    * - ``QUEUE``
      - Slurm QOS / PBS queue name (leave blank for ``none``).
-   * - ``MPI_LAUNCH``
-     - MPI launch command used when ``SCHEDULER`` is ``none`` and in PBS job cards:
-       ``mpirun`` or ``mpiexec``. Defaults to ``mpirun`` if blank.
+   * - ``MPI_LAUNCH_INTEL``
+     - MPI launch command for Intel tests, used when ``SCHEDULER`` is ``none`` and in PBS
+       job cards. Defaults to ``mpiexec`` if blank.
+   * - ``MPI_LAUNCH_GNU``
+     - MPI launch command for GNU tests, used when ``SCHEDULER`` is ``none`` and in PBS
+       job cards. Defaults to ``mpirun`` if blank.
 
 The scheduler account (project) is not set in this file. It is always given on the command
 line with ``rt.sh -a <account>``.
@@ -1070,7 +1070,7 @@ to check a new container image or platform, or to rerun only the tests that fail
 The file lists one test per line: the test name, a single space, and the compiler. The test
 name is the name in the ``RUN`` line of ``rt.conf`` (and of the test file in ``tests/tests/``),
 and the compiler is ``intel`` or ``gnu``, as in the ``COMPILE`` line above that ``RUN`` line.
-For example, a file ``container_tests.list`` for the Intel container:
+For example, a file ``container_tests.list`` for Intel tests:
 
 .. code-block:: text
 
@@ -1087,8 +1087,8 @@ For example, a file ``container_tests.list`` for the Intel container:
    * Each line is matched exactly against ``"<test name> <compiler>"``, so extra spaces or
      tabs make a line match nothing.
    * Only tests enabled for the container in ``rt.conf`` (see
-     :numref:`Section %s <container-rt-tested>`) and built with the compiler set by
-     ``RT_COMPILER`` in the platform definition file are run; other listed tests are skipped.
+     :numref:`Section %s <container-rt-tested>`) and built with a compiler that has an
+     image in the platform definition file are run; other listed tests are skipped.
      If none of the listed tests can be run, ``rt.sh`` stops with an error.
    * After each run, ``rt.sh`` writes the failed tests to ``tests/test_changes.list`` in the
      same format, so ``-s test_changes.list`` reruns only the tests that failed.
@@ -1209,8 +1209,8 @@ On **PBS** systems the command may look similar to:
    qsub -I -l walltime=<time> -A <account> -q <queue> -l select=1:ncpus=<cores>:mpiprocs=<cores>
 
 After the allocation is granted (and connecting via ``ssh`` to the compute node if required),
-run ``rt.sh``. The model is started with the ``MPI_LAUNCH`` command from the
-platform definition file.
+run ``rt.sh``. The model is started with the ``MPI_LAUNCH_INTEL`` or ``MPI_LAUNCH_GNU``
+command from the platform definition file.
 
 .. code-block:: console
 
@@ -1254,12 +1254,8 @@ new run starts. A symlink ``tests/run_dir`` points to ``RUNDIR_ROOT``.
 Log files are written to the ``tests/logs/`` directory, as for Tier 1 runs
 (see :numref:`Section %s <log-files>`):
 
-* ``RegressionTests_container_<compiler>.log`` — summary of the run.
-* ``log_container_<compiler>/`` — detailed compile and test logs.
-
-A container holds only one compiler, so the compiler is part of both names (for example,
-``RegressionTests_container_intel.log`` and ``log_container_intel/``). Runs with the
-GNU and Intel containers therefore keep separate logs.
+* ``RegressionTests_container.log`` — summary of the run.
+* ``log_container/`` — detailed compile and test logs.
 
 For sequential runs, a ``COMPILE/TEST SUMMARY`` with PASS/FAIL for each compile and test
 is also printed to the terminal when all tests have finished.
