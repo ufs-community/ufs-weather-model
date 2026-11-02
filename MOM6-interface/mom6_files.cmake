@@ -37,6 +37,7 @@ list(APPEND mom6_src_files
   MOM6/src/ALE/Recon1d_PPM_H4_2018.F90
   MOM6/src/ALE/Recon1d_PPM_H4_2019.F90
   MOM6/src/ALE/Recon1d_PPM_hybgen.F90
+  MOM6/src/ALE/Recon1d_PLM_WLS.F90
   MOM6/src/ALE/Recon1d_type.F90
 
   MOM6/src/core/MOM.F90
@@ -133,6 +134,7 @@ list(APPEND mom6_src_files
   MOM6/src/framework/MOM_coupler_types.F90
   MOM6/src/framework/MOM_cpu_clock.F90
   MOM6/src/framework/MOM_data_override.F90
+  MOM6/src/framework/MOM_diag_buffers.F90
   MOM6/src/framework/MOM_diag_mediator.F90
   MOM6/src/framework/MOM_diag_remap.F90
   MOM6/src/framework/MOM_document.F90
@@ -184,6 +186,7 @@ list(APPEND mom6_src_files
   MOM6/src/parameterizations/lateral/MOM_internal_tides.F90
   MOM6/src/parameterizations/lateral/MOM_load_love_numbers.F90
   MOM6/src/parameterizations/lateral/MOM_lateral_mixing_coeffs.F90
+  MOM6/src/parameterizations/lateral/MOM_meso_sfn_ANN.F90
   MOM6/src/parameterizations/lateral/MOM_mixed_layer_restrat.F90
   MOM6/src/parameterizations/lateral/MOM_spherical_harmonics.F90
   MOM6/src/parameterizations/lateral/MOM_thickness_diffuse.F90
@@ -339,6 +342,7 @@ list(APPEND mom6_nuopc_src_files
   MOM6/config_src/drivers/nuopc_cap/mom_cap_profiling.F90
   MOM6/config_src/drivers/nuopc_cap/mom_inline_mod.F90
   MOM6/config_src/drivers/nuopc_cap/mom_cap_outputlog.F90
+  MOM6/config_src/drivers/nuopc_cap/mom_outputlog_methods.F90
   MOM6/config_src/drivers/unit_tests/test_MOM_ANN.F90
   MOM6/config_src/drivers/unit_tests/test_MOM_file_parser.F90
   MOM6/config_src/drivers/unit_tests/test_MOM_mixedlayer_restrat.F90

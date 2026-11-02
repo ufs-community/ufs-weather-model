@@ -4,22 +4,22 @@
 #
 ###############################################################################
 
-export TEST_DESCR="Compare HRRR CLM Lake restart results with control"
+TEST_DESCR="Compare HRRR CLM Lake restart results with control"
 
-export CNTL_DIR=hrrr_control_dyn32_phy32
+CNTL_DIR=hrrr_control_dyn32_phy32
 
-export LIST_FILES="sfcf012.nc \
-                   atmf012.nc \
-                   GFSFLX.GrbF12 \
-                   GFSPRS.GrbF12"
+LIST_FILES="sfcf012.nc \
+            atmf012.nc \
+            GFSFLX.GrbF12 \
+            GFSPRS.GrbF12"
 
 export_hrrr
-export FHROT=6
-export FHMAX=12
-export WARM_START=.true.
-export NGGPS_IC=.false.
-export EXTERNAL_IC=.false.
-export MAKE_NH=.false.
-export MOUNTAIN=.true.
-export NA_INIT=0
-export RESTART_FILE_PREFIX="${SYEAR}${SMONTH}${SDAY}.$(printf "%02d" $(( ${SHOUR} + ${FHROT}  )))0000"
+FHROT=6
+FHMAX=12
+WARM_START=.true.
+NGGPS_IC=.false.
+EXTERNAL_IC=.false.
+MAKE_NH=.false.
+MOUNTAIN=.true.
+NA_INIT=0
+RESTART_FILE_PREFIX=$(set_restart_file_prefix)

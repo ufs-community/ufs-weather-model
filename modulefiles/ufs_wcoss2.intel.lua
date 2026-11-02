@@ -18,6 +18,9 @@ load(pathJoin("cray-mpich", cray_mpich_ver))
 cmake_ver=os.getenv("cmake_ver") or "3.20.2"
 load(pathJoin("cmake", cmake_ver))
 
+python_ver=os.getenv("python_ver") or "3.12.0"
+load(pathJoin("python", python_ver))
+
 local ufs_modules = {
   {["jasper"]      = "2.0.25"},
   {["zlib"]        = "1.2.11"},

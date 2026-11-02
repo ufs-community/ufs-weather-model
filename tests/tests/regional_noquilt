@@ -4,42 +4,42 @@
 #
 ###############################################################################
 
-export TEST_DESCR="Compare FV3 regional noquilt results with previous trunk version"
+TEST_DESCR="Compare FV3 regional noquilt results with previous trunk version"
 
-export CNTL_DIR=regional_noquilt
+CNTL_DIR=regional_noquilt
 
-export LIST_FILES="  atmos_4xdaily.nc \
-                     fv3_history2d.nc \
-                       fv3_history.nc \
-     RESTART/fv_core.res.tile1_new.nc \
-   RESTART/fv_tracer.res.tile1_new.nc"
+LIST_FILES="  atmos_4xdaily.nc \
+              fv3_history2d.nc \
+              fv3_history.nc \
+              RESTART/fv_core.res.tile1_new.nc \
+              RESTART/fv_tracer.res.tile1_new.nc"
 
 export_fv3_v16
 
-export FV3_RUN=regional_run.IN
+FV3_RUN=regional_run.IN
 
-export OZ_PHYS_OLD=.false.
-export OZ_PHYS_NEW=.true.
-export H2O_PHYS=.true.
-export HYBEDMF=.false.
-export RESTART_INTERVAL="3 -1"
-export QUILTING=.false.
+OZ_PHYS_OLD=.false.
+OZ_PHYS_NEW=.true.
+H2O_PHYS=.true.
+HYBEDMF=.false.
+RESTART_INTERVAL="3 -1"
+QUILTING=.false.
 
-export CCPP_SUITE=FV3_GFS_v15_thompson_mynn_lam3km
-export INPUT_NML=regional.nml.IN
-export MODEL_CONFIGURE=model_configure_regional.IN
-export DIAG_TABLE=diag_table_noquilt
-export FIELD_TABLE=field_table_regional
+CCPP_SUITE=FV3_GFS_v15_thompson_mynn_lam3km
+INPUT_NML=regional.nml.IN
+MODEL_CONFIGURE=model_configure_regional.IN
+DIAG_TABLE=diag_table_noquilt
+FIELD_TABLE=field_table_regional
 
-export WLCLK=15
-export FHMAX=6
-export INPES=10
-export JNPES=11
-export WRITE_RESTART_WITH_BCS=.true.
-export OUTPUT_FH="2 4 6"
+WLCLK=15
+FHMAX=6
+INPES=10
+JNPES=11
+WRITE_RESTART_WITH_BCS=.true.
+OUTPUT_FH="2 4 6"
 NTILES=1
 
 if [[ ${MACHINE_ID} = ursa ]]; then
-   TPN=168
-   export EXCLUSIVE_NODES=.true.
+  TPN=168
+  EXCLUSIVE_NODES=.true.
 fi
