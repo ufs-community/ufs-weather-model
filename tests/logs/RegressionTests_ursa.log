@@ -1,7 +1,7 @@
 ====START OF URSA REGRESSION TESTING LOG====
 
 UFSWM hash used in testing:
-b3fdebc1152f0d4e2b4561d851a27bac0f76821f
+a44eb31b242371188959c05a57839a831a9272e1
 
 Submodule hashes used in testing:
  532ad5c6da1c827e055df90eaf6c91134f909eed AQM (v0.2.0-77-g532ad5c)
@@ -21,9 +21,9 @@ Submodule hashes used in testing:
  fce422195a0c58f15a55946b5ed517ba4365e232 MOM6-interface/MOM6/pkg/CVMix-src (heads/master)
  29e64d652786e1d076a05128c920f394202bfe10 MOM6-interface/MOM6/pkg/GSW-Fortran (29e64d6)
  2c7b3bc2a8096f6232020c47507593058795102e NOAHMP-interface/noahmp (v3.7.1-471-g2c7b3bc)
- 7c472f926ea80c2b3d1ae375552bcc6c2f67bba4 UFSATM (remotes/origin/feature/ss2.x)
- 0164284597fc89f9f1f2f8405bf333896a934cd7 UFSATM/ccpp/framework (v0.1.0-1864-g0164284)
- cfe54d2d3507ddd91da4bf58e3ac866af812708e UFSATM/ccpp/physics (remotes/origin/feature/ss2.x)
+ 25ff163a54265da1a0b62d9e8c4d9d538d65b443 UFSATM (remotes/origin/feature/ss2.x)
+ 69a6e73f1def450d412a217556c4ecb894acd8a3 UFSATM/ccpp/framework (ccpp-scm_v8.0.0-16-g69a6e73)
+ b5886bc905f4363f8f1307dd3a1609975b267f53 UFSATM/ccpp/physics (remotes/origin/feature/ss2.x)
  24fd7fc0483930abbeb5fff0cceea26511250e25 UFSATM/ccpp/physics/physics/CONV/C3 (heads/main)
  c62699fb660ebbb14e4388f7b59a8b38decac1ab UFSATM/ccpp/physics/physics/MP/TEMPO/tempo_v3 (tempo_v3.2.5)
  41c5fcd950fed09b8afe186dede266824eca7fd3 UFSATM/ccpp/physics/physics/Radiation/RRTMGP/rte-rrtmgp (41c5fcd)
@@ -39,10 +39,10 @@ Submodule hashes used in testing:
  9adf9ef2827104640125f0c322e1218fce74e94c UFSATM/mpas/MPAS-Model/src/core_atmosphere/physics/physics_noaa/TEMPO (tempo_v3.0.3)
  c1c893edcf171af5639af60e3a3a528816f6cc2b UFSATM/mpas/MPAS-Model/src/core_atmosphere/physics/physics_noaa/UGWP (Version_1-34-gc1c893e)
  1ed03f55444fdf7d49b7687fc4e477de0a276e99 UFSATM/mpas/MPAS-Model/src/core_atmosphere/stochastic_physics (remotes/origin/archive_gsl_stoch_merge-12-g1ed03f5)
- 0da959dbadcd1b2c17b1307b4833540457c97015 UFSATM/upp (upp_v10.2.0-427-g0da959db)
+ 360c4cae72b01f4ecb0f0a13a6eeb8913a573340 UFSATM/upp (upp_v10.2.0-431-g360c4cae)
 -68953f566b4d728b9ecf9a352c56e2aaeec6d8ec UFSATM/upp/sorc/libIFI.fd
 -8fdeb7a816bab893f670e7f592e98713ff613c8e UFSATM/upp/sorc/ncep_post.fd/post_gtg.fd
- 4ca145aa9ee97d3f38cee406ff509a4260be4aa3 WW3 (remotes/origin/feature/ss2.x)
+ 058c3fc21603ee930a07911dfd9f6180c4e44be4 WW3 (remotes/origin/feature/ss2.x)
  b9266a0b61f34a10f870e1c7bd9375417a454cb7 fire_behavior (remotes/origin/feature/ss2.x)
  5b89370ccc9b62a04fefbd1120421eae785dd085 stochastic_physics (remotes/origin/feature/ss2.x)
 
@@ -53,380 +53,604 @@ The first time is for the full script (prep+run+finalize).
 The second time is specifically for the run phase.
 Times/Memory will be empty for failed tests.
 
-BASELINE DIRECTORY: /scratch3/NAGAPE/epic/Gillian.Petro/stmp/RT_BASELINE/Gillian.Petro/FV3_RT/REGRESSION_TEST-3174
-COMPARISON DIRECTORY: /scratch3/NAGAPE/epic/Gillian.Petro/stmp/RT_RUNDIRS/Gillian.Petro/FV3_RT/rt_2133161
+BASELINE DIRECTORY: /scratch4/NAGAPE/epic/role-epic/UFS-WM_RT/NEMSfv3gfs/develop-20261028
+COMPARISON DIRECTORY: /scratch4/NAGAPE/epic/Gillian.Petro/stmp/RT_RUNDIRS/Gillian.Petro/FV3_RT/rt_2697334
 
 RT.SH OPTIONS USED:
 * (-a) - HPC PROJECT ACCOUNT: epic
-* (-m) - COMPARE AGAINST CREATED BASELINES
-* (-k) - KEEP RUN DIRECTORY
 * (-e) - USE ECFLOW
 
-PASS -- COMPILE 's2swa_32bit_oneapi' [10:11, 08:11]
-PASS -- TEST 'cpld_control_gefs_oneapi' [26:45, 14:53](3177 MB)
-PASS -- TEST 'cpld_restart_gefs_oneapi' [16:52, 04:38](2909 MB)
-PASS -- TEST 'cpld_dcp_gefs_oneapi' [46:47, 27:30](3360 MB)
+PASS -- COMPILE 's2swa_32bit_oneapi' [09:14, 08:02]
+FAILED: MISSING BASELINE -- TEST 'cpld_control_gefs_oneapi' [, ]( MB)
+FAILED: UNABLE TO START TEST -- TEST 'cpld_restart_gefs_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'cpld_dcp_gefs_oneapi' [, ]( MB)
 
-PASS -- COMPILE 's2sw_32bit_pdlib_oneapi' [10:11, 07:46]
-PASS -- TEST 'cpld_control_gfsv17_oneapi' [12:53, 09:10](2025 MB)
-PASS -- TEST 'cpld_control_gfsv17_iau_oneapi' [11:48, 09:48](2611 MB)
-PASS -- TEST 'cpld_restart_gfsv17_oneapi' [05:45, 03:48](1485 MB)
-PASS -- TEST 'cpld_restart_gfsv17_iau_oneapi' [11:01, 04:30](2291 MB)
-PASS -- TEST 'cpld_mpi_gfsv17_oneapi' [19:47, 15:42](1983 MB)
-PASS -- TEST 'cpld_decomp_gfsv17_oneapi' [15:38, 11:30](2026 MB)
-PASS -- TEST 'cpld_2threads_gfsv17_oneapi' [17:38, 14:17](2445 MB)
+PASS -- COMPILE 's2sw_32bit_pdlib_oneapi' [09:14, 07:44]
+FAILED: MISSING BASELINE -- TEST 'cpld_control_gfsv17_oneapi' [, ]( MB)
+FAILED: UNABLE TO START TEST -- TEST 'cpld_control_gfsv17_iau_oneapi' [, ]( MB)
+FAILED: UNABLE TO START TEST -- TEST 'cpld_restart_gfsv17_oneapi' [, ]( MB)
+FAILED: UNABLE TO START TEST -- TEST 'cpld_restart_gfsv17_iau_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'cpld_mpi_gfsv17_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'cpld_decomp_gfsv17_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'cpld_2threads_gfsv17_oneapi' [, ]( MB)
 
-PASS -- COMPILE 's2s_32bit_sfs_oneapi' [10:11, 07:42]
-PASS -- TEST 'cpld_control_sfs_oneapi' [13:40, 09:32](2369 MB)
-PASS -- TEST 'cpld_restart_sfs_oneapi' [10:09, 05:01](1826 MB)
+PASS -- COMPILE 's2s_32bit_sfs_oneapi' [09:13, 07:38]
+FAILED: MISSING BASELINE -- TEST 'cpld_control_sfs_oneapi' [, ]( MB)
+FAILED: UNABLE TO START TEST -- TEST 'cpld_restart_sfs_oneapi' [, ]( MB)
 
-PASS -- COMPILE 's2s_32bit_sfs_debug_oneapi' [05:11, 02:43]
-PASS -- TEST 'cpld_debug_sfs_oneapi' [20:27, 09:14](2407 MB)
+PASS -- COMPILE 's2s_32bit_sfs_debug_oneapi' [03:14, 01:54]
+FAILED: MISSING BASELINE -- TEST 'cpld_debug_sfs_oneapi' [, ]( MB)
 
-PASS -- COMPILE 's2sw_32bit_pdlib_debug_oneapi' [04:11, 02:01]
-PASS -- TEST 'cpld_debug_gfsv17_oneapi' [24:41, 13:10](2030 MB)
+PASS -- COMPILE 's2sw_32bit_pdlib_debug_oneapi' [04:13, 02:02]
+FAILED: MISSING BASELINE -- TEST 'cpld_debug_gfsv17_oneapi' [, ]( MB)
 
-PASS -- COMPILE 's2sw_oneapi' [10:11, 08:04]
-PASS -- TEST 'cpld_control_c192_p8_oneapi' [14:31, 10:47](3110 MB)
-PASS -- TEST 'cpld_restart_c192_p8_oneapi' [21:24, 06:36](2877 MB)
+PASS -- COMPILE 's2sw_oneapi' [09:14, 07:45]
+FAILED: MISSING BASELINE -- TEST 'cpld_control_c192_p8_oneapi' [, ]( MB)
+FAILED: UNABLE TO START TEST -- TEST 'cpld_restart_c192_p8_oneapi' [, ]( MB)
 
-PASS -- COMPILE 's2swl_oneapi' [10:11, 07:51]
-PASS -- TEST 'cpld_control_p8_lnd_oneapi' [10:58, 07:27](2206 MB)
-PASS -- TEST 'cpld_restart_p8_lnd_oneapi' [05:59, 03:48](1930 MB)
+PASS -- COMPILE 's2swl_oneapi' [09:12, 07:44]
+FAILED: MISSING BASELINE -- TEST 'cpld_control_p8_lnd_oneapi' [, ]( MB)
+FAILED: UNABLE TO START TEST -- TEST 'cpld_restart_p8_lnd_oneapi' [, ]( MB)
 
-PASS -- COMPILE 's2s_aoflux_oneapi' [10:11, 07:32]
-PASS -- TEST 'cpld_control_noaero_p8_agrid_oneapi' [06:50, 04:24](2087 MB)
+PASS -- COMPILE 's2s_aoflux_oneapi' [08:14, 06:49]
+FAILED: MISSING BASELINE -- TEST 'cpld_control_noaero_p8_agrid_oneapi' [, ]( MB)
 
-PASS -- COMPILE 's2sw_pdlib_oneapi' [09:11, 06:56]
-PASS -- TEST 'cpld_control_c48_5deg_oneapi' [07:31, 04:59](3052 MB)
-PASS -- TEST 'cpld_warmstart_c48_5deg_oneapi' [03:29, 01:30](3036 MB)
-PASS -- TEST 'cpld_restart_c48_5deg_oneapi' [06:30, 04:17](2469 MB)
-PASS -- TEST 'cpld_control_c24_5deg_oneapi' [02:31, 00:55](2218 MB)
-PASS -- TEST 'cpld_warmstart_c24_5deg_oneapi' [03:30, 01:13](2217 MB)
-PASS -- TEST 'cpld_restart_c24_5deg_oneapi' [03:26, 00:25](1535 MB)
-PASS -- TEST 'cpld_control_c24_9deg_oneapi' [02:29, 00:55](2217 MB)
-PASS -- TEST 'cpld_warmstart_c24_9deg_oneapi' [02:29, 00:31](2217 MB)
-PASS -- TEST 'cpld_restart_c24_9deg_oneapi' [03:27, 00:26](1535 MB)
-PASS -- TEST 'cpld_control_c12_9deg_oneapi' [02:29, 00:31](2143 MB)
-PASS -- TEST 'cpld_warmstart_c12_9deg_oneapi' [02:27, 00:26](2144 MB)
-PASS -- TEST 'cpld_restart_c12_9deg_oneapi' [02:26, 00:23](1491 MB)
+PASS -- COMPILE 's2sw_pdlib_oneapi' [09:14, 07:15]
+FAILED: MISSING BASELINE -- TEST 'cpld_control_c48_5deg_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'cpld_warmstart_c48_5deg_oneapi' [, ]( MB)
+FAILED: UNABLE TO START TEST -- TEST 'cpld_restart_c48_5deg_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'cpld_control_c24_5deg_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'cpld_warmstart_c24_5deg_oneapi' [, ]( MB)
+FAILED: UNABLE TO START TEST -- TEST 'cpld_restart_c24_5deg_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'cpld_control_c24_9deg_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'cpld_warmstart_c24_9deg_oneapi' [, ]( MB)
+FAILED: UNABLE TO START TEST -- TEST 'cpld_restart_c24_9deg_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'cpld_control_c12_9deg_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'cpld_warmstart_c12_9deg_oneapi' [, ]( MB)
+FAILED: UNABLE TO START TEST -- TEST 'cpld_restart_c12_9deg_oneapi' [, ]( MB)
 
-PASS -- COMPILE 'atm_dyn32_oneapi' [07:11, 04:21]
-PASS -- TEST 'control_CubedSphereGrid_oneapi' [05:22, 01:58](2217 MB)
-PASS -- TEST 'control_CubedSphereGrid_parallel_oneapi' [05:23, 02:25](2231 MB)
-PASS -- TEST 'control_latlon_oneapi' [05:21, 01:56](2230 MB)
-PASS -- TEST 'control_wrtGauss_netcdf_parallel_oneapi' [07:23, 01:57](2228 MB)
-PASS -- TEST 'control_c48_oneapi' [06:21, 04:50](1679 MB)
-PASS -- TEST 'control_c48.v2.sfc_oneapi' [06:19, 04:20](816 MB)
-PASS -- TEST 'control_c48_lnd_iau_oneapi' [06:21, 04:55](1683 MB)
-PASS -- TEST 'control_c192_oneapi' [14:34, 05:36](1767 MB)
-PASS -- TEST 'control_c384_oneapi' [15:14, 06:19](2087 MB)
-PASS -- TEST 'control_c384gdas_oneapi' [17:02, 07:13](1874 MB)
-PASS -- TEST 'control_stochy_oneapi' [04:19, 01:19](1299 MB)
-PASS -- TEST 'control_stochy_restart_oneapi' [02:18, 00:44](1184 MB)
-PASS -- TEST 'control_lndp_oneapi' [03:19, 01:16](1301 MB)
-PASS -- TEST 'control_iovr4_gfdlmpv3_oneapi' [09:37, 02:14](1586 MB)
-PASS -- TEST 'control_p8_oneapi' [25:46, 17:02](2507 MB)
-PASS -- TEST 'control_p8.v2.sfc_oneapi' [10:45, 02:27](2515 MB)
-PASS -- TEST 'control_p8_ugwpv1_oneapi' [10:44, 02:18](2529 MB)
-PASS -- TEST 'control_p8_ugwpv1_tempo_oneapi' [10:45, 02:20](3097 MB)
-PASS -- TEST 'control_p8_ugwpv1_tempo_aerosol_oneapi' [10:47, 02:24](3134 MB)
-PASS -- TEST 'control_restart_p8_oneapi' [09:39, 01:24](1879 MB)
-PASS -- TEST 'control_noqr_p8_oneapi' [10:43, 02:16](2500 MB)
-PASS -- TEST 'control_restart_noqr_p8_oneapi' [03:33, 01:21](1873 MB)
-PASS -- TEST 'control_decomp_p8_oneapi' [17:43, 09:09](2510 MB)
-PASS -- TEST 'control_2threads_p8_oneapi' [05:43, 02:57](1983 MB)
-PASS -- TEST 'control_p8_lndp_oneapi' [12:39, 04:54](2512 MB)
-PASS -- TEST 'control_p8_rrtmgp_oneapi' [11:43, 03:09](2577 MB)
-PASS -- TEST 'control_p8_mynn_oneapi' [10:46, 02:41](2527 MB)
-PASS -- TEST 'merra2_thompson_oneapi' [11:44, 02:45](2524 MB)
-PASS -- TEST 'merra2_hf_thompson_oneapi' [09:29, 04:22](2532 MB)
-PASS -- TEST 'regional_control_oneapi' [12:35, 04:12](1720 MB)
-PASS -- TEST 'regional_restart_oneapi' [08:28, 02:26](1664 MB)
-PASS -- TEST 'regional_decomp_oneapi' [12:35, 04:15](1712 MB)
-PASS -- TEST 'regional_2threads_oneapi' [08:26, 02:32](1567 MB)
-PASS -- TEST 'regional_noquilt_oneapi' [10:26, 04:15](2001 MB)
-PASS -- TEST 'regional_netcdf_parallel_oneapi' [10:26, 04:25](1729 MB)
-PASS -- TEST 'regional_2dwrtdecomp_oneapi' [10:26, 04:22](1728 MB)
-PASS -- TEST 'regional_wofs_oneapi' [11:26, 05:08](2660 MB)
-PASS -- TEST 'regional_wofs_tempo_oneapi' [09:27, 04:36](2223 MB)
+PASS -- COMPILE 'atm_dyn32_oneapi' [06:13, 04:07]
+FAILED: MISSING BASELINE -- TEST 'control_CubedSphereGrid_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'control_CubedSphereGrid_parallel_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'control_latlon_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'control_wrtGauss_netcdf_parallel_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'control_c48_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'control_c48.v2.sfc_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'control_c48_lnd_iau_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'control_c192_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'control_c384_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'control_c384gdas_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'control_stochy_oneapi' [, ]( MB)
+FAILED: UNABLE TO START TEST -- TEST 'control_stochy_restart_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'control_lndp_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'control_iovr4_gfdlmpv3_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'control_p8_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'control_p8.v2.sfc_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'control_p8_ugwpv1_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'control_p8_ugwpv1_tempo_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'control_p8_ugwpv1_tempo_aerosol_oneapi' [, ]( MB)
+FAILED: UNABLE TO START TEST -- TEST 'control_restart_p8_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'control_noqr_p8_oneapi' [, ]( MB)
+FAILED: UNABLE TO START TEST -- TEST 'control_restart_noqr_p8_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'control_decomp_p8_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'control_2threads_p8_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'control_p8_lndp_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'control_p8_rrtmgp_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'control_p8_mynn_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'merra2_thompson_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'merra2_hf_thompson_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'regional_control_oneapi' [, ]( MB)
+FAILED: UNABLE TO START TEST -- TEST 'regional_restart_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'regional_decomp_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'regional_2threads_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'regional_noquilt_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'regional_netcdf_parallel_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'regional_2dwrtdecomp_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'regional_wofs_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'regional_wofs_tempo_oneapi' [, ]( MB)
 
-PASS -- COMPILE 'atm_dyn32_rad32_oneapi' [06:12, 04:15]
-PASS -- TEST 'control_p8_rrtmgp_rad32_oneapi' [07:35, 03:13](2551 MB)
+PASS -- COMPILE 'atm_dyn32_rad32_oneapi' [05:11, 03:53]
+FAILED: MISSING BASELINE -- TEST 'control_p8_rrtmgp_rad32_oneapi' [, ]( MB)
 
-PASS -- COMPILE 'atm_dyn32_conv32_oneapi' [05:12, 04:03]
-PASS -- TEST 'control_p8_samf_conv32_oneapi' [06:35, 02:15](2511 MB)
+PASS -- COMPILE 'atm_dyn32_conv32_oneapi' [05:10, 03:55]
+FAILED: MISSING BASELINE -- TEST 'control_p8_samf_conv32_oneapi' [, ]( MB)
 
-PASS -- COMPILE 'rrfs_oneapi' [05:12, 03:22]
-PASS -- TEST 'rap_control_oneapi' [07:24, 03:13](1788 MB)
-PASS -- TEST 'regional_spp_sppt_shum_skeb_oneapi' [06:47, 03:13](1521 MB)
-PASS -- TEST 'rap_decomp_oneapi' [06:27, 03:14](1834 MB)
-PASS -- TEST 'rap_2threads_oneapi' [05:28, 02:52](1163 MB)
-PASS -- TEST 'rap_restart_oneapi' [03:29, 01:43](1726 MB)
-PASS -- TEST 'rap_sfcdiff_oneapi' [05:32, 03:26](1833 MB)
-PASS -- TEST 'rap_sfcdiff_decomp_oneapi' [05:30, 03:31](1836 MB)
-PASS -- TEST 'rap_sfcdiff_restart_oneapi' [03:29, 01:43](1726 MB)
-PASS -- TEST 'hrrr_control_oneapi' [16:27, 14:16](1906 MB)
-PASS -- TEST 'hrrr_control_decomp_oneapi' [04:27, 03:03](1828 MB)
-PASS -- TEST 'hrrr_control_2threads_oneapi' [04:23, 02:31](1158 MB)
-PASS -- TEST 'hrrr_control_restart_oneapi' [03:19, 01:38](1679 MB)
-PASS -- TEST 'rrfs_v1beta_oneapi' [07:29, 05:26](1940 MB)
-PASS -- TEST 'rrfs_v1nssl_oneapi' [07:20, 05:53](2665 MB)
-PASS -- TEST 'rrfs_v1nssl_nohailnoccn_oneapi' [07:18, 05:31](2927 MB)
+PASS -- COMPILE 'rrfs_oneapi' [05:11, 03:29]
+FAILED: MISSING BASELINE -- TEST 'rap_control_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'regional_spp_sppt_shum_skeb_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'rap_decomp_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'rap_2threads_oneapi' [, ]( MB)
+FAILED: UNABLE TO START TEST -- TEST 'rap_restart_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'rap_sfcdiff_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'rap_sfcdiff_decomp_oneapi' [, ]( MB)
+FAILED: UNABLE TO START TEST -- TEST 'rap_sfcdiff_restart_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'hrrr_control_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'hrrr_control_decomp_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'hrrr_control_2threads_oneapi' [, ]( MB)
+FAILED: UNABLE TO START TEST -- TEST 'hrrr_control_restart_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'rrfs_v1beta_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'rrfs_v1nssl_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'rrfs_v1nssl_nohailnoccn_oneapi' [, ]( MB)
 
-PASS -- COMPILE 'csawmg_oneapi' [06:12, 03:32]
-PASS -- TEST 'control_csawmg_oneapi' [06:26, 04:58](1761 MB)
+PASS -- COMPILE 'csawmg_oneapi' [05:11, 03:14]
+FAILED: MISSING BASELINE -- TEST 'control_csawmg_oneapi' [, ]( MB)
 
-PASS -- COMPILE 'wam_oneapi' [06:12, 03:20]
-PASS -- TEST 'control_wam_oneapi' [05:36, 03:33](2599 MB)
+PASS -- COMPILE 'wam_oneapi' [05:11, 03:18]
+FAILED: MISSING BASELINE -- TEST 'control_wam_oneapi' [, ]( MB)
 
-PASS -- COMPILE 'atm_debug_dyn32_oneapi' [04:12, 01:40]
-PASS -- TEST 'control_CubedSphereGrid_debug_oneapi' [06:21, 04:36](2228 MB)
-PASS -- TEST 'control_wrtGauss_netcdf_parallel_debug_oneapi' [03:20, 01:46](2235 MB)
-PASS -- TEST 'control_stochy_debug_oneapi' [04:17, 02:16](1461 MB)
-PASS -- TEST 'control_lndp_debug_oneapi' [04:17, 02:02](1450 MB)
-PASS -- TEST 'control_csawmg_debug_oneapi' [05:26, 03:08](1762 MB)
-PASS -- TEST 'control_diag_debug_oneapi' [03:23, 02:03](2303 MB)
-PASS -- TEST 'control_debug_p8_oneapi' [03:29, 02:05](2517 MB)
-PASS -- TEST 'regional_debug_oneapi' [14:28, 12:43](1578 MB)
-PASS -- TEST 'rap_control_debug_oneapi' [05:19, 03:42](1864 MB)
-PASS -- TEST 'hrrr_control_debug_oneapi' [05:18, 03:36](1832 MB)
-PASS -- TEST 'hrrr_gf_debug_oneapi' [06:17, 03:41](1878 MB)
-PASS -- TEST 'hrrr_c3_debug_oneapi' [13:17, 10:06](1870 MB)
-PASS -- TEST 'rap_unified_drag_suite_debug_oneapi' [12:17, 03:39](1862 MB)
-PASS -- TEST 'rap_diag_debug_oneapi' [13:26, 04:01](1951 MB)
-PASS -- TEST 'rap_cires_ugwp_debug_oneapi' [13:19, 03:49](1842 MB)
-PASS -- TEST 'rap_unified_ugwp_debug_oneapi' [13:17, 03:51](1869 MB)
-PASS -- TEST 'rap_lndp_debug_oneapi' [12:20, 03:44](1871 MB)
-PASS -- TEST 'rap_progcld_thompson_debug_oneapi' [12:19, 03:40](1869 MB)
-PASS -- TEST 'rap_noah_debug_oneapi' [12:19, 03:41](1835 MB)
-PASS -- TEST 'rap_sfcdiff_debug_oneapi' [17:19, 09:33](1887 MB)
-PASS -- TEST 'rap_noah_sfcdiff_cires_ugwp_debug_oneapi' [22:19, 14:28](1884 MB)
-PASS -- TEST 'rap_clm_lake_debug_oneapi' [12:20, 03:47](1863 MB)
-PASS -- TEST 'gnv1_c96_no_nest_debug_oneapi' [15:30, 06:26](1878 MB)
+PASS -- COMPILE 'atm_debug_dyn32_oneapi' [03:10, 01:43]
+FAILED: MISSING BASELINE -- TEST 'control_CubedSphereGrid_debug_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'control_wrtGauss_netcdf_parallel_debug_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'control_stochy_debug_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'control_lndp_debug_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'control_csawmg_debug_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'control_diag_debug_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'control_debug_p8_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'regional_debug_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'rap_control_debug_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'hrrr_control_debug_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'hrrr_gf_debug_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'hrrr_c3_debug_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'rap_unified_drag_suite_debug_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'rap_diag_debug_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'rap_cires_ugwp_debug_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'rap_unified_ugwp_debug_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'rap_lndp_debug_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'rap_progcld_thompson_debug_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'rap_noah_debug_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'rap_sfcdiff_debug_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'rap_noah_sfcdiff_cires_ugwp_debug_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'rap_clm_lake_debug_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'gnv1_c96_no_nest_debug_oneapi' [, ]( MB)
 
-PASS -- COMPILE 'wam_debug_oneapi' [04:12, 01:22]
-PASS -- TEST 'control_wam_debug_oneapi' [18:33, 10:34](2257 MB)
+PASS -- COMPILE 'wam_debug_oneapi' [03:10, 01:22]
+FAILED: MISSING BASELINE -- TEST 'control_wam_debug_oneapi' [, ]( MB)
 
-PASS -- COMPILE 'rrfs_dyn32_phy32_oneapi' [06:12, 04:03]
-PASS -- TEST 'regional_spp_sppt_shum_skeb_dyn32_phy32_oneapi' [10:45, 02:55](1406 MB)
-PASS -- TEST 'rap_control_dyn32_phy32_oneapi' [10:24, 02:59](1770 MB)
-PASS -- TEST 'hrrr_control_dyn32_phy32_oneapi' [09:23, 02:27](1732 MB)
-PASS -- TEST 'rap_2threads_dyn32_phy32_oneapi' [06:26, 02:53](1071 MB)
-PASS -- TEST 'hrrr_control_2threads_dyn32_phy32_oneapi' [06:26, 02:24](1056 MB)
-PASS -- TEST 'hrrr_control_decomp_dyn32_phy32_oneapi' [09:23, 02:32](1763 MB)
-PASS -- TEST 'rap_restart_dyn32_phy32_oneapi' [03:27, 01:22](1644 MB)
-PASS -- TEST 'hrrr_control_restart_dyn32_phy32_oneapi' [14:20, 12:22](1730 MB)
-PASS -- TEST 'conus13km_control_oneapi' [09:43, 02:29](1770 MB)
-PASS -- TEST 'conus13km_2threads_oneapi' [07:33, 01:19](1759 MB)
-PASS -- TEST 'conus13km_decomp_oneapi' [08:35, 02:32](1809 MB)
-PASS -- TEST 'conus13km_restart_oneapi' [06:35, 01:39](1543 MB)
+PASS -- COMPILE 'rrfs_dyn32_phy32_oneapi' [05:11, 03:36]
+FAILED: MISSING BASELINE -- TEST 'regional_spp_sppt_shum_skeb_dyn32_phy32_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'rap_control_dyn32_phy32_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'hrrr_control_dyn32_phy32_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'rap_2threads_dyn32_phy32_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'hrrr_control_2threads_dyn32_phy32_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'hrrr_control_decomp_dyn32_phy32_oneapi' [, ]( MB)
+FAILED: UNABLE TO START TEST -- TEST 'rap_restart_dyn32_phy32_oneapi' [, ]( MB)
+FAILED: UNABLE TO START TEST -- TEST 'hrrr_control_restart_dyn32_phy32_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'conus13km_control_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'conus13km_2threads_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'conus13km_decomp_oneapi' [, ]( MB)
+FAILED: UNABLE TO START TEST -- TEST 'conus13km_restart_oneapi' [, ]( MB)
 
-PASS -- COMPILE 'rrfs_dyn32_phy32_faster_cdeps_oneapi' [06:12, 03:41]
-PASS -- TEST 'conus13km_gl_inline_oneapi' [10:39, 06:31](1325 MB)
+PASS -- COMPILE 'rrfs_dyn32_phy32_faster_cdeps_oneapi' [05:11, 03:37]
+FAILED: MISSING BASELINE -- TEST 'conus13km_gl_inline_oneapi' [, ]( MB)
 
-PASS -- COMPILE 'rrfs_dyn64_phy32_oneapi' [06:12, 03:29]
-PASS -- TEST 'rap_control_dyn64_phy32_oneapi' [05:29, 03:08](1804 MB)
+PASS -- COMPILE 'rrfs_dyn64_phy32_oneapi' [05:11, 03:28]
+FAILED: MISSING BASELINE -- TEST 'rap_control_dyn64_phy32_oneapi' [, ]( MB)
 
-PASS -- COMPILE 'rrfs_dyn32_phy32_debug_oneapi' [03:12, 01:23]
-PASS -- TEST 'rap_control_debug_dyn32_phy32_oneapi' [05:19, 03:34](1748 MB)
-PASS -- TEST 'hrrr_control_debug_dyn32_phy32_oneapi' [05:17, 03:28](1750 MB)
-PASS -- TEST 'conus13km_debug_oneapi' [20:36, 16:30](1760 MB)
-PASS -- TEST 'conus13km_debug_qr_oneapi' [20:33, 16:40](1379 MB)
-PASS -- TEST 'conus13km_debug_2threads_oneapi' [12:30, 09:12](1764 MB)
-PASS -- TEST 'conus13km_debug_decomp_oneapi' [21:31, 16:55](1794 MB)
-PASS -- TEST 'conus13km_radar_tten_debug_oneapi' [22:33, 16:46](1831 MB)
+PASS -- COMPILE 'rrfs_dyn32_phy32_debug_oneapi' [03:10, 01:28]
+FAILED: MISSING BASELINE -- TEST 'rap_control_debug_dyn32_phy32_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'hrrr_control_debug_dyn32_phy32_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'conus13km_debug_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'conus13km_debug_qr_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'conus13km_debug_2threads_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'conus13km_debug_decomp_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'conus13km_radar_tten_debug_oneapi' [, ]( MB)
 
-PASS -- COMPILE 'rrfs_dyn64_phy32_debug_oneapi' [03:12, 01:22]
-PASS -- TEST 'rap_control_dyn64_phy32_debug_oneapi' [11:19, 09:55](1848 MB)
+PASS -- COMPILE 'rrfs_dyn64_phy32_debug_oneapi' [03:10, 01:19]
+FAILED: MISSING BASELINE -- TEST 'rap_control_dyn64_phy32_debug_oneapi' [, ]( MB)
 
-PASS -- COMPILE 'hafsw_oneapi' [06:12, 04:07]
-PASS -- TEST 'hafs_regional_atm_oneapi' [05:31, 03:07](1011 MB)
-PASS -- TEST 'hafs_regional_atm_gfdlmpv3_oneapi' [08:58, 04:01](1224 MB)
-PASS -- TEST 'hafs_regional_atm_thompson_gfdlsf_oneapi' [08:24, 03:01](1450 MB)
-PASS -- TEST 'hafs_regional_atm_wav_oneapi' [22:35, 16:47](1157 MB)
-PASS -- TEST 'hafs_regional_1nest_atm_oneapi' [09:27, 04:23](779 MB)
-PASS -- TEST 'hafs_regional_telescopic_2nests_atm_oneapi' [08:32, 05:01](779 MB)
-PASS -- TEST 'hafs_global_1nest_atm_oneapi' [07:23, 02:11](545 MB)
-PASS -- TEST 'hafs_global_multiple_4nests_atm_oneapi' [11:45, 07:33](608 MB)
-PASS -- TEST 'hafs_regional_specified_moving_1nest_atm_oneapi' [08:23, 03:02](737 MB)
-PASS -- TEST 'hafs_regional_storm_following_1nest_atm_oneapi' [06:27, 02:45](750 MB)
-PASS -- TEST 'hafs_global_storm_following_1nest_atm_oneapi' [04:17, 01:01](558 MB)
-PASS -- TEST 'gnv1_nested_oneapi' [06:40, 02:52](1714 MB)
+PASS -- COMPILE 'hafsw_oneapi' [06:12, 04:13]
+FAILED: MISSING BASELINE -- TEST 'hafs_regional_atm_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'hafs_regional_atm_gfdlmpv3_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'hafs_regional_atm_thompson_gfdlsf_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'hafs_regional_atm_wav_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'hafs_regional_1nest_atm_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'hafs_regional_telescopic_2nests_atm_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'hafs_global_1nest_atm_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'hafs_global_multiple_4nests_atm_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'hafs_regional_specified_moving_1nest_atm_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'hafs_regional_storm_following_1nest_atm_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'hafs_global_storm_following_1nest_atm_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'gnv1_nested_oneapi' [, ]( MB)
 
-PASS -- COMPILE 'hafs_mom6w_oneapi' [07:12, 05:21]
-PASS -- TEST 'hafs_regional_storm_following_1nest_atm_ocn_wav_mom6_oneapi' [12:46, 10:08](1065 MB)
+PASS -- COMPILE 'hafs_mom6w_oneapi' [06:11, 04:53]
+FAILED: MISSING BASELINE -- TEST 'hafs_regional_storm_following_1nest_atm_ocn_wav_mom6_oneapi' [, ]( MB)
 
-PASS -- COMPILE 'hafs_all_oneapi' [06:12, 03:59]
-PASS -- TEST 'hafs_regional_docn_oneapi' [07:32, 05:04](1126 MB)
-PASS -- TEST 'hafs_regional_docn_oisst_oneapi' [07:34, 05:05](1103 MB)
+PASS -- COMPILE 'hafs_all_oneapi' [05:12, 04:05]
+FAILED: MISSING BASELINE -- TEST 'hafs_regional_docn_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'hafs_regional_docn_oisst_oneapi' [, ]( MB)
 
-PASS -- COMPILE 'datm_cdeps_oneapi' [08:12, 06:41]
-PASS -- TEST 'datm_cdeps_control_cfsr_oneapi' [03:16, 02:07](1870 MB)
-PASS -- TEST 'datm_cdeps_restart_cfsr_oneapi' [03:19, 01:20](1832 MB)
-PASS -- TEST 'datm_cdeps_control_gefs_oneapi' [04:16, 02:24](1130 MB)
-PASS -- TEST 'datm_cdeps_ciceC_cfsr_oneapi' [04:16, 02:02](1876 MB)
-PASS -- TEST 'datm_cdeps_mx025_cfsr_oneapi' [16:04, 05:34](1784 MB)
-PASS -- TEST 'datm_cdeps_mx025_gefs_oneapi' [14:58, 05:26](1315 MB)
-PASS -- TEST 'datm_cdeps_multiple_files_cfsr_oneapi' [03:17, 02:01](1865 MB)
-PASS -- TEST 'datm_cdeps_3072x1536_cfsr_oneapi' [05:17, 03:20](4783 MB)
-PASS -- TEST 'datm_cdeps_gfs_oneapi' [05:17, 03:15](4790 MB)
+PASS -- COMPILE 'datm_cdeps_oneapi' [08:11, 06:22]
+FAILED: MISSING BASELINE -- TEST 'datm_cdeps_control_cfsr_oneapi' [, ]( MB)
+FAILED: UNABLE TO START TEST -- TEST 'datm_cdeps_restart_cfsr_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'datm_cdeps_control_gefs_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'datm_cdeps_ciceC_cfsr_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'datm_cdeps_mx025_cfsr_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'datm_cdeps_mx025_gefs_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'datm_cdeps_multiple_files_cfsr_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'datm_cdeps_3072x1536_cfsr_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'datm_cdeps_gfs_oneapi' [, ]( MB)
 
-PASS -- COMPILE 'datm_cdeps_debug_oneapi' [03:12, 01:25]
-PASS -- TEST 'datm_cdeps_debug_cfsr_oneapi' [06:16, 04:08](1812 MB)
-PASS -- TEST 'datm_gefs_init_stochy_oneapi' [17:16, 14:52](1133 MB)
-PASS -- TEST 'datm_gfs_icethermo_oneapi' [18:18, 15:45](4788 MB)
+PASS -- COMPILE 'datm_cdeps_debug_oneapi' [03:11, 01:20]
+FAILED: MISSING BASELINE -- TEST 'datm_cdeps_debug_cfsr_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'datm_gefs_init_stochy_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'datm_gfs_icethermo_oneapi' [, ]( MB)
 
-PASS -- COMPILE 'datm_cdeps_land_oneapi' [02:11, 00:49]
-PASS -- TEST 'datm_cdeps_lnd_gswp3_oneapi' [07:28, 01:12](345 MB)
+PASS -- COMPILE 'datm_cdeps_land_oneapi' [02:11, 00:46]
+FAILED: MISSING BASELINE -- TEST 'datm_cdeps_lnd_gswp3_oneapi' [, ]( MB)
 
-PASS -- COMPILE 'datm_cdeps_lm4_oneapi' [03:11, 00:53]
-PASS -- TEST 'datm_cdeps_lm4_gswp3_oneapi' [06:27, 04:55](602 MB)
-PASS -- TEST 'datm_cdeps_lm4_gswp3_rst_oneapi' [02:25, 00:12](453 MB)
+PASS -- COMPILE 'datm_cdeps_lm4_oneapi' [02:11, 00:47]
+FAILED: MISSING BASELINE -- TEST 'datm_cdeps_lm4_gswp3_oneapi' [, ]( MB)
+FAILED: UNABLE TO START TEST -- TEST 'datm_cdeps_lm4_gswp3_rst_oneapi' [, ]( MB)
 
-PASS -- COMPILE 'atm_ds2s_docn_pcice_oneapi' [09:11, 06:30]
-PASS -- TEST 'atm_ds2s_docn_pcice_oneapi' [09:45, 02:55](2791 MB)
+PASS -- COMPILE 'atm_ds2s_docn_pcice_oneapi' [08:11, 06:23]
+FAILED: MISSING BASELINE -- TEST 'atm_ds2s_docn_pcice_oneapi' [, ]( MB)
 
-PASS -- COMPILE 'atml_oneapi' [06:11, 04:14]
-PASS -- TEST 'control_p8_atmlnd_oneapi' [09:35, 03:00](1906 MB)
-PASS -- TEST 'control_restart_p8_atmlnd_oneapi' [06:31, 01:44](1301 MB)
+PASS -- COMPILE 'atml_oneapi' [06:11, 04:06]
+FAILED: MISSING BASELINE -- TEST 'control_p8_atmlnd_oneapi' [, ]( MB)
+FAILED: UNABLE TO START TEST -- TEST 'control_restart_p8_atmlnd_oneapi' [, ]( MB)
 
-PASS -- COMPILE 'atml_debug_oneapi' [04:11, 02:12]
-PASS -- TEST 'control_p8_atmlnd_debug_oneapi' [10:36, 03:47](1915 MB)
+PASS -- COMPILE 'atml_debug_oneapi' [04:11, 02:20]
+FAILED: MISSING BASELINE -- TEST 'control_p8_atmlnd_debug_oneapi' [, ]( MB)
 
-PASS -- COMPILE 'atmw_oneapi' [06:10, 03:45]
-PASS -- TEST 'atmwav_control_noaero_p8_oneapi' [08:32, 02:00](2673 MB)
+PASS -- COMPILE 'atmw_oneapi' [06:11, 03:52]
+FAILED: MISSING BASELINE -- TEST 'atmwav_control_noaero_p8_oneapi' [, ]( MB)
 
-PASS -- COMPILE 'atmaero_oneapi' [06:11, 04:19]
-PASS -- TEST 'atmaero_control_p8_oneapi' [09:40, 03:47](1980 MB)
-PASS -- TEST 'atmaero_control_p8_rad_oneapi' [09:32, 04:09](2380 MB)
-PASS -- TEST 'atmaero_control_p8_rad_micro_oneapi' [09:33, 04:21](2399 MB)
+PASS -- COMPILE 'atmaero_oneapi' [06:11, 04:06]
+FAILED: MISSING BASELINE -- TEST 'atmaero_control_p8_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'atmaero_control_p8_rad_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'atmaero_control_p8_rad_micro_oneapi' [, ]( MB)
 
-PASS -- COMPILE 'atmaq_oneapi' [06:11, 03:59]
-PASS -- TEST 'regional_atmaq_oneapi' [17:17, 12:06](2835 MB)
-PASS -- TEST 'regional_atmaq_canopy_oneapi' [21:11, 15:24](2835 MB)
+PASS -- COMPILE 'atmaq_oneapi' [06:11, 04:03]
+FAILED: MISSING BASELINE -- TEST 'regional_atmaq_oneapi' [, ]( MB)
+FAILED: MISSING BASELINE -- TEST 'regional_atmaq_canopy_oneapi' [, ]( MB)
 
-PASS -- COMPILE 'atmaq_debug_oneapi' [04:11, 01:39]
-PASS -- TEST 'regional_atmaq_debug_oneapi' [31:05, 25:36](2834 MB)
+PASS -- COMPILE 'atmaq_debug_oneapi' [03:12, 01:28]
+FAILED: MISSING BASELINE -- TEST 'regional_atmaq_debug_oneapi' [, ]( MB)
 
-PASS -- COMPILE 'atm_fbh_oneapi' [05:11, 03:14]
-PASS -- TEST 'cpld_regional_atm_fbh_oneapi' [19:21, 17:51](1131 MB)
+PASS -- COMPILE 'atm_fbh_oneapi' [05:12, 03:26]
+FAILED: MISSING BASELINE -- TEST 'cpld_regional_atm_fbh_oneapi' [, ]( MB)
 
-PASS -- COMPILE 'catchem_oneapi' [06:11, 03:38]
-PASS -- TEST 'catchem_control_oneapi' [08:40, 04:36](1975 MB)
+PASS -- COMPILE 'catchem_oneapi' [05:11, 03:46]
+FAILED: MISSING BASELINE -- TEST 'catchem_control_oneapi' [, ]( MB)
 
-PASS -- COMPILE 'atm_gnu' [04:11, 02:04]
-PASS -- TEST 'control_c48_gnu' [08:19, 05:55](1521 MB)
-PASS -- TEST 'control_stochy_gnu' [05:18, 02:01](525 MB)
-PASS -- TEST 'control_p8_gnu' [06:37, 03:11](1479 MB)
-PASS -- TEST 'control_p8_ugwpv1_gnu' [06:35, 03:10](1490 MB)
+PASS -- COMPILE 'atm_gnu' [04:14, 02:39]
+PASS -- TEST 'control_c48_gnu' [18:22, 16:10](1519 MB)
+FAILED: BASELINE NOT IDENTICAL -- TEST 'control_stochy_gnu' [, ]( MB)
+FAILED: BASELINE NOT IDENTICAL -- TEST 'control_p8_gnu' [, ]( MB)
+FAILED: BASELINE NOT IDENTICAL -- TEST 'control_p8_ugwpv1_gnu' [, ]( MB)
 
-PASS -- COMPILE 'rrfs_gnu' [04:11, 02:10]
-PASS -- TEST 'rap_control_gnu' [05:28, 03:29](888 MB)
-PASS -- TEST 'rap_decomp_gnu' [05:24, 03:30](867 MB)
-PASS -- TEST 'rap_2threads_gnu' [05:24, 02:45](895 MB)
-PASS -- TEST 'rap_restart_gnu' [03:26, 01:51](597 MB)
-PASS -- TEST 'rap_sfcdiff_gnu' [07:28, 03:41](865 MB)
-PASS -- TEST 'rap_sfcdiff_decomp_gnu' [06:24, 03:32](866 MB)
-PASS -- TEST 'rap_sfcdiff_restart_gnu' [24:31, 01:50](595 MB)
-PASS -- TEST 'hrrr_control_gnu' [05:27, 03:35](866 MB)
-PASS -- TEST 'hrrr_control_noqr_gnu' [05:23, 03:55](848 MB)
-PASS -- TEST 'hrrr_control_2threads_gnu' [05:23, 03:23](885 MB)
-PASS -- TEST 'hrrr_control_decomp_gnu' [05:23, 03:28](864 MB)
-PASS -- TEST 'hrrr_control_restart_gnu' [03:20, 02:02](578 MB)
-PASS -- TEST 'hrrr_control_restart_noqr_gnu' [24:20, 01:52](670 MB)
-PASS -- TEST 'rrfs_v1beta_gnu' [09:29, 06:28](859 MB)
+PASS -- COMPILE 'rrfs_gnu' [04:10, 02:11]
+FAILED: BASELINE NOT IDENTICAL -- TEST 'rap_control_gnu' [, ]( MB)
+FAILED: BASELINE NOT IDENTICAL -- TEST 'rap_decomp_gnu' [, ]( MB)
+FAILED: BASELINE NOT IDENTICAL -- TEST 'rap_2threads_gnu' [, ]( MB)
+FAILED: UNABLE TO START TEST -- TEST 'rap_restart_gnu' [, ]( MB)
+FAILED: BASELINE NOT IDENTICAL -- TEST 'rap_sfcdiff_gnu' [, ]( MB)
+FAILED: BASELINE NOT IDENTICAL -- TEST 'rap_sfcdiff_decomp_gnu' [, ]( MB)
+FAILED: UNABLE TO START TEST -- TEST 'rap_sfcdiff_restart_gnu' [, ]( MB)
+FAILED: BASELINE NOT IDENTICAL -- TEST 'hrrr_control_gnu' [, ]( MB)
+FAILED: BASELINE NOT IDENTICAL -- TEST 'hrrr_control_noqr_gnu' [, ]( MB)
+FAILED: BASELINE NOT IDENTICAL -- TEST 'hrrr_control_2threads_gnu' [, ]( MB)
+FAILED: BASELINE NOT IDENTICAL -- TEST 'hrrr_control_decomp_gnu' [, ]( MB)
+FAILED: UNABLE TO START TEST -- TEST 'hrrr_control_restart_gnu' [, ]( MB)
+FAILED: UNABLE TO START TEST -- TEST 'hrrr_control_restart_noqr_gnu' [, ]( MB)
+FAILED: BASELINE NOT IDENTICAL -- TEST 'rrfs_v1beta_gnu' [, ]( MB)
 
-PASS -- COMPILE 'csawmg_gnu' [04:11, 02:15]
-PASS -- TEST 'control_csawmg_gnu' [07:26, 05:50](764 MB)
+PASS -- COMPILE 'csawmg_gnu' [03:10, 01:58]
+FAILED: BASELINE NOT IDENTICAL -- TEST 'control_csawmg_gnu' [, ]( MB)
 
-PASS -- COMPILE 'atm_dyn32_debug_gnu' [04:11, 02:12]
-PASS -- TEST 'control_diag_debug_gnu' [03:23, 01:17](1295 MB)
-PASS -- TEST 'regional_debug_gnu' [09:26, 05:43](774 MB)
-PASS -- TEST 'rap_control_debug_gnu' [04:17, 01:48](872 MB)
-PASS -- TEST 'hrrr_control_debug_gnu' [05:17, 01:48](869 MB)
-PASS -- TEST 'hrrr_gf_debug_gnu' [05:17, 01:48](875 MB)
-PASS -- TEST 'hrrr_c3_debug_gnu' [05:17, 01:48](875 MB)
-PASS -- TEST 'rap_diag_debug_gnu' [06:27, 02:02](929 MB)
-PASS -- TEST 'rap_noah_sfcdiff_cires_ugwp_debug_gnu' [06:18, 02:51](869 MB)
-PASS -- TEST 'rap_progcld_thompson_debug_gnu' [05:18, 01:51](871 MB)
-PASS -- TEST 'control_stochy_debug_gnu' [04:17, 01:13](505 MB)
-PASS -- TEST 'control_debug_p8_gnu' [04:28, 01:21](1460 MB)
-PASS -- TEST 'rap_clm_lake_debug_gnu' [04:18, 01:49](873 MB)
-PASS -- TEST 'gnv1_c96_no_nest_debug_gnu' [05:29, 03:00](879 MB)
+PASS -- COMPILE 'atm_dyn32_debug_gnu' [03:10, 02:06]
+PASS -- TEST 'control_diag_debug_gnu' [03:23, 01:16](1297 MB)
+PASS -- TEST 'regional_debug_gnu' [07:29, 05:45](771 MB)
+PASS -- TEST 'rap_control_debug_gnu' [03:19, 01:49](871 MB)
+PASS -- TEST 'hrrr_control_debug_gnu' [03:18, 01:46](867 MB)
+PASS -- TEST 'hrrr_gf_debug_gnu' [03:18, 01:49](874 MB)
+PASS -- TEST 'hrrr_c3_debug_gnu' [03:18, 01:48](875 MB)
+PASS -- TEST 'rap_diag_debug_gnu' [03:25, 02:00](959 MB)
+PASS -- TEST 'rap_noah_sfcdiff_cires_ugwp_debug_gnu' [04:19, 02:50](869 MB)
+PASS -- TEST 'rap_progcld_thompson_debug_gnu' [03:18, 01:49](872 MB)
+PASS -- TEST 'control_stochy_debug_gnu' [03:18, 01:12](506 MB)
+PASS -- TEST 'control_debug_p8_gnu' [03:33, 01:18](1472 MB)
+PASS -- TEST 'rap_clm_lake_debug_gnu' [03:18, 01:49](873 MB)
+PASS -- TEST 'gnv1_c96_no_nest_debug_gnu' [04:33, 02:59](878 MB)
 
-PASS -- COMPILE 'wam_debug_gnu' [03:11, 01:11]
-PASS -- TEST 'control_wam_debug_gnu' [07:29, 05:26](1266 MB)
+PASS -- COMPILE 'wam_debug_gnu' [02:10, 01:05]
+PASS -- TEST 'control_wam_debug_gnu' [07:38, 05:16](1267 MB)
 
-PASS -- COMPILE 'atm_debug_dyn32_gnu' [04:11, 01:39]
-PASS -- TEST 'control_csawmg_debug_gnu' [04:26, 02:11](763 MB)
+PASS -- COMPILE 'atm_debug_dyn32_gnu' [03:11, 01:33]
+PASS -- TEST 'control_csawmg_debug_gnu' [04:31, 01:50](748 MB)
 
-PASS -- COMPILE 'rrfs_dyn32_phy32_gnu' [04:11, 02:25]
-PASS -- TEST 'rap_control_dyn32_phy32_gnu' [05:26, 03:23](712 MB)
-PASS -- TEST 'hrrr_control_dyn32_phy32_gnu' [34:26, 11:06](714 MB)
-PASS -- TEST 'rap_2threads_dyn32_phy32_gnu' [06:23, 04:50](726 MB)
-PASS -- TEST 'hrrr_control_2threads_dyn32_phy32_gnu' [07:26, 05:37](721 MB)
-PASS -- TEST 'hrrr_control_decomp_dyn32_phy32_gnu' [35:24, 12:46](715 MB)
-PASS -- TEST 'rap_restart_dyn32_phy32_gnu' [26:31, 07:11](562 MB)
-PASS -- TEST 'hrrr_control_restart_dyn32_phy32_gnu' [10:21, 06:09](564 MB)
-PASS -- TEST 'conus13km_control_gnu' [24:40, 03:17](903 MB)
-PASS -- TEST 'conus13km_2threads_gnu' [23:34, 01:38](904 MB)
-PASS -- TEST 'conus13km_decomp_gnu' [25:36, 03:22](906 MB)
-PASS -- TEST 'conus13km_restart_gnu' [19:38, 02:02](580 MB)
+PASS -- COMPILE 'rrfs_dyn32_phy32_gnu' [04:10, 02:10]
+FAILED: BASELINE NOT IDENTICAL -- TEST 'rap_control_dyn32_phy32_gnu' [, ]( MB)
+FAILED: BASELINE NOT IDENTICAL -- TEST 'hrrr_control_dyn32_phy32_gnu' [, ]( MB)
+FAILED: BASELINE NOT IDENTICAL -- TEST 'rap_2threads_dyn32_phy32_gnu' [, ]( MB)
+FAILED: BASELINE NOT IDENTICAL -- TEST 'hrrr_control_2threads_dyn32_phy32_gnu' [, ]( MB)
+FAILED: BASELINE NOT IDENTICAL -- TEST 'hrrr_control_decomp_dyn32_phy32_gnu' [, ]( MB)
+FAILED: UNABLE TO START TEST -- TEST 'rap_restart_dyn32_phy32_gnu' [, ]( MB)
+FAILED: UNABLE TO START TEST -- TEST 'hrrr_control_restart_dyn32_phy32_gnu' [, ]( MB)
+FAILED: BASELINE NOT IDENTICAL -- TEST 'conus13km_control_gnu' [, ]( MB)
+FAILED: BASELINE NOT IDENTICAL -- TEST 'conus13km_2threads_gnu' [, ]( MB)
+FAILED: BASELINE NOT IDENTICAL -- TEST 'conus13km_decomp_gnu' [, ]( MB)
+FAILED: UNABLE TO START TEST -- TEST 'conus13km_restart_gnu' [, ]( MB)
 
-PASS -- COMPILE 'atm_dyn64_phy32_gnu' [04:11, 02:57]
-PASS -- TEST 'rap_control_dyn64_phy32_gnu' [35:30, 13:20](741 MB)
+PASS -- COMPILE 'atm_dyn64_phy32_gnu' [04:11, 02:52]
+FAILED: BASELINE NOT IDENTICAL -- TEST 'rap_control_dyn64_phy32_gnu' [, ]( MB)
 
-PASS -- COMPILE 'atm_dyn32_phy32_debug_gnu' [04:11, 02:09]
-PASS -- TEST 'rap_control_debug_dyn32_phy32_gnu' [23:19, 01:51](720 MB)
-PASS -- TEST 'hrrr_control_debug_dyn32_phy32_gnu' [34:19, 13:20](720 MB)
-PASS -- TEST 'conus13km_debug_gnu' [28:36, 07:43](914 MB)
-PASS -- TEST 'conus13km_debug_qr_gnu' [28:33, 07:24](640 MB)
-PASS -- TEST 'conus13km_debug_2threads_gnu' [25:33, 04:30](917 MB)
-PASS -- TEST 'conus13km_debug_decomp_gnu' [28:31, 07:42](917 MB)
-PASS -- TEST 'conus13km_radar_tten_debug_gnu' [32:33, 07:32](983 MB)
+PASS -- COMPILE 'atm_dyn32_phy32_debug_gnu' [04:10, 02:08]
+PASS -- TEST 'rap_control_debug_dyn32_phy32_gnu' [03:19, 01:49](720 MB)
+PASS -- TEST 'hrrr_control_debug_dyn32_phy32_gnu' [03:18, 01:46](721 MB)
+PASS -- TEST 'conus13km_debug_gnu' [09:58, 07:32](914 MB)
+PASS -- TEST 'conus13km_debug_qr_gnu' [09:37, 07:30](640 MB)
+PASS -- TEST 'conus13km_debug_2threads_gnu' [06:37, 04:35](916 MB)
+PASS -- TEST 'conus13km_debug_decomp_gnu' [09:34, 07:52](916 MB)
+PASS -- TEST 'conus13km_radar_tten_debug_gnu' [09:34, 07:34](982 MB)
 
-PASS -- COMPILE 'atm_dyn64_phy32_debug_gnu' [04:11, 02:16]
-PASS -- TEST 'rap_control_dyn64_phy32_debug_gnu' [21:20, 02:09](756 MB)
+PASS -- COMPILE 'atm_dyn64_phy32_debug_gnu' [04:11, 02:14]
+PASS -- TEST 'rap_control_dyn64_phy32_debug_gnu' [03:18, 01:50](750 MB)
 
-PASS -- COMPILE 's2sw_32bit_pdlib_gnu' [13:11, 11:48]
-PASS -- TEST 'cpld_control_gfsv17_gnu' [26:52, 05:50](1545 MB)
+PASS -- COMPILE 's2sw_32bit_pdlib_gnu' [16:11, 13:42]
+FAILED: BASELINE NOT IDENTICAL -- TEST 'cpld_control_gfsv17_gnu' [, ]( MB)
 
-PASS -- COMPILE 's2sw_32bit_pdlib_debug_gnu' [03:11, 01:35] ( 1575 warnings )
-PASS -- TEST 'cpld_debug_gfsv17_gnu' [30:39, 05:24](1565 MB)
+PASS -- COMPILE 's2sw_32bit_pdlib_debug_gnu' [04:11, 01:32] ( 1575 warnings )
+PASS -- TEST 'cpld_debug_gfsv17_gnu' [07:51, 05:25](1565 MB)
 
-PASS -- COMPILE 's2s_32bit_sfs_gnu' [13:11, 11:45]
-PASS -- TEST 'cpld_control_sfs_gnu' [54:31, 13:13](1780 MB)
+PASS -- COMPILE 's2s_32bit_sfs_gnu' [14:11, 11:47]
+FAILED: BASELINE NOT IDENTICAL -- TEST 'cpld_control_sfs_gnu' [, ]( MB)
 
-PASS -- COMPILE 's2s_32bit_sfs_debug_gnu' [03:11, 01:23] ( 830 warnings )
-PASS -- TEST 'cpld_debug_sfs_gnu' [46:25, 05:33](1789 MB)
+PASS -- COMPILE 's2s_32bit_sfs_debug_gnu' [03:10, 01:35] ( 830 warnings )
+PASS -- TEST 'cpld_debug_sfs_gnu' [09:49, 05:29](1785 MB)
 
-PASS -- COMPILE 'datm_cdeps_gnu' [14:11, 12:18]
-PASS -- TEST 'datm_cdeps_control_cfsr_gnu' [04:16, 02:04](1513 MB)
+PASS -- COMPILE 'datm_cdeps_gnu' [13:11, 11:22]
+FAILED: BASELINE NOT IDENTICAL -- TEST 'datm_cdeps_control_cfsr_gnu' [, ]( MB)
 
-PASS -- COMPILE 'atm_mpas_dyn32_gnu' [03:11, 02:02] ( 1 warnings )
-PASS -- TEST 'control_gfs_mpas_gnu' [03:26, 01:57](1119 MB)
-PASS -- TEST 'control_gfs_mpas_stochy_gnu' [03:25, 01:38](1121 MB)
+PASS -- COMPILE 'datm_s2sw_wavice_debug_gnu' [03:11, 01:06] ( 1590 warnings )
+PASS -- TEST 'datm_s2sw_wavice_gnu' [25:19, 23:28](4511 MB)
+
+PASS -- COMPILE 'atm_mpas_dyn32_gnu' [03:11, 02:01] ( 1 warnings )
+PASS -- TEST 'control_gfs_mpas_gnu' [04:42, 02:10](1115 MB)
+PASS -- TEST 'control_gfs_mpas_stochy_gnu' [07:29, 06:07](1120 MB)
 
 PASS -- COMPILE 'atm_mpas_dyn32_debug_gnu' [03:11, 01:34] ( 1 warnings )
-PASS -- TEST 'control_gfs_mpas_debug_gnu' [05:24, 03:06](1122 MB)
+PASS -- TEST 'control_gfs_mpas_debug_gnu' [07:28, 05:56](1123 MB)
 
 SYNOPSIS:
-Starting Date/Time: 20261029 13:03:53
-Ending Date/Time: 20261029 15:38:52
-Total Time: 02h:35m:46s
-Compiles Completed: 55/55
-Tests Completed: 239/239
+Starting Date/Time: 20261103 05:42:40
+Ending Date/Time: 20261103 07:47:57
+Total Time: 02h:06m:12s
+Compiles Completed: 56/56
+Tests Completed: 30/240
 
-LOGPATH: /scratch3/NAGAPE/epic/Gillian.Petro/ursa/RTs/ufs-wm/pretests/3174/tests/logs/log_ursa
+LOGPATH: /scratch3/NAGAPE/epic/Gillian.Petro/ursa/RTs/ufs-wm/pretests/3174-final-testing/tests/logs/log_ursa
   * Compile logs located at: compile_<compile_name>_<compiler>.log
   * Test logs located at: run_<test_name>_<compiler>.log
 
 
+*** FAILED TESTS ***
+
+UNABLE TO START TEST 
+
+  * cpld_restart_gefs oneapi
+  * cpld_control_gfsv17_iau oneapi
+  * cpld_restart_gfsv17 oneapi
+  * cpld_restart_gfsv17_iau oneapi
+  * cpld_restart_sfs oneapi
+  * cpld_restart_c192_p8 oneapi
+  * cpld_restart_p8_lnd oneapi
+  * cpld_restart_c48_5deg oneapi
+  * cpld_restart_c24_5deg oneapi
+  * cpld_restart_c24_9deg oneapi
+  * cpld_restart_c12_9deg oneapi
+  * control_stochy_restart oneapi
+  * control_restart_p8 oneapi
+  * control_restart_noqr_p8 oneapi
+  * regional_restart oneapi
+  * rap_restart oneapi
+  * rap_sfcdiff_restart oneapi
+  * hrrr_control_restart oneapi
+  * rap_restart_dyn32_phy32 oneapi
+  * hrrr_control_restart_dyn32_phy32 oneapi
+  * conus13km_restart oneapi
+  * datm_cdeps_restart_cfsr oneapi
+  * datm_cdeps_lm4_gswp3_rst oneapi
+  * control_restart_p8_atmlnd oneapi
+  * rap_restart gnu
+  * rap_sfcdiff_restart gnu
+  * hrrr_control_restart gnu
+  * hrrr_control_restart_noqr gnu
+  * rap_restart_dyn32_phy32 gnu
+  * hrrr_control_restart_dyn32_phy32 gnu
+  * conus13km_restart gnu
+
+BASELINE NOT IDENTICAL 
+
+  * control_stochy gnu
+  * control_p8 gnu
+  * control_p8_ugwpv1 gnu
+  * rap_control gnu
+  * rap_decomp gnu
+  * rap_2threads gnu
+  * rap_sfcdiff gnu
+  * rap_sfcdiff_decomp gnu
+  * hrrr_control gnu
+  * hrrr_control_noqr gnu
+  * hrrr_control_2threads gnu
+  * hrrr_control_decomp gnu
+  * rrfs_v1beta gnu
+  * control_csawmg gnu
+  * rap_control_dyn32_phy32 gnu
+  * hrrr_control_dyn32_phy32 gnu
+  * rap_2threads_dyn32_phy32 gnu
+  * hrrr_control_2threads_dyn32_phy32 gnu
+  * hrrr_control_decomp_dyn32_phy32 gnu
+  * conus13km_control gnu
+  * conus13km_2threads gnu
+  * conus13km_decomp gnu
+  * rap_control_dyn64_phy32 gnu
+  * cpld_control_gfsv17 gnu
+  * cpld_control_sfs gnu
+  * datm_cdeps_control_cfsr gnu
+
+MISSING BASELINE 
+
+  * cpld_control_gefs oneapi
+  * cpld_dcp_gefs oneapi
+  * cpld_control_gfsv17 oneapi
+  * cpld_mpi_gfsv17 oneapi
+  * cpld_decomp_gfsv17 oneapi
+  * cpld_2threads_gfsv17 oneapi
+  * cpld_control_sfs oneapi
+  * cpld_debug_sfs oneapi
+  * cpld_debug_gfsv17 oneapi
+  * cpld_control_c192_p8 oneapi
+  * cpld_control_p8_lnd oneapi
+  * cpld_control_noaero_p8_agrid oneapi
+  * cpld_control_c48_5deg oneapi
+  * cpld_warmstart_c48_5deg oneapi
+  * cpld_control_c24_5deg oneapi
+  * cpld_warmstart_c24_5deg oneapi
+  * cpld_control_c24_9deg oneapi
+  * cpld_warmstart_c24_9deg oneapi
+  * cpld_control_c12_9deg oneapi
+  * cpld_warmstart_c12_9deg oneapi
+  * control_CubedSphereGrid oneapi
+  * control_CubedSphereGrid_parallel oneapi
+  * control_latlon oneapi
+  * control_wrtGauss_netcdf_parallel oneapi
+  * control_c48 oneapi
+  * control_c48.v2.sfc oneapi
+  * control_c48_lnd_iau oneapi
+  * control_c192 oneapi
+  * control_c384 oneapi
+  * control_c384gdas oneapi
+  * control_stochy oneapi
+  * control_lndp oneapi
+  * control_iovr4_gfdlmpv3 oneapi
+  * control_p8 oneapi
+  * control_p8.v2.sfc oneapi
+  * control_p8_ugwpv1 oneapi
+  * control_p8_ugwpv1_tempo oneapi
+  * control_p8_ugwpv1_tempo_aerosol oneapi
+  * control_noqr_p8 oneapi
+  * control_decomp_p8 oneapi
+  * control_2threads_p8 oneapi
+  * control_p8_lndp oneapi
+  * control_p8_rrtmgp oneapi
+  * control_p8_mynn oneapi
+  * merra2_thompson oneapi
+  * merra2_hf_thompson oneapi
+  * regional_control oneapi
+  * regional_decomp oneapi
+  * regional_2threads oneapi
+  * regional_noquilt oneapi
+  * regional_netcdf_parallel oneapi
+  * regional_2dwrtdecomp oneapi
+  * regional_wofs oneapi
+  * regional_wofs_tempo oneapi
+  * control_p8_rrtmgp_rad32 oneapi
+  * control_p8_samf_conv32 oneapi
+  * rap_control oneapi
+  * regional_spp_sppt_shum_skeb oneapi
+  * rap_decomp oneapi
+  * rap_2threads oneapi
+  * rap_sfcdiff oneapi
+  * rap_sfcdiff_decomp oneapi
+  * hrrr_control oneapi
+  * hrrr_control_decomp oneapi
+  * hrrr_control_2threads oneapi
+  * rrfs_v1beta oneapi
+  * rrfs_v1nssl oneapi
+  * rrfs_v1nssl_nohailnoccn oneapi
+  * control_csawmg oneapi
+  * control_wam oneapi
+  * control_CubedSphereGrid_debug oneapi
+  * control_wrtGauss_netcdf_parallel_debug oneapi
+  * control_stochy_debug oneapi
+  * control_lndp_debug oneapi
+  * control_csawmg_debug oneapi
+  * control_diag_debug oneapi
+  * control_debug_p8 oneapi
+  * regional_debug oneapi
+  * rap_control_debug oneapi
+  * hrrr_control_debug oneapi
+  * hrrr_gf_debug oneapi
+  * hrrr_c3_debug oneapi
+  * rap_unified_drag_suite_debug oneapi
+  * rap_diag_debug oneapi
+  * rap_cires_ugwp_debug oneapi
+  * rap_unified_ugwp_debug oneapi
+  * rap_lndp_debug oneapi
+  * rap_progcld_thompson_debug oneapi
+  * rap_noah_debug oneapi
+  * rap_sfcdiff_debug oneapi
+  * rap_noah_sfcdiff_cires_ugwp_debug oneapi
+  * rap_clm_lake_debug oneapi
+  * gnv1_c96_no_nest_debug oneapi
+  * control_wam_debug oneapi
+  * regional_spp_sppt_shum_skeb_dyn32_phy32 oneapi
+  * rap_control_dyn32_phy32 oneapi
+  * hrrr_control_dyn32_phy32 oneapi
+  * rap_2threads_dyn32_phy32 oneapi
+  * hrrr_control_2threads_dyn32_phy32 oneapi
+  * hrrr_control_decomp_dyn32_phy32 oneapi
+  * conus13km_control oneapi
+  * conus13km_2threads oneapi
+  * conus13km_decomp oneapi
+  * conus13km_gl_inline oneapi
+  * rap_control_dyn64_phy32 oneapi
+  * rap_control_debug_dyn32_phy32 oneapi
+  * hrrr_control_debug_dyn32_phy32 oneapi
+  * conus13km_debug oneapi
+  * conus13km_debug_qr oneapi
+  * conus13km_debug_2threads oneapi
+  * conus13km_debug_decomp oneapi
+  * conus13km_radar_tten_debug oneapi
+  * rap_control_dyn64_phy32_debug oneapi
+  * hafs_regional_atm oneapi
+  * hafs_regional_atm_gfdlmpv3 oneapi
+  * hafs_regional_atm_thompson_gfdlsf oneapi
+  * hafs_regional_atm_wav oneapi
+  * hafs_regional_1nest_atm oneapi
+  * hafs_regional_telescopic_2nests_atm oneapi
+  * hafs_global_1nest_atm oneapi
+  * hafs_global_multiple_4nests_atm oneapi
+  * hafs_regional_specified_moving_1nest_atm oneapi
+  * hafs_regional_storm_following_1nest_atm oneapi
+  * hafs_global_storm_following_1nest_atm oneapi
+  * gnv1_nested oneapi
+  * hafs_regional_storm_following_1nest_atm_ocn_wav_mom6 oneapi
+  * hafs_regional_docn oneapi
+  * hafs_regional_docn_oisst oneapi
+  * datm_cdeps_control_cfsr oneapi
+  * datm_cdeps_control_gefs oneapi
+  * datm_cdeps_ciceC_cfsr oneapi
+  * datm_cdeps_mx025_cfsr oneapi
+  * datm_cdeps_mx025_gefs oneapi
+  * datm_cdeps_multiple_files_cfsr oneapi
+  * datm_cdeps_3072x1536_cfsr oneapi
+  * datm_cdeps_gfs oneapi
+  * datm_cdeps_debug_cfsr oneapi
+  * datm_gefs_init_stochy oneapi
+  * datm_gfs_icethermo oneapi
+  * datm_cdeps_lnd_gswp3 oneapi
+  * datm_cdeps_lm4_gswp3 oneapi
+  * atm_ds2s_docn_pcice oneapi
+  * control_p8_atmlnd oneapi
+  * control_p8_atmlnd_debug oneapi
+  * atmwav_control_noaero_p8 oneapi
+  * atmaero_control_p8 oneapi
+  * atmaero_control_p8_rad oneapi
+  * atmaero_control_p8_rad_micro oneapi
+  * regional_atmaq oneapi
+  * regional_atmaq_canopy oneapi
+  * regional_atmaq_debug oneapi
+  * cpld_regional_atm_fbh oneapi
+  * catchem_control oneapi
+
+
 NOTES:
-A file 'test_changes.list' was generated but is empty.
+A file 'test_changes.list' was generated with list of all failed tests.
+You can use './rt.sh -c -s test_changes.list' to create baselines for the failed tests.
 If you are using this log as a pull request verification, please commit 'test_changes.list'.
 
-Result: SUCCESS
+Result: FAILURE
 
 ====END OF URSA REGRESSION TESTING LOG====
