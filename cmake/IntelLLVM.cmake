@@ -62,7 +62,6 @@ if(WARN_AS_ERROR)
   set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -warn errors")
 endif()
 
-# Link to issue here
 if(CMAKE_Platform STREQUAL "derecho.oneapi")
   string(REGEX REPLACE "(^| )-g( |$)" " -g1 " CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS}")
 endif()
