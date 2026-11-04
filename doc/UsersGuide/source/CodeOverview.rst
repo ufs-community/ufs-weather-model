@@ -141,8 +141,8 @@ The umbrella repository for the UFS WM is named ``ufs-weather-model``. Under thi
     │    └── (ESMF)                                 -------- GOCART model
     ├── LICENSE.md
     ├── LM4-driver 
-    │    ├── (LM4)                                  -------- NUOPC NOAA-GFDL Land Model version 4
-    │    └── (nuopc_cap)                            -------- NUOPC LM4 cap
+    │    ├── (LM4)                                  -------- NOAA-GFDL Land Model version 4
+    │    └── (nuopc_cap)                            -------- NUOPC LM4 cap and surface fluxes
     ├── modulefiles                                 -------- system module files for supported HPC systems
     ├── MOM6-interface
     │    └── MOM6

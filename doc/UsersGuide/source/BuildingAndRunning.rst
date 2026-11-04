@@ -122,6 +122,8 @@ Users can download the data and update the ``rt.sh`` script to point to the appr
 
 To download data, users must select the files they want from the bucket and download them either in their browser, via a ``wget`` command, or through the AWS CLI. 
 
+(TMP: REMOVE IF NO LONGER TRUE) LM4 tests also need ``LM4_HYDRO_PATH`` and ``LM4_GRID_INPUTDATA``  See :numref:`Section %s <lm4-in>`.
+
 Detailed information on input files can be found in :numref:`Chapter %s <InputsOutputs>`. 
 
 .. _DownloadingWMCode:

@@ -17,7 +17,7 @@ MED_model:                      @[med_model]
 MED_petlist_bounds:             @[med_petlist_bounds]
 MED_omp_num_threads:            @[med_omp_num_threads]
 MED_attributes::
-  Verbosity = 1
+  Verbosity = 0
   Diagnostic = 0
   ATM_model = @[atm_model]
   LND_model = @[lnd_model]
@@ -27,9 +27,6 @@ MED_attributes::
   history_ymd = -999
   coupling_mode = @[CPLMODE]
   samegrid_atmlnd = @[samegrid_atmlnd]
-  history_tile_lnd = 96
-  history_n_lnd_inst = 6
-  history_option_lnd_inst = nhours
   pio_typename = @[CMEPS_PIO_FORMAT]
   pio_numiotasks = @[CMEPS_PIO_IOTASKS]
   pio_stride = @[CMEPS_PIO_STRIDE]
@@ -51,7 +48,7 @@ LND_model:                      @[lnd_model]
 LND_petlist_bounds:             @[lnd_petlist_bounds]
 LND_omp_num_threads:            @[lnd_omp_num_threads]
 LND_attributes::
-  Verbosity = 1
+  Verbosity = 0
   DumpFields = false
   ProfileMemory = false
   OverwriteSlice = true
@@ -62,17 +59,17 @@ LND_attributes::
 runSeq::
 @@[coupling_interval_sec]
   MED med_phases_prep_atm
+  MED med_phases_prep_lnd
   MED -> ATM :remapMethod=redist
+  MED -> LND :remapMethod=redist
   ATM
+  LND
   ATM -> MED :remapMethod=redist
   MED med_phases_post_atm
-   MED med_phases_prep_lnd
-   MED -> LND :remapMethod=redist
-   LND
   LND -> MED :remapMethod=redist
   MED med_phases_post_lnd
-   MED med_phases_restart_write
-   MED med_phases_history_write
+  MED med_phases_restart_write
+  MED med_phases_history_write
 @
 ::
 
@@ -91,7 +88,7 @@ ALLCOMP_attributes::
       start_type = @[RUNTYPE]
       restart_dir = @[CMEPS_RESTART_DIR]
       case_name = ufs.cpld
-      restart_n = 12
+      restart_n = @[RESTART_N]
       restart_option = nhours
       restart_ymd = -999
       dbug_flag = @[cap_dbug_flag]
