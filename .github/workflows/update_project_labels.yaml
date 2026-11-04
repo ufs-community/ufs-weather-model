@@ -17,171 +17,196 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      pull-requests: write
-      issues: write
     steps:
       - name: Lack of baseline labels
         if: | 
             !contains(github.event.pull_request.labels.*.name, 'No Baseline Change') && 
             !contains(github.event.pull_request.labels.*.name, 'Baseline Updates') && 
             !contains(github.event.pull_request.labels.*.name, 'New Baselines')
-        uses: nipe0324/update-project-v2-item-field@v2.0.2
+        uses: github/update-project-action@af4f6083118f5080c89828b421ef598d1906fb60 #v4
         with:
-          project-url: https://github.com/orgs/ufs-community/projects/70
-          github-token: ${{ secrets.PR_PROJECT_TOKEN }}
-          field-name: 'Baseline Changes'
-          field-value: 'Unknown'
+          github_token: ${{ secrets.PR_PROJECT_TOKEN }}
+          organization: ufs-community
+          project_number: 70
+          content_id: ${{ github.event.pull_request.node_id }}
+          operation: update
+          field: 'Baseline Changes'
+          value: 'Unknown'
       - name: Contradictory labels
         if: | 
             contains(github.event.pull_request.labels.*.name, 'No Baseline Change') && 
             (contains(github.event.pull_request.labels.*.name, 'Baseline Updates') || 
             contains(github.event.pull_request.labels.*.name, 'New Baselines'))
-        uses: nipe0324/update-project-v2-item-field@v2.0.2
+        uses: github/update-project-action@af4f6083118f5080c89828b421ef598d1906fb60 #v4
         with:
-          project-url: https://github.com/orgs/ufs-community/projects/70
-          github-token: ${{ secrets.PR_PROJECT_TOKEN }}
-          field-name: 'Baseline Changes'
-          field-value: 'Unknown'
+          github_token: ${{ secrets.PR_PROJECT_TOKEN }}
+          organization: ufs-community
+          project_number: 70
+          content_id: ${{ github.event.pull_request.node_id }}
+          operation: update
+          field: 'Baseline Changes'
+          value: 'Unknown'
       - name: Baseline changes labels
         if: |
             !contains(github.event.pull_request.labels.*.name, 'No Baseline Change') &&
             ( contains(github.event.pull_request.labels.*.name, 'Baseline Updates') || 
             contains(github.event.pull_request.labels.*.name, 'New Baselines') )
-        uses: nipe0324/update-project-v2-item-field@v2.0.2
+        uses: github/update-project-action@af4f6083118f5080c89828b421ef598d1906fb60 #v4
         with:
-          project-url: https://github.com/orgs/ufs-community/projects/70
-          github-token: ${{ secrets.PR_PROJECT_TOKEN }}
-          field-name: 'Baseline Changes'
-          field-value: 'Yes'
+          github_token: ${{ secrets.PR_PROJECT_TOKEN }}
+          organization: ufs-community
+          project_number: 70
+          content_id: ${{ github.event.pull_request.node_id }}
+          operation: update
+          field: 'Baseline Changes'
+          value: 'Yes'
       - name: No baseline changes label
         if: | 
             contains(github.event.pull_request.labels.*.name, 'No Baseline Change') && 
             !contains(github.event.pull_request.labels.*.name, 'Baseline Updates') && 
             !contains(github.event.pull_request.labels.*.name, 'New Baselines')
-        uses: nipe0324/update-project-v2-item-field@v2.0.2
+        uses: github/update-project-action@af4f6083118f5080c89828b421ef598d1906fb60 #v4
         with:
-          project-url: https://github.com/orgs/ufs-community/projects/70
-          github-token: ${{ secrets.PR_PROJECT_TOKEN }}
-          field-name: 'Baseline Changes'
-          field-value: 'No'
+          github_token: ${{ secrets.PR_PROJECT_TOKEN }}
+          organization: ufs-community
+          project_number: 70
+          content_id: ${{ github.event.pull_request.node_id }}
+          operation: update
+          field: 'Baseline Changes'
+          value: 'No'
   data-labels:
     name: Input data
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      pull-requests: write
-      issues: write
     steps:
       - name: Additions to current input-data directory required
         if: |
           contains(github.event.pull_request.labels.*.name, 'Adds Input Data') &&
           !contains(github.event.pull_request.labels.*.name, 'Changes Existing Input Data')
-        uses: nipe0324/update-project-v2-item-field@v2.0.2
+        uses: github/update-project-action@af4f6083118f5080c89828b421ef598d1906fb60 #v4
         with:
-          project-url: https://github.com/orgs/ufs-community/projects/70
-          github-token: ${{ secrets.PR_PROJECT_TOKEN }}
-          field-name: "Input Data Req'd"
-          field-value: 'Adds'
+          github_token: ${{ secrets.PR_PROJECT_TOKEN }}
+          organization: ufs-community
+          project_number: 70
+          content_id: ${{ github.event.pull_request.node_id }}
+          operation: update
+          field: "Input Data Req'd"
+          value: 'Adds'
       - name: New input-data directory required
         if: |
           contains(github.event.pull_request.labels.*.name, 'Changes Existing Input Data') &&
           !contains(github.event.pull_request.labels.*.name, 'Adds Input Data')
-        uses: nipe0324/update-project-v2-item-field@v2.0.2
+        uses: github/update-project-action@af4f6083118f5080c89828b421ef598d1906fb60 #v4
         with:
-          project-url: https://github.com/orgs/ufs-community/projects/70
-          github-token: ${{ secrets.PR_PROJECT_TOKEN }}
-          field-name: "Input Data Req'd"
-          field-value: 'Create New'
+          github_token: ${{ secrets.PR_PROJECT_TOKEN }}
+          organization: ufs-community
+          project_number: 70
+          content_id: ${{ github.event.pull_request.node_id }}
+          operation: update
+          field: "Input Data Req'd"
+          value: 'Create New'
       - name: No input data changes
         if: |
             (!contains(github.event.pull_request.labels.*.name, 'Changes Existing Input Data')) && 
             (!contains(github.event.pull_request.labels.*.name, 'Adds Input Data'))
-        uses: nipe0324/update-project-v2-item-field@v2.0.2
+        uses: github/update-project-action@af4f6083118f5080c89828b421ef598d1906fb60 #v4
         with:
-          project-url: https://github.com/orgs/ufs-community/projects/70
-          github-token: ${{ secrets.PR_PROJECT_TOKEN }}
-          field-name: "Input Data Req'd"
-          field-value: 'None'
+          github_token: ${{ secrets.PR_PROJECT_TOKEN }}
+          organization: ufs-community
+          project_number: 70
+          content_id: ${{ github.event.pull_request.node_id }}
+          operation: update
+          field: "Input Data Req'd"
+          value: 'None'
       - name: Contradictory labels
         if: | 
             contains(github.event.pull_request.labels.*.name, 'Adds Input Data') &&
             contains(github.event.pull_request.labels.*.name, 'Changes Existing Input Data')
-        uses: nipe0324/update-project-v2-item-field@v2.0.2
+        uses: github/update-project-action@af4f6083118f5080c89828b421ef598d1906fb60 #v4
         with:
-          project-url: https://github.com/orgs/ufs-community/projects/70
-          github-token: ${{ secrets.PR_PROJECT_TOKEN }}
-          field-name: "Input Data Req'd"
-          field-value: 'Unknown'
+          github_token: ${{ secrets.PR_PROJECT_TOKEN }}
+          organization: ufs-community
+          project_number: 70
+          content_id: ${{ github.event.pull_request.node_id }}
+          operation: update
+          field: "Input Data Req'd"
+          value: 'Unknown'
   priority-labels:
     name: Priority
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      pull-requests: write
-      issues: write
     steps:
       - name: Read Priority field
-        uses: EndBug/project-fields@v2.1.0
+        uses: github/update-project-action@af4f6083118f5080c89828b421ef598d1906fb60 #v4
         id: priority_field
         with:
-          operation: get
-          fields: Priority
           github_token: ${{ secrets.PR_PROJECT_TOKEN }}
-          project_url: https://github.com/orgs/ufs-community/projects/70
-          resource_url: ${{ github.event.pull_request.html_url }}
-      - name: Assign value to Priority field
-        id: assign_priority
-        run: |
-          PRIORITY="${{ steps.priority_field.outputs.values }}"
-          echo "priority=$PRIORITY" >> $GITHUB_OUTPUT
+          organization: ufs-community
+          project_number: 70
+          content_id: ${{ github.event.pull_request.node_id }}
+          operation: read
+          field: Priority
       - name: Normal Priority
         if: |
             !contains(github.event.pull_request.labels.*.name, 'Priority: Critical') &&
             !contains(github.event.pull_request.labels.*.name, 'Priority: High') &&
-            steps.assign_priority.outputs.priority != 'Combine'
-        uses: nipe0324/update-project-v2-item-field@v2.0.2
+            !contains(steps.priority_field.outputs.field_read_value, 'Combine')
+        uses: github/update-project-action@af4f6083118f5080c89828b421ef598d1906fb60 #v4
         with:
-          project-url: https://github.com/orgs/ufs-community/projects/70
-          github-token: ${{ secrets.PR_PROJECT_TOKEN }}
-          field-name: 'Priority'
-          field-value: 'Normal'
+          github_token: ${{ secrets.PR_PROJECT_TOKEN }}
+          organization: ufs-community
+          project_number: 70
+          content_id: ${{ github.event.pull_request.node_id }}
+          operation: update
+          field: 'Priority'
+          value: 'Normal'
       - name: Critical priority
         if: |
           contains(github.event.pull_request.labels.*.name, 'Priority: Critical') &&
-          steps.assign_priority.outputs.priority != 'Combine'
-        uses: nipe0324/update-project-v2-item-field@v2.0.2
+          !contains(steps.priority_field.outputs.field_read_value, 'Combine')
+        uses: github/update-project-action@af4f6083118f5080c89828b421ef598d1906fb60 #v4
         with:
-          project-url: https://github.com/orgs/ufs-community/projects/70
-          github-token: ${{ secrets.PR_PROJECT_TOKEN }}
-          field-name: 'Priority'
-          field-value: 'Critical'
+          github_token: ${{ secrets.PR_PROJECT_TOKEN }}
+          organization: ufs-community
+          project_number: 70
+          content_id: ${{ github.event.pull_request.node_id }}
+          operation: update
+          field: 'Priority'
+          value: 'Critical'
       - name: High Priority
         if: |
             (contains(github.event.pull_request.labels.*.name, 'Priority: High')) &&
-            steps.assign_priority.outputs.priority != 'Combine'
-        uses: nipe0324/update-project-v2-item-field@v2.0.2
+            !contains(steps.priority_field.outputs.field_read_value, 'Combine')
+        uses: github/update-project-action@af4f6083118f5080c89828b421ef598d1906fb60 #v4
         with:
-          project-url: https://github.com/orgs/ufs-community/projects/70
-          github-token: ${{ secrets.PR_PROJECT_TOKEN }}
-          field-name: 'Priority'
-          field-value: 'High'
+          github_token: ${{ secrets.PR_PROJECT_TOKEN }}
+          organization: ufs-community
+          project_number: 70
+          content_id: ${{ github.event.pull_request.node_id }}
+          operation: update
+          field: 'Priority'
+          value: 'High'
       - name: Unknown Priority
         if: |
             contains(github.event.pull_request.labels.*.name, 'Priority: Critical') &&
-            contains(github.event.pull_request.labels.*.name, 'Priority: High')
-        uses: nipe0324/update-project-v2-item-field@v2.0.2
+            contains(github.event.pull_request.labels.*.name, 'Priority: High') &&
+            !contains(steps.priority_field.outputs.field_read_value, 'Combine')
+        uses: github/update-project-action@af4f6083118f5080c89828b421ef598d1906fb60 #v4
         with:
-          project-url: https://github.com/orgs/ufs-community/projects/70
-          github-token: ${{ secrets.PR_PROJECT_TOKEN }}
-          field-name: 'Priority'
-          field-value: 'Unknown'
+          github_token: ${{ secrets.PR_PROJECT_TOKEN }}
+          organization: ufs-community
+          project_number: 70
+          content_id: ${{ github.event.pull_request.node_id }}
+          operation: update
+          field: 'Priority'
+          value: 'Unknown'
   subcomponent-labels:
     name: Subcomponents involved
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      pull-requests: write
-      issues: write
     env:
       SUBCOMPONENTS: ''
     steps:
@@ -194,6 +219,9 @@ jobs:
       - name: atmos_cubed_sphere
         if: contains(github.event.pull_request.labels.*.name, 'A3S')
         run: echo "SUBCOMPONENTS=${SUBCOMPONENTS} A3S" >> $GITHUB_ENV
+      - name: MPAS
+        if: contains(github.event.pull_request.labels.*.name, 'MPAS')
+        run: echo "SUBCOMPONENTS=${SUBCOMPONENTS} MPAS" >> $GITHUB_ENV
       - name: UPP
         if: contains(github.event.pull_request.labels.*.name, 'UPP')
         run: echo "SUBCOMPONENTS=${SUBCOMPONENTS} UPP" >> $GITHUB_ENV
@@ -212,6 +240,12 @@ jobs:
       - name: CICE
         if: contains(github.event.pull_request.labels.*.name, 'CICE')
         run: echo "SUBCOMPONENTS=${SUBCOMPONENTS} CICE" >> $GITHUB_ENV
+      - name: CECE
+        if: contains(github.event.pull_request.labels.*.name, 'CECE')
+        run: echo "SUBCOMPONENTS=${SUBCOMPONENTS} CECE" >> $GITHUB_ENV
+      - name: CATChem
+        if: contains(github.event.pull_request.labels.*.name, 'CATChem')
+        run: echo "SUBCOMPONENTS=${SUBCOMPONENTS} CATChem" >> $GITHUB_ENV
       - name: GOCART
         if: contains(github.event.pull_request.labels.*.name, 'GOC')
         run: echo "SUBCOMPONENTS=${SUBCOMPONENTS} GOC" >> $GITHUB_ENV
@@ -230,19 +264,28 @@ jobs:
       - name: FB
         if: contains(github.event.pull_request.labels.*.name, 'FB')
         run: echo "SUBCOMPONENTS=${SUBCOMPONENTS} FB" >> $GITHUB_ENV
+      - name: CCPP-sub
+        if: contains(github.event.pull_request.labels.*.name, 'CCPP-sub')
+        run: echo "SUBCOMPONENTS=${SUBCOMPONENTS} CCPP-sub" >> $GITHUB_ENV
       - name: Update subcomponents text
         if: ${{ env.SUBCOMPONENTS != '' }}
-        uses: nipe0324/update-project-v2-item-field@v2.0.2
+        uses: github/update-project-action@af4f6083118f5080c89828b421ef598d1906fb60 #v4
         with:
-          project-url: https://github.com/orgs/ufs-community/projects/70
-          github-token: ${{ secrets.PR_PROJECT_TOKEN }}
-          field-name: "Subcomponent PRs"
-          field-value: ${{ env.SUBCOMPONENTS }}
+          github_token: ${{ secrets.PR_PROJECT_TOKEN }}
+          organization: ufs-community
+          project_number: 70
+          content_id: ${{ github.event.pull_request.node_id }}
+          operation: update
+          field: "Subcomponent PRs"
+          value: ${{ env.SUBCOMPONENTS }}
       - name: WM only
         if: ${{ env.SUBCOMPONENTS == '' }}
-        uses: nipe0324/update-project-v2-item-field@v2.0.2
+        uses: github/update-project-action@af4f6083118f5080c89828b421ef598d1906fb60 #v4
         with:
-          project-url: https://github.com/orgs/ufs-community/projects/70
-          github-token: ${{ secrets.PR_PROJECT_TOKEN }}
-          field-name: "Subcomponent PRs"
-          field-value: 'WM only'
+          github_token: ${{ secrets.PR_PROJECT_TOKEN }}
+          organization: ufs-community
+          project_number: 70
+          content_id: ${{ github.event.pull_request.node_id }}
+          operation: update
+          field: "Subcomponent PRs"
+          value: 'WM only'

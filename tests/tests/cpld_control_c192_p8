@@ -1,153 +1,153 @@
 #
 #  cpld_control_c192_p8 test
 #
-export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS-WW3 system - C192 MX050 - P8 test"
+TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS-WW3 system - C192 MX050 - P8 test"
 
-export CNTL_DIR=cpld_control_c192_p8
+CNTL_DIR=cpld_control_c192_p8
 
-export LIST_FILES="sfcf030.tile1.nc \
-                   sfcf030.tile2.nc \
-                   sfcf030.tile3.nc \
-                   sfcf030.tile4.nc \
-                   sfcf030.tile5.nc \
-                   sfcf030.tile6.nc \
-                   atmf030.tile1.nc \
-                   atmf030.tile2.nc \
-                   atmf030.tile3.nc \
-                   atmf030.tile4.nc \
-                   atmf030.tile5.nc \
-                   atmf030.tile6.nc \
-                   RESTART/20210323.120000.coupler.res \
-                   RESTART/20210323.120000.fv_core.res.nc \
-                   RESTART/20210323.120000.fv_core.res.tile1.nc \
-                   RESTART/20210323.120000.fv_core.res.tile2.nc \
-                   RESTART/20210323.120000.fv_core.res.tile3.nc \
-                   RESTART/20210323.120000.fv_core.res.tile4.nc \
-                   RESTART/20210323.120000.fv_core.res.tile5.nc \
-                   RESTART/20210323.120000.fv_core.res.tile6.nc \
-                   RESTART/20210323.120000.fv_srf_wnd.res.tile1.nc \
-                   RESTART/20210323.120000.fv_srf_wnd.res.tile2.nc \
-                   RESTART/20210323.120000.fv_srf_wnd.res.tile3.nc \
-                   RESTART/20210323.120000.fv_srf_wnd.res.tile4.nc \
-                   RESTART/20210323.120000.fv_srf_wnd.res.tile5.nc \
-                   RESTART/20210323.120000.fv_srf_wnd.res.tile6.nc \
-                   RESTART/20210323.120000.fv_tracer.res.tile1.nc \
-                   RESTART/20210323.120000.fv_tracer.res.tile2.nc \
-                   RESTART/20210323.120000.fv_tracer.res.tile3.nc \
-                   RESTART/20210323.120000.fv_tracer.res.tile4.nc \
-                   RESTART/20210323.120000.fv_tracer.res.tile5.nc \
-                   RESTART/20210323.120000.fv_tracer.res.tile6.nc \
-                   RESTART/20210323.120000.phy_data.tile1.nc \
-                   RESTART/20210323.120000.phy_data.tile2.nc \
-                   RESTART/20210323.120000.phy_data.tile3.nc \
-                   RESTART/20210323.120000.phy_data.tile4.nc \
-                   RESTART/20210323.120000.phy_data.tile5.nc \
-                   RESTART/20210323.120000.phy_data.tile6.nc \
-                   RESTART/20210323.120000.sfc_data.tile1.nc \
-                   RESTART/20210323.120000.sfc_data.tile2.nc \
-                   RESTART/20210323.120000.sfc_data.tile3.nc \
-                   RESTART/20210323.120000.sfc_data.tile4.nc \
-                   RESTART/20210323.120000.sfc_data.tile5.nc \
-                   RESTART/20210323.120000.sfc_data.tile6.nc \
-                   RESTART/20210323.120000.MOM.res.nc \
-                   RESTART/iced.2021-03-23-43200.nc \
-                   RESTART/ufs.cpld.cpl.r.2021-03-23-43200.nc \
-                   ufs.cpld.ww3.r.2021-03-23-43200.nc \
-                   20210323.120000.out_grd.ww3 \
-                   20210323.120000.out_pnt.ww3.nc "
+LIST_FILES="sfcf030.tile1.nc \
+            sfcf030.tile2.nc \
+            sfcf030.tile3.nc \
+            sfcf030.tile4.nc \
+            sfcf030.tile5.nc \
+            sfcf030.tile6.nc \
+            atmf030.tile1.nc \
+            atmf030.tile2.nc \
+            atmf030.tile3.nc \
+            atmf030.tile4.nc \
+            atmf030.tile5.nc \
+            atmf030.tile6.nc \
+            RESTART/20210323.120000.coupler.res \
+            RESTART/20210323.120000.fv_core.res.nc \
+            RESTART/20210323.120000.fv_core.res.tile1.nc \
+            RESTART/20210323.120000.fv_core.res.tile2.nc \
+            RESTART/20210323.120000.fv_core.res.tile3.nc \
+            RESTART/20210323.120000.fv_core.res.tile4.nc \
+            RESTART/20210323.120000.fv_core.res.tile5.nc \
+            RESTART/20210323.120000.fv_core.res.tile6.nc \
+            RESTART/20210323.120000.fv_srf_wnd.res.tile1.nc \
+            RESTART/20210323.120000.fv_srf_wnd.res.tile2.nc \
+            RESTART/20210323.120000.fv_srf_wnd.res.tile3.nc \
+            RESTART/20210323.120000.fv_srf_wnd.res.tile4.nc \
+            RESTART/20210323.120000.fv_srf_wnd.res.tile5.nc \
+            RESTART/20210323.120000.fv_srf_wnd.res.tile6.nc \
+            RESTART/20210323.120000.fv_tracer.res.tile1.nc \
+            RESTART/20210323.120000.fv_tracer.res.tile2.nc \
+            RESTART/20210323.120000.fv_tracer.res.tile3.nc \
+            RESTART/20210323.120000.fv_tracer.res.tile4.nc \
+            RESTART/20210323.120000.fv_tracer.res.tile5.nc \
+            RESTART/20210323.120000.fv_tracer.res.tile6.nc \
+            RESTART/20210323.120000.phy_data.tile1.nc \
+            RESTART/20210323.120000.phy_data.tile2.nc \
+            RESTART/20210323.120000.phy_data.tile3.nc \
+            RESTART/20210323.120000.phy_data.tile4.nc \
+            RESTART/20210323.120000.phy_data.tile5.nc \
+            RESTART/20210323.120000.phy_data.tile6.nc \
+            RESTART/20210323.120000.sfc_data.tile1.nc \
+            RESTART/20210323.120000.sfc_data.tile2.nc \
+            RESTART/20210323.120000.sfc_data.tile3.nc \
+            RESTART/20210323.120000.sfc_data.tile4.nc \
+            RESTART/20210323.120000.sfc_data.tile5.nc \
+            RESTART/20210323.120000.sfc_data.tile6.nc \
+            RESTART/20210323.120000.MOM.res.nc \
+            RESTART/iced.2021-03-23-43200.nc \
+            RESTART/ufs.cpld.cpl.r.2021-03-23-43200.nc \
+            ufs.cpld.ww3.r.2021-03-23-43200.nc \
+            20210323.120000.out_grd.ww3 \
+            20210323.120000.out_pnt.ww3.nc "
 
-export ATMRES=C192
+ATMRES=C192
 export_fv3
 export_ugwpv1
 export_cpl
 
-export CCPP_SUITE=FV3_GFS_v17_coupled_p8_ugwpv1
+CCPP_SUITE=FV3_GFS_v17_coupled_p8_ugwpv1
 
-export DAYS=1.25
-export FHMAX=30
-export RESTART_N=15
-export RESTART_INTERVAL="${RESTART_N} -1"
-export OUTPUT_FH="0 15 30"
-export FHZERO=3
+DAYS=1.25
+FHMAX=30
+RESTART_N=15
+RESTART_INTERVAL="${RESTART_N} -1"
+OUTPUT_FH="0 15 30"
+FHZERO=3
 
-export DOMAINS_STACK_SIZE=16000000
+DOMAINS_STACK_SIZE=16000000
 
-export INPES=$INPES_cpl_c192
-export JNPES=$JNPES_cpl_c192
-export WRTTASK_PER_GROUP=$(( WPG_cpl_c192 * THRD_cpl_c192 ))
-export WLCLK=${WLCLK_cpl_c192:-$WLCLK}
+INPES=$INPES_cpl_c192
+JNPES=$JNPES_cpl_c192
+WRTTASK_PER_GROUP=$((WPG_cpl_c192 * THRD_cpl_c192))
+WLCLK=${WLCLK_cpl_c192:-$WLCLK}
 
 OCN_tasks=$OCN_tasks_cpl_c192
 ICE_tasks=$ICE_tasks_cpl_c192
 WAV_tasks=$WAV_tasks_cpl_c192
 
-export atm_omp_num_threads=$THRD_cpl_c192
-export chm_omp_num_threads=$atm_omp_num_threads
-export med_omp_num_threads=$atm_omp_num_threads
+atm_omp_num_threads=$THRD_cpl_c192
+chm_omp_num_threads=$atm_omp_num_threads
+med_omp_num_threads=$atm_omp_num_threads
 
 # atm/ocn/ice resolution
-export NPX=193
-export NPY=193
-export IMO=768
-export JMO=384
+NPX=193
+NPY=193
+IMO=768
+JMO=384
 
-export OCNRES=050
-export ICERES=0.50
-export NX_GLB=720
-export NY_GLB=576
-export CICE_NPROC=$ICE_tasks
-export np2=`expr $CICE_NPROC / 2`
-export CICE_BLCKX=`expr $NX_GLB / $np2`
-export CICE_BLCKY=`expr $NY_GLB / 2`
-export WW3_DOMAIN=mx${OCNRES}
-export MESH_WAV=mesh.${WW3_DOMAIN}.nc
-export WW3_MODDEF=mod_def.mx${OCNRES}
+OCNRES=050
+ICERES=0.50
+NX_GLB=720
+NY_GLB=576
+CICE_NPROC=$ICE_tasks
+np2=$((CICE_NPROC / 2))
+CICE_BLCKX=$((NX_GLB / np2))
+CICE_BLCKY=$((NY_GLB / 2))
+WW3_DOMAIN=mx${OCNRES}
+MESH_WAV=mesh.${WW3_DOMAIN}.nc
+WW3_MODDEF=mod_def.mx${OCNRES}
 
 # set component and coupling timesteps
-export DT_ATMOS=600
-export DT_INNER=${DT_ATMOS}
-export DT_CICE=${DT_ATMOS}
-export DT_DYNAM_MOM6=1800
-export DT_THERM_MOM6=3600
-export CICE_DIAGFREQ=`expr $((FHMAX-$FHROT)) \* 3600 / $DT_CICE`
+DT_ATMOS=600
+DT_INNER=${DT_ATMOS}
+DT_CICE=${DT_ATMOS}
+DT_DYNAM_MOM6=1800
+DT_THERM_MOM6=3600
+CICE_DIAGFREQ=$(((FHMAX - FHROT) * 3600 / DT_CICE))
 
 # ufs.configure
-export coupling_interval_slow_sec=${DT_THERM_MOM6}
-export coupling_interval_fast_sec=${DT_ATMOS}
+coupling_interval_slow_sec=${DT_THERM_MOM6}
+coupling_interval_fast_sec=${DT_ATMOS}
 
 # resolution dependent files
-export MOM6_INPUT=MOM_input_${OCNRES}.IN
-export MESH_ICE=mesh.mx${OCNRES}.nc
-export MESH_OCN=mesh.mx${OCNRES}.nc
-export CICE_GRID=grid_cice_NEMS_mx${OCNRES}.nc
-export CICE_MASK=kmtu_cice_NEMS_mx${OCNRES}.nc
-export MOM6_CHLCLIM=seawifs-clim-1997-2010.${NX_GLB}x${NY_GLB}.v20180328.nc
-export MOM6_FRUNOFF=runoff.daitren.clim.${NX_GLB}x${NY_GLB}.v20180328.nc
-export MOM6_RIVER_RUNOFF=True
-export MOM6_GUST_CONST=0.0
+MOM6_INPUT=MOM_input_${OCNRES}.IN
+MESH_ICE=mesh.mx${OCNRES}.nc
+MESH_OCN=mesh.mx${OCNRES}.nc
+CICE_GRID=grid_cice_NEMS_mx${OCNRES}.nc
+CICE_MASK=kmtu_cice_NEMS_mx${OCNRES}.nc
+MOM6_CHLCLIM=seawifs-clim-1997-2010.${NX_GLB}x${NY_GLB}.v20180328.nc
+MOM6_FRUNOFF=runoff.daitren.clim.${NX_GLB}x${NY_GLB}.v20180328.nc
+MOM6_RIVER_RUNOFF=True
+MOM6_GUST_CONST=0.0
 
-export FNALBC="'C192.snowfree_albedo.tileX.nc'"
-export FNALBC2="'C192.facsf.tileX.nc'"
-export FNTG3C="'C192.substrate_temperature.tileX.nc'"
-export FNVEGC="'C192.vegetation_greenness.tileX.nc'"
-export FNVETC="'C192.vegetation_type.tileX.nc'"
-export FNSOTC="'C192.soil_type.tileX.nc'"
-export FNSOCC="'C192.soil_color.tileX.nc'"
-export FNVMNC="'C192.vegetation_greenness.tileX.nc'"
-export FNVMXC="'C192.vegetation_greenness.tileX.nc'"
-export FNSLPC="'C192.slope_type.tileX.nc'"
-export FNABSC="'C192.maximum_snow_albedo.tileX.nc'"
+FNALBC="'C192.snowfree_albedo.tileX.nc'"
+FNALBC2="'C192.facsf.tileX.nc'"
+FNTG3C="'C192.substrate_temperature.tileX.nc'"
+FNVEGC="'C192.vegetation_greenness.tileX.nc'"
+FNVETC="'C192.vegetation_type.tileX.nc'"
+FNSOTC="'C192.soil_type.tileX.nc'"
+FNSOCC="'C192.soil_color.tileX.nc'"
+FNVMNC="'C192.vegetation_greenness.tileX.nc'"
+FNVMXC="'C192.vegetation_greenness.tileX.nc'"
+FNSLPC="'C192.slope_type.tileX.nc'"
+FNABSC="'C192.maximum_snow_albedo.tileX.nc'"
 
-export FV3_RUN=cpld_control_run.IN
+FV3_RUN=cpld_control_run.IN
 
 if [[ $MACHINE_ID = gaeac6 ]]; then
   TPN=144
 fi
 
 # HR4 GFSv17 GWD update
-export DO_UGWP_V0=.false.
-export DO_UGWP_V1=.true.
-export DO_GSL_DRAG_LS_BL=.true.
-export DO_GWD_OPT_PSL=.true.
-export DO_GSL_DRAG_SS=.false.
-export DO_GSL_DRAG_TOFD=.true.
+DO_UGWP_V0=.false.
+DO_UGWP_V1=.true.
+DO_GSL_DRAG_LS_BL=.true.
+DO_GWD_OPT_PSL=.true.
+DO_GSL_DRAG_SS=.false.
+DO_GSL_DRAG_TOFD=.true.

@@ -98,6 +98,11 @@
 #ifdef FRONT_AQM
       use FRONT_AQM,        only: AQM_SS  => SetServices
 #endif
+  ! - Handle build time CATChem options:
+#ifdef FRONT_CATCHEM
+      use FRONT_CATCHEM,    only: CATCHEM_SS  => SetServices, &
+                                  CATCHEM_SV  => SetVM
+#endif
   ! - Handle build time GOCART options:
 #ifdef FRONT_GOCART
       use FRONT_GOCART,     only: GOCART_SS  => SetServices, &
@@ -532,6 +537,14 @@
             endif
             call NUOPC_DriverAddComp(driver, trim(prefix), AQM_SS, &
               petList=petList, comp=comp, rc=rc)
+            if (ChkErr(rc,__LINE__,u_FILE_u)) return
+            found_comp = .true.
+          end if
+#endif
+#ifdef FRONT_CATCHEM
+          if (trim(model) == "catchem") then
+            call NUOPC_DriverAddComp(driver, trim(prefix), CATCHEM_SS, &
+              CATCHEM_SV, info=info, petList=petList, comp=comp, rc=rc)
             if (ChkErr(rc,__LINE__,u_FILE_u)) return
             found_comp = .true.
           end if

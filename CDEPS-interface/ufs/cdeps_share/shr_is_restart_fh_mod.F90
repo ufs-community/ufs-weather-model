@@ -24,7 +24,7 @@ module shr_is_restart_fh_mod
 contains
 
   !-----------------------------------------------------------------------
-  subroutine init_is_restart_fh(currentTime, dtime, lLog, restartfh_info)
+  subroutine init_is_restart_fh(currentTime, dtime, lLog, restartfh_info, key)
     !
     ! !DESCRIPTION:
     ! Process restart_fh attribute from model_configure in UFS
@@ -36,30 +36,54 @@ contains
     integer, intent(in)         :: dtime ! time step (s)
     logical, intent(in)         :: lLog ! If true, this task logs restart_fh info
     type(is_restart_fh_type), intent(out) :: restartfh_info !restart_fh info for each task
+    character(len=*),intent(in),optional :: key
     !
     ! !LOCAL VARIABLES:
     character(len=256)           :: timestr
-    integer                      :: n, nfh, fh_s, rc
+    integer                      :: n, nfh, fh_s, rc, nhours_fcst, ntimeout, fhi, ifh
     logical                      :: isPresent
     real(kind=ESMF_KIND_R8), allocatable :: restart_fh(:)
     type(ESMF_TimeInterval)      :: fhInterval
     type(ESMF_Config)            :: CF_mc
+    character(len=64)            :: key_name
     !-----------------------------------------------------------------------
 
+    ! Default is to create restart times, but other "keys" could use this routine.
+    if (present(key)) then
+       key_name = trim(key)//':'
+    else
+       key_name = 'restart_fh:'
+    endif
+    
     ! set up Times to write non-interval restarts
     inquire(FILE='model_configure', EXIST=isPresent)
     if (isPresent) then !model_configure exists. this is ufs run
       CF_mc = ESMF_ConfigCreate(rc=rc)
       call ESMF_ConfigLoadFile(config=CF_mc,filename='model_configure' ,rc=rc)
       if (ESMF_LogFoundError(rcToCheck=rc, msg=ESMF_LOGERR_PASSTHRU, line=__LINE__, file=__FILE__)) return
+      nfh = ESMF_ConfigGetLen(config=CF_mc, label=trim(key_name),rc=rc)
 
-      nfh = ESMF_ConfigGetLen(config=CF_mc, label ='restart_fh:',rc=rc)
       if (nfh .gt. 0) then
         allocate(restart_fh(1:nfh))
         allocate(restartfh_info%restartFhTimes(1:nfh)) !not deallocated here
-
-        call ESMF_ConfigGetAttribute(CF_mc,valueList=restart_fh,label='restart_fh:', rc=rc)
+        call ESMF_ConfigGetAttribute(CF_mc,valueList=restart_fh,label=trim(key_name), rc=rc)
         if (ESMF_LogFoundError(rcToCheck=rc, msg=ESMF_LOGERR_PASSTHRU, line=__LINE__, file=__FILE__)) return
+
+        ! Support case where restart_fh: "fh_interval -1"
+        if (nfh == 2 .and. int(restart_fh(2)) == -1) then
+           call ESMF_ConfigGetAttribute(CF_mc,value=nhours_fcst,label='nhours_fcst:', rc=rc)
+           fhi = int(restart_fh(1))
+           ntimeout = nhours_fcst/fhi
+           nfh = ntimeout
+           deallocate(restart_fh)
+           deallocate(restartfh_info%restartFhTimes)
+           allocate(restart_fh(1:nfh))
+           allocate(restartfh_info%restartFhTimes(1:nfh))
+           do ifh = 1,nfh
+              restart_fh(ifh) = ifh*fhi
+           end do
+        endif
+        
         ! create a list of times at each restart_fh
         do n = 1,nfh
           fh_s = NINT(3600*restart_fh(n))

@@ -4,49 +4,49 @@
 #
 ###############################################################################
 
-export TEST_DESCR="Compare FV3 regional restart results with previous trunk version"
+TEST_DESCR="Compare FV3 regional restart results with previous trunk version"
 
-export CNTL_DIR=regional_control
+CNTL_DIR=regional_control
 
-export LIST_FILES="dynf006.nc \
-                   phyf006.nc \
-                   PRSLEV.GrbF06 \
-                   NATLEV.GrbF06"
+LIST_FILES="dynf006.nc \
+            phyf006.nc \
+            PRSLEV.GrbF06 \
+            NATLEV.GrbF06"
 
 export_fv3_v16
 
-export FV3_RUN=regional_run.IN
+FV3_RUN=regional_run.IN
 
-export OZ_PHYS_OLD=.false.
-export OZ_PHYS_NEW=.true.
-export H2O_PHYS=.true.
-export HYBEDMF=.false.
-export WRITE_DOPOST=.true.
-export POSTAPP='lam'
+OZ_PHYS_OLD=.false.
+OZ_PHYS_NEW=.true.
+H2O_PHYS=.true.
+HYBEDMF=.false.
+WRITE_DOPOST=.true.
+POSTAPP='lam'
 
-export CCPP_SUITE=FV3_GFS_v15_thompson_mynn_lam3km
-export INPUT_NML=regional.nml.IN
-export MODEL_CONFIGURE=model_configure_regional.IN
-export DIAG_TABLE=diag_table_lam
-export FIELD_TABLE=field_table_regional
+CCPP_SUITE=FV3_GFS_v15_thompson_mynn_lam3km
+INPUT_NML=regional.nml.IN
+MODEL_CONFIGURE=model_configure_regional.IN
+DIAG_TABLE=diag_table_lam
+FIELD_TABLE=field_table_regional
 
-export WARM_START=.true.
-export NGGPS_IC=.false.
-export EXTERNAL_IC=.false.
-export MAKE_NH=.false.
-export MOUNTAIN=.true.
-export NA_INIT=0
+WARM_START=.true.
+NGGPS_IC=.false.
+EXTERNAL_IC=.false.
+MAKE_NH=.false.
+MOUNTAIN=.true.
+NA_INIT=0
 
-export WLCLK=15
-export FHMAX=6
-export INPES=10
-export JNPES=11
-export OUTPUT_FH="4 6"
-export WRITE_GROUP=1
-export WRTTASK_PER_GROUP=10
-export NTILES=1
-export FHROT=3
+WLCLK=15
+FHMAX=6
+INPES=10
+JNPES=11
+OUTPUT_FH="4 6"
+WRITE_GROUP=1
+WRTTASK_PER_GROUP=10
+NTILES=1
+FHROT=3
 
 if [[ ${MACHINE_ID} = ursa ]]; then
-   export EXCLUSIVE_NODES=.true.
-fi 
+  EXCLUSIVE_NODES=.true.
+fi

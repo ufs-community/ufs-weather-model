@@ -1,9 +1,5 @@
 name: Repo Check
 on:
-  #workflow_run:
-  #  workflows: ["Pull Request Tests"]
-  #  types:
-  #    - requested
   pull_request:
     branches:
       - develop
@@ -21,7 +17,7 @@ jobs:
       - name: Share helper id
         run: echo -n ${{ github.run_id }} >~/id_file
 
-      - uses: actions/cache@v4
+      - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 #v6.1.0
         with:
           path: ~/id_file
           key: helperid-${{ github.event.workflow_run.id }}
@@ -48,12 +44,3 @@ jobs:
           pr_uid=${{ github.event.pull_request.head.repo.owner.login }}
           echo "pr_uid is $pr_uid"
           ./repo_check.sh
-          #comment="$(./repo_check.sh 2>/dev/null)"
-          #echo "comment is $comment"
-          #if [[ -n $comment ]]; then
-          #  curl -sS -X POST -H $app -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-          #    $url/issues/$pr_number/comments -d '{"body": "'"${comment}"'"}'
-          #  echo -n "failure" >~/repocheck_file
-          #else
-          #  echo -n "success" >~/repocheck_file
-          #fi

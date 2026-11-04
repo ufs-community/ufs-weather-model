@@ -1,6 +1,9 @@
 #!/bin/bash
 set -eu
 
+flag_sync=true
+err=0
+
 get_shas () {
     cwd=$(pwd)
     # Get sha-1's of the top of develop and feature branches
@@ -22,12 +25,13 @@ get_shas () {
     cd $cwd
 }
 
-flag_sync=true
+
 
 declare -A urls branches paths
-# UPP, ccpp-framework, and gocart are intentionally excluded because they update at a different cadence 
+# UPP, ccpp-framework, rrtmgp, and gocart are intentionally excluded because they update at a different cadence 
 # and periodically bring in changes. 
-submodules="base ufsatm mom6 cice ww3 stoch cmeps cdeps cmake ccpp_physics aqm noahmp cubed_sphere lm4"
+# Temporarily disable TEMPO check while CCPP submodule CM practices are being ironed out. 
+submodules="base ufsatm mom6 cice ww3 stoch cmeps cdeps cmake ccpp_physics aqm noahmp cubed_sphere lm4 fb catchem c3 mynn" # Add cece once available; not adding mpas yet; it is currently one commit behind seemingly on purpose.
 
 urls[base]='https://github.com/ufs-community/ufs-weather-model'
 branches[base]='develop'
@@ -69,6 +73,22 @@ urls[ccpp_physics]='https://github.com/ufs-community/ccpp-physics'
 branches[ccpp_physics]='ufs/dev'
 paths[ccpp_physics]='UFSATM/ccpp/physics'
 
+urls[c3]='https://github.com/ufs-community/c3'
+branches[c3]='main'
+paths[c3]='UFSATM/ccpp/physics/physics/CONV/C3'
+
+urls[tempo]='https://github.com/NCAR/TEMPO'
+branches[tempo]='main'
+paths[tempo]='UFSATM/ccpp/physics/physics/MP/TEMPO/tempo_v3'
+
+urls[mynn]='https://github.com/NCAR/MYNN-SFC'
+branches[mynn]='ccpp/dev'
+paths[mynn]='UFSATM/ccpp/physics/physics/SFC_Layer/MYNN/MYNN'
+
+urls[rrtmgp]='https://github.com/NCAR/rte-rrtmgp'
+branches[rrtmgp]='main'
+paths[rrtmgp]='UFSATM/ccpp/physics/physics/Radiation/RRTMGP/rte-rrtmgp'
+
 urls[aqm]='https://github.com/NOAA-EMC/AQM'
 branches[aqm]='develop'
 paths[aqm]='AQM'
@@ -81,9 +101,26 @@ urls[cubed_sphere]='https://github.com/NOAA-GFDL/GFDL_atmos_cubed_sphere'
 branches[cubed_sphere]='dev/emc'
 paths[cubed_sphere]='UFSATM/fv3/atmos_cubed_sphere'
 
+urls[mpas]='https://github.com/ufs-community/MPAS-Model'
+branches[mpas]='feature/mpas-in-ufs'
+paths[mpas]='UFSATM/mpas/MPAS-Model'
+
 urls[lm4]='https://github.com/NOAA-GFDL/LM4-NUOPC-driver'
 branches[lm4]='develop'
 paths[lm4]='LM4-driver'
+
+urls[fb]='https://github.com/NOAA-EMC/fire_behavior'
+branches[fb]='emc/develop'
+paths[fb]='fire_behavior'
+
+# Update w/CECE & CATChem PRs
+urls[cece]='https://github.com/ufs-community/CECE'
+branches[cece]='main'
+paths[cece]='CECE'
+
+urls[catchem]='https://github.com/ufs-community/CATChem'
+branches[catchem]='main'
+paths[catchem]='CATChem'
 
 
 for submodule in $submodules; do
@@ -94,12 +131,16 @@ for submodule in $submodules; do
     get_shas $url $gitapi $branch $workspace
 
     if [[ "$flag_sync" == "false" ]]; then
-       echo "** ${GITHUB_WORKSPACE} **NOT** up to date"
-       exit 1
+#       echo "** ${GITHUB_WORKSPACE} **NOT** up to date"
+       err=1
+       flag_sync=true
     fi
 done
 
-
-echo "** ${GITHUB_WORKSPACE} up to date **"
-
-exit 0
+if [[ $err == 1 ]]; then
+  echo "** ${GITHUB_WORKSPACE} NOT up to date **"
+  exit 1
+else
+  echo "** ${GITHUB_WORKSPACE} up to date **"
+  exit 0
+fi

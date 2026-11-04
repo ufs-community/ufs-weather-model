@@ -1,559 +1,237 @@
+ciRunningNode = []
+matchedNode = []
+generateBaselineNode = []
+for (label in pullRequest.labels) {
+    listOfLabelNodeNames = jenkins.model.Jenkins.instance.nodes.collect {
+        node -> node.getLabelString().contains(label) ? node.name : null
+    
+        if (label.startsWith(node.getLabelString() + "-") && label.contains("CI_RUNNING")) {
+           ciRunningNode += node.getLabelString()
+        }
+
+        if ((label.matches(node.getLabelString()+"(.*)-ORT"))) {
+           matchedNode += node.getLabelString()
+        }         
+
+    }
+}
+
+matchedNode = matchedNode.unique()
+ciRunningNode = ciRunningNode.unique()
+matchedNode = matchedNode - ciRunningNode
+
+modifiedLabels = matchedNode.collect{"'" + it + "'"} 
+baselineLabels = generateBaselineNode.collect{"'" + it + "'"} 
+
+if (modifiedLabels.isEmpty()) {
+   echo "No new labels. Skipping build."
+   currentBuild.result = 'NOT_BUILT'
+   return // Exits the stage/script early
+}
+
+def generateStage(nodeLabel) {
+    return {
+        stage("Run regional_control on ${nodeLabel.replaceAll("'","")}") {
+            node(nodeLabel) {
+                cleanWs()
+                checkout scm
+		script {
+                catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') { 
+                 sh '''
+                  export machine=${NODE_NAME,,}
+                  git submodule update --init --recursive
+                  cd tests/fv3_conf
+                  sed 's/#SBATCH --time=.*/#SBATCH --time=02:00:00/g' -i fv3_slurm.IN_${machine}
+                  cd ..
+                  export PATH=$PATH:~/bin
+                  export SSH_ORIGIN=$(curl --silent https://api.github.com/repos/ufs-community/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.repo.ssh_url')
+                  export FORK_BRANCH=$(curl --silent https://api.github.com/repos/ufs-community/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.ref')
+                  export ACCNR=epic
+                  export GIT_OWNER=$(echo $GIT_URL | cut -d '/' -f4)
+                  export GIT_REPO_NAME=$(echo $GIT_URL | cut -d '/' -f5 | cut -d '.' -f1)
+                  echo "GIT_OWNER ${GIT_OWNER}"
+                  echo "GIT_REPO_NAME ${GIT_REPO_NAME}"
+
+                   echo "https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/${machine}-CI_RUNNING"
+                   curl --silent -X POST -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/"${GIT_OWNER}"/"${GIT_REPO_NAME}"/issues/"${CHANGE_ID}"/labels -d '{"labels":["'"$machine"'-CI_RUNNING"]}'
+
+                  pwd
+                  ./opnReqTest -n regional_control -a ${ACCNR} -c bit,dcp,thr
+                  cd logs/
+                  # change "cp" to "mv" to be tighter on logfiles existence (prevents using logfiles from a previous run)
+                  mv OpnReqTests_regional_control_${machine}.log $WORKSPACE/..
+                  cd ..
+                  pwd
+                '''
+                } 
+                 echo "Ran regional_control on ${NODE_NAME}"
+                }
+            }
+        }
+        stage("Run control_p8 on ${nodeLabel.replaceAll("'","")}") {
+            node(nodeLabel) {
+		script {
+                catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') { 
+                sh '''
+                  export machine=${NODE_NAME,,}
+                  cd $WORKSPACE/tests/fv3_conf
+                  sed 's/#SBATCH --time=.*/#SBATCH --time=02:00:00/g' -i fv3_slurm.IN_${machine}
+                  cd ..
+                  export PATH=$PATH:~/bin
+                  export SSH_ORIGIN=$(curl --silent https://api.github.com/repos/ufs-community/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.repo.ssh_url')
+                  export FORK_BRANCH=$(curl --silent https://api.github.com/repos/ufs-community/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.ref')
+                  export ACCNR=epic
+                  export GIT_OWNER=$(echo $GIT_URL | cut -d '/' -f4)
+                  export GIT_REPO_NAME=$(echo $GIT_URL | cut -d '/' -f5 | cut -d '.' -f1)
+                  echo "GIT_OWNER ${GIT_OWNER}"
+                  echo "GIT_REPO_NAME ${GIT_REPO_NAME}"
+
+                  pwd
+                  ./opnReqTest -n control_p8 -a ${ACCNR} -c std,dbg,bit,mpi,rst,thr,dcp
+                  cd logs/
+                  # change "cp" to "mv" to be tighter on logfiles existence (prevents using logfiles from a previous run)
+                  mv OpnReqTests_control_p8_${machine}.log $WORKSPACE/..
+                  cd ..
+                  pwd
+                '''
+                  }
+			echo "Ran control_p8 on NODE_NAME=${NODE_NAME}" 
+                }
+            }
+        }
+        stage("Finalize on ${nodeLabel.replaceAll("'","")}") {
+            node(nodeLabel) {
+		script {
+                  env.BUILD_STATUS = currentBuild.currentResult
+                  sh '''
+                   
+                    export machine=${NODE_NAME,,}
+                    export PATH=$PATH:~/bin
+                    export SSH_ORIGIN=$(curl --silent https://api.github.com/repos/ufs-community/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.repo.ssh_url')
+                    export FORK_BRANCH=$(curl --silent https://api.github.com/repos/ufs-community/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.ref')
+                    export ACCNR=epic
+                    export GIT_OWNER=$(echo $GIT_URL | cut -d '/' -f4)
+                    export GIT_REPO_NAME=$(echo $GIT_URL | cut -d '/' -f5 | cut -d '.' -f1)
+                    echo "GIT_OWNER ${GIT_OWNER}"
+                    echo "GIT_REPO_NAME ${GIT_REPO_NAME}"
+
+                    if [[ $BUILD_STATUS == "SUCCESS" ]]; then 
+                       echo 'cd tests'
+                       pwd
+                       git remote -v
+                       git fetch --no-recurse-submodules origin
+                       git reset FETCH_HEAD --hard
+                       cd $WORKSPACE/..
+                       echo '3 cds'
+                       pwd
+                       ls -l
+
+                       # change "cp" to "mv" to be tighter on logfiles existence (prevents using logfiles from a previous run)
+                       [ -f OpnReqTests_control_p8_${machine}.log ] && mv OpnReqTests_control_p8_${machine}.log $WORKSPACE/tests/logs/
+                       [ -f OpnReqTests_regional_control_${machine}.log ] && mv OpnReqTests_regional_control_${machine}.log $WORKSPACE/tests/logs/
+                       cd $WORKSPACE/tests/
+                       git config user.email "ecc.platform@noaa.gov"
+                       git config user.name "epic-cicd-jenkins"
+                       export machine_name_logs=$(echo $machine | awk '{ print tolower($1) }')
+                       git remote -v | grep -w sshorigin > /dev/null 2>&1 && git remote remove sshorigin > /dev/null 2>&1
+                       git remote add sshorigin $SSH_ORIGIN > /dev/null 2>&1
+                       git add --ignore-errors logs/OpnReqTests_control_p8_${machine}.log logs/OpnReqTests_regional_control_${machine}.log
+
+                       echo $BUILD_STATUS
+                       git commit -m "${NODE_NAME} ORT Completed. on-behalf-of @ufs-community <ecc.platform@noaa.gov>"
+                       
+
+                       git pull sshorigin $FORK_BRANCH
+                       git push sshorigin HEAD:$FORK_BRANCH
+
+                       echo "Testing concluded for ${GIT_URL}"
+                       GIT_OWNER=$(echo $GIT_URL | cut -d '/' -f4)
+                       GIT_REPO_NAME=$(echo $GIT_URL | cut -d '/' -f5 | cut -d '.' -f1)
+                       echo "Removing labels from $GIT_URL"
+                       echo "https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/$machine-ORT"
+                       curl --silent -X DELETE -H "Accept:   application/vnd.github.v3+json" -H "Authorization:   Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/$machine-ORT
+                       curl --silent -X DELETE -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/$machine-CI_RUNNING
+                   else
+                      echo $BUILD_STATUS
+                      [ -f OpnReqTests_control_p8_${machine}.log ] && mv OpnReqTests_control_p8_${machine}.log $WORKSPACE/tests/logs/
+                      [ -f OpnReqTests_regional_control_${machine}.log ] && mv OpnReqTests_regional_control_${machine}.log $WORKSPACE/tests/logs/
+                      cd $WORKSPACE/tests/
+                      git config user.email "ecc.platform@noaa.gov"
+                      git config user.name "epic-cicd-jenkins"
+                      export machine_name_logs=$(echo $machine | awk '{ print tolower($1) }')
+                      git remote -v | grep -w sshorigin > /dev/null 2>&1 && git remote remove sshorigin > /dev/null 2>&1
+                      git remote add sshorigin $SSH_ORIGIN > /dev/null 2>&1
+                      git add --ignore-errors logs/OpnReqTests_control_p8_${machine}.log logs/OpnReqTests_regional_control_${machine}.log
+
+                      git commit --allow-empty -m "${NODE_NAME} ORT Failed! on-behalf-of @ufs-community <ecc.platform@noaa.gov>"
+
+
+                      git pull sshorigin $FORK_BRANCH
+                      git push sshorigin HEAD:$FORK_BRANCH
+
+                      echo "Testing concluded for ${GIT_URL}"
+                      GIT_OWNER=$(echo $GIT_URL | cut -d '/' -f4)
+                      GIT_REPO_NAME=$(echo $GIT_URL | cut -d '/' -f5 | cut -d '.' -f1)
+                      echo "Removing labels from $GIT_URL"
+                      echo "https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/$machine-ORT"
+                      curl --silent -X DELETE -H "Accept:   application/vnd.github.v3+json" -H "Authorization:   Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/$machine-ORT
+                      curl --silent -X DELETE -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/$machine-CI_RUNNING
+                   fi
+                      
+                       
+                  '''
+                }
+            }
+        }
+   }
+}
+
+def parallelStagesMap = modifiedLabels.collectEntries {
+    ["${it}" : generateStage(it)]
+}
+
 pipeline {
-  agent none
-  options{
-    disableConcurrentBuilds()
-         }
-  stages {
-    stage('Run ORTs') {
-       agent { label 'built-in' }
-        steps {
-        script {
-          for (label in pullRequest.labels) {
-            if ((label.contains("orion"))) {
-                 env.CHOICE_NODE='orion'
-            }  
-            else if ((label.contains("hera"))) { 
-                env.CHOICE_NODE='hera'
-            }  
-            else if ((label.contains("hercules"))) { 
-                env.CHOICE_NODE='hercules'
-            }  
-            else if ((label.contains("gaeac6"))) {
-                env.CHOICE_NODE='gaeac6'
-            } 
-            else if ((label.contains("ursa"))) {
-                env.CHOICE_NODE='ursa'
-            } 
-            else { 
-                env.CHOICE_NODE='none'
+    agent none
+     environment {
+            ACCNR = 'epic'
+            GITHUB_TOKEN = credentials('GithubJenkinsNew')
+            GIT_URL = 'https://github.com/ufs-community/ufs-weather-model.git'
+          }  
+    stages {
+        stage('Run Operational Requirements Tests in Parallel') {
+           options {
+                timeout(time: 6, unit: 'HOURS')
             }
-         } //for
-// Why do I need another if..block, because it just works this way.
-            if (CHOICE_NODE == 'orion') {
-                echo "Starting up orion ${CHOICE_NODE}...this might take 5-10 minutes...please be patient."    
-            } 
-             else if (CHOICE_NODE == 'ursa') {
-                echo "Starting up ursa ${CHOICE_NODE}...this might take 5-10 minutes...please be patient."
+            steps {
+                script {
+                    parallel parallelStagesMap
+                }
             }
-             else if (CHOICE_NODE == 'gaeac6') {
-                echo "Starting up gaeac6 ${CHOICE_NODE}...this might take 5-10 minutes...please be patient."
-            }
-             else if (CHOICE_NODE == 'hercules') {
-                 echo "Starting up hercules ${CHOICE_NODE}...this might take 5-10 minutes...please be patient."
-            }
-             else if (CHOICE_NODE == 'hera') {
-                 echo "Starting up hera ${CHOICE_NODE}...this might take 5-10 minutes...please be patient."
-            }
-             else {
-                echo "${CHOICE_NODE} is NOT a platform, moving on..."
-            }
-       }  //script  
-    } //steps
-  } //stage
-
-
-stage('Run ORT on Ursa parallel'){
-        parallel{
-        stage('regional_control'){        
-          agent{ label 'ursa' }
-          options{
-             timeout(time:6, unit:'HOURS')
-                 }
-        environment {
-        ACCNR = 'epic'
-        NODE_PATH = '/scratch3/NAGAPE/epic/role-epic/'
-        GITHUB_TOKEN = credentials('GithubJenkinsNew')
         }
-        when{ 
-           beforeAgent true
-            expression {  env.CHOICE_NODE == "ursa" ? true : null  } 
-            }
-        steps{
-        cleanWs()
-        checkout scm
-        sh '''
-	    git submodule update --init --recursive
-        cd tests/fv3_conf
-	    sed 's/#SBATCH --time=.*/#SBATCH --time=02:00:00/g' -i fv3_slurm.IN_ursa
-        cd ..
-        export machine=${NODE_NAME}
-        export PATH=$PATH:~/bin
-        export SSH_ORIGIN=$(curl --silent https://api.github.com/repos/ufs-community/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.repo.ssh_url')
-        export FORK_BRANCH=$(curl --silent https://api.github.com/repos/ufs-community/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.ref')
-        export ACCNR=epic
-        export GIT_OWNER=$(echo $GIT_URL | cut -d '/' -f4)
-        export GIT_REPO_NAME=$(echo $GIT_URL | cut -d '/' -f5 | cut -d '.' -f1)
+    }
+    post {
+      success {
+        slackSend (
+          channel:   '#jenkins-notifications',
+          color:   'good',
+          message:   "*SUCCESS:   Build ${env.JOB_NAME} #${env.BUILD_NUMBER}* <${env.BUILD_URL}|Open Build>"
+        )
+      } // End of success
 
-          pwd
-          ./opnReqTest -n regional_control -a ${ACCNR} -c bit,dcp,thr
-          cd logs/
-# change "cp" to "mv" to be tighter on logfiles existence (prevents using logfiles from a previous run)
-          mv OpnReqTests_regional_control_ursa.log /scratch3/NAGAPE/epic/role-epic/jenkins/workspace/
-          cd ..
-          pwd
-          '''
-          } //steps
-          } //stage
-         stage('control_p8'){
-           agent{ label 'ursa' }
-          options{
-             timeout(time:6, unit:'HOURS')
-                 }
-        environment {
-        ACCNR = 'epic'
-        NODE_PATH = '/scratch3/NAGAPE/epic/role-epic/'
-        GITHUB_TOKEN = credentials('GithubJenkinsNew')
-        }
-        when{ 
-           beforeAgent true
-            expression {  env.CHOICE_NODE == "ursa" ? true : null  } 
-            }
-        steps{
-        cleanWs()
-        checkout scm
-        sh '''	
-	    git submodule update --init --recursive
-        cd tests/fv3_conf
-	    sed 's/#SBATCH --time=.*/#SBATCH --time=02:00:00/g' -i fv3_slurm.IN_ursa
-        cd ..
-        export machine=${NODE_NAME}
-        export PATH=$PATH:~/bin
-        export SSH_ORIGIN=$(curl --silent https://api.github.com/repos/ufs-community/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.repo.ssh_url')
-        export FORK_BRANCH=$(curl --silent https://api.github.com/repos/ufs-community/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.ref')
-        export ACCNR=epic
-        export GIT_OWNER=$(echo $GIT_URL | cut -d '/' -f4)
-        export GIT_REPO_NAME=$(echo $GIT_URL | cut -d '/' -f5 | cut -d '.' -f1)
-
-           pwd
-           ./opnReqTest -n control_p8 -a ${ACCNR} -c std,dbg,bit,mpi,rst,thr,dcp
-	       cd logs/
-# change "cp" to "mv" to be tighter on logfiles existence (prevents using logfiles from a previous run)
-           mv OpnReqTests_control_p8_ursa.log /scratch3/NAGAPE/epic/role-epic/jenkins/workspace/
-           cd ..
-           pwd
-           '''
-           } //steps
-           } //stage
-
-           } //parallel
-         }//stage
-
-        stage('Finalize Ursa'){
-
-        agent{ label 'ursa'}
-        environment {
-        ACCNR = 'epic'
-        NODE_PATH = '/scratch3/NAGAPE/epic/role-epic/'
-        GITHUB_TOKEN = credentials('GithubJenkinsNew')
-        }
-        when{ 
-           beforeAgent true
-             expression {  env.CHOICE_NODE == "ursa" ? true : null  } 
-            }
-        steps{
-        sh '''
-	    export machine=${NODE_NAME}
-        export PATH=$PATH:~/bin
-        export SSH_ORIGIN=$(curl --silent https://api.github.com/repos/ufs-community/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.repo.ssh_url')
-        export FORK_BRANCH=$(curl --silent https://api.github.com/repos/ufs-community/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.ref')
-        export ACCNR=epic
-        export GIT_OWNER=$(echo $GIT_URL | cut -d '/' -f4)
-        export GIT_REPO_NAME=$(echo $GIT_URL | cut -d '/' -f5 | cut -d '.' -f1)
-
-        echo 'cd tests'
-        pwd 
-        git remote -v
-        git fetch --no-recurse-submodules origin
-        git reset FETCH_HEAD --hard
-        cd .. # cd to /scratch3/NAGAPE/epic/role-epic/jenkins/workspace
-
-        echo '3 cds'
-        pwd
-        ls -l
-
-# change "cp" to "mv" to be tighter on logfiles existence (prevents using logfiles from a previous run)
-	    mv OpnReqTests_control_p8_ursa.log $WORKSPACE/tests/logs/
-        mv OpnReqTests_regional_control_ursa.log $WORKSPACE/tests/logs/
-        cd $WORKSPACE/tests/
-        git config user.email "ecc.platform@noaa.gov"
-        git config user.name "epic-cicd-jenkins"
-        export machine_name_logs=$(echo $machine | awk '{ print tolower($1) }')
-        git remote -v | grep -w sshorigin > /dev/null 2>&1 && git remote remove sshorigin > /dev/null 2>&1
-        git remote add sshorigin $SSH_ORIGIN > /dev/null 2>&1
-        git add logs/OpnReqTests_control_p8_ursa.log logs/OpnReqTests_regional_control_ursa.log
-        git commit -m "ORT Jobs Completed.\n\n\n on-behalf-of @ufs-community <ecc.platform@noaa.gov>"
-        git pull sshorigin $FORK_BRANCH
-        git push sshorigin HEAD:$FORK_BRANCH
-        '''
-        } //steps
-
-        post {
-         always {
-           sh '''
-            export GIT_OWNER=$(echo $GIT_URL | cut -d '/' -f4)
-           export GIT_REPO_NAME=$(echo $GIT_URL | cut -d '/' -f5 | cut -d '.' -f1)
-            echo "Testing concluded...removing labels for $machine from $GIT_URL"
-            echo "https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/ursa-ORT"
-            curl --silent -X DELETE -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/ursa-ORT
-            '''
-         } //always
-
-        success {
-          slackSend (
-                channel: '#jenkins-notifications',
-                color: 'good',
-                message: "*SUCCESS: Build ${env.JOB_NAME} #${env.BUILD_NUMBER}* <${env.BUILD_URL}|Open Build>"
-            )
-        
-        } //success
-
-        failure {
-          slackSend (
-                channel: '#jenkins-notifications',
-                color: 'danger',
-                message: "*FAILURE: Build ${env.JOB_NAME} #${env.BUILD_NUMBER}*  <${env.BUILD_URL}|Open Build>"
-            )
-        } //failure
-
-        } //stage
-        } //stages
-
-
-    stage('Run ORT on Hercules parallel'){
-        parallel{
-
-        stage('regional_control'){        
-          agent{ label 'hercules' }
-          options{
-             timeout(time:6, unit:'HOURS')
-                 }
-        environment {
-        ACCNR = 'epic'
-        NODE_PATH = '/work2/noaa/epic/role-epic/'
-        GITHUB_TOKEN = credentials('GithubJenkinsNew')
-        }
-        when{ 
-           beforeAgent true
-            expression {  env.CHOICE_NODE == "hercules" ? true : null  } 
-            }
-        steps{
-        cleanWs()
-        checkout scm
-        sh '''
-	    git submodule update --init --recursive
-        cd tests/fv3_conf
-	    sed 's/#SBATCH --time=.*/#SBATCH --time=02:00:00/g' -i fv3_slurm.IN_hercules
-        cd ..
-        export machine=${NODE_NAME}
-        export PATH=$PATH:~/bin
-        export SSH_ORIGIN=$(curl --silent https://api.github.com/repos/ufs-community/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.repo.ssh_url')
-        export FORK_BRANCH=$(curl --silent https://api.github.com/repos/ufs-community/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.ref')
-        export ACCNR=epic
-        export GIT_OWNER=$(echo $GIT_URL | cut -d '/' -f4)
-        export GIT_REPO_NAME=$(echo $GIT_URL | cut -d '/' -f5 | cut -d '.' -f1)
-
-          pwd
-          ./opnReqTest -n regional_control -a ${ACCNR} -c bit,dcp,thr
-          cd logs/
- # change "cp" to "mv" to be tighter on logfiles existence (prevents using logfiles from a previous run)
-          mv OpnReqTests_regional_control_hercules.log /work2/noaa/epic/role-epic/jenkins/workspace
-          cd ..
-          pwd
-          '''
-          } //steps
-          } //stage
-
-        stage('control_p8'){
-           agent{ label 'hercules' }
-          options{
-             timeout(time:6, unit:'HOURS')
-                 }
-        environment {
-        ACCNR = 'epic'
-        NODE_PATH = '/work2/noaa/epic/role-epic/'
-        GITHUB_TOKEN = credentials('GithubJenkinsNew')
-        }
-        when{ 
-           beforeAgent true
-            expression {  env.CHOICE_NODE == "hercules" ? true : null  } 
-            }
-           steps{
-        cleanWs()
-        checkout scm
-        sh '''	
-	    git submodule update --init --recursive
-        cd tests/fv3_conf
-	    sed 's/#SBATCH --time=.*/#SBATCH --time=02:00:00/g' -i fv3_slurm.IN_hercules
-        cd ..
-        export machine=${NODE_NAME}
-        export PATH=$PATH:~/bin
-        export SSH_ORIGIN=$(curl --silent https://api.github.com/repos/ufs-community/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.repo.ssh_url')
-        export FORK_BRANCH=$(curl --silent https://api.github.com/repos/ufs-community/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.ref')
-        export ACCNR=epic
-        export GIT_OWNER=$(echo $GIT_URL | cut -d '/' -f4)
-        export GIT_REPO_NAME=$(echo $GIT_URL | cut -d '/' -f5 | cut -d '.' -f1)
-
-           pwd
-           ./opnReqTest -n control_p8 -a ${ACCNR} -c std,dbg,bit,mpi,rst,thr,dcp
-           cd logs/
-# change "cp" to "mv" to be tighter on logfiles existence (prevents using logfiles from a previous run)
-           mv OpnReqTests_control_p8_hercules.log /work2/noaa/epic/role-epic/jenkins/workspace/
-           cd ..
-           pwd
-           '''
-           } //steps
-           } //stage
-
-           } //parallel
-         }//stage
-
-        stage('Finalize Hercules'){
-
-        agent{ label 'hercules'}
-        environment {
-        ACCNR = 'epic'
-        NODE_PATH = '/work2/noaa/epic/role-epic/'
-        GITHUB_TOKEN = credentials('GithubJenkinsNew')
-        }
-        when{ 
-           beforeAgent true
-            expression {  env.CHOICE_NODE == "hercules" ? true : null  } 
-            }
-        steps{
-        sh '''
-	    export machine=${NODE_NAME}
-        export PATH=$PATH:~/bin
-        export SSH_ORIGIN=$(curl --silent https://api.github.com/repos/ufs-community/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.repo.ssh_url')
-        export FORK_BRANCH=$(curl --silent https://api.github.com/repos/ufs-community/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.ref')
-        export ACCNR=epic
-        export GIT_OWNER=$(echo $GIT_URL | cut -d '/' -f4)
-        export GIT_REPO_NAME=$(echo $GIT_URL | cut -d '/' -f5 | cut -d '.' -f1)
-
-        pwd 
-        git remote -v
-        git fetch --no-recurse-submodules origin
-        git reset FETCH_HEAD --hard
-        cd .. # cd to /work2/noaa/epic/role-epic/jenkins/workspace
-
-        echo '3 cds'
-        pwd
-        ls -l
-
-# change "cp" to "mv" to be tighter on logfiles existence (prevents using logfiles from a previous run)
-        mv OpnReqTests_control_p8_hercules.log $WORKSPACE/tests/logs/
-        mv OpnReqTests_regional_control_hercules.log $WORKSPACE/tests/logs/
-        cd $WORKSPACE/tests/
-        git config user.email "ecc.platform@noaa.gov"
-        git config user.name "epic-cicd-jenkins"
-        export machine_name_logs=$(echo $machine | awk '{ print tolower($1) }')
-        git remote -v | grep -w sshorigin > /dev/null 2>&1 && git remote remove sshorigin > /dev/null 2>&1
-        git remote add sshorigin $SSH_ORIGIN > /dev/null 2>&1
-        git add logs/OpnReqTests_control_p8_hercules.log logs/OpnReqTests_regional_control_hercules.log
-        git commit -m "ORT Jobs Completed.\n\n\n on-behalf-of @ufs-community <ecc.platform@noaa.gov>"
-        git pull sshorigin $FORK_BRANCH
-        git push sshorigin HEAD:$FORK_BRANCH
-        '''
-        } //steps
-
-        post {
-        always {
-          sh '''
-            export GIT_OWNER=$(echo $GIT_URL | cut -d '/' -f4)
-            export GIT_REPO_NAME=$(echo $GIT_URL | cut -d '/' -f5 | cut -d '.' -f1)
-            echo "Testing concluded...removing labels for $machine from $GIT_URL"
-            echo "https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/hercules-ORT"
-            curl --silent -X DELETE -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/hercules-ORT
-            '''
-         } //always
-
-        success {
-          slackSend (
-                channel: '#jenkins-notifications',
-                color: 'good',
-                message: "*SUCCESS: Build ${env.JOB_NAME} #${env.BUILD_NUMBER}* <${env.BUILD_URL}|Open Build>"
-            )
-        
-        } //success
-
-        failure {
-          slackSend (
-                channel: '#jenkins-notifications',
-                color: 'danger',
-                message: "*FAILURE: Build ${env.JOB_NAME} #${env.BUILD_NUMBER}*  <${env.BUILD_URL}|Open Build>"
-            )
-        } //failure
-
-        } //stage
-        } //stages
-
-
-    stage('Run ORT on Orion parallel'){
-        parallel{
-
-        stage('regional_control'){        
-          agent{ label 'orion' }
-          options{
-             timeout(time:6, unit:'HOURS')
-                 }
-        environment {
-        ACCNR = 'epic'
-        NODE_PATH = '/work/noaa/epic/role-epic/'
-        GITHUB_TOKEN = credentials('GithubJenkinsNew')
-        }
-        when{ 
-           beforeAgent true
-            expression {  env.CHOICE_NODE == "orion" ? true : null  } 
-            }
-        steps{
-        cleanWs()
-        checkout scm
-        sh '''
-	    git submodule update --init --recursive
-        cd tests/fv3_conf
-	    sed 's/#SBATCH --time=.*/#SBATCH --time=02:00:00/g' -i fv3_slurm.IN_orion
-        cd ..
-        export machine=${NODE_NAME}
-        export PATH=$PATH:~/bin
-        export SSH_ORIGIN=$(curl --silent https://api.github.com/repos/ufs-community/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.repo.ssh_url')
-        export FORK_BRANCH=$(curl --silent https://api.github.com/repos/ufs-community/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.ref')
-        export ACCNR=epic
-        export GIT_OWNER=$(echo $GIT_URL | cut -d '/' -f4)
-        export GIT_REPO_NAME=$(echo $GIT_URL | cut -d '/' -f5 | cut -d '.' -f1)
-
-          pwd
-          ./opnReqTest -n regional_control -a ${ACCNR} -c bit,dcp,thr
-          cd logs/
-# change "cp" to "mv" to be tighter on logfiles existence (prevents using logfiles from a previous run)
-          mv OpnReqTests_regional_control_orion.log /work/noaa/epic/role-epic/jenkins/workspace
-          cd ..
-          pwd
-          '''
-          } //steps
-          } //stage
-
-        stage('control_p8'){
-        agent{ label 'orion' }
-          options{
-             timeout(time:6, unit:'HOURS')
-                 }
-        environment {
-        ACCNR = 'epic'
-        NODE_PATH = '/work/noaa/epic/role-epic/'
-        GITHUB_TOKEN = credentials('GithubJenkinsNew')
-        }
-        when{ 
-           beforeAgent true
-            expression { env.CHOICE_NODE == "orion" ? true : null  } 
-            }
-           steps{
-        cleanWs()
-        checkout scm
-        sh '''	
-	    git submodule update --init --recursive
-        cd tests/fv3_conf
-	    sed 's/#SBATCH --time=.*/#SBATCH --time=02:00:00/g' -i fv3_slurm.IN_orion
-        cd ..
-        export machine=${NODE_NAME}
-        export PATH=$PATH:~/bin
-        export SSH_ORIGIN=$(curl --silent https://api.github.com/repos/ufs-community/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.repo.ssh_url')
-        export FORK_BRANCH=$(curl --silent https://api.github.com/repos/ufs-community/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.ref')
-        export ACCNR=epic
-        export GIT_OWNER=$(echo $GIT_URL | cut -d '/' -f4)
-        export GIT_REPO_NAME=$(echo $GIT_URL | cut -d '/' -f5 | cut -d '.' -f1)
-
-           pwd
-           ./opnReqTest -n control_p8 -a ${ACCNR} -c std,dbg,bit,mpi,rst,thr,dcp
-           cd logs/
-# change "cp" to "mv" to be tighter on logfiles existence (prevents using logfiles from a previous run)
-           mv OpnReqTests_control_p8_orion.log /work/noaa/epic/role-epic/jenkins/workspace/
-           cd ..
-           pwd
-           '''
-           } //steps
-           } //stage
-
-           } //parallel
-         }//stage
-
-        stage('Finalize Orion'){
-
-        agent{ label 'orion'}
-        environment {
-        ACCNR = 'epic'
-        NODE_PATH = '/work2/noaa/epic/role-epic/'
-        GITHUB_TOKEN = credentials('GithubJenkinsNew')
-        }
-        when{ 
-           beforeAgent true
-            expression { env.CHOICE_NODE == "orion" ? true : null  } 
-            }
-        steps{
-        sh '''
-	    export machine=${NODE_NAME}
-        export PATH=$PATH:~/bin
-        export SSH_ORIGIN=$(curl --silent https://api.github.com/repos/ufs-community/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.repo.ssh_url')
-        export FORK_BRANCH=$(curl --silent https://api.github.com/repos/ufs-community/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.ref')
-        export ACCNR=epic
-        export GIT_OWNER=$(echo $GIT_URL | cut -d '/' -f4)
-        export GIT_REPO_NAME=$(echo $GIT_URL | cut -d '/' -f5 | cut -d '.' -f1)
-
-
-        pwd 
-        git remote -v
-        git fetch --no-recurse-submodules origin
-        git reset FETCH_HEAD --hard
-        cd .. # cd to /work/noaa/epic/role-epic/jenkins/workspace
-
-        echo '3 cds'
-        pwd
-        ls -l
-
-# change "cp" to "mv" to be tighter on logfiles existence (prevents using logfiles from a previous run)
-	    mv OpnReqTests_control_p8_orion.log $WORKSPACE/tests/logs/
-        mv OpnReqTests_regional_control_orion.log $WORKSPACE/tests/logs/
-        cd $WORKSPACE/tests/
-        git config user.email "ecc.platform@noaa.gov"
-        git config user.name "epic-cicd-jenkins"
-        export machine_name_logs=$(echo $machine | awk '{ print tolower($1) }')
-        git remote -v | grep -w sshorigin > /dev/null 2>&1 && git remote remove sshorigin > /dev/null 2>&1
-        git remote add sshorigin $SSH_ORIGIN > /dev/null 2>&1
-        git add logs/OpnReqTests_control_p8_orion.log logs/OpnReqTests_regional_control_orion.log
-        git commit -m "ORT Jobs Completed.\n\n\n on-behalf-of @ufs-community <ecc.platform@noaa.gov>"
-        git pull sshorigin $FORK_BRANCH
-        git push sshorigin HEAD:$FORK_BRANCH
-        '''
-        } //steps
-
-        post {
-        always {
-         sh '''
-          export GIT_OWNER=$(echo $GIT_URL | cut -d '/' -f4)
-           export GIT_REPO_NAME=$(echo $GIT_URL | cut -d '/' -f5 | cut -d '.' -f1)
-           echo "Testing concluded...removing labels for $machine from $GIT_URL"
-           echo "https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/orion-ORT"
-           curl --silent -X DELETE -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/orion-ORT
-         '''
-        } //always
-
-        success {
-          slackSend (
-                channel: '#jenkins-notifications',
-                color: 'good',
-                message: "*SUCCESS: Build ${env.JOB_NAME} #${env.BUILD_NUMBER}* <${env.BUILD_URL}|Open Build>"
-            )
-        
-        } //success
-
-        failure {
-          slackSend (
-                channel: '#jenkins-notifications',
-                color: 'danger',
-                message: "*FAILURE: Build ${env.JOB_NAME} #${env.BUILD_NUMBER}*  <${env.BUILD_URL}|Open Build>"
-            )
-        } //failure
-
-        } //post
-        } //stage
-
-      } //stages    
-  } //pipeline
+       aborted {
+        slackSend (
+          channel:   '#jenkins-notifications',
+          color:   'warning',
+          message:   "*TIMEOUT:   Build ${env.JOB_NAME} #${env.BUILD_NUMBER}* <${env.BUILD_URL}|Open Build>"
+        )
+      } // End of aborted
+       
+      failure {
+        slackSend (
+          channel:   '#jenkins-notifications',
+          color:   'danger',
+          message:   "*FAILURE:   Build ${env.JOB_NAME} #${env.BUILD_NUMBER}* <${env.BUILD_URL}|Open Build>"
+        ) // End of slacksend
+      } // End of failure
+    } //End of post
+}

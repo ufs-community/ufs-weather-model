@@ -3,7 +3,7 @@ loads UFS Model prerequisites for Derecho/GNU
 ]])
 
 setenv("LMOD_TMOD_FIND_FIRST","yes")
-prepend_path("MODULEPATH", "/glade/work/epicufsrt/contrib/spack-stack/derecho/spack-stack-1.9.2/envs/ue-gcc-12.4/install/modulefiles/Core")
+prepend_path("MODULEPATH", "/glade/work/epicufsrt/contrib/spack-stack/derecho/spack-stack-1.9.2/envs/ue-gcc-12.4-zlib-1.2.13/install/modulefiles/Core")
 
 unload("ncarcompilers")
 stack_gnu_ver=os.getenv("stack_gnu_ver") or "12.4.0"
@@ -23,9 +23,9 @@ load("ufs_common")
 nccmp_ver=os.getenv("nccmp_ver") or "1.9.0.1"
 load(pathJoin("nccmp", nccmp_ver))
 
-setenv("CC", "mpicc")
-setenv("CXX", "mpicxx")
-setenv("FC", "mpif90")
+setenv("CC","cc")
+setenv("CXX","CC")
+setenv("FC","ftn")
 setenv("CMAKE_Platform", "derecho.gnu")
 
 whatis("Description: UFS build environment")

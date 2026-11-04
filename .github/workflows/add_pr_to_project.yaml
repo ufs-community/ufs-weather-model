@@ -15,14 +15,30 @@ jobs:
       issues: write
     steps:
       - name: Add PR
-        uses: actions/add-to-project@v1.0.2
+        uses: actions/add-to-project@5afcf98fcd03f1c2f92c3c83f58ae24323cc57fd #v2.2.0
         with:
           project-url: https://github.com/orgs/ufs-community/projects/70
           github-token: ${{ secrets.PR_PROJECT_TOKEN }}
+      - name: Format PR Opened Date
+        id: date
+        run: echo "date=$(date -u -d "${{ github.event.pull_request.created_at }}" +'%Y-%m-%d')" >> $GITHUB_OUTPUT
       - name: Add date created
-        uses: nipe0324/update-project-v2-item-field@v2.0.2
+        uses: github/update-project-action@af4f6083118f5080c89828b421ef598d1906fb60 #v4
         with:
-          project-url: https://github.com/orgs/ufs-community/projects/70
-          github-token: ${{ secrets.PR_PROJECT_TOKEN }}
-          field-name: 'Date Opened'
-          field-value: ${{ github.event.pull_request.created_at }}
+          github_token: ${{ secrets.PR_PROJECT_TOKEN }}
+          organization: ufs-community
+          project_number: 70
+          operation: update
+          content_id: ${{ github.event.pull_request.node_id }}
+          field: 'Date Opened'
+          value: ${{ steps.date.outputs.date }}
+      - name: Set default Baseline Changes value to Unknown
+        uses: github/update-project-action@af4f6083118f5080c89828b421ef598d1906fb60 #v4
+        with:
+          github_token: ${{ secrets.PR_PROJECT_TOKEN }}
+          organization: ufs-community
+          project_number: 70
+          content_id: ${{ github.event.pull_request.node_id }}
+          operation: update
+          field: 'Baseline Changes'
+          value: 'Unknown'
