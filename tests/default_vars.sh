@@ -1474,6 +1474,7 @@ export_fv3() {
   WW3_ICE='F'
   WW3_IC1='F'
   WW3_IC5='F'
+  wav_coupling_to_cice=false
   # ATMW
   WW3_MODDEF=mod_def.glo_1deg
   MESH_WAV=mesh.glo_1deg.nc
@@ -1732,6 +1733,11 @@ export_cice6() {
   CICE_SNWGRAIN=.false.
   CICE_EMISSIVITY=0.95
   CICE_FBOT_XFER_TYPE='constant'
+  #Wave-ice coupling variables
+  CICE_nfsd=1
+  CICE_tr_fsd=.false.
+  CICE_restart_fsd=.false.
+  CICE_wave_spec_type=none
   CICE_TSCALE_PND_DRAIN=10.0
   # SlenderX2
   CICE_NPROC=${ICE_tasks}
@@ -2090,7 +2096,6 @@ export_datm_cdeps() {
 
   # required but unused
   WARM_START=.false.
-  CPLWAV=.false.
   CPLCHM=.false.
 
   # atm/ocn/ice resolution
@@ -2121,7 +2126,9 @@ export_datm_cdeps() {
   MOM6_USE_LI2016=False
   MOM6_USE_WAVES=False
   WW3_DOMAIN=''
-
+  CPLWAV=.false.
+  WW3_MODDEF=''
+  MESH_WAV=''
   
   # Set CMEPS component defaults
   export_cmeps
