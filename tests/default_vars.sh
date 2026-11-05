@@ -878,7 +878,6 @@ export_gfs_physics() {
   RAS=.false.
   RANDOM_CLDS=.false.
   CNVCLD=.true.
-  XR_CNVCLD=.false.
   PROGSIGMA=.false.
   BETASCU=8.0
   BETAMCU=1.0
@@ -1240,7 +1239,6 @@ export_fv3() {
   RAS=.false.
   RANDOM_CLDS=.false.
   CNVCLD=.true.
-  XR_CNVCLD=.false.
   PROGSIGMA=.false.
   BETASCU=8.0
   BETAMCU=1.0
@@ -1566,7 +1564,6 @@ export_ugwpv1() {
   case "${ATMRES}" in
   "C48")
     if [[ ${default_dt_atmos} = 1 ]]; then DT_ATMOS=720; fi
-    XR_CNVCLD=.false.
     CDMBGWD="0.071,2.1,1.0,1.0"
     CDMBGWD_GSL="40.0,1.77,1.0,1.0"
     KNOB_UGWP_TAUAMP=6.0e-3
@@ -1578,7 +1575,6 @@ export_ugwpv1() {
     ;;
   "C96")
     if [[ ${default_dt_atmos} = 1 ]]; then DT_ATMOS=720; fi
-    XR_CNVCLD=.false.
     CDMBGWD="0.14,1.8,1.0,1.0"
     CDMBGWD_GSL="20.0,2.5,1.0,1.0"
     KNOB_UGWP_TAUAMP=3.0e-3
@@ -1590,7 +1586,6 @@ export_ugwpv1() {
     ;;
   "C192")
     if [[ ${default_dt_atmos} = 1 ]]; then DT_ATMOS=600; fi
-    XR_CNVCLD=.true.
     CDMBGWD="0.23,1.5,1.0,1.0"
     CDMBGWD_GSL="5.0,5.0,1.0,1.0"
     KNOB_UGWP_TAUAMP=1.5e-3
@@ -1602,7 +1597,6 @@ export_ugwpv1() {
     ;;
   "C384")
     if [[ ${default_dt_atmos} = 1 ]]; then DT_ATMOS=300; fi
-    XR_CNVCLD=.true.
     CDMBGWD="1.1,0.72,1.0,1.0"
     CDMBGWD_GSL="5.0,5.0,1.0,1.0"
     KNOB_UGWP_TAUAMP=0.8e-3
@@ -1614,7 +1608,6 @@ export_ugwpv1() {
     ;;
   "C768")
     if [[ ${default_dt_atmos} = 1 ]]; then DT_ATMOS=150; fi
-    XR_CNVCLD=.true.
     CDMBGWD="4.0,0.15,1.0,1.0"
     CDMBGWD_GSL="2.5,7.5,1.0,1.0"
     KNOB_UGWP_TAUAMP=0.5e-3
@@ -1626,7 +1619,6 @@ export_ugwpv1() {
     ;;
   "C1152")
     if [[ ${default_dt_atmos} = 1 ]]; then DT_ATMOS=150; fi
-    XR_CNVCLD=.true.
     CDMBGWD="4.0,0.10,1.0,1.0"
     CDMBGWD_GSL="1.67,8.8,1.0,1.0"
     KNOB_UGWP_TAUAMP=0.35e-3
@@ -1638,7 +1630,6 @@ export_ugwpv1() {
     ;;
   "C3072")
     if [[ ${default_dt_atmos} = 1 ]]; then DT_ATMOS=90; fi
-    XR_CNVCLD=.true.
     CDMBGWD="4.0,0.05,1.0,1.0"
     CDMBGWD_GSL="0.625,14.1,1.0,1.0"
     KNOB_UGWP_TAUAMP=0.13e-3
