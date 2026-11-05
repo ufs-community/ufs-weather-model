@@ -382,7 +382,7 @@ WLCLK_dflt=60
 
 WLCLK=${WLCLK_dflt}
 CMP_DATAONLY=false
-export WETDEP_LS_CPL=1
+WETDEP_LS_CPL=1
 nccmp_exclude=""
 nccmp_exclude_attr=""
 
@@ -574,7 +574,7 @@ export_fv3_v16() {
   LRADAR=.true.
   LTAEROSOL=.true.
   MRAEROSOL=.false.
-  export GTAEROSOL=.false.
+  GTAEROSOL=.false.
 
   LSM=1
   LANDICE=.true.
@@ -1142,7 +1142,7 @@ export_fv3() {
   LRADAR=.false.
   LTAEROSOL=.false.
   MRAEROSOL=.false.
-  export GTAEROSOL=.false.
+  GTAEROSOL=.false.
   LTHAILAWARE=.false.
   EXT_DIAG_THOMPSON=.false.
   SEDI_SEMI=.true.
@@ -2322,7 +2322,7 @@ export_hafs() {
   LTAEROSOL=.false.
   CDMBGWD=1.0,1.0,1.0,1.0
   MRAEROSOL=.false.
-  export GTAEROSOL=.false.
+  GTAEROSOL=.false.
   LHEATSTRG=.false.
   LRADAR=.true.
   USE_OCEANUV=.false.
@@ -2486,7 +2486,7 @@ export_hrrr() {
   LRADAR=.true.
   LTAEROSOL=.true.
   MRAEROSOL=.false.
-  export GTAEROSOL=.false.
+  GTAEROSOL=.false.
   IALB=2
   IEMS=2
   HYBEDMF=.false.
@@ -2633,7 +2633,7 @@ export_rap_common() {
   LRADAR=.true.
   LTAEROSOL=.true.
   MRAEROSOL=.false.
-  export GTAEROSOL=.false.
+  GTAEROSOL=.false.
   IALB=2
   IEMS=2
   HYBEDMF=.false.
