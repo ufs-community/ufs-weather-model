@@ -33,7 +33,7 @@ else
   MACHINE_ID=$1
   MAKE_OPT=${2:-}
   COMPILE_ID=${3:+$3}
-  RT_COMPILER=${4:-intel}
+  RT_COMPILER=${4:-oneapi}
   clean_before=${5:-YES}
   clean_after=${6:-YES}
 fi
