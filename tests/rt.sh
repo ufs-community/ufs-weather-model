@@ -23,19 +23,15 @@ usage() {
   echo "  -m  compare against new baseline results"
   echo "  -n  run single test <name>"
   echo "  -o  compile only, skip tests"
-  echo "  -P  <container.def> build and run in a container on a platform"
-  echo "      defined in <container.def>; sequential by default, or -r/-e if"
-  echo "      <container.def> declares a ROCOTO_SCHEDULER. By default a portability"
-  echo "      check only (no comparison); -c/-m create/compare against a baseline"
-  echo "      under that platform's own \$RUNDIR_ROOT/REGRESSION_TEST"
+  echo "  -P  <container.def> build and run in a container on a platform defined"
+  echo "      in <container.def>. By default this option is a portability"
+  echo "      check only (no baseline comparison); -c/-m create/compare against a"
+  echo "      baseline under that platform's own \$RUNDIR_ROOT/REGRESSION_TEST"
   echo "  -r  use Rocoto workflow manager"
   echo "  -s  run only the subset of tests listed in <file>"
   echo "  -v  verbose output"
   echo "  -w  for weekly_test, skip comparing baseline results"
-  echo "  -x  dry-run; with -P, still compiles for real and, per RUN line,"
-  echo "      verifies its compile, stages input data, verifies the"
-  echo "      container (if any), and prepares job_card, but does not"
-  echo "      submit it -- reported as DRY RUN SUCCESS/FAIL, not PASS/FAIL"
+  echo "  -x  dry-run"
   echo
 }
 
@@ -242,14 +238,14 @@ EOF
   [[ ${RTPWD_NEW_BASELINE} == true ]] && echo "* (-m) - COMPARE AGAINST CREATED BASELINES" >> "${REGRESSIONTEST_LOG}"
   [[ ${RUN_SINGLE_TEST} == true ]] && echo "* (-n) - RUN SINGLE TEST: ${SINGLE_OPTS}" >> "${REGRESSIONTEST_LOG}"
   [[ ${COMPILE_ONLY} == true ]]&& echo "* (-o) - COMPILE ONLY, SKIP TESTS" >> "${REGRESSIONTEST_LOG}"
-  if [[ ${COMMUNITY_PLATFORM} == true ]]; then
+  if [[ ${USE_CONTAINER} == true ]]; then
     platform_baseline_note="no baseline comparison (portability check)"
     [[ ${CREATE_BASELINE} == true ]] && platform_baseline_note="creating baseline at ${NEW_BASELINE}"
     [[ ${RTPWD_NEW_BASELINE} == true ]] && platform_baseline_note="comparing against baseline at ${RTPWD}"
-    echo "* (-P) - COMMUNITY PLATFORM: ${MACHINE_ID} (${COMMUNITY_PLATFORM_FILE}); ${platform_baseline_note}" >> "${REGRESSIONTEST_LOG}"
+    echo "* (-P) - COMMUNITY PLATFORM: ${MACHINE_ID} (${CONTAINER_DEF_FILE}); ${platform_baseline_note}" >> "${REGRESSIONTEST_LOG}"
   fi
   [[ ${delete_rundir} == true ]] && echo "* (-d) - DELETE RUN DIRECTORY" >> "${REGRESSIONTEST_LOG}"
-  [[ ${skip_check_results} == true && ${COMMUNITY_PLATFORM} == false ]] && echo "* (-w) - SKIP RESULTS CHECK" >> "${REGRESSIONTEST_LOG}"
+  [[ ${skip_check_results} == true && ${USE_CONTAINER} == false ]] && echo "* (-w) - SKIP RESULTS CHECK" >> "${REGRESSIONTEST_LOG}"
   [[ ${KEEP_RUNDIR} == true ]] && echo "* (-k) - KEEP RUN DIRECTORY" >> "${REGRESSIONTEST_LOG}"
   [[ ${ROCOTO} == true ]] && echo "* (-r) - USE ROCOTO" >> "${REGRESSIONTEST_LOG}"
   [[ ${ECFLOW} == true ]] && echo "* (-e) - USE ECFLOW" >> "${REGRESSIONTEST_LOG}"
@@ -287,7 +283,7 @@ EOF
         [[ ${CMACHINES} =~ ${MACHINE_ID} ]] && valid_compile=true
       fi
 
-      if [[ ${COMMUNITY_PLATFORM} == true && ${valid_compile} == true ]]; then
+      if [[ ${USE_CONTAINER} == true && ${valid_compile} == true ]]; then
         RT_COMPILER=${COMPILER}
         resolve_container_image || valid_compile=false
       fi
@@ -301,7 +297,7 @@ EOF
         RT_COMPILE_TIME=""
         COMPILE_WARNINGS=""
 
-        if [[ ${COMMUNITY_PLATFORM} == true && ! -f "${LOG_DIR}/compile_${COMPILE_ID}.log" \
+        if [[ ${USE_CONTAINER} == true && ! -f "${LOG_DIR}/compile_${COMPILE_ID}.log" \
               && -x "${PATHTR}/tests/fv3_${COMPILE_ID}.exe" ]]; then
           # A community platform (-P) run skips a compile whose executable is
           # already present; this is not a failure, and its tests still run.
@@ -386,7 +382,7 @@ EOF
         [[ ${RMACHINES} =~ ${MACHINE_ID} ]] && valid_test=true
       fi
 
-      if [[ ${COMMUNITY_PLATFORM} == true && ${valid_test} == true ]]; then
+      if [[ ${USE_CONTAINER} == true && ${valid_test} == true ]]; then
         RT_COMPILER=${COMPILER}
         resolve_container_image || valid_test=false
       fi
@@ -550,7 +546,7 @@ EOF
     echo "Performing Cleanup..."
     # With -P -k, keep fv3_*.exe and their modules.fv3_* files in ./tests so
     # that a later -P run can reuse them and skip the compile step.
-    if [[ ${COMMUNITY_PLATFORM} == true && ${KEEP_RUNDIR} == true ]]; then
+    if [[ ${USE_CONTAINER} == true && ${KEEP_RUNDIR} == true ]]; then
       rm -f fv3_*.x keep_tests.tmp
     else
       rm -f fv3_*.x fv3_*.exe modules.fv3_* modulefiles/modules.fv3_* keep_tests.tmp
@@ -559,14 +555,14 @@ EOF
     # platform directory, not a throwaway rt_$$ one -- and NEW_BASELINE now
     # lives under it, so auto-deleting it here would destroy a baseline a
     # -c run just created. Never auto-delete it; -k is irrelevant for -P.
-    [[ ${KEEP_RUNDIR} == false && ${COMMUNITY_PLATFORM} == false ]] && rm -rf "${RUNDIR_ROOT}" && rm "${PATHRT}/run_dir"
+    [[ ${KEEP_RUNDIR} == false && ${USE_CONTAINER} == false ]] && rm -rf "${RUNDIR_ROOT}" && rm "${PATHRT}/run_dir"
     [[ ${ROCOTO} == true ]] && rm -f "${ROCOTO_XML}" "${ROCOTO_DB}" "${ROCOTO_STATE}" ./*_lock.db
     [[ ${TEST_35D} == true ]] && rm -f tests/cpld_bmark*_20*
     # A community platform (-P) reports per-compile/per-test PASS/FAIL to the
     # console (see the COMPILE/TEST SUMMARY block above) and the full
     # per-item + SYNOPSIS breakdown to ${REGRESSIONTEST_LOG} above, same as
     # Tier-1 -- but not this one aggregate console verdict.
-    [[ ${COMMUNITY_PLATFORM} == true ]] || echo "REGRESSION TEST RESULT: SUCCESS"
+    [[ ${USE_CONTAINER} == true ]] || echo "REGRESSION TEST RESULT: SUCCESS"
   else
     cat << EOF >> "${REGRESSIONTEST_LOG}"
 
@@ -579,7 +575,7 @@ Result: FAILURE
 
 ====END OF ${MACHINE_ID^^} REGRESSION TESTING LOG====
 EOF
-    [[ ${COMMUNITY_PLATFORM} == true ]] || echo "REGRESSION TEST RESULT: FAILURE"
+    [[ ${USE_CONTAINER} == true ]] || echo "REGRESSION TEST RESULT: FAILURE"
   fi
 
 }
@@ -669,10 +665,10 @@ export LOG_DIR=${LOG_DIR}
 export RTVERBOSE=${RTVERBOSE}
 export CONTAINER_IMG=${RT_CONTAINER_IMG}
 export CONTAINER_BIND_FLAGS="${CONTAINER_BIND_FLAGS}"
-export COMMUNITY_PLATFORM=${COMMUNITY_PLATFORM}
+export USE_CONTAINER=${USE_CONTAINER}
 EOF
 
-  if [[ ${COMMUNITY_PLATFORM} == true ]]; then
+  if [[ ${USE_CONTAINER} == true ]]; then
     cat << EOF >> "${RUNDIR_ROOT}/compile_${COMPILE_ID}.env"
 export TPN=${PLATFORM_TPN:-}
 EOF
@@ -798,8 +794,8 @@ RT_CONTAINER_IMG_GNU=''
 RT_MPI_LAUNCH_INTEL=''
 RT_MPI_LAUNCH_GNU=''
 
-COMMUNITY_PLATFORM=false
-COMMUNITY_PLATFORM_FILE=''
+USE_CONTAINER=false
+CONTAINER_DEF_FILE=''
 # Optional; only set if -P's file declares them, needed
 # only to use -r/-e with -P.
 ROCOTO_SCHEDULER=''
@@ -825,9 +821,9 @@ while getopts ":a:cl:mn:dwkP:reovhxs:" opt; do
       COMPILE_ONLY=true
       ;;
     P)
-      COMMUNITY_PLATFORM=true
-      COMMUNITY_PLATFORM_FILE=${OPTARG}
-      [[ -s ${COMMUNITY_PLATFORM_FILE} ]] || die "${COMMUNITY_PLATFORM_FILE} empty or not found, exiting..."
+      USE_CONTAINER=true
+      CONTAINER_DEF_FILE=${OPTARG}
+      [[ -s ${CONTAINER_DEF_FILE} ]] || die "${CONTAINER_DEF_FILE} empty or not found, exiting..."
       ;;
     m)
       # redefine RTPWD to point to newly created baseline outputs
@@ -926,7 +922,7 @@ fi
 # make sure only one instance of rt.sh is running -- not for a community
 # platform (-P), which uses its own fixed RUNDIR_ROOT rather than a
 # per-PID one and may be run concurrently (e.g. one -P run per compiler)
-if [[ ${COMMUNITY_PLATFORM} == false ]]; then
+if [[ ${USE_CONTAINER} == false ]]; then
   if mkdir "${LOCKDIR}" ; then
     echo "${HOSTNAME_IN}" $$ > "${LOCKDIR}/PID"
   else
@@ -935,10 +931,10 @@ if [[ ${COMMUNITY_PLATFORM} == false ]]; then
   fi
 fi
 
-if [[ ${COMMUNITY_PLATFORM} == true ]]; then
-  parse_platform_def "${COMMUNITY_PLATFORM_FILE}"
+if [[ ${USE_CONTAINER} == true ]]; then
+  parse_platform_def "${CONTAINER_DEF_FILE}"
   if [[ ${ROCOTO} == true && -z ${ROCOTO_SCHEDULER:-} ]]; then
-    die "-P with -r requires ROCOTO_SCHEDULER in ${COMMUNITY_PLATFORM_FILE}"
+    die "-P with -r requires ROCOTO_SCHEDULER in ${CONTAINER_DEF_FILE}"
   fi
 else
   source detect_machine.sh
@@ -950,7 +946,7 @@ fi
 echo "Machine: ${MACHINE_ID}"
 echo "Account: ${ACCNR}"
 
-if [[ ${COMMUNITY_PLATFORM} == true ]]; then
+if [[ ${USE_CONTAINER} == true ]]; then
   # Community platform: no per-host case block -- everything came from the
   # -P file. Fill in what unrelated downstream code still references.
   DISKNM=''
@@ -1219,7 +1215,7 @@ if [[ -n ${CONTAINER_BIND_DIRS} ]]; then
   done
 fi
 
-if [[ ${COMMUNITY_PLATFORM} == true ]]; then
+if [[ ${USE_CONTAINER} == true ]]; then
   # Baselines for a community platform (-P) live directly under its own
   # RUNDIR_ROOT, not nested under a Tier-1-style STMP/USER/FV3_RT path.
   NEW_BASELINE=${RUNDIR_ROOT}/REGRESSION_TEST
@@ -1232,7 +1228,7 @@ fi
 # platform-definition file -- no per-PID subdirectory -- so repeated runs
 # land in the same place and old test dirs can be found and renamed aside
 # (see run_test.sh) instead of silently multiplying under a fresh rt_$$.
-if [[ ${COMMUNITY_PLATFORM} == false ]]; then
+if [[ ${USE_CONTAINER} == false ]]; then
   # Overwrite default RUNDIR_ROOT if environment variable RUNDIR_ROOT is set
   RUNDIR_ROOT=${RUNDIR_ROOT:-${PTMP}/${USER}/FV3_RT}/rt_$$
 fi
@@ -1244,7 +1240,7 @@ echo "Run regression test in: ${RUNDIR_ROOT}"
 
 # BEFORE MOVING ANY FURTHER LETS CHECK THAT DISKNM/STMP/PTMP ALL EXIST
 # (a community platform, -P, has no DISKNM/baseline area at all -- skip)
-if [[ ${COMMUNITY_PLATFORM} == false ]]; then
+if [[ ${USE_CONTAINER} == false ]]; then
   [[ -d ${DISKNM} ]] || die "ERROR: DISKNM: ${DISKNM} -- DOES NOT EXIST"
   [[ -d ${STMP} ]] || die "ERROR: STMP: ${STMP} -- DOES NOT EXIST"
   [[ -d ${PTMP} ]] || die "ERROR: PTMP: ${PTMP} -- DOES NOT EXIST"
@@ -1267,7 +1263,7 @@ fi
 # A community platform (-P) only has a baseline directory to check when
 # explicitly comparing against one it created earlier (-m); its default
 # portability-check mode (neither -c nor -m) has nothing to check here.
-if [[ "${CREATE_BASELINE}" == false && ( ${COMMUNITY_PLATFORM} == false || ${RTPWD_NEW_BASELINE} == true ) ]] ; then
+if [[ "${CREATE_BASELINE}" == false && ( ${USE_CONTAINER} == false || ${RTPWD_NEW_BASELINE} == true ) ]] ; then
   EMPTY_CHECK=$(find "${RTPWD}/" -type d -prune -empty)
   if [[ ! -d "${RTPWD}" ]] ; then
     echo "Baseline directory does not exist:"
@@ -1285,7 +1281,7 @@ INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT_WW3:-${INPUTDATA_ROOT}/WW3_input_data_202610
 INPUTDATA_LM4=${INPUTDATA_LM4:-${INPUTDATA_ROOT}/LM4_input_data}
 # A community platform (-P) has no DISKNM, so INPUTDATA_GFSv17opn is left
 # blank unless the -P file sets it; run_test.sh stops a test that needs it.
-if [[ ${COMMUNITY_PLATFORM} == false ]]; then
+if [[ ${USE_CONTAINER} == false ]]; then
   INPUTDATA_GFSv17opn=${INPUTDATA_GFSv17opn:-${DISKNM}/NEMSfv3gfs/GFSv17opn_20251014}
 fi
 
@@ -1305,7 +1301,7 @@ fi
 
 # A community platform (-P) run skips the comparison by default, but it is
 # not a weekly (-w) run; keep its log name RegressionTests_<platform>.log.
-if [[ ${skip_check_results} == true && ${COMMUNITY_PLATFORM} == false ]]; then
+if [[ ${skip_check_results} == true && ${USE_CONTAINER} == false ]]; then
   REGRESSIONTEST_LOG=${PATHRT}/logs/RegressionTests_weekly_${MACHINE_ID}.log
 else
   REGRESSIONTEST_LOG=${PATHRT}/logs/RegressionTests_${MACHINE_ID}.log
@@ -1332,7 +1328,7 @@ if [[ ${ROCOTO} == true ]]; then
 
   echo "rt.sh: Verifying ROCOTO support..."
 
-  if [[ ${COMMUNITY_PLATFORM} == true && -n ${WORKFLOW_MODULE_CMD} ]]; then
+  if [[ ${USE_CONTAINER} == true && -n ${WORKFLOW_MODULE_CMD} ]]; then
     eval "${WORKFLOW_MODULE_CMD}"
   fi
 
@@ -1378,7 +1374,7 @@ fi
 if [[ ${ECFLOW} == true ]]; then
   echo "Verifying ECFLOW support..."
 
-  if [[ ${COMMUNITY_PLATFORM} == true ]]; then
+  if [[ ${USE_CONTAINER} == true ]]; then
     [[ -n ${WORKFLOW_MODULE_CMD} ]] && eval "${WORKFLOW_MODULE_CMD}"
     # No per-host ecflow node for a community platform; a local server on
     # this host, same pattern most Tier-1 hosts already use (see ecflow_run
@@ -1448,11 +1444,6 @@ COMPILE_PASSED=()
 COMPILE_FAILED=()
 TEST_PASSED=()
 TEST_FAILED=()
-# A community platform (-P) dry run (-x) validates a test's setup (compile
-# result, input data staging, container presence, job_card) without
-# submitting it -- tracked separately from a real PASS/FAIL.
-TEST_DRYRUN_PASS=()
-TEST_DRYRUN_FAIL=()
 
 # Read rt.conf on file descriptor 3 instead of stdin, so that commands that read stdin
 # (e.g. Open MPI mpirun) cannot end the loop early and skip tests or the final summary.
@@ -1500,18 +1491,15 @@ while read -r -u 3 line || [[ -n "${line}" ]]; do
       fi
     fi
 
-    if [[ ${COMMUNITY_PLATFORM} == true ]] && ! resolve_container_image; then
+    if [[ ${USE_CONTAINER} == true ]] && ! resolve_container_image; then
       [[ ${RUN_SINGLE_TEST} == true ]] && die "No ${RT_COMPILER} container/platform match on ${MACHINE_ID} for -n test"
       echo "rt.sh: SKIP compile ${COMPILE_ID} -- compiler ${RT_COMPILER} not available on MACHINE_ID=${MACHINE_ID}"
       continue
     fi
 
-    # A community platform (-P) dry run still compiles for real: a RUN
-    # line's dry run below verifies its compile succeeded, which needs an
-    # actual executable to check against.
-    [[ ${DRY_RUN} == true && ${COMMUNITY_PLATFORM} == false ]] && continue
+    [[ ${DRY_RUN} == true ]] && continue
 
-    if [[ ${COMMUNITY_PLATFORM} == true && -x "${PATHTR}/tests/fv3_${COMPILE_ID}.exe" ]]; then
+    if [[ ${USE_CONTAINER} == true && -x "${PATHTR}/tests/fv3_${COMPILE_ID}.exe" ]]; then
       echo "rt.sh: SKIP compile ${COMPILE_ID} -- fv3_${COMPILE_ID}.exe already present in ${PATHTR}/tests/"
       continue
     fi
@@ -1557,7 +1545,7 @@ while read -r -u 3 line || [[ -n "${line}" ]]; do
       fi
     fi
 
-    if [[ ${COMMUNITY_PLATFORM} == true ]] && ! resolve_container_image; then
+    if [[ ${USE_CONTAINER} == true ]] && ! resolve_container_image; then
       echo "rt.sh: SKIP test ${TEST_ID} -- compiler ${RT_COMPILER} not available on MACHINE_ID=${MACHINE_ID}"
       continue
     fi
@@ -1631,10 +1619,10 @@ export WLCLK=${WLCLK}
 export DRY_RUN=${DRY_RUN}
 export CONTAINER_IMG=${RT_CONTAINER_IMG}
 export CONTAINER_BIND_FLAGS="${CONTAINER_BIND_FLAGS}"
-export COMMUNITY_PLATFORM=${COMMUNITY_PLATFORM}
+export USE_CONTAINER=${USE_CONTAINER}
 EOF
 
-      if [[ ${COMMUNITY_PLATFORM} == true ]]; then
+      if [[ ${USE_CONTAINER} == true ]]; then
         cat << EOF >> "${RUNDIR_ROOT}/run_test_${TEST_ID}.env"
 export TPN=${PLATFORM_TPN:-}
 export MPI_LAUNCH=${MPI_LAUNCH:-mpirun}
@@ -1655,15 +1643,7 @@ EOF
     # written by run_test.sh, so this check works even though the run itself
     # happened inside the subshell just closed.
     if [[ ${ROCOTO} == false && ${ECFLOW} == false ]]; then
-      if [[ ${COMMUNITY_PLATFORM} == true && ${DRY_RUN} == true ]]; then
-        if [[ -f "${PATHRT}/fail_test_${TEST_ID}" ]]; then
-          echo "rt.sh: Test ${TEST_ID} DRY RUN FAIL -- see ${LOG_DIR}/run_${TEST_ID}${RT_SUFFIX}.log"
-          TEST_DRYRUN_FAIL+=("${TEST_ID}")
-        else
-          echo "rt.sh: Test ${TEST_ID} DRY RUN SUCCESS"
-          TEST_DRYRUN_PASS+=("${TEST_ID}")
-        fi
-      elif [[ -f "${PATHRT}/fail_test_${TEST_ID}" ]]; then
+      if [[ -f "${PATHRT}/fail_test_${TEST_ID}" ]]; then
         echo "rt.sh: Test ${TEST_ID} FAIL -- see ${LOG_DIR}/run_${TEST_ID}${RT_SUFFIX}.log"
         TEST_FAILED+=("${TEST_ID}")
       else
@@ -1705,7 +1685,7 @@ if [[ ${CREATE_BASELINE} == true && ${TEST_SUBSET_FILE} != '' ]]; then
   done
 fi
 
-if [[ ${DRY_RUN} == true && ${COMMUNITY_PLATFORM} == false ]]; then
+if [[ ${DRY_RUN} == true ]]; then
   echo "Successful dry run"
   exit 0
 fi
@@ -1716,15 +1696,9 @@ if [[ ${ROCOTO} == false && ${ECFLOW} == false ]]; then
   echo "Compiles: ${#COMPILE_PASSED[@]} passed, ${#COMPILE_FAILED[@]} failed"
   for c in "${COMPILE_PASSED[@]}"; do echo "  PASS -- COMPILE ${c}"; done
   for c in "${COMPILE_FAILED[@]}"; do echo "  FAIL -- COMPILE ${c}"; done
-  if [[ ${COMMUNITY_PLATFORM} == true && ${DRY_RUN} == true ]]; then
-    echo "Tests (dry run): ${#TEST_DRYRUN_PASS[@]} succeeded, ${#TEST_DRYRUN_FAIL[@]} failed"
-    for t in "${TEST_DRYRUN_PASS[@]}"; do echo "  DRY RUN SUCCESS -- TEST ${t}"; done
-    for t in "${TEST_DRYRUN_FAIL[@]}"; do echo "  DRY RUN FAIL -- TEST ${t}"; done
-  else
-    echo "Tests: ${#TEST_PASSED[@]} passed, ${#TEST_FAILED[@]} failed"
-    for t in "${TEST_PASSED[@]}"; do echo "  PASS -- TEST ${t}"; done
-    for t in "${TEST_FAILED[@]}"; do echo "  FAIL -- TEST ${t}"; done
-  fi
+  echo "Tests: ${#TEST_PASSED[@]} passed, ${#TEST_FAILED[@]} failed"
+  for t in "${TEST_PASSED[@]}"; do echo "  PASS -- TEST ${t}"; done
+  for t in "${TEST_FAILED[@]}"; do echo "  FAIL -- TEST ${t}"; done
   echo "================================"
   echo
 fi

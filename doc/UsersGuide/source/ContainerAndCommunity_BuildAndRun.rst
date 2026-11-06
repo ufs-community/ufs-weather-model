@@ -960,7 +960,8 @@ Platform Definition Fields
      - Description
    * - ``TPN``
      - Required. Tasks per node: the number of MPI tasks per node on this platform
-       (a numeric value, e.g., ``48`` on Stampede3).
+       (a numeric value, e.g., ``48`` on Stampede3). A lower value gives each task more
+       memory (see :numref:`Section %s <container-rt-memory>`).
    * - ``SCHEDULER``
      - Required. ``slurm``, ``pbs``, or ``none`` for interactive runs without a scheduler.
        This entry cannot be left blank.
@@ -1126,10 +1127,9 @@ runs are:
    * - ``-o``
      - Compile only; skip all tests.
    * - ``-x``
-     - Dry run. With ``-P``, ``rt.sh`` still compiles; for each test it then checks the
-       compiled executable, stages the input data, checks the container, and prepares
-       the job card, but does not submit the job. Results are reported as
-       ``DRY RUN SUCCESS``/``DRY RUN FAIL``.
+     - Dry run. Works the same as on Tier 1 platforms: ``rt.sh`` skips the compiles,
+       sets up each test's run directory and job card, but does not copy the executable,
+       stage the input data, or submit the job.
    * - ``-c``
      - Create a baseline under ``${RUNDIR_ROOT}/REGRESSION_TEST``.
    * - ``-m``
@@ -1138,6 +1138,9 @@ runs are:
    * - ``-r`` / ``-e``
      - Use the Rocoto or ecFlow workflow manager instead of running sequentially.
        Requires ``ROCOTO_SCHEDULER`` (for ``-r``) in the platform definition file.
+   * - ``-k``
+     - Keep the run directories after ``rt.sh`` finishes. With ``-P``, also keep the
+       compiled executables ``tests/fv3_<compile_name>_<compiler>.exe``.
    * - ``-d``
      - Delete run directories that are not used by other tests.
    * - ``-v``
@@ -1149,13 +1152,11 @@ Without ``-c`` or ``-m``, results are not compared against any baseline.
 
 .. note::
 
-   If the executable ``tests/fv3_<compile_name>_<compiler>.exe`` from an earlier run is
-   already present, ``rt.sh -P`` reuses it and skips that compile. Remove the executable
-   to force a rebuild.
-
-   Because ``-P`` runs do not use the ``rt.sh`` lock, several runs can proceed at the same
-   time (e.g., one per compiler). Give each platform definition file its own ``RUNDIR_ROOT``
-   so that the runs do not share directories.
+   By default, ``rt.sh`` deletes the executables ``tests/fv3_<compile_name>_<compiler>.exe``
+   at the end of a successful run. With ``-P`` and ``-k``, the executables are kept in the
+   ``tests/`` directory. On the next run, ``rt.sh -P`` reuses an executable that is already
+   there and skips that compile. This saves time when you rerun tests with the same
+   executables. Remove the executable to force a rebuild.
 
 Job Script Templates
 --------------------
@@ -1174,6 +1175,12 @@ directly on the current host.
 These templates contain scheduler directives and environment setup that may require
 platform-specific adjustments, such as partition or queue names, wall-clock limits, node
 counts, and any platform-specific environment variables required before launching the model.
+
+Set the common scheduler values, such as ``QUEUE`` and ``PARTITION``, in the platform
+definition file (see :numref:`Section %s <container-rt-conf-fields>`). For other settings,
+edit the templates directly. For example, add a ``#SBATCH`` line to
+``tests/fv3_conf/fv3_slurm.IN_container`` for a Slurm option that the platform definition
+file does not cover.
 
 Running with a Job Scheduler (Slurm or PBS)
 --------------------------------------------
@@ -1224,6 +1231,58 @@ command from the platform definition file.
 
    The ``--mpi=pmi2`` flag is a Slurm ``srun``-specific option and should **not** be used
    with ``mpirun`` or ``mpiexec``. When ``SCHEDULER`` is ``none``, ``srun`` is not used.
+
+.. _container-rt-memory:
+
+Segmentation Faults or "Insufficient Virtual Memory" Errors
+------------------------------------------------------------
+
+A containerized test may fail with a segmentation fault (``SIGSEGV``) or an
+``insufficient virtual memory`` error. This often means the tasks on a node need more
+memory than the node has.
+
+To fix this, lower ``TPN`` in the platform definition file. With fewer tasks on each node,
+each task gets more memory. The test then uses more nodes. On Stampede3, tests that failed
+with ``TPN=48`` passed with ``TPN=40`` or ``TPN=36``.
+
+``TPN`` applies to every test in a run. So make a copy of the platform definition file
+with the lower value, for example ``stampede_tpn36.def`` with ``TPN=36``, and keep the
+original for all other tests. Then rerun only the failed tests with the adapted file.
+
+To rerun one failed test, use ``-n``:
+
+.. code-block:: console
+
+   ./rt.sh -a <account> -P <container.def> -n "<failed_test> <compiler>" -k >& log.failed_test.out &
+
+where:
+
+* ``<container.def>`` is the adapted platform definition file with the lower ``TPN``.
+* ``<failed_test>`` is the name of the failed test, e.g., ``cpld_control_gfsv17``.
+* ``<compiler>`` is ``intel`` or ``gnu``, matching the container image the test used.
+
+To rerun several failed tests that use the same lower ``TPN``, list them in a file, one
+``<test name> <compiler>`` per line (see :numref:`Section %s <container-rt-subset>`), and
+use ``-s``:
+
+.. code-block:: console
+
+   ./rt.sh -a <account> -P <container.def> -s my_tests.list -k >& log.failed_tests.out &
+
+For example, ``my_tests.list`` may contain:
+
+.. code-block:: text
+
+   cpld_control_gfsv17 intel
+   cpld_control_gefs intel
+
+If some tests need a different ``TPN`` value, make one adapted platform definition file
+and one test list for each value, and run them one after another.
+
+.. tip::
+
+   Choose a ``TPN`` that divides evenly by the number of threads used in your tests.
+   For threaded tests, ``rt.sh`` places ``TPN / threads`` MPI tasks on each node.
 
 .. _container-rt-output:
 

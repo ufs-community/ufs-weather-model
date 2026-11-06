@@ -615,10 +615,7 @@ To display detailed information on how to use ``rt.sh``, users can simply run ``
      -s  run only the subset of tests listed in <file>
      -v  verbose output
      -w  for weekly_test, skip comparing baseline results
-     -x  dry-run; with -P, still compiles for real and, per RUN line,
-         verifies its compile, stages input data, verifies the
-         container (if any), and prepares job_card, but does not
-         submit it -- reported as DRY RUN SUCCESS/FAIL, not PASS/FAIL
+     -x  dry-run
 
 The ``-P`` option is covered separately in :numref:`Section %s <rt-container>`.
 
