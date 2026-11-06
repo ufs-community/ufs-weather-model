@@ -616,8 +616,8 @@ if [[ ${skip_check_results} == false ]]; then
     fi
 
     for i in ${LIST_FILES} ; do
-      echo " Comparing ${i} ....." >> "${RT_LOG}"
-      echo " Comparing ${i} ....."
+      printf %s " Comparing ${i} ....." >> "${RT_LOG}"
+      printf %s " Comparing ${i} ....."
 
       if [[ ! -f ${RUNDIR}/${i} ]] ; then
 
@@ -636,8 +636,8 @@ if [[ ${skip_check_results} == false ]]; then
           # A container run (-P, MACHINE_ID=container) also uses nccmp, from
           # inside the container (see the branch right below).
           if [[ " orion hercules hera ursa wcoss2 acorn derecho gaeac5 gaeac6 noaacloud container " =~ ${MACHINE_ID} ]]; then
-            echo "USING NCCMP.." >> "${RT_LOG}"
-            echo "USING NCCMP.."
+            printf "USING NCCMP.." >> "${RT_LOG}"
+            printf "USING NCCMP.."
               nccmp_args=(-d -S -q -f -B --Attribute=checksum --warn=format)
               if [[ ${CMP_DATAONLY} == false ]]; then nccmp_args+=("-g"); fi
               if [[ -n "${nccmp_exclude// }" ]]; then nccmp_args+=("${nccmp_exclude}"); fi
@@ -656,18 +656,18 @@ if [[ ${skip_check_results} == false ]]; then
                 nccmp "${nccmp_args[@]}" "${RTPWD}/${CNTL_DIR}_${RT_COMPILER}/${i}" "${RUNDIR}/${i}" > "${i}_nccmp.log" 2>&1 && d=$? || d=$?
               fi
               if [[ ${d} -ne 0 && ${d} -ne 1 ]]; then
-                echo "....ERROR" >> "${RT_LOG}"
-                echo "....ERROR"
+                printf "....ERROR" >> "${RT_LOG}"
+                printf "....ERROR"
                 test_status='FAIL'
               fi
           fi
         else
-          echo "USING CMP.." >> "${RT_LOG}"
-          echo "USING CMP.."
+          printf "USING CMP.." >> "${RT_LOG}"
+          printf "USING CMP.."
           cmp "${RTPWD}/${CNTL_DIR}_${RT_COMPILER}/${i}" "${RUNDIR}/${i}" >/dev/null 2>&1 && d=$? || d=$?
           if [[ ${d} -eq 2 ]]; then
-            echo "....ERROR" >> "${RT_LOG}"
-            echo "....ERROR"
+            printf "....ERROR" >> "${RT_LOG}"
+            printf "....ERROR"
             test_status='FAIL'
           fi
 
@@ -694,8 +694,8 @@ if [[ ${skip_check_results} == false ]]; then
     echo;echo "Moving baseline ${TEST_ID} files ...." >> "${RT_LOG}"
 
     for i in ${LIST_FILES} ; do
-      echo " Moving ${i} ....."
-      echo " Moving ${i} ....."   >> "${RT_LOG}"
+      printf %s " Moving ${i} ....."
+      printf %s " Moving ${i} ....."   >> "${RT_LOG}"
       if [[ -f ${RUNDIR}/${i} ]] ; then
         mkdir -p "${NEW_BASELINE}/${CNTL_DIR}_${RT_COMPILER}/$(dirname "${i}")"
         cp "${RUNDIR}/${i}" "${NEW_BASELINE}/${CNTL_DIR}_${RT_COMPILER}/${i}"
