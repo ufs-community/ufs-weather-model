@@ -301,7 +301,7 @@ EOF
           fi
         else
           COMPILE_RESULT="PASS"
-          if [[ ${COMPILER} == "intel" ]]; then
+          if [[ ${COMPILER} == "oneapi" ]]; then
             COMPILE_NUM_WARNINGS=$(grep -c ": warning #" "${RUNDIR_ROOT}/compile_${COMPILE_ID}/err" || true)
             COMPILE_NUM_REMARKS=$(grep -c ": remark #" "${RUNDIR_ROOT}/compile_${COMPILE_ID}/err" || true)
             if [[ ${COMPILE_NUM_WARNINGS} -gt 0 || ${COMPILE_NUM_REMARKS} -gt 0 ]]; then
