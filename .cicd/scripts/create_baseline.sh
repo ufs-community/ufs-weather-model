@@ -101,10 +101,10 @@ function create_baseline() {
 		    ./rt.sh -a "${ACCNR}" -c "${workflow}" "${opt}" "${suite}" | tee "${WORKSPACE}/tests/logs/RT-run-${machine}.log"
 		    ./rt.sh -a "${ACCNR}" "${workflow}"cs test_changes.list | tee "${WORKSPACE}/tests/logs/RT-run-${machine}.log"
 		    status=${PIPESTATUS[0]}
-		    export DISKNM=/work/noaa/epic/UFS-WM_RT
+		    export DISKNM=/work2/noaa/epic/UFS-WM_RT
 		    cd ${DISKNM}/NEMSfv3gfs/
 		    mkdir -p "develop-${BL_DATE}"
-		    cd  /work/noaa/epic/stmp/role-epic/stmp/role-epic/FV3_RT/
+		    cd  /work2/noaa/epic/stmp/role-epic/stmp/role-epic/FV3_RT/
 		    ls -l REGRESSION_TEST/.
 		    rsync -a --no-t REGRESSION_TEST/ "${DISKNM}/NEMSfv3gfs/develop-${BL_DATE}" || echo "#### Warning! rsync $(pwd)/REGRESSION_TEST/ incomplete."
 		    cd ${DISKNM}/NEMSfv3gfs/
@@ -128,10 +128,10 @@ function create_baseline() {
 		    ./rt.sh -a "${ACCNR}" "${workflow}"cs test_changes.list | tee "${WORKSPACE}/tests/logs/RT-run-${machine}.log"
 		    status=${PIPESTATUS[0]}
 		    unset LD_LIBRARY_PATH
-		    export DISKNM=/gpfs/f5/epic/world-shared/UFS-WM_RT
+		    export DISKNM= /gpfs/f6/bil-fire8/world-shared/role.epic/UFS-WM_RT
 		    cd ${DISKNM}/NEMSfv3gfs/
 		    mkdir -p "develop-${BL_DATE}"
-		    cd /gpfs/f5/epic/scratch/role.epic/FV3_RT
+		    cd /gpfs/f6/bil-fire8/world-shared/role.epic/UFS-WM_RT 
 		    ls -l REGRESSION_TEST/.
 		    rsync -a --no-t REGRESSION_TEST/ "${DISKNM}/NEMSfv3gfs/develop-${BL_DATE}" || echo "#### Warning! rsync $(pwd)/REGRESSION_TEST/ incomplete."
 		    cd ${DISKNM}/NEMSfv3gfs/
