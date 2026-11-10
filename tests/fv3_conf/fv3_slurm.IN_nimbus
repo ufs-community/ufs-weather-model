@@ -32,11 +32,11 @@ export OMP_NUM_THREADS=@[THRD]
 export ESMF_RUNTIME_PROFILE=ON
 export ESMF_RUNTIME_PROFILE_OUTPUT="SUMMARY"
 
-export FI_PROVIDER="verbs;ofi_rxm"
-export FI_VERBS_INLINE_SIZE=39
-export FI_OFI_RXM_BUFFER_SIZE=4096
-export FI_UNIVERSE_SIZE=$SLURM_NTASKS
-export FI_OFI_RXM_SAR_LIMIT=2147483648
+export FI_PROVIDER="psm3"
+#export FI_VERBS_INLINE_SIZE=39
+#export FI_OFI_RXM_BUFFER_SIZE=4096
+#export FI_UNIVERSE_SIZE=$SLURM_NTASKS
+#export FI_OFI_RXM_SAR_LIMIT=2147483648
 
 # This "if" block is part of the rt.sh self-tests in error-test.conf.
 # It emulates the model failing to run.
@@ -46,7 +46,7 @@ if [ "${JOB_SHOULD_FAIL:-NO}" = WHEN_RUNNING ] ; then
     false
 fi
 
-srun --label --mpi=pmi2 -n @[TASKS] ./fv3.exe
+srun --label --mpi=pmix -n @[TASKS] ./fv3.exe
 
 echo "Model ended:    " $(date)
 echo -n " $( date +%s )," >> job_timestamp.txt

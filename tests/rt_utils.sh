@@ -661,6 +661,14 @@ ecflow_run() {
     elif [[ "${HOST::1}" == "d" ]]; then
       ECF_HOST=ddecflow01
     fi
+  elif [[ ${MACHINE_ID} == "nimbus" ]]; then
+    echo "rt_utils.sh: Loading ecflow module on nimbus"
+    # ECF_HOST=wcoss3-ecflow-01
+    # MOD_USE_STATEMENT="module use /lfs/work/alexander_richert/stack/spack-stack/envs/nco-core-gcc-11.5.0/modules_flat/Core \
+    # &&  module load python && module load python-venv && module load ecflow"
+    ECF_HOST=localhost
+    MOD_USE_STATEMENT="module use /lfs/work/alexander_richert/stack/spack-stack/envs/nco-core-gcc-11.5.0/modules_flat/Core \
+    &&  module load python && module load python-venv && module load ecflow"
   elif [[ ${MACHINE_ID} == hera || ${MACHINE_ID} == ursa ]]; then
     module load ecflow
   fi
@@ -694,6 +702,11 @@ ecflow_run() {
       ursa)
         #shellcheck disable=SC2029
         ssh "${ECF_HOST}" "bash -l -c \"module load ecflow && export ECF_HOST=${ECF_HOST} && ${ECFLOW_START} -p ${ECF_PORT}\""
+        ;;
+      nimbus)
+        #shellcheck disable=SC2029
+        # ssh "${ECF_HOST}" "bash -l -c \"${MOD_USE_STATEMENT} && ${ECFLOW_START} -p ${ECF_PORT}\""
+        ${MOD_USE_STATEMENT} && ${ECFLOW_START} -p ${ECF_PORT}
         ;;
       *)
         ${ECFLOW_START} -p "${ECF_PORT}" -d "${RUNDIR_ROOT}/ecflow_server"

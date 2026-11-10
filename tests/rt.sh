@@ -802,7 +802,11 @@ case ${MACHINE_ID} in
   nimbus)
     echo "rt.sh: Setting up NIMBUS..."
     if [[ "${ECFLOW:-false}" == true ]] ; then
+      module use /lfs/work/alexander_richert/stack/spack-stack/envs/nco-core-gcc-11.5.0/modules_flat/Core
+      module load python
+      module load python-venv
       module load ecflow
+      export ECF_PORT=33333
     fi
     QUEUE="compute"
     COMPILE_QUEUE="compute"

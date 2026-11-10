@@ -42,8 +42,10 @@ for i = 1, #ufs_modules do
   end
 end
 
--- nccmp_ver=os.getenv("nccmp_ver") or "1.9.0.1"
--- load(pathJoin("nccmp", nccmp_ver))
+nccmp_ver=os.getenv("nccmp_ver") or "1.9.0.1"
+load(pathJoin("nccmp", nccmp_ver))
+load("pmix/5.0.11")
+load("libfabric/2.6.0")
 
 setenv("CC", "mpiicx")
 setenv("CXX", "mpiicpx")
