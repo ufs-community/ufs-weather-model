@@ -128,7 +128,8 @@ export fbh_omp_num_threads=1
 
 export histaux_enabled=.false.
 export BMIC=.false.
-export SFS=.false.
+GFSv17opn=.false.
+SFS=.false.
 
 export EXCLUSIVE_NODES=.false.
 
