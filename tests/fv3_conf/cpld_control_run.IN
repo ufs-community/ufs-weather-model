@@ -58,7 +58,8 @@ if [[ $GFSv17opn == .true. ]]; then
     cp @[INPUTDATA_GFSv17opn]/FV3_fix_tiled/* .
     cp @[INPUTDATA_GFSv17opn]/MOM6_FIX/* ./INPUT
     cp @[INPUTDATA_GFSv17opn]/CICE_FIX/* .
-    cp @[INPUTDATA_ROOT_WW3]/@[WW3_MODDEF] mod_def.ww3
+    # production needs to retain original location of mod_def.ww3 that matches version number
+    cp @[INPUTDATA_GFSv17opn]/WW3_FIX/@[WW3_MODDEF] mod_def.ww3
     cp @[INPUTDATA_GFSv17opn]/WW3_FIX/@[MESH_WAV] .
     cp @[INPUTDATA_GFSv17opn]/WW3_FIX/wave_gfs.buoys.full ww3_points.list
     cp @[INPUTDATA_GFSv17opn]/WW3_FIX/pnt_wght.uglo_15km.nc pnt_wght.ww3.nc
