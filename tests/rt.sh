@@ -861,6 +861,37 @@ case ${MACHINE_ID} in
 
     SCHEDULER="slurm"
     ;;
+  gaeac7)
+    echo "rt.sh: Setting up gaea c7..."
+    if [[ "${ROCOTO:-false}" == true ]] ; then
+      module use /ncrc/proj/epic/c7/modulefiles
+      module load rocoto/1.3.7
+      ROCOTO_SCHEDULER="slurm"
+    fi
+
+    export LD_PRELOAD=/usr/lib64/libstdc++.so.6
+    module use /ncrc/proj/epic/spack-stack/c7/spack-stack-2.1.1/envs/ue-oneapi-2025.3.1/modules/Core
+    module load stack-intel-oneapi-compilers/2025.3.1
+    module load stack-cray-mpich/9.2.0
+    module load python/3.11.11
+    if [[ "${ECFLOW:-false}" == true ]] ; then
+      module use /ncrc/proj/epic/spack-stack/c6/spack-stack-1.9.2/envs/ue-intel-2023.2.0/install/modulefiles/gcc/12.3.0
+      module load ecflow/5.11.4
+      ECF_HOST=$(hostname)
+      ECF_PORT=$(( $(id -u) + 1500 ))
+      export ECF_PORT ECF_HOST
+    fi
+
+    DISKNM=/gpfs/f7/epic/world-shared/role.epic/UFS-WM_RT
+    QUEUE=normal
+    COMPILE_QUEUE=normal
+    PARTITION=c7
+    dprefix=${dprefix:-/gpfs/f7/${ACCNR}/proj-shared/${USER}}
+    STMP=${STMP:-${dprefix}/RT_BASELINE}
+    PTMP=${PTMP:-${dprefix}/RT_RUNDIRS}
+
+    SCHEDULER="slurm"
+    ;;
   hera)
     echo "rt.sh: Setting up hera..."
     if [[ "${ROCOTO:-false}" == true ]] ; then
