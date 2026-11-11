@@ -24,18 +24,18 @@ class HistoricalLogManager(Manager):
          print(f"Fetching historical data for {machine.upper()}.")
          log = HistoricalLog(machine, self.repo_hashes)
 
-         self.collect_new_log_data(log, machine)
+         self.collect_new_log_data(log)
 
-   def collect_new_log_data(self,log,machine):
+   def collect_new_log_data(self,log):
       """Download and process log data for a given machine and update log with that information; calculate runtime/memory statistics.
       Args:
          log (Log):
          machine (string):
       """
-      self.historical_runtime[machine] = log.get_historical_runtime_data()
-      self.historical_mem[machine] = log.get_historical_mem_data()
-      self.runtime_stats_by_machine[machine] = log.get_runtime_stats() # Add stats to save/cache later
-      self.mem_stats_by_machine[machine] = log.get_mem_stats() # Add stats to save/cache later
+      self.historical_runtime[log.machine] = log.get_historical_runtime_data()
+      self.historical_mem[log.machine] = log.get_historical_mem_data()
+      self.runtime_stats_by_machine[log.machine] = log.get_runtime_stats() # Add stats to save/cache later
+      self.mem_stats_by_machine[log.machine] = log.get_mem_stats() # Add stats to save/cache later
    
    def save_data(self):
       # Cache statistics on mean/standard deviation
