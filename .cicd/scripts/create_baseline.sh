@@ -7,8 +7,6 @@ export ACCNR=epic
 
 export account="-a ${ACCNR}"
 export workflow="-e"
-	#[[ ${UFS_PLATFORM} =  hera        ]] && workflow="-r"
-	#[[ ${UFS_PLATFORM} =~ clusternoaa ]] && workflow=""
 
 export opt="-l"
 export suite="rt.conf"
@@ -28,16 +26,10 @@ UFS_MODEL_DIR=$(realpath "${SCRIPTS_DIR}/../..")
 readonly UFS_MODEL_DIR
 echo "UFS MODEL DIR: ${UFS_MODEL_DIR}"
 
-export CC=${CC:-mpicc}
-export CXX=${CXX:-mpicxx}
-export FC=${FC:-mpif90}
-
 BUILD_DIR=${BUILD_DIR:-${UFS_MODEL_DIR}/build}
 TESTS_DIR=${TESTS_DIR:-${UFS_MODEL_DIR}/tests}
 
 pwd
-ls -al .cicd/*
-ls -al "${TESTS_DIR}/rt.sh"
 
 function create_baseline() {
 	local machine=${1:-${NODE_NAME}}
@@ -48,7 +40,6 @@ function create_baseline() {
 
 	git submodule update --init --recursive
 	pwd
-	ls -al .cicd/*
 	cd tests
 		pwd
       # shellcheck disable=SC2015
@@ -70,7 +61,6 @@ function create_baseline() {
 		    cd ${DISKNM}/NEMSfv3gfs/
 		    mkdir -p "develop-${BL_DATE}"
 		    cd /work2/noaa/epic/stmp/role-epic/stmp/role-epic/FV3_RT
-		    ls -l REGRESSION_TEST/.
 		    rsync -a --no-t REGRESSION_TEST/ "${DISKNM}/NEMSfv3gfs/develop-${BL_DATE}" || echo "#### Warning! rsync $(pwd)/REGRESSION_TEST/ incomplete."
 		    cd ${DISKNM}/NEMSfv3gfs/
 		    ./adjust_permissions.sh hercules "develop-${BL_DATE}" || :
@@ -83,7 +73,7 @@ function create_baseline() {
 		    git remote -v
 		    git fetch --no-recurse-submodules origin
 		    git reset FETCH_HEAD --hard
-		    cd .. && cd .. && cd ..
+		    cd ../../..
 		    pwd
 		    cp "$(dirname "${WORKSPACE}")/RegressionTests_${machine_id}.log" "${WORKSPACE}/tests/logs/"
 		    cd "${WORKSPACE}/tests/"
@@ -104,7 +94,6 @@ function create_baseline() {
 		    cd ${DISKNM}/NEMSfv3gfs/
 		    mkdir -p "develop-${BL_DATE}"
 		    cd  /work/noaa/epic/stmp/role-epic/stmp/role-epic/FV3_RT/
-		    ls -l REGRESSION_TEST/.
 		    rsync -a --no-t REGRESSION_TEST/ "${DISKNM}/NEMSfv3gfs/develop-${BL_DATE}" || echo "#### Warning! rsync $(pwd)/REGRESSION_TEST/ incomplete."
 		    cd ${DISKNM}/NEMSfv3gfs/
 		    ./adjust_permissions.sh orion "develop-${BL_DATE}" || :
@@ -117,7 +106,7 @@ function create_baseline() {
 		    git remote -v
 		    git fetch --no-recurse-submodules origin
 		    git reset FETCH_HEAD --hard
-		    cd .. && cd .. && cd ..
+		    cd ../../..
 		    pwd
 		    cp "$(dirname "${WORKSPACE}")/RegressionTests_${machine_id}.log" "${WORKSPACE}/tests/logs/"
 		    cd "${WORKSPACE}/tests/"
@@ -131,7 +120,6 @@ function create_baseline() {
 		    cd ${DISKNM}/NEMSfv3gfs/
 		    mkdir -p "develop-${BL_DATE}"
 		    cd /gpfs/f5/epic/scratch/role.epic/FV3_RT
-		    ls -l REGRESSION_TEST/.
 		    rsync -a --no-t REGRESSION_TEST/ "${DISKNM}/NEMSfv3gfs/develop-${BL_DATE}" || echo "#### Warning! rsync $(pwd)/REGRESSION_TEST/ incomplete."
 		    cd ${DISKNM}/NEMSfv3gfs/
 		    chgrp ncep "develop-${BL_DATE}" || :
@@ -143,33 +131,7 @@ function create_baseline() {
 		    git remote -v
 		    git fetch --no-recurse-submodules origin
 		    git reset FETCH_HEAD --hard
-		    cd .. && cd .. && cd ..
-		    pwd
-		    cp "$(dirname "${WORKSPACE}")/RegressionTests_${machine_id}.log" "${WORKSPACE}/tests/logs/"
-		    cd "${WORKSPACE}/tests/"
-		elif [[ ${machine} =~ "Hera" ]]
-		then
-		    echo "Creating baselines on ${machine}"
-		    export ACCNR=epic
-		    sed "s|QUEUE=batch|QUEUE=windfall|g" -i rt.sh
-		    local workflow="-r"
-		    ./rt.sh -a "${ACCNR}" -c "${workflow}" "${opt}" "${suite}" | tee "${WORKSPACE}/tests/logs/RT-run-${machine}.log"
-		    status=${PIPESTATUS[0]}
-		    export DISKNM=/scratch2/NAGAPE/epic/UFS-WM_RT
-		    cd ${DISKNM}/NEMSfv3gfs/
-		    mkdir -p "develop-${BL_DATE}"
-		    cd  /scratch1/NCEPDEV/stmp4/role.epic/FV3_RT
-		    ls -l REGRESSION_TEST/.
-		    rsync -a --no-t REGRESSION_TEST/ "${DISKNM}/NEMSfv3gfs/develop-${BL_DATE}" || echo "#### Warning! rsync $(pwd)/REGRESSION_TEST/ incomplete."
-		    cd "${WORKSPACE}/tests"
-		    ./rt.sh -a "${ACCNR}" "${workflow}" "${opt}" "${suite}" | tee "${WORKSPACE}/tests/logs/RT-run-${machine}.log"
-		    status=${PIPESTATUS[0]}
-		    cd logs/
-		    cp "RegressionTests_${machine_id}.log" "$(dirname "${WORKSPACE}")" #/scratch2/NAGAPE/epic/role.epic/jenkins/workspace
-		    git remote -v
-		    git fetch --no-recurse-submodules origin
-		    git reset FETCH_HEAD --hard
-		    cd .. && cd .. && cd ..
+		    cd ../../..
 		    pwd
 		    cp "$(dirname "${WORKSPACE}")/RegressionTests_${machine_id}.log" "${WORKSPACE}/tests/logs/"
 		    cd "${WORKSPACE}/tests/"
@@ -184,9 +146,7 @@ function create_baseline() {
 		    export DISKNM=/scratch3/NAGAPE/epic/role.epic/UFS-WM_RT
 		    cd ${DISKNM}/NEMSfv3gfs/
 		    mkdir -p "develop-${BL_DATE}"
-		    #cd  /scratch1/NCEPDEV/stmp4/role.epic/FV3_RT
-			cd /scratch3/NCEPDEV/stmp/role.epic/RT_RUNDIRS/role.epic/FV3_RT
-		    ls -l REGRESSION_TEST/.
+		    cd /scratch3/NCEPDEV/stmp/role.epic/RT_RUNDIRS/role.epic/FV3_RT
 		    rsync -a --no-t REGRESSION_TEST/ "${DISKNM}/NEMSfv3gfs/develop-${BL_DATE}" || echo "#### Warning! rsync $(pwd)/REGRESSION_TEST/ incomplete."
 		    cd "${WORKSPACE}/tests"
 		    ./rt.sh -a "${ACCNR}" "${workflow}" "${opt}" "${suite}" | tee "${WORKSPACE}/tests/logs/RT-run-${machine}.log"
@@ -196,7 +156,7 @@ function create_baseline() {
 		    git remote -v
 		    git fetch --no-recurse-submodules origin
 		    git reset FETCH_HEAD --hard
-		    cd .. && cd .. && cd ..
+		    cd ../../..
 		    pwd
 		    cp "$(dirname "${WORKSPACE}")/RegressionTests_${machine_id}.log" "${WORKSPACE}/tests/logs/"
 		    cd "${WORKSPACE}/tests/"	
@@ -210,7 +170,6 @@ function create_baseline() {
 		    cd ${DISKNM}/NEMSfv3gfs/
 		    mkdir -p "develop-${BL_DATE}"
 		    cd /glade/derecho/scratch/epicufsrt/FV3_RT
-		    ls -l REGRESSION_TEST/.
 		    rsync -a --no-t REGRESSION_TEST/ "${DISKNM}/NEMSfv3gfs/develop-${BL_DATE}" || echo "#### Warning! rsync $(pwd)/REGRESSION_TEST/ incomplete."
 		    cd "${WORKSPACE}/tests"
 		    ./rt.sh -a "${ACCNR}" "${workflow}" "${opt}" "${suite}" | tee "${WORKSPACE}/tests/logs/RT-run-${machine}.log"
@@ -220,7 +179,7 @@ function create_baseline() {
 		    git remote -v
 		    git fetch --no-recurse-submodules origin
 		    git reset FETCH_HEAD --hard
-		    cd .. && cd .. && cd ..
+		    cd ../../..
 		    pwd
 		    cp "$(dirname "${WORKSPACE}")/RegressionTests_${machine_id}.log" "${WORKSPACE}/tests/logs/"
 		    cd "${WORKSPACE}/tests/"
