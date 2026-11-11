@@ -1,17 +1,13 @@
 #!/bin/bash
 set -eu
 export UFS_PLATFORM=${UFS_PLATFORM:-${NODE_NAME,,}}
-export UFS_COMPILER=${UFS_COMPILER:-intel}
+export UFS_COMPILER=${UFS_COMPILER:-oneapi}
 
 SCRIPT_REALPATH=$(realpath "${BASH_SOURCE[0]}")
 SCRIPTS_DIR=$(dirname "${SCRIPT_REALPATH}")
 UFS_MODEL_DIR=$(realpath "${SCRIPTS_DIR}/../..")
 readonly UFS_MODEL_DIR
 echo "UFS MODEL DIR: ${UFS_MODEL_DIR}"
-
-export CC=${CC:-mpicc}
-export CXX=${CXX:-mpicxx}
-export FC=${FC:-mpif90}
 
 BUILD_DIR=${BUILD_DIR:-${UFS_MODEL_DIR}/build}
 TESTS_DIR=${TESTS_DIR:-${UFS_MODEL_DIR}/tests}
@@ -24,8 +20,7 @@ pwd
 echo "NODE_NAME=${NODE_NAME}"
 echo "UFS_PLATFORM=${UFS_PLATFORM}"
 echo "UFS_COMPILER=${UFS_COMPILER}"
-workspace=$(pwd)
-export workspace
+export workspace=$(pwd)
 machine=${NODE_NAME}
 echo "machine=<${machine}>"
 machine_id=${UFS_PLATFORM,,}
