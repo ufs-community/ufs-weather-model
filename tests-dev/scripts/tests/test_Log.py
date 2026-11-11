@@ -57,15 +57,6 @@ def test_get_instance_test_data(log_PR_2882, hercules_log_texts_2882, log_instan
    tests_for_log_instance = log_PR_2882._get_instance_test_data(hercules_log_texts_2882[log_PR_2882.pr_head_commit])
    assert tests_for_log_instance == log_instance_results_2882_0
 
-def test_compile_historical_log_data(log_PR_2882, hercules_log_texts_2882, hercules_sample_historical_log_data): 
-   
-   log_PR_2882.text_per_log = hercules_log_texts_2882
-   log_PR_2882.compile_historical_log_data()
-   
-   for test in hercules_sample_historical_log_data:
-      assert list(log_PR_2882.historical_runtime_data[test].values()) == hercules_sample_historical_log_data[test]["runtime"]
-      assert list(log_PR_2882.historical_mem_data[test].values()) == hercules_sample_historical_log_data[test]["memory"]
-
 def test_get_current_pr_data(log_PR_2882, hercules_log_texts_2882, log_instance_results_2882_0):
    
    log_PR_2882.text_per_log = hercules_log_texts_2882
@@ -91,71 +82,35 @@ def test_get_current_pr_mem_data(log_PR_2882, hercules_current_pr_data):
    
    log_PR_2882.current_pr_mem_data = log_PR_2882.get_current_pr_data()
    for test in hercules_current_pr_data:
-      print(test)
       assert log_PR_2882.current_pr_mem_data[test][1] == hercules_current_pr_data[test][1]
 
-
-def test_fetch_historical_data(log_PR_2882, hercules_sample_historical_log_data):
-   """
-   Extract runtime/memory data for the authoritative repository's last several commits.
-   Actual number determined by Manager.get_hashes()
-   """
-   log_PR_2882.fetch_historical_data()
-
-   for test in hercules_sample_historical_log_data:
-      assert list(log_PR_2882.historical_runtime_data[test].values()) == hercules_sample_historical_log_data[test]["runtime"]
-      assert list(log_PR_2882.historical_mem_data[test].values()) == hercules_sample_historical_log_data[test]["memory"]
-
-def test_calculate_runtime_stats(log_PR_2882, hercules_sample_historical_log_data):
-   """Check that test: [mean, stdev] == test: [mean, std]"""
-      
-   log_PR_2882.runtime_stats = log_PR_2882.get_runtime_stats()
-   log_PR_2882.calculate_runtime_stats()
-
-   assert log_PR_2882.runtime_stats != None
-   for test in hercules_sample_historical_log_data:
-      assert log_PR_2882.runtime_stats[test][0] == round(np.mean(hercules_sample_historical_log_data[test]["runtime"]), 5)
-      assert log_PR_2882.runtime_stats[test][1] == round(np.std(hercules_sample_historical_log_data[test]["runtime"]), 5)
-
-def test_get_runtime_stats(log_PR_2882):
-   log_PR_2882.get_runtime_stats()
-   assert log_PR_2882.runtime_stats != None
-
-def test_calculate_mem_stats(log_PR_2882, hercules_sample_historical_log_data):
-   log_PR_2882.mem_stats = log_PR_2882.get_mem_stats()
-   log_PR_2882.calculate_mem_stats()
-
-   assert log_PR_2882.mem_stats != None
-   for test in hercules_sample_historical_log_data:
-      assert log_PR_2882.mem_stats[test][0] == round(np.mean(hercules_sample_historical_log_data[test]["memory"]), 5)
-      assert log_PR_2882.mem_stats[test][1] == round(np.std(hercules_sample_historical_log_data[test]["memory"]), 5)
-
-def test_get_mem_stats(log_PR_2882):
-   log_PR_2882.get_mem_stats()
-   assert log_PR_2882.mem_stats != None
-
-def test_compare_runtimes(log_PR_2882, log_instance_results_2882_0, hercules_runtime_results, hercules_mean_std):
+def test_compare_runtimes(log_PR_2882, log_instance_results_2882_0, hercules_runtime_results, 
+                          hercules_mean_std, hercules_sample_historical_log_data):
+   
+   expected = hercules_runtime_results["hercules"]
    log_PR_2882.current_pr_log_data = log_instance_results_2882_0
-   log_PR_2882.test_stats = hercules_mean_std
+   log_PR_2882.runtime_stats = {test: values[0:2] for test, values in hercules_mean_std.items()}
+   # Zip together hercules_sample_historical_log_data with each value's corresponding hash (pairing required for compare_results())
+   log_PR_2882.historical_runtime_data = {
+      test: dict(zip(log_PR_2882.repo_commits, data["runtime"]))
+      for test, data in hercules_sample_historical_log_data.items()
+   }
    log_PR_2882.compare_runtimes()
 
-   for test, value in hercules_runtime_results["hercules"].items(): 
-      print(test)
-      print(f"EXPECTED RESULT: {hercules_runtime_results["hercules"][test]}")
-      print(f"ACTUAL RESULT: {log_PR_2882.runtime_results[test]}")
-      #print(test, log_PR_2882.runtime_results[test], value)
+   for test, value in expected.items(): 
       assert log_PR_2882.runtime_results[test] == value
 
-def test_compare_mem(log_PR_2882, log_instance_results_2882_0, sample_memory_results, hercules_mean_std):
-   
+def test_compare_mem(log_PR_2882, log_instance_results_2882_0, sample_memory_results, hercules_mean_std, hercules_sample_historical_log_data):
+
+   expected = sample_memory_results["hercules"]
    log_PR_2882.current_pr_log_data = log_instance_results_2882_0
-   log_PR_2882.test_stats = hercules_mean_std
+   log_PR_2882.mem_stats = {test: values[2:] for test, values in hercules_mean_std.items()}
+   # Zip together hercules_sample_historical_log_data with each value's corresponding hash (pairing required for compare_results())
+   log_PR_2882.historical_mem_data = {
+         test: dict(zip(log_PR_2882.repo_commits, data["memory"]))
+         for test, data in hercules_sample_historical_log_data.items()
+      }
    log_PR_2882.compare_mem()
 
-   for test, value in sample_memory_results["hercules"].items(): 
+   for test, value in expected.items(): 
       assert log_PR_2882.mem_results[test] == value
-
-"""def test_get_mem_results(log_PR_2882):
-   log_PR_2882.get_mem_results()
-   assert log_PR_2882.memory_results != None
-"""

@@ -113,9 +113,7 @@ def test_create_message_content(set_env_vars, category, sample_runtime_results_c
 
    hi = f"\nFor the past three PRs, {category.upper()} has been greater than two standard deviations above the mean for the following tests: \n\n" + \
             "  * cpld_control_p8_intel: ursa\n"
-   #hi_mem = "\nFor the past three PRs, MEMORY has been greater than two standard deviations above the mean for the following tests: \n\n" + \
-            #"  * cpld_control_p8_intel: ursa\n"
-
+   
    assert manager.message_content == hi
    
 

@@ -1,8 +1,11 @@
 import os
 import pytest
+from datetime import datetime, timezone
 from mdutils.mdutils import MdUtils
 from scripts.Log import Log
+from scripts.HistoricalLog import HistoricalLog
 from scripts.Manager import *
+from scripts.HistoricalLogManager import *
 from scripts.get_data import *
 from scripts.create_images import *
 
@@ -22,6 +25,22 @@ def log_manager(set_env_vars):
    set_env_vars
    return LogManager()
 
+@pytest.fixture
+def historical_log_manager(set_env_vars):
+   set_env_vars
+   return HistoricalLogManager()
+
+@pytest.fixture
+def historical_log_manager_2(monkeypatch):
+   monkeypatch.setenv("MACHINES", "hercules ursa")
+   monkeypatch.setattr(
+      HistoricalLogManager, "set_hashes", lambda self: ["commit1", "commit2"]
+   )
+   monkeypatch.setattr(
+      HistoricalLogManager, "set_pr_head", lambda self: "pr-head"
+   )
+   return HistoricalLogManager()
+
 """@pytest.fixture
 def html_builder():
    return HTMLBuilder()
@@ -35,14 +54,28 @@ def log(log_manager):
    return Log("hercules", log_manager.repo_hashes, log_manager.pr_head_commit)
 
 @pytest.fixture
+def historical_log(historical_log_manager):
+   return HistoricalLog("hercules", historical_log_manager.repo_hashes)
+
+@pytest.fixture
 def log_PR_2882():
    return Log("hercules",["b1308c13977752024670d7b6847c8c38aa4a5b5b", "d2e5b36d902603f20e4d6697e200a9b0c87d4396", 
                           "4bee7518483e7c0fc2e73c6f5fad7c507962c44c", '437cf9742f852fd7639f71cbe3b1b153ada96203', 
                           '6ae4a01be30900f96699a240d91c8e357a74e331'],"4760a41a2ba012b236361d99a0248b718a06921b")
 
 @pytest.fixture
+def historical_log_PR_2882():
+   return HistoricalLog("hercules",["b1308c13977752024670d7b6847c8c38aa4a5b5b", "d2e5b36d902603f20e4d6697e200a9b0c87d4396", 
+                          "4bee7518483e7c0fc2e73c6f5fad7c507962c44c", '437cf9742f852fd7639f71cbe3b1b153ada96203', 
+                          '6ae4a01be30900f96699a240d91c8e357a74e331'])
+
+@pytest.fixture
 def herc_log():
    return Log("Hercules",["e30900f9", "730df864", "ca94c232"],"36361d99")
+
+@pytest.fixture
+def historical_herc_log():
+   return HistoricalLog("Hercules",["e30900f9", "730df864", "ca94c232"])
 
 @pytest.fixture
 def ursa_log():
@@ -337,6 +370,285 @@ def log_instance_results_2882_0():
 
    return tests_for_log_instance
 
+@pytest.fixture
+def log_instance_results_2882_1():
+   """Test runtime and memory from commit b1308c13977752024670d7b6847c8c38aa4a5b5b."""
+
+   tests_for_log_instance = {
+      'cpld_control_p8_mixedmode_intel': [505, 2160],
+      'cpld_control_gefs_intel': [1171, 3121],
+      'cpld_restart_gefs_intel': [392, 2815],
+      'cpld_dcp_gefs_intel': [1248, 3163],
+      'cpld_control_gfsv17_intel': [1030, 2024],
+      'cpld_control_gfsv17_iau_intel': [1127, 2350],
+      'cpld_restart_gfsv17_intel': [420, 1356],
+      'cpld_restart_gfsv17_iau_intel': [548, 2220],
+      'cpld_mpi_gfsv17_intel': [1105, 1930],
+      'cpld_control_sfs_intel': [1040, 1997],
+      'cpld_debug_gfsv17_intel': [1654, 2002],
+      'cpld_control_p8_intel': [524, 2269],
+      'cpld_control_p8.v2.sfc_intel': [515, 2273],
+      'cpld_restart_p8_intel': [273, 1966],
+      'cpld_control_qr_p8_intel': [505, 2287],
+      'cpld_restart_qr_p8_intel': [283, 1842],
+      'cpld_2threads_p8_intel': [522, 2392],
+      'cpld_decomp_p8_intel': [509, 2246],
+      'cpld_mpi_p8_intel': [427, 2129],
+      'cpld_control_ciceC_p8_intel': [508, 2262],
+      'cpld_control_c192_p8_intel': [1269, 2949],
+      'cpld_restart_c192_p8_intel': [346, 2973],
+      'cpld_control_p8_lnd_intel': [523, 2227],
+      'cpld_restart_p8_lnd_intel': [334, 1931],
+      'cpld_s2sa_p8_intel': [416, 2238],
+      'cpld_control_noaero_p8_intel': [472, 2050],
+      'cpld_control_nowave_noaero_p8_intel': [358, 2166],
+      'cpld_debug_p8_intel': [792, 2290],
+      'cpld_debug_noaero_p8_intel': [383, 2082],
+      'cpld_control_noaero_p8_agrid_intel': [253, 2125],
+      'cpld_control_p8_faster_intel': [480, 2259],
+      'cpld_control_pdlib_p8_intel': [897, 2101],
+      'cpld_restart_pdlib_p8_intel': [619, 1415],
+      'cpld_mpi_pdlib_p8_intel': [964, 2011],
+      'cpld_control_c48_5deg_intel': [370, 3058],
+      'cpld_warmstart_c48_5deg_intel': [116, 3038],
+      'cpld_restart_c48_5deg_intel': [66, 2481],
+      'cpld_control_c24_5deg_intel': [62, 2243],
+      'cpld_warmstart_c24_5deg_intel': [37, 2243],
+      'cpld_restart_c24_5deg_intel': [25, 1558],
+      'cpld_control_c24_9deg_intel': [60, 2237],
+      'cpld_warmstart_c24_9deg_intel': [37, 2238],
+      'cpld_restart_c24_9deg_intel': [26, 1557],
+      'cpld_control_c12_9deg_intel': [36, 2171],
+      'cpld_warmstart_c12_9deg_intel': [30, 2169],
+      'cpld_restart_c12_9deg_intel': [23, 1506],
+      'cpld_debug_pdlib_p8_intel': [1410, 2055],
+      'control_flake_intel': [179, 722],
+      'control_CubedSphereGrid_intel': [126, 1619],
+      'control_CubedSphereGrid_parallel_intel': [138, 1616],
+      'control_latlon_intel': [135, 1617],
+      'control_wrtGauss_netcdf_parallel_intel': [134, 1623],
+      'control_c48_intel': [395, 1714],
+      'control_c48.v2.sfc_intel': [358, 839],
+      'control_c48_lnd_iau_intel': [573, 1722],
+      'control_c192_intel': [397, 1821],
+      'control_c384_intel': [603, 2022],
+      'control_c384gdas_intel': [458, 1507],
+      'control_stochy_intel': [87, 685],
+      'control_stochy_restart_intel': [53, 539],
+      'control_lndp_intel': [83, 678],
+      'control_iovr4_intel': [132, 671],
+      'control_iovr4_gfdlmpv3_intel': [186, 973],
+      'control_iovr5_intel': [130, 674],
+      'control_p8_intel': [226, 1902],
+      'control_p8.v2.sfc_intel': [229, 1911],
+      'control_p8_ugwpv1_intel': [210, 1909],
+      'control_p8_ugwpv1_tempo_intel': [154, 1930],
+      'control_p8_ugwpv1_tempo_aerosol_intel': [162, 1942],
+      'control_p8_ugwpv1_tempo_aerosol_hail_intel': [104, 2437],
+      'control_restart_p8_intel': [95, 1219],
+      'control_noqr_p8_intel': [160, 1907],
+      'control_restart_noqr_p8_intel': [101, 1206],
+      'control_decomp_p8_intel': [160, 1906],
+      'control_2threads_p8_intel': [183, 1997],
+      'control_p8_lndp_intel': [320, 1910],
+      'control_p8_rrtmgp_intel': [314, 1977],
+      'control_p8_mynn_intel': [166, 1931],
+      'merra2_thompson_intel': [182, 1918],
+      'merra2_hf_thompson_intel': [274, 1923],
+      'regional_control_intel': [365, 1195],
+      'regional_restart_intel': [146, 1208],
+      'regional_decomp_intel': [289, 1184],
+      'regional_2threads_intel': [216, 1087],
+      'regional_noquilt_intel': [269, 1499],
+      'regional_netcdf_parallel_intel': [274, 1197],
+      'regional_2dwrtdecomp_intel': [279, 1196],
+      'regional_wofs_intel': [363, 2094],
+      'control_p8_rrtmgp_rad32_intel': [221, 1949],
+      'rap_control_intel': [222, 1100],
+      'regional_spp_sppt_shum_skeb_intel': [209, 1445],
+      'rap_decomp_intel': [231, 1065],
+      'rap_2threads_intel': [264, 1185],
+      'rap_restart_intel': [119, 1090],
+      'rap_sfcdiff_intel': [221, 1093],
+      'rap_sfcdiff_decomp_intel': [228, 1064],
+      'rap_sfcdiff_restart_intel': [119, 1088],
+      'hrrr_control_intel': [211, 1079],
+      'hrrr_control_decomp_intel': [216, 1064],
+      'hrrr_control_2threads_intel': [246, 1164],
+      'hrrr_control_restart_intel': [116, 1039],
+      'rrfs_v1beta_intel': [406, 1207],
+      'rrfs_v1nssl_intel': [484, 2020],
+      'rrfs_v1nssl_nohailnoccn_intel': [467, 2176],
+      'control_csawmg_intel': [425, 1078],
+      'control_ras_intel': [176, 860],
+      'control_wam_intel': [627, 1686],
+      'control_p8_faster_intel': [144, 1909],
+      'regional_control_faster_intel': [255, 1199],
+      'control_CubedSphereGrid_debug_intel': [122, 1633],
+      'control_wrtGauss_netcdf_parallel_debug_intel': [130, 1646],
+      'control_stochy_debug_intel': [156, 852],
+      'control_lndp_debug_intel': [146, 850],
+      'control_csawmg_debug_intel': [293, 1163],
+      'control_ras_debug_intel': [149, 854],
+      'control_diag_debug_intel': [141, 1706],
+      'control_debug_p8_intel': [189, 1939],
+      'regional_debug_intel': [963, 1159],
+      'rap_control_debug_intel': [249, 1240],
+      'hrrr_control_debug_intel': [248, 1227],
+      'hrrr_gf_debug_intel': [246, 1224],
+      'hrrr_c3_debug_intel': [248, 1236],
+      'rap_unified_drag_suite_debug_intel': [256, 1237],
+      'rap_diag_debug_intel': [259, 1320],
+      'rap_cires_ugwp_debug_intel': [252, 1250],
+      'rap_unified_ugwp_debug_intel': [251, 1243],
+      'rap_lndp_debug_intel': [251, 1247],
+      'rap_progcld_thompson_debug_intel': [256, 1239],
+      'rap_noah_debug_intel': [242, 1237],
+      'rap_sfcdiff_debug_intel': [254, 1238],
+      'rap_noah_sfcdiff_cires_ugwp_debug_intel': [416, 1238],
+      'rap_clm_lake_debug_intel': [245, 1244],
+      'rap_flake_debug_intel': [253, 1245],
+      'regional_spp_sppt_shum_skeb_dyn32_phy32_intel': [196, 1313],
+      'rap_control_dyn32_phy32_intel': [184, 1041],
+      'hrrr_control_dyn32_phy32_intel': [178, 1029],
+      'rap_2threads_dyn32_phy32_intel': [226, 1099],
+      'hrrr_control_2threads_dyn32_phy32_intel': [218, 1048],
+      'hrrr_control_decomp_dyn32_phy32_intel': [187, 983],
+      'rap_restart_dyn32_phy32_intel': [101, 982],
+      'hrrr_control_restart_dyn32_phy32_intel': [100, 968],
+      'conus13km_control_intel': [152, 1512],
+      'conus13km_2threads_intel': [74, 1321],
+      'conus13km_decomp_intel': [151, 1551],
+      'conus13km_restart_intel': [91, 1288],
+      'rap_control_dyn64_phy32_intel': [229, 1103],
+      'rap_control_debug_dyn32_phy32_intel': [247, 1126],
+      'hrrr_control_debug_dyn32_phy32_intel': [258, 1113],
+      'conus13km_debug_intel': [1142, 1561],
+      'conus13km_debug_qr_intel': [1160, 1163],
+      'conus13km_debug_2threads_intel': [1228, 1370],
+      'conus13km_debug_decomp_intel': [1180, 1591],
+      'conus13km_radar_tten_debug_intel': [1146, 1625],
+      'rap_control_dyn64_phy32_debug_intel': [241, 1217],
+      'hafs_regional_atm_intel': [255, 1021],
+      'hafs_regional_atm_gfdlmpv3_intel': [484, 1209],
+      'hafs_regional_atm_thompson_gfdlsf_intel': [241, 1289],
+      'hafs_regional_atm_ocn_intel': [389, 1095],
+      'hafs_regional_atm_wav_intel': [886, 1120],
+      'hafs_regional_atm_ocn_wav_intel': [1020, 1156],
+      'hafs_regional_1nest_atm_intel': [350, 602],
+      'hafs_regional_telescopic_2nests_atm_intel': [495, 610],
+      'hafs_global_1nest_atm_intel': [181, 435],
+      'hafs_global_multiple_4nests_atm_intel': [467, 507],
+      'hafs_regional_specified_moving_1nest_atm_intel': [228, 610],
+      'hafs_regional_storm_following_1nest_atm_intel': [218, 611],
+      'hafs_regional_storm_following_1nest_atm_ocn_intel': [243, 659],
+      'hafs_global_storm_following_1nest_atm_intel': [77, 457],
+      'hafs_regional_storm_following_1nest_atm_ocn_debug_intel': [653, 634],
+      'hafs_regional_storm_following_1nest_atm_ocn_wav_intel': [942, 733],
+      'hafs_regional_storm_following_1nest_atm_ocn_wav_inline_intel': [1068, 831],
+      'hafs_regional_storm_following_1nest_atm_ocn_wav_mom6_intel': [713, 833],
+      'hafs_regional_docn_intel': [317, 1082],
+      'hafs_regional_docn_oisst_intel': [313, 1087],
+      'hafs_regional_datm_cdeps_intel': [986, 1346],
+      'datm_cdeps_control_cfsr_intel': [146, 1869],
+      'datm_cdeps_restart_cfsr_intel': [93, 1817],
+      'datm_cdeps_control_gefs_intel': [133, 1109],
+      'datm_cdeps_iau_gefs_intel': [135, 1126],
+      'datm_cdeps_stochy_gefs_intel': [135, 1117],
+      'datm_cdeps_ciceC_cfsr_intel': [149, 1869],
+      'datm_cdeps_bulk_cfsr_intel': [146, 1869],
+      'datm_cdeps_bulk_gefs_intel': [133, 1125],
+      'datm_cdeps_mx025_cfsr_intel': [444, 1720],
+      'datm_cdeps_mx025_gefs_intel': [434, 1197],
+      'datm_cdeps_multiple_files_cfsr_intel': [146, 1869],
+      'datm_cdeps_3072x1536_cfsr_intel': [229, 4829],
+      'datm_cdeps_gfs_intel': [230, 4831],
+      'datm_cdeps_debug_cfsr_intel': [510, 1780],
+      'datm_cdeps_control_cfsr_faster_intel': [146, 1869],
+      'datm_cdeps_lnd_gswp3_intel': [55, 335],
+      'datm_cdeps_lnd_era5_intel': [36, 558],
+      'datm_cdeps_lnd_era5_rst_intel': [25, 556],
+      'atm_ds2s_docn_pcice_intel': [198, 2048],
+      'atm_ds2s_docn_dice_intel': [292, 2057],
+      'control_p8_atmlnd_intel': [179, 1888],
+      'control_restart_p8_atmlnd_intel': [107, 1201],
+      'control_p8_atmlnd_debug_intel': [561, 1911],
+      'atmwav_control_noaero_p8_intel': [101, 1945],
+      'atmaero_control_p8_intel': [344, 2019],
+      'atmaero_control_p8_rad_intel': [313, 1803],
+      'atmaero_control_p8_rad_micro_intel': [317, 1813],
+      'regional_atmaq_intel': [848, 2942],
+      'regional_atmaq_canopy_intel': [987, 2941],
+      'regional_atmaq_debug_intel': [1907, 2961],
+      'cpld_regional_atm_fbh_intel': [581, 1085],
+      'control_c48_gnu': [472, 1584],
+      'control_stochy_gnu': [136, 591],
+      'control_ras_gnu': [220, 595],
+      'control_p8_gnu': [210, 1550],
+      'control_p8_ugwpv1_gnu': [203, 1557],
+      'control_flake_gnu': [267, 637],
+      'rap_control_gnu': [250, 944],
+      'rap_decomp_gnu': [254, 945],
+      'rap_2threads_gnu': [214, 1004],
+      'rap_restart_gnu': [132, 673],
+      'rap_sfcdiff_gnu': [259, 944],
+      'rap_sfcdiff_decomp_gnu': [249, 943],
+      'rap_sfcdiff_restart_gnu': [132, 678],
+      'hrrr_control_gnu': [239, 939],
+      'hrrr_control_noqr_gnu': [241, 929],
+      'hrrr_control_2threads_gnu': [216, 1005],
+      'hrrr_control_decomp_gnu': [246, 938],
+      'hrrr_control_restart_gnu': [130, 670],
+      'hrrr_control_restart_noqr_gnu': [185, 756],
+      'rrfs_v1beta_gnu': [458, 936],
+      'control_csawmg_gnu': [398, 837],
+      'control_diag_debug_gnu': [72, 1369],
+      'regional_debug_gnu': [563, 879],
+      'rap_control_debug_gnu': [121, 954],
+      'hrrr_control_debug_gnu': [127, 947],
+      'hrrr_gf_debug_gnu': [122, 953],
+      'hrrr_c3_debug_gnu': [117, 948],
+      'rap_diag_debug_gnu': [126, 1035],
+      'rap_noah_sfcdiff_cires_ugwp_debug_gnu': [198, 945],
+      'rap_progcld_thompson_debug_gnu': [170, 948],
+      'control_ras_debug_gnu': [71, 584],
+      'control_stochy_debug_gnu': [76, 577],
+      'control_debug_p8_gnu': [82, 1524],
+      'rap_flake_debug_gnu': [116, 949],
+      'rap_clm_lake_debug_gnu': [122, 950],
+      'gnv1_c96_no_nest_debug_gnu': [204, 956],
+      'control_wam_debug_gnu': [304, 1388],
+      'control_csawmg_debug_gnu': [131, 848],
+      'rap_control_dyn32_phy32_gnu': [240, 798],
+      'hrrr_control_dyn32_phy32_gnu': [228, 788],
+      'rap_2threads_dyn32_phy32_gnu': [214, 839],
+      'hrrr_control_2threads_dyn32_phy32_gnu': [207, 837],
+      'hrrr_control_decomp_dyn32_phy32_gnu': [339, 790],
+      'rap_restart_dyn32_phy32_gnu': [123, 646],
+      'hrrr_control_restart_dyn32_phy32_gnu': [123, 643],
+      'conus13km_control_gnu': [347, 1038],
+      'conus13km_2threads_gnu': [115, 1021],
+      'conus13km_decomp_gnu': [352, 1039],
+      'conus13km_restart_gnu': [140, 761],
+      'rap_control_dyn64_phy32_gnu': [319, 820],
+      'rap_control_debug_dyn32_phy32_gnu': [118, 804],
+      'hrrr_control_debug_dyn32_phy32_gnu': [131, 803],
+      'conus13km_debug_gnu': [773, 1052],
+      'conus13km_debug_qr_gnu': [513, 778],
+      'conus13km_debug_2threads_gnu': [528, 1034],
+      'conus13km_debug_decomp_gnu': [529, 1057],
+      'conus13km_radar_tten_debug_gnu': [518, 1122],
+      'rap_control_dyn64_phy32_debug_gnu': [118, 830],
+      'cpld_control_p8_gnu': [604, 1722],
+      'cpld_control_nowave_noaero_p8_gnu': [555, 1619],
+      'cpld_debug_p8_gnu': [352, 1718],
+      'cpld_control_pdlib_p8_gnu': [833, 1585],
+      'cpld_debug_pdlib_p8_gnu': [541, 1605],
+      'datm_cdeps_control_cfsr_gnu': [162, 1605],
+      'control_gfs_mpas_gnu': [36, 6404],
+   }
+
+   return tests_for_log_instance
 
 @pytest.fixture
 def hercules_sample_historical_log_data():
@@ -1381,18 +1693,18 @@ def message_content():
 def expected_messages():
 
    messages = {
-      "no_hi_rt_mem": "\n\n\n### ✅ Test Suite Performance\n\nNo tests with repeatedly high runtime or memory.",
+      "no_hi_rt_mem": f"\n\n\n### ✅ Test Suite Performance\n\nNo tests with repeatedly high runtime or memory.\n\nUpdated for commit 369cead9 on {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M')} UTC.",
       "hi_rt_mem": "\n\n\n### ⚠️ Test Suite Performance Threshold Exceeded\n\n" + \
          "For the past three PRs, RUNTIME has been greater than two standard deviations above the mean for the following tests: \n\n" + \
          "  * control_c384gdas_intel: gaeac6\n  * cpld_debug_sfs_intel: hercules, orion\n\n  * regional_debug_intel: ursa" + \
          "\n\nFor the past three PRs, MEMORY has been greater than two standard deviations above the mean for the following tests: \n\n" + \
-         "  * cpld_control_p8_lnd_intel: wcoss2\n  * datm_cdeps_lnd_gswp3_intel: ursa, hercules\n\n@gspetro-NOAA",
+         f"  * cpld_control_p8_lnd_intel: wcoss2\n  * datm_cdeps_lnd_gswp3_intel: ursa, hercules\n\n@gspetro-NOAA\n\nUpdated for commit 369cead9 on {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M')} UTC.",
       "hi_rt": "\n\n\n### ⚠️ Test Suite Performance Threshold Exceeded\n\n" + \
          "For the past three PRs, RUNTIME has been greater than two standard deviations above the mean for the following tests: \n\n" + \
-         "  * control_c384gdas_intel: gaeac6\n  * cpld_debug_sfs_intel: hercules, orion\n\n  * regional_debug_intel: ursa\n\n@gspetro-NOAA",
+         f"  * control_c384gdas_intel: gaeac6\n  * cpld_debug_sfs_intel: hercules, orion\n\n  * regional_debug_intel: ursa\n\n@gspetro-NOAA\n\nUpdated for commit 369cead9 on {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M')} UTC.",
       "hi_mem": "\n\n\n### ⚠️ Test Suite Performance Threshold Exceeded\n\n" + \
          "For the past three PRs, MEMORY has been greater than two standard deviations above the mean for the following tests: \n\n" + \
-         "  * cpld_control_p8_lnd_intel: wcoss2\n  * datm_cdeps_lnd_gswp3_intel: ursa, hercules\n\n@gspetro-NOAA",
+         f"  * cpld_control_p8_lnd_intel: wcoss2\n  * datm_cdeps_lnd_gswp3_intel: ursa, hercules\n\n@gspetro-NOAA\n\nUpdated for commit 369cead9 on {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M')} UTC.",
    }
 
    return messages

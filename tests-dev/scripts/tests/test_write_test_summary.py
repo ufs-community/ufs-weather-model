@@ -100,10 +100,6 @@ def test_create_summary(set_env_vars, monkeypatch, failing_results_table):
    
    table_contents = table_header + failing_results_table + "\n\n\n</details>"
 
-   print(f"ACTUAL RESULTS: {html_builder.get_mdFile().get_md_text()}")
-
-   print(f"EXPECTED RESULTS: {table_contents}")
-
    assert html_builder.get_mdFile().get_md_text() == table_contents
 
 
