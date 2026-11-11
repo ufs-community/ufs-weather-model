@@ -13,14 +13,12 @@ BUILD_DIR=${BUILD_DIR:-${UFS_MODEL_DIR}/build}
 TESTS_DIR=${TESTS_DIR:-${UFS_MODEL_DIR}/tests}
 
 cd "${UFS_MODEL_DIR}"
-echo "UFS_PLATFORM=<${UFS_PLATFORM}>"
-echo "UFS_COMPILER=<${UFS_COMPILER}>"
-
-pwd
+echo "PWD: $(pwd)"
 echo "NODE_NAME=${NODE_NAME}"
 echo "UFS_PLATFORM=${UFS_PLATFORM}"
 echo "UFS_COMPILER=${UFS_COMPILER}"
-export workspace=$(pwd)
+workspace=$(pwd)
+export workspace
 machine=${NODE_NAME}
 echo "machine=<${machine}>"
 machine_id=${UFS_PLATFORM,,}
