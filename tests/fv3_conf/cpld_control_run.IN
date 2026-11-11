@@ -31,6 +31,12 @@ elif [[ $ULTRALOW == .true. ]]; then
     FV3_IC=@[INPUTDATA_ROOT]/${FV3_DIR}/INPUT_${LEVELS}_mx${OCNRES}/${SYEAR}${SMONTH}${SDAY}${SHOUR}
     MOM_IC=@[INPUTDATA_ROOT]/MOM6_IC/${ATMRES}mx${OCNRES}/${SYEAR}${SMONTH}${SDAY}${SHOUR}
     ICE_IC=@[INPUTDATA_ROOT]/CICE_IC/${ATMRES}mx${OCNRES}/${SYEAR}${SMONTH}${SDAY}${SHOUR}
+elif [[ $GFSv17opn == .true. ]]; then
+    FV3_IC=@[INPUTDATA_GFSv17opn]/FV3_IC
+    MOM_IC=@[INPUTDATA_GFSv17opn]/MOM6_IC
+    ICE_IC=@[INPUTDATA_GFSv17opn]/CICE_IC
+    WAV_IC=@[INPUTDATA_GFSv17opn]/WW3_IC
+    CMEPS_IC=@[INPUTDATA_GFSv17opn]/CMEPS_IC
 elif [[ $SFS == .true. ]]; then
     FV3_IC=@[INPUTDATA_ROOT]/SFS/${SYEAR}${SMONTH}${SDAY}${SHOUR}
     MOM_IC=${FV3_IC}
@@ -46,6 +52,18 @@ else
 fi
 
 # FV3 fixed input
+if [[ $GFSv17opn == .true. ]]; then
+    cp @[INPUTDATA_GFSv17opn]/FV3_fix/*.nc ./INPUT
+    cp @[INPUTDATA_GFSv17opn]/FV3_fix/*.grb .
+    cp @[INPUTDATA_GFSv17opn]/FV3_fix_tiled/* .
+    cp @[INPUTDATA_GFSv17opn]/MOM6_FIX/* ./INPUT
+    cp @[INPUTDATA_GFSv17opn]/CICE_FIX/* .
+    cp @[INPUTDATA_ROOT_WW3]/@[WW3_MODDEF] mod_def.ww3
+    cp @[INPUTDATA_GFSv17opn]/WW3_FIX/@[MESH_WAV] .
+    cp @[INPUTDATA_GFSv17opn]/WW3_FIX/wave_gfs.buoys.full ww3_points.list
+    cp @[INPUTDATA_GFSv17opn]/WW3_FIX/pnt_wght.uglo_15km.nc pnt_wght.ww3.nc
+    cp @[INPUTDATA_GFSv17opn]/WW3_FIX/ww3_shel.nml .
+else
 cp @[INPUTDATA_ROOT]/${FV3_DIR}/@[FNSMCC] .
 cp @[INPUTDATA_ROOT]/${FV3_DIR}/@[FNMSKH] .
 cp @[INPUTDATA_ROOT]/FV3_fix/@[FNGLAC] .
@@ -79,6 +97,7 @@ if [[ $CPLWAV == .true. ]]; then
     cp @[INPUTDATA_ROOT_WW3]/@[WW3_MODDEF] mod_def.ww3
     if [[ ${WW3_DOMAIN:0:2} != mx ]]; then
         cp @[INPUTDATA_ROOT_WW3]/@[MESH_WAV] .
+        fi
     fi
 fi
 
@@ -212,6 +231,14 @@ else
         cp ${FV3_IC}/ufs.cpld.cpl*nc .
         ls -1 ufs.cpld.cpl*nc>rpointer.cpl
         cp ${WAV_IC}/ufs.cpld.ww3.r.${RESTART_FILE_SUFFIX_SECS}.nc .
+    elif [[ $GFSv17opn == .true. ]]; then
+        cp ${FV3_IC}/* ./INPUT
+        cp ${MOM_IC}/* ./INPUT
+        cp  ${ICE_IC}/iced.* ./cice_model.res.nc
+        ls -1 cice_model.res.nc>ice.restart_file
+        cp ${WAV_IC}/* .
+        cp ${CMEPS_IC}/ufs.cpld.cpl.r* ufs.cpld.cpl.r.nc
+        ls -1 ufs.cpld.cpl.r.nc>rpointer.cpl
     fi
 fi
 
@@ -277,8 +304,13 @@ fi
 
 if [ $GWD_OPT -ne 0 ]; then
     cp @[INPUTDATA_ROOT]/FV3_input_data/ugwp_c384_tau.nc ./ugwp_limb_tau.nc
+    if [[ $GFSv17opn == .true. ]]; then
+        cp @[INPUTDATA_GFSv17opn]/FV3_fix/oro_data_ls* ./INPUT
+        cp @[INPUTDATA_GFSv17opn]/FV3_fix/oro_data_ss* ./INPUT
+    else
     cp @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT_L127_gfsv17/oro_data_ls* ./INPUT
     cp @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT_L127_gfsv17/oro_data_ss* ./INPUT
+    fi
 fi
 
 if [ $IMP_PHYSICS = 8 ]; then
