@@ -1,7 +1,7 @@
 #!/bin/bash -x
 set -eu
 export UFS_PLATFORM=${UFS_PLATFORM:-${NODE_NAME,,}}
-export UFS_COMPILER=${UFS_COMPILER:-intel}
+export UFS_COMPILER=${UFS_COMPILER:-oneapi}
 
 SCRIPT_REALPATH=$(realpath "${BASH_SOURCE[0]}")
 SCRIPTS_DIR=$(dirname "${SCRIPT_REALPATH}")
@@ -15,12 +15,6 @@ export FC=${FC:-mpif90}
 
 BUILD_DIR=${BUILD_DIR:-${UFS_MODEL_DIR}/build}
 TESTS_DIR=${TESTS_DIR:-${UFS_MODEL_DIR}/tests}
-
-(
-	cd "${TESTS_DIR}"
-	pwd
-	ls -al ./rt.sh
-)
 
 export GIT_URL=${GIT_URL:-"ufs-weather-model"}
 export CHANGE_ID=${CHANGE_ID:-"develop"}
@@ -42,7 +36,6 @@ echo "machine=<${machine}>"
 machine_id=${UFS_PLATFORM,,}
 if [[ ${UFS_PLATFORM} =~ clusternoaa ]] ; then
 	machine_id="noaacloud"
-	#sed -i -e "s|EPIC/spack-stack/spack-stack-1.5.0|spack-stack/spack-stack-1.5.1|g" modulefiles/ufs_noaacloud.intel.lua
 fi
 echo "machine_id=<${machine_id}>"
 
@@ -55,8 +48,6 @@ ls -l build/ufs_model || : # just checking
 status=$?
 
 [[ -n "${WM_REGRESSION_TESTS:-""}"    ]] || WM_REGRESSION_TESTS=true     # default
-#[[ ${UFS_PLATFORM} == derecho     ]] && WM_REGRESSION_TESTS=false
-#[[ ${UFS_PLATFORM} =~ clusternoaa ]] && WM_REGRESSION_TESTS=false || :
 export WM_REGRESSION_TESTS
 [[ -n "${WM_CREATE_BASELINE:-""}"     ]] || WM_CREATE_BASELINE=false     # default
 export WM_CREATE_BASELINE
@@ -66,14 +57,13 @@ export WM_POST_TEST_RESULTS
 rm -f "${workspace}/wm_test_results-${UFS_PLATFORM}-${UFS_COMPILER}".txt
 
 if [[ ${WM_REGRESSION_TESTS} = true ]] ; then
-	echo "Pipeline Reqression Tests on ${UFS_PLATFORM} starting."
+	echo "Pipeline Regression Tests on ${UFS_PLATFORM} starting."
 
 	export LMOD_SH_DBG_ON=0
 	echo "LMOD_VERSION=${LMOD_VERSION}"
 
 	set +x
 	if [[ ${UFS_PLATFORM} = orion ]] ; then
-		#module --ignore_cache load git/2.28.0
 		git --version
 		git submodule update --init --recursive
 	fi
@@ -99,7 +89,6 @@ if [[ ${WM_REGRESSION_TESTS} = true ]] ; then
 	umask 002
 	if [[ ${WM_CREATE_BASELINE} = true ]] ; then
 		echo "start Creating baseline on ${UFS_PLATFORM} ..."
-		ls -al .cicd/*
 		echo "Pipeline Creating Baseline Tests ${WM_OPERATIONAL_TESTS:=default} on ${UFS_PLATFORM} ${UFS_COMPILER}"
 		/usr/bin/time -p \
 			-o "${WORKSPACE:-$(pwd)}"/"${UFS_PLATFORM}-${UFS_COMPILER}-time-wm_test.json" \
@@ -110,7 +99,6 @@ if [[ ${WM_REGRESSION_TESTS} = true ]] ; then
 		[[ ${WM_POST_TEST_RESULTS} = true ]] && ./.cicd/scripts/post_test_results.sh "${UFS_PLATFORM}" "BL" || echo "post test results seprately"
 	else
 		echo "skip Creating baseline on ${UFS_PLATFORM}."
-		ls -al .cicd/*
 		echo "Pipeline Running Regression Tests ${WM_OPERATIONAL_TESTS:=default} on ${UFS_PLATFORM} ${UFS_COMPILER}"
 		/usr/bin/time -p \
 			-o "${WORKSPACE:-$(pwd)}"/"${UFS_PLATFORM}-${UFS_COMPILER}-time-wm_test.json" \
@@ -122,10 +110,6 @@ if [[ ${WM_REGRESSION_TESTS} = true ]] ; then
 	fi
 
 	cd tests/
-	pwd
-	ls -al .
-	## Check for log files ...
-	ls -al logs/.
 
 	## Test Results ...
 	echo "ExperimentName: ${WM_OPERATIONAL_TESTS:=default}" | tee -a "${workspace}/${UFS_PLATFORM}-${UFS_COMPILER}-wm_test-log.txt" | tee    "${workspace}/wm_test_results-${UFS_PLATFORM}-${UFS_COMPILER}.txt"
@@ -139,7 +123,7 @@ if [[ ${WM_REGRESSION_TESTS} = true ]] ; then
            mv "tests/logs/RegressionTests_${UFS_PLATFORM}.log.orig" "tests/logs/RegressionTests_${UFS_PLATFORM}.log"
         fi
 
-	echo "Pipeline Reqression Tests on ${UFS_PLATFORM} complete. status=${status}" | tee "${workspace}/${UFS_PLATFORM}-status"
+	echo "Pipeline Regression Tests on ${UFS_PLATFORM} complete. status=${status}" | tee "${workspace}/${UFS_PLATFORM}-status"
 else
 	echo "Pipeline Regression Tests on ${UFS_PLATFORM} (${machine}) skipped."
 	echo "ExperimentName: null" > "${workspace}/wm_test_results-${UFS_PLATFORM}-${UFS_COMPILER}.txt"
