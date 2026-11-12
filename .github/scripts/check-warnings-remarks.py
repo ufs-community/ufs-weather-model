@@ -193,7 +193,7 @@ def main():
       print(warn_rmk_results)
       sys.exit(1)
    else:
-      print(f"No increase in warnings or remarks. All RTs passed.")
+      print(f"No increase in warnings or remarks.")
       sys.exit(0)
 
 if __name__ == "__main__": # pragma: no coverage
