@@ -66,7 +66,7 @@ function create_baseline() {
 		    ./rt.sh -a "${ACCNR}" "${workflow}"cs test_changes.list | tee "${WORKSPACE}/tests/logs/RT-run-${machine}.log"
 		    ./rt.sh -a "${ACCNR}" -c "${workflow}" "${opt}" "${suite}" | tee "${WORKSPACE}/tests/logs/RT-run-${machine}.log"
 		    status=${PIPESTATUS[0]}
-		    export DISKNM=/work/noaa/epic/hercules/UFS-WM_RT
+		    export DISKNM=/work2/noaa/epic/hercules/UFS-WM_RT
 		    cd ${DISKNM}/NEMSfv3gfs/
 		    mkdir -p "develop-${BL_DATE}"
 		    cd /work2/noaa/epic/stmp/role-epic/stmp/role-epic/FV3_RT
@@ -156,13 +156,15 @@ function create_baseline() {
 		    local workflow="-e"
 		    ./rt.sh -a "${ACCNR}" "${workflow}"cs test_changes.list | tee "${WORKSPACE}/tests/logs/RT-run-${machine}.log"
 		    status=${PIPESTATUS[0]}
-		    export DISKNM=/scratch3/NAGAPE/epic/role.epic/UFS-WM_RT
+		    export DISKNM=/scratch4/NAGAPE/epic/role-epic/UFS-WM_RT
 		    cd ${DISKNM}/NEMSfv3gfs/
 		    mkdir -p "develop-${BL_DATE}"
 		    #cd  /scratch1/NCEPDEV/stmp4/role.epic/FV3_RT
-			cd /scratch3/NCEPDEV/stmp/role.epic/RT_RUNDIRS/role.epic/FV3_RT
 		    ls -l REGRESSION_TEST/.
+                    cd /scratch4/NAGAPE/epic/role.epic/stmp/RT_RUNDIRS/role.epic/FV3_RT
 		    rsync -a --no-t REGRESSION_TEST/ "${DISKNM}/NEMSfv3gfs/develop-${BL_DATE}" || echo "#### Warning! rsync $(pwd)/REGRESSION_TEST/ incomplete."
+                    cd ${DISKNM}/NEMSfv3gfs/"develop-${BL_DATE}"
+		    chmod -R 755 .
 		    cd "${WORKSPACE}/tests"
 		    ./rt.sh -a "${ACCNR}" "${workflow}" "${opt}" "${suite}" | tee "${WORKSPACE}/tests/logs/RT-run-${machine}.log"
 		    status=${PIPESTATUS[0]}
