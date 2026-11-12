@@ -57,19 +57,18 @@ function create_baseline() {
 		    export ACCNR=epic
 		    ./rt.sh -a "${ACCNR}" -c "${workflow}" "${opt}" "${suite}" | tee "${WORKSPACE}/tests/logs/RT-run-${machine}.log"
 		    status=${PIPESTATUS[0]}
-		    export DISKNM=/work/noaa/epic/hercules/UFS-WM_RT
+		    export DISKNM=/work2/noaa/epic/hercules/UFS-WM_RT
 		    cd ${DISKNM}/NEMSfv3gfs/
 		    mkdir -p "develop-${BL_DATE}"
 		    cd /work2/noaa/epic/stmp/role-epic/stmp/role-epic/FV3_RT
 		    rsync -a --no-t REGRESSION_TEST/ "${DISKNM}/NEMSfv3gfs/develop-${BL_DATE}" || echo "#### Warning! rsync $(pwd)/REGRESSION_TEST/ incomplete."
-		    cd ${DISKNM}/NEMSfv3gfs/
-		    ./adjust_permissions.sh hercules "develop-${BL_DATE}" || :
-		    chgrp noaa-hpc "develop-${BL_DATE}" || :
+		    cd ${DISKNM}/NEMSfv3gfs/"develop-${BL_DATE}"
+		    chmod -R 755 .
 		    cd "${WORKSPACE}/tests"
 		    ./rt.sh -a "${ACCNR}" "${workflow}" "${opt}" "${suite}" | tee "${WORKSPACE}/tests/logs/RT-run-${machine}.log"
 		    status=${PIPESTATUS[0]}
 		    cd logs/
-		    cp "RegressionTests_${machine_id}.log" "$(dirname "${WORKSPACE}")" #/work/noaa/epic/role-epic/jenkins/workspace
+		    cp "RegressionTests_${machine_id}.log" "$(dirname "${WORKSPACE}")" #/work2/noaa/epic/role-epic/jenkins/workspace
 		    git remote -v
 		    git fetch --no-recurse-submodules origin
 		    git reset FETCH_HEAD --hard
@@ -90,19 +89,18 @@ function create_baseline() {
 		    export ACCNR=epic
 		    ./rt.sh -a "${ACCNR}" -c "${workflow}" "${opt}" "${suite}" | tee "${WORKSPACE}/tests/logs/RT-run-${machine}.log"
 		    status=${PIPESTATUS[0]}
-		    export DISKNM=/work/noaa/epic/UFS-WM_RT
+		    export DISKNM=/work2/noaa/epic/UFS-WM_RT
 		    cd ${DISKNM}/NEMSfv3gfs/
 		    mkdir -p "develop-${BL_DATE}"
-		    cd  /work/noaa/epic/stmp/role-epic/stmp/role-epic/FV3_RT/
+		    cd /work2/noaa/epic/stmp/role-epic/stmp/role-epic/FV3_RT/
 		    rsync -a --no-t REGRESSION_TEST/ "${DISKNM}/NEMSfv3gfs/develop-${BL_DATE}" || echo "#### Warning! rsync $(pwd)/REGRESSION_TEST/ incomplete."
-		    cd ${DISKNM}/NEMSfv3gfs/
-		    ./adjust_permissions.sh orion "develop-${BL_DATE}" || :
-		    chgrp noaa-hpc "develop-${BL_DATE}" || :
+		    cd ${DISKNM}/NEMSfv3gfs/"develop-${BL_DATE}"
+		    chmod -R 755 .
 		    cd "${WORKSPACE}/tests"
 		    ./rt.sh -a "${ACCNR}" "${workflow}" "${opt}" "${suite}" | tee "${WORKSPACE}/tests/logs/RT-run-${machine}.log"
 		    status=${PIPESTATUS[0]}
 		    cd logs/
-		    cp "RegressionTests_${machine_id}.log" "$(dirname "${WORKSPACE}")" #/work/noaa/epic/role-epic/jenkins/workspace
+		    cp "RegressionTests_${machine_id}.log" "$(dirname "${WORKSPACE}")" #/work2/noaa/epic/role-epic/jenkins/workspace
 		    git remote -v
 		    git fetch --no-recurse-submodules origin
 		    git reset FETCH_HEAD --hard
@@ -116,13 +114,13 @@ function create_baseline() {
 		    ./rt.sh -a "${ACCNR}" -c "${workflow}" "${opt}" "${suite}" | tee "${WORKSPACE}/tests/logs/RT-run-${machine}.log"
 		    status=${PIPESTATUS[0]}
 		    unset LD_LIBRARY_PATH
-		    export DISKNM=/gpfs/f5/epic/world-shared/UFS-WM_RT
+		    export DISKNM=/gpfs/f6/bil-fire8/world-shared/role.epic/UFS-WM_RT
 		    cd ${DISKNM}/NEMSfv3gfs/
 		    mkdir -p "develop-${BL_DATE}"
-		    cd /gpfs/f5/epic/scratch/role.epic/FV3_RT
+		    cd /gpfs/f6/epic/proj-shared/role.epic/RT_RUNDIRS/role.epic/FV3_RT
 		    rsync -a --no-t REGRESSION_TEST/ "${DISKNM}/NEMSfv3gfs/develop-${BL_DATE}" || echo "#### Warning! rsync $(pwd)/REGRESSION_TEST/ incomplete."
-		    cd ${DISKNM}/NEMSfv3gfs/
-		    chgrp ncep "develop-${BL_DATE}" || :
+		    cd ${DISKNM}/NEMSfv3gfs/"develop-${BL_DATE}"
+		    chmod -R 755 .
 		    cd "${WORKSPACE}/tests"
 		    ./rt.sh -a "${ACCNR}" "${workflow}" "${opt}" "${suite}" | tee "${WORKSPACE}/tests/logs/RT-run-${machine}.log"
 		    status=${PIPESTATUS[0]}
@@ -143,11 +141,13 @@ function create_baseline() {
 		    local workflow="-r"
 		    ./rt.sh -a "${ACCNR}" -c "${workflow}" "${opt}" "${suite}" | tee "${WORKSPACE}/tests/logs/RT-run-${machine}.log"
 		    status=${PIPESTATUS[0]}
-		    export DISKNM=/scratch3/NAGAPE/epic/role.epic/UFS-WM_RT
+		    export DISKNM=/scratch4/NAGAPE/epic/role-epic/UFS-WM_RT
 		    cd ${DISKNM}/NEMSfv3gfs/
 		    mkdir -p "develop-${BL_DATE}"
-		    cd /scratch3/NCEPDEV/stmp/role.epic/RT_RUNDIRS/role.epic/FV3_RT
+		    cd /scratch4/NAGAPE/epic/role.epic/stmp/RT_RUNDIRS/role.epic/FV3_RT
 		    rsync -a --no-t REGRESSION_TEST/ "${DISKNM}/NEMSfv3gfs/develop-${BL_DATE}" || echo "#### Warning! rsync $(pwd)/REGRESSION_TEST/ incomplete."
+		    cd ${DISKNM}/NEMSfv3gfs/"develop-${BL_DATE}"
+		    chmod -R 755 .
 		    cd "${WORKSPACE}/tests"
 		    ./rt.sh -a "${ACCNR}" "${workflow}" "${opt}" "${suite}" | tee "${WORKSPACE}/tests/logs/RT-run-${machine}.log"
 		    status=${PIPESTATUS[0]}
