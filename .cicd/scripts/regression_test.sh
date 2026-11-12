@@ -7,8 +7,6 @@ export ACCNR=epic
 
 export account="-a ${ACCNR}"
 export workflow="-e"
-	#[[ ${UFS_PLATFORM} =  hera        ]] && workflow="-r"
-	#[[ ${UFS_PLATFORM} =~ clusternoaa ]] && workflow=""
 
 export opt="-l"
 export suite="rt.conf"
@@ -28,16 +26,10 @@ UFS_MODEL_DIR=$(realpath "${SCRIPTS_DIR}/../..")
 readonly UFS_MODEL_DIR
 echo "UFS MODEL DIR: ${UFS_MODEL_DIR}"
 
-export CC=${CC:-mpicc}
-export CXX=${CXX:-mpicxx}
-export FC=${FC:-mpif90}
-
 BUILD_DIR=${BUILD_DIR:-${UFS_MODEL_DIR}/build}
 TESTS_DIR=${TESTS_DIR:-${UFS_MODEL_DIR}/tests}
 
 pwd
-ls -al .cicd/*
-ls -al "${TESTS_DIR}/rt.sh"
 
 function regression_test() {
 	local machine=${1:-${NODE_NAME}}
@@ -65,7 +57,7 @@ function regression_test() {
 		    git remote -v
 		    git fetch --no-recurse-submodules origin
 		    git reset FETCH_HEAD --hard
-		    cd .. && cd .. && cd ..
+		    cd ../../..
 		    pwd
 		    cp "$(dirname "${WORKSPACE}")/RegressionTests_${machine_id}.log" "${WORKSPACE}/tests/logs/"
 		    cd "${WORKSPACE}/tests/"
@@ -73,8 +65,7 @@ function regression_test() {
 		then
 		    echo "Running regression tests on ${machine}"
 		    cd ..
-		    #module load git/2.28.0
-			git --version
+		    git --version
 		    git submodule update --init --recursive
 		    cd tests
 		    export dprefix=/work2/noaa/${ACCNR}/${USER}
@@ -86,7 +77,7 @@ function regression_test() {
 		    git remote -v
 		    git fetch --no-recurse-submodules origin
 		    git reset FETCH_HEAD --hard
-		    cd .. && cd .. && cd ..
+		    cd ../../..
 		    pwd
 		    cp "$(dirname "${WORKSPACE}")/RegressionTests_${machine_id}.log" "${WORKSPACE}/tests/logs/"
 		    cd "${WORKSPACE}/tests/"
@@ -101,7 +92,7 @@ function regression_test() {
 		    git remote -v
 		    git fetch --no-recurse-submodules origin
 		    git reset FETCH_HEAD --hard
-		    cd .. && cd .. && cd ..
+		    cd ../../..
 		    pwd
 		    cp "$(dirname "${WORKSPACE}")/RegressionTests_${machine_id}.log" "${WORKSPACE}/tests/logs/"
 		    cd "${WORKSPACE}/tests/"
@@ -117,7 +108,7 @@ function regression_test() {
 		    git remote -v
 		    git fetch --no-recurse-submodules origin
 		    git reset FETCH_HEAD --hard
-		    cd .. && cd .. && cd ..
+		    cd ../../..
 		    pwd
 		    cp "$(dirname "${WORKSPACE}")/RegressionTests_${machine_id}.log" "${WORKSPACE}/tests/logs/"
 		    cd "${WORKSPACE}/tests/"
@@ -133,7 +124,7 @@ function regression_test() {
 		    git remote -v
 		    git fetch --no-recurse-submodules origin
 		    git reset FETCH_HEAD --hard
-		    cd .. && cd .. && cd ..
+		    cd ../../..
 		    pwd
 		    cp "$(dirname "${WORKSPACE}")/RegressionTests_${machine_id}.log" "${WORKSPACE}/tests/logs/"
 		    cd "${WORKSPACE}/tests/"
