@@ -102,7 +102,11 @@ if [[ ${DRY_RUN:-false} == false ]]; then
   else
     cp "${PATHRT}/modules.fv3_${COMPILE_ID}.lua" "./modulefiles/modules.fv3.lua"
   fi
-  cp "${PATHTR}/modulefiles/ufs_common.lua" "./modulefiles/."
+  if [[ ${MACHINE_ID} == n ]]; then
+    cp "${PATHTR}/modulefiles/ufs_common_nimbus.lua" "./modulefiles/."    
+  else
+    cp "${PATHTR}/modulefiles/ufs_common.lua" "./modulefiles/."
+  fi
 
   # Get the shell file that loads the "module" command and purges modules:
   cp "${PATHRT}/module-setup.sh" "module-setup.sh"
@@ -115,6 +119,11 @@ if [[ ${DRY_RUN:-false} == false ]]; then
       module load pnetcdf-D/1.12.2
       module load hdf5-D/1.14.0
       module load nccmp-D/1.9.0.1
+      ;;
+    nimbus)
+      module use /lfs/work/alexander_richert/stack/spack-stack/envs/nco-sci-oneapi-2026.1.0/modules_flat/Core
+      module use modulefiles
+      module load modules.fv3
       ;;
     gaeac5)
       module use /ncrc/proj/epic/spack-stack/spack-stack-1.6.0/envs/unified-env/install/modulefiles/Core
@@ -451,7 +460,11 @@ elif [[ ${SCHEDULER} = 'slurm' ]]; then
   fi
 
   if [[ -e ${PATHRT}/fv3_conf/fv3_slurm.IN_${MACHINE_ID} ]]; then
-    atparse < "${PATHRT}/fv3_conf/fv3_slurm.IN_${MACHINE_ID}" > job_card
+    if [[ ${MACHINE_ID} == "nimbus" && ${TASKS} -gt 10000 ]]; then
+      atparse < "${PATHRT}/fv3_conf/fv3_slurm.IN_${MACHINE_ID}_pmix" > job_card
+    else
+      atparse < "${PATHRT}/fv3_conf/fv3_slurm.IN_${MACHINE_ID}" > job_card
+    fi
   else
     echo "Looking for fv3_conf/fv3_slurm.IN_${MACHINE_ID} but it is not found. Exiting"
     exit 1
@@ -530,7 +543,7 @@ if [[ ${skip_check_results} == false ]]; then
 
       else
         if [[ ${i##*.} == nc* ]] ; then
-          if [[ " orion hercules hera ursa wcoss2 acorn derecho gaeac5 gaeac6 noaacloud " =~ ${MACHINE_ID} ]]; then
+          if [[ " orion hercules hera ursa wcoss2 nimbus acorn derecho gaeac5 gaeac6 noaacloud " =~ ${MACHINE_ID} ]]; then
             printf "USING NCCMP.." >> "${RT_LOG}"
             printf "USING NCCMP.."
               nccmp_args=(-d -S -q -f -B --Attribute=checksum --warn=format)
