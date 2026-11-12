@@ -163,8 +163,13 @@ else
 fi
 
 # Set IAU Global workflow related tags to ' '
-export HIDE_AIAU=' '
-export HIDE_LIAU=' '
+if [[ ${GFSv17opn} == .true. ]] ; then
+    export HIDE_AIAU=' '
+    export HIDE_LIAU='!'
+else
+    export HIDE_AIAU=' '
+    export HIDE_LIAU=' '
+fi
 
 if [[ ${DATM_CDEPS} = 'true' ]] || [[ ${FV3} = 'true' ]] || [[ ${S2S} = 'true' ]] || [[ ${MPAS} = 'true' ]]; then
   if [[ ${HAFS} = 'false' ]] || [[ ${FV3} = 'true' && ${HAFS} = 'true' ]]; then
@@ -296,8 +301,10 @@ cp "${PATHRT}/parm/fd_ufs.yaml" fd_ufs.yaml
 source ./fv3_run
 
 if [[ ${CPLWAV} == .true. ]]; then
-    atparse < "${PATHRT}/parm/ww3_shel.nml.IN" > ww3_shel.nml
-    cp "${PATHRT}/parm/ww3_points.list" .
+    if [[ ${GFSv17opn} == .false. ]]; then
+        atparse < "${PATHRT}/parm/ww3_shel.nml.IN" > ww3_shel.nml
+        cp "${PATHRT}/parm/ww3_points.list" .
+    fi
 fi
 
 if [[ ${CPLCHM} == .true. ]]; then
@@ -419,7 +426,7 @@ if [[ ${SCHEDULER} = 'pbs' ]]; then
   if [[ ${EXCLUSIVE_NODES} == .true. ]]; then
     export EXCLUSIVE_NODES_OPT="#PBS -l place=excl"
   fi
-    	  
+
   if [[ -e ${PATHRT}/fv3_conf/fv3_qsub.IN_${MACHINE_ID} ]]; then
     atparse < "${PATHRT}/fv3_conf/fv3_qsub.IN_${MACHINE_ID}" > job_card
   else
@@ -427,7 +434,7 @@ if [[ ${SCHEDULER} = 'pbs' ]]; then
     exit 1
   fi
 elif [[ ${SCHEDULER} = 'slurm' ]]; then
-  if [[ ${EXCLUSIVE_NODES} == .true. ]]; then 
+  if [[ ${EXCLUSIVE_NODES} == .true. ]]; then
     export EXCLUSIVE_NODES_OPT="#SBATCH --exclusive"
   fi
 
