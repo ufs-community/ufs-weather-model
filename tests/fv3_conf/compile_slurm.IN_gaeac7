@@ -16,7 +16,9 @@ set -eux
 echo -n " $( date +%s )," >  job_timestamp.txt
 echo "Compile started:  " `date`
 
-@[PATHRT]/compile.sh @[MACHINE_ID] "@[MAKE_OPT]" @[COMPILE_ID] @[RT_COMPILER]
+export MPI_INC=/sw/gaea-c7/spack/envs/env_26.06/opt/intel-oneapi-compilers-2025.3.1/cray-mpich-9.2.0-lijx55dkid53jsvrnyfmzcy3i43cbqga/include
+
+@[PATHRT]/compile.sh @[MACHINE_ID] "@[MAKE_OPT] -DCMAKE_Fortran_FLAGS="-I${MPI_INC}"" @[COMPILE_ID] @[RT_COMPILER]
 
 echo "Compile ended:    " `date`
 echo -n " $( date +%s )," >> job_timestamp.txt
