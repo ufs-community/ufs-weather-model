@@ -1,6 +1,5 @@
 import pytest
 import json
-from pathlib import Path
 from unittest.mock import Mock, call, patch
 from scripts.APICall import APICall
 from scripts.HistoricalLogManager import HistoricalLogManager
@@ -87,11 +86,6 @@ def test_collect_new_log_data_w_real_data(set_env_vars):
    for test_info in [manager.historical_runtime["ursa"], manager.historical_mem["ursa"], 
                 manager.runtime_stats_by_machine["ursa"], manager.mem_stats_by_machine["ursa"]]:
       assert 'control_c48_gnu' in test_info
-
-def test_save_data(set_env_vars):
-   set_env_vars
-   manager = HistoricalLogManager()
-   assert False
 
 def test_save_data(historical_log_manager, tmp_path, monkeypatch):
    monkeypatch.chdir(tmp_path)
