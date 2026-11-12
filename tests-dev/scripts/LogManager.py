@@ -23,6 +23,7 @@ class LogManager(Manager):
       self.current_pr_mem_data = {}
 
    def update_log_manager_w_cached_data(self):
+      """If historical data is already available, load it from a file."""
       self.historical_runtime = self.load_json_from_file(f"{os.environ.get('TEST_STATS')}/historical_runtime.json")
       self.historical_mem = self.load_json_from_file(f"{os.environ.get('TEST_STATS')}/historical_memory.json")
       # Contains mean and standard deviation of runtime/memory for each test on each machine
@@ -30,8 +31,8 @@ class LogManager(Manager):
       self.mem_stats_by_machine = self.load_json_from_file(f"{os.environ.get('TEST_STATS')}/memory_stats.json")
 
    def collect_historical_log_data(self):
-      """Download and process log data for a given machine and update log with that information; 
-      calculate runtime/memory statistics.
+      """If cached historical data is unavailable, download and process log data for a given machine and 
+      update log with that information; calculate runtime/memory statistics.
       Args:
          log (Log):
          machine (string): 
@@ -49,11 +50,13 @@ class LogManager(Manager):
          data.setdefault(machine, {}).update({test: pr_data[test]})
          
    def manage_data(self):
+      """For each machine, create a log, populate it with historical data, add current PR data, 
+      and generate runtime & memory results."""
 
       for machine in self.machines:
          print(f"Processing data for {machine.upper()}.")
          log = Log(machine, self.repo_hashes, self.pr_head_commit)
-         self.manage_historical_data(log, machine)
+         self.manage_historical_data(log)
          
          # Add current PR data
          self.add_current_pr_data(machine, self.current_pr_runtime_data, log.get_current_pr_runtime_data())
@@ -63,18 +66,18 @@ class LogManager(Manager):
          self.runtime_results_by_machine[machine] = log.get_runtime_results()
          self.mem_results_by_machine[machine] = log.get_mem_results()
 
-   def manage_historical_data(self,log,machine):
+   def manage_historical_data(self,log):
       """Populate the Log data with cached data and statistics on runtime/memory.
       Args:
          log (Log):
          machine (string): 
       """
       # Historical runtime/memory data for each repo commit in self.repo_commits
-      log.historical_runtime_data = self.historical_runtime[machine]
-      log.historical_mem_data = self.historical_mem[machine]
+      log.historical_runtime_data = self.historical_runtime[log.machine]
+      log.historical_mem_data = self.historical_mem[log.machine]
       # Runtime or memory mean & STDev for each test 
-      log.runtime_stats = self.runtime_stats_by_machine[machine]
-      log.mem_stats = self.mem_stats_by_machine[machine]
+      log.runtime_stats = self.runtime_stats_by_machine[log.machine]
+      log.mem_stats = self.mem_stats_by_machine[log.machine]
    
    def save_pr_data(self):
       # If the statistics on mean/standard deviation have NOT already been cached, create file to cache.

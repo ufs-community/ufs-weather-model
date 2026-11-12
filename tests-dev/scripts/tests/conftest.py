@@ -30,17 +30,6 @@ def historical_log_manager(set_env_vars):
    set_env_vars
    return HistoricalLogManager()
 
-@pytest.fixture
-def historical_log_manager_2(monkeypatch):
-   monkeypatch.setenv("MACHINES", "hercules ursa")
-   monkeypatch.setattr(
-      HistoricalLogManager, "set_hashes", lambda self: ["commit1", "commit2"]
-   )
-   monkeypatch.setattr(
-      HistoricalLogManager, "set_pr_head", lambda self: "pr-head"
-   )
-   return HistoricalLogManager()
-
 """@pytest.fixture
 def html_builder():
    return HTMLBuilder()
@@ -1187,17 +1176,6 @@ def data_by_test():
    }
 
    return data
-
-"""@pytest.fixture
-def current_pr_data():
-
-   data = {
-      'orion': {'cpld_control_pdlib_p8_gnu': {'runtime': [1061], 'memory': [1608]}, 'cpld_debug_pdlib_p8_gnu': {'runtime': [636], 'memory': [1531]}, 'datm_cdeps_control_cfsr_gnu': {'runtime': [204], 'memory': [1557]}, 'cpld_control_gfsv17_intel': {'runtime': 1173, 'memory': 1974}, 'cpld_control_gfsv17_intelllvm': {'runtime': None, 'memory': None}, 'rap_control_dyn64_phy32_intel': {'runtime': 279, 'memory': 1008}, 'datm_cdeps_control_cfsr_intel': {'runtime': 211, 'memory': 1859}, 'control_gfs_mpas_gnu': {'runtime': None, 'memory': None}, 'cpld_control_gefs_intel': {'runtime': 1219, 'memory': 3020}, 'cpld_restart_gefs_intel': {'runtime': 462, 'memory': 2705}, 'cpld_control_sfs_intel': {'runtime': 871, 'memory': 2232}, 'cpld_restart_sfs_intel': {'runtime': 503, 'memory': 1523}, 'regional_control_intel': {'runtime': 381, 'memory': 1089}, 'rap_control_dyn32_phy32_gnu': {'runtime': None, 'memory': None}, 'control_p8_intel': {'runtime': 295, 'memory': 1877},}, 
-
-      'hercules': {'cpld_control_p8_mixedmode_intel': {'runtime': [841],'memory': [2160]}, 'cpld_control_gefs_intel': {'runtime': [1439],'memory': [3117]}, 'cpld_control_noaero_p8_agrid_intel': {'runtime': [314],'memory': [2131]}, 'control_c48_intel': {'runtime': [395],'memory': [1713]}, 'control_p8_intel': {'runtime': [545],'memory': [1903]}, 'control_restart_p8_intel': {'runtime': [107],'memory': [1211]}, 'control_c48_gnu': {'runtime': [462],'memory': [1584]}, 'control_p8_gnu': {'runtime': [233],'memory': [1551]}, 'control_debug_p8_gnu': {'runtime': [77],'memory': [1533]}, 'hrrr_control_intel': {'runtime': [211],'memory': [1075]}, 'hrrr_control_gnu': {'runtime': [635],'memory': [944]}, 'atmaero_control_p8_intel': {'runtime': [260],'memory': [2015]}, 'regional_atmaq_intel': {'runtime': [833],'memory': [2938]}, 'hafs_regional_docn_intel': {'runtime': [301],'memory': [1089]}, 'datm_cdeps_control_cfsr_gnu': {'runtime': [164],'memory': [1605]}, 'cpld_control_gfsv17_intel': {'runtime': 695, 'memory': 2019}, 'cpld_control_gfsv17_intelllvm': {'runtime': None, 'memory': None}, 'rap_control_dyn64_phy32_intel': {'runtime': 203, 'memory': 1135}, 'datm_cdeps_control_cfsr_intel': {'runtime': 147, 'memory': 1861}, 'control_gfs_mpas_gnu': {'runtime': 363, 'memory': 1245}, 'cpld_control_gefs_intel': {'runtime': 971, 'memory': 3200}, 'cpld_restart_gefs_intel': {'runtime': 393, 'memory': 2915}, 'cpld_control_sfs_intel': {'runtime': 691, 'memory': 2321}, 'cpld_restart_sfs_intel': {'runtime': 451, 'memory': 1691}, 'regional_control_intel': {'runtime': 362, 'memory': 1211}, 'rap_control_dyn32_phy32_gnu': {'runtime': 283, 'memory': 810}, 'control_p8_intel': {'runtime': 209, 'memory': 1901},},
-      'ursa': {'cpld_control_p8_mixedmode_intel': {'runtime': [403], 'memory': [2181]}, 'cpld_dcp_gefs_intel': {'runtime': [1922], 'memory': [3452]}, 'cpld_control_gfsv17_iau_intel': {'runtime': [599], 'memory': [2593]}, 'cpld_restart_gfsv17_intel': {'runtime': [226], 'memory': [ 1501]}, 'cpld_restart_gfsv17_iau_intel': {'runtime': [272], 'memory': [2352]}, 'cpld_mpi_gfsv17_intel': {'runtime': [1003], 'memory': [2001]}, 'cpld_debug_sfs_intel': {'runtime': [510], 'memory': [2404]}, 'cpld_debug_gfsv17_intel': {'runtime': [873], 'memory': [2081]}, 'cpld_control_p8_intel': {'runtime': [427], 'memory': [2464]}, 'cpld_control_p8.v2.sfc_intel': {'runtime': [400], 'memory': [2503]}, 'cpld_restart_p8_intel': {'runtime': [221], 'memory': [2308]}, 'cpld_control_gfsv17_intel': {'runtime': 564, 'memory': 2047}, 'cpld_control_gfsv17_intelllvm': {'runtime': 564, 'memory': 2052}, 'rap_control_dyn64_phy32_intel': {'runtime': 163, 'memory': 1799}, 'datm_cdeps_control_cfsr_intel': {'runtime': 153, 'memory': 1914}, 'control_gfs_mpas_gnu': {'runtime': 339, 'memory': 1107}, 'cpld_control_gefs_intel': {'runtime': 1216, 'memory': 3210}, 'cpld_restart_gefs_intel': {'runtime': 344, 'memory': 2938}, 'cpld_control_sfs_intel': {'runtime': 512, 'memory': 2398}, 'cpld_restart_sfs_intel': {'runtime': 279, 'memory': 1898}, 'regional_control_intel': {'runtime': 213, 'memory': 1716}, 'rap_control_dyn32_phy32_gnu': {'runtime': 199, 'memory': 719}, 'control_p8_intel': {'runtime': 128, 'memory': 2502}, }}
-   
-   return data"""
 
 @pytest.fixture
 def current_pr_data():
