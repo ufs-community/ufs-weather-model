@@ -1192,11 +1192,8 @@ TODO!!! REVIEW IF LOW RES ARE TO BE INCLUDED
 
 LM4 reads an FMS exchange-grid mosaic (``grid_spec.nc``, atmosphere/land/ocean mosaics and exchange-grid files), a land roughness/topography file, and river hydrography:
 
-* **C96**: grid from ``${INPUTDATA_LM4}/c96_grid``, ``c96_topo_rough_land.nc`` from ``${INPUTDATA_LM4}/c96_LM4``, and hydrography from ``${LM4_HYDRO_PATH}``.
-* **C24, C48**: mosaic files from ``${LM4_GRID_INPUTDATA}/a<LNDRES>o<OCNRES>`` (for example, ``aC48o100``).
-
-.. note::
-   ``LM4_HYDRO_PATH`` and ``LM4_GRID_INPUTDATA`` are not yet in ``INPUTDATA_ROOT``. They are set per machine in ``rt.sh`` or from the environment.
+* **C96**: grid from ``${INPUTDATA_LM4}/c96_grid``. ``c96_topo_rough_land.nc`` and hydrography from ``${INPUTDATA_LM4}/c96_LM4``.
+* **C24, C48**: ``grid_spec.nc`` from ``${INPUTDATA_ROOT}/CPL_FIX/a<LNDRES>o<OCNRES>``, atmosphere grid and mosaic files from FV3 input data, ocean files from ``${INPUTDATA_ROOT}/MOM6_FIX/<OCNRES>``. Exchange-grid files for LM4 (``<LNDRES>_mosaic_tile?X*.nc``) are in ``${INPUTDATA_LM4}/a<LNDRES>o<OCNRES>``.
 
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Initial Conditions and Restarts
