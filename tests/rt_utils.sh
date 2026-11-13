@@ -439,6 +439,9 @@ rocoto_create_compile_task() {
   if [[ ${MACHINE_ID} == gaeac6 ]]; then
     BUILD_WALLTIME="01:00:00"
   fi
+  if [[ ${MACHINE_ID} == gaeac7 ]]; then
+    BUILD_WALLTIME="01:00:00"
+  fi
   if [[ ${MACHINE_ID} == derecho ]]; then
     BUILD_WALLTIME="01:00:00"
   fi
@@ -461,6 +464,11 @@ EOF
     cat << EOF >> "${ROCOTO_XML}"
     <native>--clusters=es</native>
     <partition>eslogin_c6</partition>
+EOF
+  elif [[ "${MACHINE_ID}" == gaeac7 ]] ; then
+    cat << EOF >> "${ROCOTO_XML}"
+    <native>--clusters=es</native>
+    <partition>eslogin_c7</partition>
 EOF
   elif [[ "${MACHINE_ID}" == ursa ]] ; then
     cat << EOF >> "${ROCOTO_XML}"
@@ -505,7 +513,7 @@ rocoto_create_run_task() {
       ${ROCOTO_NODESIZE:+<nodesize>${ROCOTO_NODESIZE}</nodesize>}
 EOF
 
-  if [[ "${MACHINE_ID}" == gaeac5 || "${MACHINE_ID}" ==  gaeac6 ]] ; then
+  if [[ "${MACHINE_ID}" == gaeac5 || "${MACHINE_ID}" ==  gaeac6 || "${MACHINE_ID}" ==  gaeac7 ]] ; then
     cat << EOF >> "${ROCOTO_XML}"
       <native>--clusters=${PARTITION}</native>
       <native>--partition=batch</native>
