@@ -671,7 +671,7 @@ Container Runs (``-P``)
 ^^^^^^^^^^^^^^^^^^^^^^^
 
 The ``-P container.def`` option compiles and runs the selected tests on a platform described by a
-*platform definition file*, inside a Singularity/Apptainer container:
+*platform definition file* (e.g., ``container.def``), inside a Singularity/Apptainer container:
 
 .. code-block:: console
 
