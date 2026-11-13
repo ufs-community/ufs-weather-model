@@ -1,0 +1,114 @@
+# tests/container.def -- container platform definition template for rt.sh
+# (see tests/stampede.def for a filled-in example for Stampede3)
+#
+# Usage:
+#   1. Edit the values at the end of this file for your own platform (keep a
+#      copy of the original as a reference).
+#   2. Run:
+#        ./rt.sh -a <account> -P container.def [-l rt.conf] [-s my_test.list]
+#
+#      -l rt.conf       file with the list of tests (rt.conf is the default);
+#                       can also be your own file, e.g. -l my_rt.conf
+#      -s my_test.list  optional: run only the tests listed in my_test.list,
+#                       one "<test name> <compiler>" per line, for example:
+#                         control_c48 oneapi
+#                         control_p8 oneapi
+#
+# Tests are selected from rt.conf (or -l <file>) with the machine name
+# "container" in the Machines column, like any other machine:
+# "+ ... container" runs a line in the container, "- ... container"
+# excludes it, and an empty column runs it everywhere.
+#
+# This file is a bash file of KEY=value assignments, sourced by rt.sh.
+# Quote values containing spaces. By default a container run is sequential
+# and skips baseline comparison: a portability check ("does the model build
+# and run here at all?"), not a regression test. -c/-m opt into baseline
+# creation/comparison; -r/-e opt into Rocoto/ecFlow (needs ROCOTO_SCHEDULER
+# and/or WORKFLOW_MODULE_CMD). See the User's Guide chapter "Container
+# Option to Test and Run the UFS Weather Model" for the full field reference.
+# ------------------------------------------------------------------------
+# Platform and container
+#
+#   PLATFORM_NAME  Required. Must be "container". Becomes MACHINE_ID for
+#                  this run: the machine name matched in rt.conf, and the
+#                  suffix of the *_container job-card templates and
+#                  modulefiles.
+#   CONTAINER_IMG_ONEAPI Absolute path to an Intel oneAPI Singularity/Apptainer
+#                        image (*.sif) on this host.
+#   CONTAINER_IMG_GNU    Absolute path to a GNU Singularity/Apptainer image
+#                        (*.sif) on this host.
+#                        At least one image is required; rt.sh stops with an
+#                        error if neither is set, or if a path that is set
+#                        does not exist. Each rt.conf line uses the image for
+#                        its compiler. Lines for a compiler with no image are
+#                        skipped with a notice, not an error.
+#   BIND_DIRS            Comma-separated host directories to bind-mount into
+#                        the container (must cover the source tree, input
+#                        data, and RUNDIR_ROOT).
+# ------------------------------------------------------------------------
+# Scheduler
+#
+#   TPN         Required. Tasks-Per-Node: MPI tasks per node on this
+#               platform, a numeric entry (e.g., 48 on Stampede3).
+#   SCHEDULER   Required. "slurm", "pbs", or "none" for an
+#               interactive/no-scheduler run.
+#   PARTITION   Slurm partition name (blank for PBS or no scheduler).
+#   QUEUE       Slurm QOS / PBS queue name (blank for no scheduler).
+#   MPI_LAUNCH_ONEAPI  MPI launch command for Intel oneAPI tests, used when SCHEDULER
+#                     is "none" and in PBS job cards (defaults to "mpiexec"
+#                     if blank).
+#   MPI_LAUNCH_GNU    The same for GNU tests (defaults to "mpirun" if blank).
+#
+#   The scheduler account/project is set only with rt.sh's own -a <account>
+#   on the command line.
+# ------------------------------------------------------------------------
+# Run directory
+#
+#   RUNDIR_ROOT  Required. Top-level directory where compile and test run
+#                directories are created. Should be a user-writable path,
+#                preferably on a scratch or work filesystem.
+# ------------------------------------------------------------------------
+# Input data
+#
+#   INPUTDATA_ROOT       Required. Staged input-data directory (fix files
+#                        and other RT input data).
+#   INPUTDATA_ROOT_WW3   Optional. Defaults to a WW3_input_data_* sibling
+#                        directory under INPUTDATA_ROOT if left blank.
+#   INPUTDATA_LM4        Optional. Defaults to an LM4_input_data
+#                        subdirectory of INPUTDATA_ROOT if left blank.
+#   INPUTDATA_GFSv17opn  Optional. Only needed by tests that explicitly
+#                        require GFSv17 operational input data.
+# ------------------------------------------------------------------------
+# Workflow manager (optional; only needed to use -r or -e)
+#
+#   ROCOTO_SCHEDULER    Rocoto's own scheduler-driver name -- not always the
+#                       same as SCHEDULER (e.g. plain PBS is "pbs" but
+#                       PBS Professional is "pbspro"). Required to use -r.
+#                       Example: ROCOTO_SCHEDULER=slurm
+#   WORKFLOW_MODULE_CMD A shell command run to put rocoto's or ecflow's
+#                       command-line tools on PATH. Leave blank if already
+#                       on PATH.
+#                       Example: WORKFLOW_MODULE_CMD='module load rocoto/1.3.7'
+# ------------------------------------------------------------------------
+
+PLATFORM_NAME=container
+CONTAINER_IMG_ONEAPI=/path/to/containers/rocky9-oneapi2024.2-ss192.sif
+CONTAINER_IMG_GNU=/path/to/containers/rocky9-gcc13-ss192-ompi416.sif
+BIND_DIRS='/path1,/path2,/path3'
+
+TPN=192
+SCHEDULER=slurm
+PARTITION=mypartition
+QUEUE=myqueue
+MPI_LAUNCH_ONEAPI=mpiexec
+MPI_LAUNCH_GNU=mpirun
+
+RUNDIR_ROOT=/path/to/runtime_dir
+
+INPUTDATA_ROOT=/path/to/input-data
+INPUTDATA_ROOT_WW3=
+INPUTDATA_LM4=
+INPUTDATA_GFSv17opn=
+
+ROCOTO_SCHEDULER=
+WORKFLOW_MODULE_CMD=
