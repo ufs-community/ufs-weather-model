@@ -17,7 +17,7 @@ Configuration Options
 
 ``-DAPP``:
    Sets the :term:`WM` configuration to build. 
-   Valid values: ``ATM``, ``ATMW``, ``ATMAERO``, ``ATMAQ``, ``ATML``, ``ATMF``, ``ATMMPAS``, ``ATM_DS2S``, ``ATM_DS2S-PCICE``, ``LND``, ``LND-LM4``, ``S2S``, ``S2SA``, ``S2SW``, ``S2SWA``, ``S2SL``, ``S2SWL``, ``S2SWAL``, ``NG-GODAS``, ``HAFS``, ``HAFSW``, ``HAFS-MOM6``, ``HAFS-MOM6W``, ``HAFS-ALL``
+   Valid values: ``ATM``, ``ATMW``, ``ATMAERO``, ``ATMAQ``, ``ATML``, ``ATML-LM4``, ``ATMF``, ``ATMMPAS``, ``ATM_DS2S``, ``ATM_DS2S-PCICE``, ``LND``, ``LND-LM4``, ``S2S``, ``S2SA``, ``S2SW``, ``S2SWA``, ``S2SL``, ``S2SWL``, ``S2SWAL``, ``NG-GODAS``, ``HAFS``, ``HAFSW``, ``HAFS-MOM6``, ``HAFS-MOM6W``, ``HAFS-ALL``
 
 
 .. _suites:
