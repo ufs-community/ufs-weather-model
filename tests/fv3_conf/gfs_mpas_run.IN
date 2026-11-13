@@ -3,8 +3,12 @@ mkdir INPUT RESTART
 
 # MPAS Dycore
 cp  @[INPUTDATA_ROOT]/MPAS/INPUT/@[MPAS_RESOLUTION]km/Global/* .
+cp  /scratch3/BMC/gmtb/Dustin.Swales/MPAS/INPUT/tracers/constituents_global.xml constituents.xml
+cp  /scratch3/BMC/gmtb/Dustin.Swales/MPAS/INPUT/LANDUSE.TBL .
+cp  /scratch3/BMC/gmtb/Dustin.Swales/MPAS/INPUT/GENPARM.TBL .
+cp  /scratch3/BMC/gmtb/Dustin.Swales/MPAS/INPUT/120km/Global/* .
 
-#photchemistry
+#photochemistry
 cp  @[INPUTDATA_ROOT]/FV3_fix/global_o3prdlos.f77 .
 cp  @[INPUTDATA_ROOT]/FV3_fix/global_h2oprdlos.f77 .
 
@@ -49,6 +53,14 @@ if [ $IMP_PHYSICS = 8 ]; then
   cp    @[INPUTDATA_ROOT]/FV3_fix/qr_acr_qgV2.dat .
   cp    @[INPUTDATA_ROOT]/FV3_fix/freezeH2O.dat .
   cp    @[INPUTDATA_ROOT]/FV3_fix/CCN_ACTIVATE.BIN .
+  cp    /scratch3/BMC/gmtb/Dustin.Swales/MPAS/INPUT/physics/thompson/* .
+fi
+
+#TEMPO
+if [ $IMP_PHYSICS = 88 ]; then
+  cp @[INPUTDATA_ROOT]/FV3_input_data_TEMPO/* .
+  cp @[INPUTDATA_ROOT]/FV3_fix/ccn_activate.bin .
+  cp /scratch3/BMC/gmtb/Dustin.Swales/MPAS/INPUT/physics/tempo/* .
 fi
 
 #prognostic aerosols

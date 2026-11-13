@@ -1,0 +1,32 @@
+###############################################################################
+#
+# Global test with MPAS dynamical core.
+#
+###############################################################################
+
+TEST_DESCR="Build UWM with MPAS dynamical core for global applications"
+
+CNTL_DIR=control_dyn_mpas
+
+LIST_FILES="history.2023-03-10_18.00.00.nc \
+	    history.2023-03-10_21.00.00.nc \
+	    history.2023-03-11_00.00.00.nc \
+            history.2023-03-11_03.00.00.nc"
+
+export_mpas_gfs
+
+FHMAX=12
+OUTPUT_FH="3 -1"
+RESTART_FH="6 -1"
+
+ATM_compute_tasks=12
+FV3_RUN=gfs_mpas_run.IN
+CCPP_SUITE=MPAS_GFSv17
+INPUT_NML=control_gfs_mpas.nml.IN
+IC_FILENAME=mpas.gsl.gsl.global.120km.gfs.init.2023-03-10_15.00.00.nc
+GRID_FILENAME=global.120km.graph.info.part.
+STREAM_LIST_HISTORY=stream_list.atmosphere.output
+STREAM_LIST_RESTART=stream_list.atmosphere.restart
+STREAM_LIST_DIAG=stream_list.atmosphere.diag_phys
+DYCORE_ONLY=.true.
+PHYS_DIAG=.false.
