@@ -182,11 +182,11 @@ Users on other (non-Tier 1) platforms, or anyone who wants a portable, container
 build environment, can instead run the RT framework with the ``rt.sh -P container.def``
 option described in :numref:`Chapter %s <container-rt-tests>`. It uses the same ``rt.sh``
 script, ``rt.conf`` file, and test definitions. By default, a ``-P container.def`` run
-confirms that the WM has been ported, built, and run successfully on the user's own
+confirms that the WM has been ported, built, and run to completion on the user's own
 platform, without comparing results against baselines. Creating baselines (``-c``) and
 running regression tests against them (``-m``) are still supported with
 ``-P container.def``; these baselines are kept on the user's platform, separate from the
-baselines maintained on Tier 1.
+baselines maintained on Tier-1 systems.
 
 ----------------------------
 Loading the Required Modules
@@ -462,7 +462,7 @@ The ``rt.conf`` file is a pipe-separated values (PSV) file grouped into sections
    #. **Machines** to run on (``-`` is used to ignore specified machines, ``+`` is used to run only on specified machines). For example:
 
       * ``+ ursa orion gaeac6``: Compile will only run on Ursa, Orion, and Gaea-C6 machines
-      * ``- wcoss2 acorn``: Compile will NOT be run on WCOSS2 or Acorn; it will run on all other machines and in for a container option.
+      * ``- wcoss2 acorn``: Compile will NOT be run on WCOSS2 or Acorn; it will run on all other machines and in a container.
       * ``- noaacloud container``: Line will NOT be run on NOAA Cloud or for a container option; it will run on all other machines.
         Container runs (``-P``) use the machine name ``container``.
         See :numref:`Section %s <rt-container>`.
@@ -677,9 +677,8 @@ The ``-P container.def`` option compiles and runs the selected tests on a platfo
 
    ./rt.sh -a <account> -P container.def [-l rt.conf] [-s my_test.list]
 
-``-l`` and ``-s`` are optional: ``-l`` gives the file with the list of tests (``rt.conf`` by
-default, or your own file such as ``my_rt.conf``), and ``-s`` runs only the tests listed in
-``my_test.list``.
+``-l`` and ``-s`` are optional: ``-l`` gives the name of the file with compile/run information for a series of tests (``rt.conf`` by
+default, or your own file such as ``my_rt.conf``). ``-s`` takes a file (e.g., ``my_test.list``) with a list of tests and runs just those tests. 
 
 The platform definition file is a bash file of ``KEY=value`` assignments that specify the platform
 name (always ``container``), the compiler to be used, the full path to the container
