@@ -1,5 +1,6 @@
 help([[
-Load environment to compile ufs-weather-model in a container using Intel
+Load environment to compile ufs-weather-model in a container using Intel Classic w/spack-stack v1.9.2. 
+This modulefile will switch to OneAPI compilers in the near future. 
 ]])
 
 prepend_path("MODULEPATH", "/opt/intel/oneapi/2024.2/etc/modulefiles")
