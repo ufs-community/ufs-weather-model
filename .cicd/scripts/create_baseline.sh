@@ -94,12 +94,7 @@ function create_baseline() {
 		    export DISKNM=/work2/noaa/epic/UFS-WM_RT
 		    cd ${DISKNM}/NEMSfv3gfs/
 		    mkdir -p "develop-${BL_DATE}"
-<<<<<<< HEAD
-		    cd  /work2/noaa/epic/stmp/role-epic/stmp/role-epic/FV3_RT/
-		    ls -l REGRESSION_TEST/.
-=======
 		    cd /work2/noaa/epic/stmp/role-epic/stmp/role-epic/FV3_RT/
->>>>>>> ci/cleanup
 		    rsync -a --no-t REGRESSION_TEST/ "${DISKNM}/NEMSfv3gfs/develop-${BL_DATE}" || echo "#### Warning! rsync $(pwd)/REGRESSION_TEST/ incomplete."
 		    cd ${DISKNM}/NEMSfv3gfs/"develop-${BL_DATE}"
 		    chmod -R 755 .
