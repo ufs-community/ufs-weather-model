@@ -1188,8 +1188,6 @@ These files are resolution independent and located in ``${INPUTDATA_LM4}/common_
 Grid and Hydrography Files
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-TODO!!! REVIEW IF LOW RES ARE TO BE INCLUDED
-
 LM4 reads an FMS exchange-grid mosaic (``grid_spec.nc``, atmosphere/land/ocean mosaics and exchange-grid files), a land roughness/topography file, and river hydrography:
 
 * **C96**: grid from ``${INPUTDATA_LM4}/c96_grid``. ``c96_topo_rough_land.nc`` and hydrography from ``${INPUTDATA_LM4}/c96_LM4``.
@@ -1268,7 +1266,7 @@ LM4 history is written by the FMS diag manager. Fields are requested in the ``di
 Regression Tests
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-TODO: REVIEW IF LOW RES ARE TO BE INCLUDED
+LM4 tests in ``rt.conf`` run on Ursa, Gaea C6, and Hercules:
 
 .. list-table:: *LM4 regression tests*
    :widths: 40 60
@@ -1276,14 +1274,16 @@ TODO: REVIEW IF LOW RES ARE TO BE INCLUDED
 
    * - Test
      - Description
-   * - datm_cdeps_lm4_gswp3{,_c48,_c24}
-     - ``LND-LM4``, C96/C48/C24, 48 h cold start from 2000-01-01 with GSWP3 forcing
-   * - datm_cdeps_lm4_gswp3_rst{,_c48,_c24}
+   * - datm_cdeps_lm4_gswp3
+     - ``LND-LM4``, C96, 48 h cold start from 2000-01-01 00Z with GSWP3 forcing
+   * - datm_cdeps_lm4_gswp3_rst
      - ``LND-LM4`` restart test, compared with the control
-   * - control_p8_atmlm4{,_c48}
-     - ``ATML-LM4``, GFS v17 P8 physics, C96/C48, 48 h from 2021-03-22
-   * - control_restart_p8_atmlm4{,_c48}
-     - ``ATML-LM4`` restart test, compared with the control
+   * - control_p8_atmlm4_c48
+     - ``ATML-LM4``, C48, GFS v17 P8 physics, 42 h from 2021-03-22 06Z
+   * - control_restart_p8_atmlm4_c48
+     - ``ATML-LM4`` restart test, from the 18 h control restart, compared with the control
+
+Other resolutions are in ``tests/tests`` but commented out in ``rt.conf``: ``datm_cdeps_lm4_gswp3{,_rst}_c48`` / ``datm_cdeps_lm4_gswp3{,_rst}_c24`` and ``control_p8_atmlm4`` / ``control_restart_p8_atmlm4`` 
 
 .. _model-config-files:
 
