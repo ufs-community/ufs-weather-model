@@ -932,9 +932,7 @@ if [[ -z "${ACCNR}" ]]; then
   exit 1
 fi
 
-# make sure only one instance of rt.sh is running -- not for a community
-# platform (-P), which uses its own fixed RUNDIR_ROOT rather than a
-# per-PID one and may be run concurrently (e.g. one -P run per compiler)
+# make sure only one instance of rt.sh is running 
 if [[ ${USE_CONTAINER} == false ]]; then
   if mkdir "${LOCKDIR}" ; then
     echo "${HOSTNAME_IN}" $$ > "${LOCKDIR}/PID"
