@@ -7,10 +7,6 @@ export ACCNR=epic
 
 export account="-a ${ACCNR}"
 export workflow="-e"
-<<<<<<< HEAD
-	#[[ ${UFS_PLATFORM} =~ clusternoaa ]] && workflow=""
-=======
->>>>>>> ci/cleanup
 
 export opt="-l"
 export suite="rt.conf"
