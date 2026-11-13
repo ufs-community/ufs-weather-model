@@ -64,6 +64,8 @@ case ${MACHINE_ID} in
     # Activate lua environment for gaea c5
     if [[ ${MACHINE_ID} == gaeac5 || ${MACHINE_ID} == gaeac6 ]]; then
       module reset
+    elif [[ ${MACHINE_ID} == derecho ]]; then
+      module --force purge
     elif [[ ${MACHINE_ID} == hercules ]]; then
       module purge
     elif [[ ${MACHINE_ID} == "aws-ec2" ]]; then
