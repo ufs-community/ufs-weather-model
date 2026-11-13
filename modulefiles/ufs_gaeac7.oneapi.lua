@@ -5,7 +5,7 @@ help([[
 
 whatis([===[Loads libraries needed for building the UFS Weather Model on Gaea C7]===])
 
-unload("oneapi/2026.0.0")
+-- unload("oneapi/2026.0.0")
 unload("cray-mpich/9.2.0")
 
 prepend_path("MODULEPATH", "/ncrc/proj/epic/spack-stack/c7/spack-stack-2.1.1/envs/ue-oneapi-2025.3.1/modules/Core/")
@@ -24,10 +24,7 @@ load("ufs_common")
 nccmp_ver=os.getenv("nccmp_ver") or "1.11.0.0"
 load(pathJoin("nccmp", nccmp_ver))
 
--- unload("darshan-runtime")
--- unload("cray-libsci")
-
-remove_path("LD_LIBRARY_PATH","/autofs/ncrc-svm1_proj/epic/spack-stack/c7/spack-stack-2.1.1/envs/ue-oneapi-2025.3.1/install/intel-oneapi-compilers/2025.3.1/zstd-1.5.7-ogrl5fa/lib")
+-- remove_path("LD_LIBRARY_PATH","/autofs/ncrc-svm1_proj/epic/spack-stack/c7/spack-stack-2.1.1/envs/ue-oneapi-2025.3.1/install/intel-oneapi-compilers/2025.3.1/zstd-1.5.7-ogrl5fa/lib")
 
 setenv("I_MPI_CC", "icx")
 setenv("I_MPI_CXX", "icpx")
