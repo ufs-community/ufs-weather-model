@@ -19,11 +19,11 @@ Singularity or Apptainer must be installed on the host to run the containers (se
 describes your platform and container (see :numref:`Section %s <container-rt-conf>`).
 
 The container option has been tested on the community platform Stampede3 (TACC, University of
-Texas) with both GNU-based and Intel-based software containers. An example platform definition
+Texas) with both GNU-based and Intel oneAPI-based software containers. An example platform definition
 file for Stampede3, ``tests/stampede.def``, is included (see :numref:`Section %s <container-rt-conf>`).
 The container option has also been tested on NOAA RDHPC Tier 1 platforms with the same method
 (``-P container.def``), by adapting the platform definition file for each platform and container
-(GNU- or Intel-based).
+(GNU- or Intel oneAPI-based).
 
 .. attention::
 
@@ -78,7 +78,7 @@ predefined test cases.
 Tests Run Successfully in a Container
 =====================================
 
-The following tests have been run successfully with ``rt.sh -P`` in the Intel-based and/or
+The following tests have been run successfully with ``rt.sh -P`` in the Intel oneAPI-based and/or
 GNU-based containers. In ``rt.conf`` these lines run on ``container``, and all other lines
 exclude it (see :numref:`Section %s <container-rt-vs-rt>`). Each entry gives the ``rt.conf``
 compile name (build) the test uses; a blank entry means that the test is not enabled for the
@@ -89,11 +89,8 @@ container with that compiler.
    :header-rows: 1
 
    * - Test
-     - Intel build
+     - Intel oneAPI build
      - GNU build
-   * - ``cpld_control_p8``
-     - ``s2swa_32bit``
-     - ``s2swa_32bit``
    * - ``cpld_control_gfsv17``
      - ``s2sw_32bit_pdlib``
      - ``s2sw_32bit_pdlib``
@@ -333,7 +330,7 @@ Container Image
 ---------------
 
 The container option requires a Singularity/Apptainer image (``*.sif``). Both GNU-based and
-Intel-based images are supported. Users can either build their own image from the Docker Hub
+Intel oneAPI-based images are supported. Users can either build their own image from the Docker Hub
 images (see :numref:`Section %s <container-rt-image-build>`), or use an existing ``*.sif`` image
 if one is already staged on the system (see :numref:`Section %s <container-rt-image-tier1>`).
 Container images are also staged on NOAA RDHPC Tier 1 platforms in common locations maintained by EPIC.
@@ -383,9 +380,9 @@ On **Derecho**, use the OpenMPI 5.0.7 variant instead:
    singularity build rocky9-gcc13-ss192-ompi507.sif \
        docker://noaaepic/rocky9-gcc13.3.1-spack-stack:v1.9.2-ufs-env-ompi507
 
-**Option 2: Build an Intel-capable container from Docker Hub**
+**Option 2: Build an Intel oneAPI container from Docker Hub**
 
-The Intel oneAPI software cannot be distributed inside Docker Hub images due to Intel's End User License Agreement (EULA). An Intel-capable software-stack image is available on Docker Hub, but the Intel oneAPI compilers and MPI must be reinstalled locally into a writable sandbox. The steps below produce a fully functional Intel image.
+The Intel oneAPI software cannot be distributed inside Docker Hub images due to Intel's End User License Agreement (EULA). A software-stack image for Intel oneAPI is available on Docker Hub, but the Intel oneAPI compilers and MPI must be reinstalled locally into a writable sandbox. The steps below produce a fully functional Intel oneAPI image.
 
 .. note::
 
@@ -398,7 +395,7 @@ The Intel oneAPI software cannot be distributed inside Docker Hub images due to 
 
       module load spack-managed-x86-64_v3/v1.0 apptainer/1.3.3
 
-#. Create a writable sandbox from the Docker Hub Intel-capable image. Bind all host
+#. Create a writable sandbox from the Docker Hub Intel oneAPI image. Bind all host
    top-level filesystems that contain your working directories (replace ``</top_dir>``
    and optional ``</bind_add>`` with paths appropriate for your system — see
    :numref:`Section %s <container-rt-binddirs>`):
@@ -416,7 +413,7 @@ The Intel oneAPI software cannot be distributed inside Docker Hub images due to 
       singularity exec rocky9-oneapi2024.2-ss192 cp /opt/compilers_cp.sh .
 
    The scripts ``intel-sandbox.sh`` and ``compilers_cp.sh`` retrieve and reinstall the
-   Intel compiler and MPI components.
+   Intel oneAPI compiler and MPI components.
 
 #. Create the Intel oneAPI source sandbox:
 
@@ -427,14 +424,14 @@ The Intel oneAPI software cannot be distributed inside Docker Hub images due to 
    This produces an additional ``intel-sandbox`` directory containing the Intel oneAPI
    compilers and MPI.
 
-#. Copy the Intel compilers and MPI into the software-stack sandbox. Provide only the
+#. Copy the Intel oneAPI compilers and MPI into the software-stack sandbox. Provide only the
    sandbox names (not full paths):
 
    .. code-block:: console
 
       ./compilers_cp.sh intel-sandbox rocky9-oneapi2024.2-ss192
 
-   After this step, the software-stack sandbox contains the full Intel toolchain.
+   After this step, the software-stack sandbox contains the full Intel oneAPI toolchain.
    The ``intel-sandbox`` directory can then be removed.
 
 #. Convert the sandbox into a compressed SIF image:
@@ -448,57 +445,49 @@ The Intel oneAPI software cannot be distributed inside Docker Hub images due to 
 Pre-built Container Images
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-If a ``*.sif`` image already exists on the system, it can be used directly. Pre-built images for
-both GNU and Intel toolchains are staged in the following directories:
+If a ``*.sif`` image already exists on the system, it can be used directly. EPIC keeps
+pre-built images for GNU and for Intel oneAPI on the NOAA RDHPC Tier 1 platforms and on
+NOAA Cloud. Set the path in the platform definition file: ``CONTAINER_IMG_GNU`` for the GNU
+image, and ``CONTAINER_IMG_ONEAPI`` for the Intel oneAPI image
+(see :numref:`Section %s <container-rt-conf-fields>`).
 
-.. list-table:: Pre-built container image locations on various platforms
-   :widths: 20 50
+.. list-table:: Pre-built container images on NOAA RDHPC Tier 1 platforms and NOAA Cloud
+   :widths: 16 42 42
    :header-rows: 1
 
    * - Machine
-     - Directory
+     - GNU image (``CONTAINER_IMG_GNU``)
+     - Intel oneAPI image (``CONTAINER_IMG_ONEAPI``)
    * - Ursa
-     - ``/scratch3/NCEPDEV/nems/role.epic/containers``
+     - ``/scratch3/NCEPDEV/nems/role.epic/containers/rocky9-gcc13-ss192-ompi416.sif``
+     - ``/scratch3/NCEPDEV/nems/role.epic/containers/rocky9-oneapi2024.2-ss192.sif``
    * - Gaea-C6
-     - ``/gpfs/f6/bil-fire8/world-shared/containers``
+     - ``/gpfs/f6/bil-fire8/world-shared/containers/rocky9-gcc13-ss192-ompi416.sif``
+     - ``/gpfs/f6/bil-fire8/world-shared/containers/rocky9-oneapi2024.2-ss192.sif``
    * - Hercules / Orion
-     - ``/work/noaa/epic/role-epic/contrib/containers``
+     - ``/work/noaa/epic/role-epic/contrib/containers/rocky9-gcc13-ss192-ompi416.sif``
+     - ``/work/noaa/epic/role-epic/contrib/containers/rocky9-oneapi2024.2-ss192.sif``
    * - Derecho
-     - ``/glade/work/epicufsrt/contrib/containers``
+     - ``/glade/work/epicufsrt/contrib/containers/rocky9-gcc13-ss192-ompi507.sif``
+     - Not tested
    * - NOAA Cloud
-     - ``/contrib/EPIC/containers``
+     - ``/contrib/EPIC/containers/rocky9-gcc13-ss192-ompi416.sif``
+     - ``/contrib/EPIC/containers/rocky9-oneapi2024.2-ss192.sif``
 
-The container image file names are:
+The images contain these compilers and MPI libraries:
 
-.. list-table:: Container image file names
-   :widths: 15 25 40
-   :header-rows: 1
+* **GNU:** GCC 13.3.1 with OpenMPI 4.1.6 (``ompi416``). On Derecho, the GNU image uses
+  OpenMPI 5.0.7 instead (``ompi507``).
+* **Intel oneAPI:** Intel oneAPI 2024.2 with Intel MPI 2021.13.
 
-   * - Toolchain
-     - Platform
-     - Image file name
-   * - GNU (GCC 13.3.1 / OpenMPI 4.1.6)
-     - Stampede3, Ursa, Gaea-C6, Hercules, Orion, NOAA Cloud
-     - ``rocky9-gcc13-ss192-ompi416.sif``
-   * - GNU (GCC 13.3.1 / OpenMPI 5.0.7)
-     - Derecho
-     - ``rocky9-gcc13-ss192-ompi507.sif``
-   * - Intel (oneAPI 2024.2 / Intel MPI 2021.13)
-     - Stampede3, Ursa, Gaea-C6, Hercules, Orion, NOAA Cloud
-     - ``rocky9-oneapi2024.2-ss192.sif``
+On other platforms, such as Stampede3, build the images yourself
+(see :numref:`Section %s <container-rt-image-build>`).
 
 .. note::
 
-   Derecho uses a GNU container image built with **OpenMPI 5.0.7** (``ompi507``) rather
-   than 4.1.6 (``ompi416``) used on other platforms, due to MPI compatibility requirements
-   on that system. The Intel container image has **not** been tested on Derecho to date;
-   only the GNU container is currently supported there.
-
-For example, on Hercules or Orion the Intel image is at:
-
-.. code-block:: console
-
-   /work/noaa/epic/role-epic/contrib/containers/rocky9-oneapi2024.2-ss192.sif
+   Derecho needs OpenMPI 5.0.7 for the GNU image, to be compatible with the MPI on that
+   system. The Intel oneAPI image has **not** been tested on Derecho yet. Only the GNU
+   image is supported there now.
 
 .. _container-rt-binddirs:
 
@@ -778,24 +767,24 @@ available within the container image.
    specific library versions).
 
 
-A minimal example for an Intel-based container image:
+A minimal example for an Intel oneAPI-based container image:
 
 .. code-block:: lua
 
-   -- modulefiles/ufs_container.intel.lua
-   -- Inside-container build/run environment for Intel-based UFS-WM container
-   whatis("Inside-container software environment: Intel compilers, MPI, and spack-stack libraries")
+   -- modulefiles/ufs_container.oneapi.lua
+   -- Inside-container build/run environment for Intel oneAPI-based UFS-WM container
+   whatis("Inside-container software environment: Intel oneAPI compilers, MPI, and spack-stack libraries")
 
    -- The container image ships with a self-contained module system.
    -- Adjust paths to match the software stack inside the image.
    prepend_path("MODULEPATH", "/opt/spack-stack/envs/ufs-wm/install/modulefiles/Core")
 
-   load("stack-intel/2024.2.1")
+   load("stack-oneapi/2024.2.1")
    load("stack-intel-oneapi-mpi/2021.13")
    load("ufs-weather-model-env")
 
 The exact module names depend on the container image being used. To discover available
-modules, open an interactive shell inside the container (example for the Intel-based
+modules, open an interactive shell inside the container (example for the Intel oneAPI-based
 container on Hercules/Orion):
 
 .. code-block:: console
@@ -832,7 +821,7 @@ The following platform definition files are provided in the ``tests/`` directory
    * - ``container.def``
      - Template with a description of every entry. Edit it for your platform.
    * - ``stampede.def``
-     - Example for GNU and Intel container runs on Stampede3 (TACC, University of Texas).
+     - Example for GNU and Intel oneAPI container runs on Stampede3 (TACC, University of Texas).
 
 To set up a new platform:
 
@@ -870,13 +859,13 @@ the values to edit:
 .. literalinclude:: ../../../tests/container.def
    :language: bash
 
-**Container option example** (Stampede3, Intel and GNU containers). These are the values set in
+**Container option example** (Stampede3, Intel oneAPI and GNU containers). These are the values set in
 ``tests/stampede.def``:
 
 .. code-block:: bash
 
    PLATFORM_NAME=container
-   CONTAINER_IMG_INTEL=/scratch/10000/nperlin/rocky9-oneapi2024.2-ss192.sif
+   CONTAINER_IMG_ONEAPI=/scratch/10000/nperlin/rocky9-oneapi2024.2-ss192.sif
    CONTAINER_IMG_GNU=/scratch/10000/nperlin/rocky9-gcc13-ss192-ompi416.sif
    BIND_DIRS='/work,/scratch'
 
@@ -884,7 +873,7 @@ the values to edit:
    SCHEDULER=slurm
    PARTITION=skx-dev
    QUEUE=
-   MPI_LAUNCH_INTEL=
+   MPI_LAUNCH_ONEAPI=
    MPI_LAUNCH_GNU=
 
    RUNDIR_ROOT=/scratch/10000/nperlin/UFS-WM/RUNDIRS
@@ -899,8 +888,8 @@ the values to edit:
 
 In this example:
 
-* Both container images are set, so Intel tests use the Intel image and GNU tests use the
-  GNU image. To run only one compiler, comment out or remove the other image.
+* Both container images are set, so Intel oneAPI tests use the Intel oneAPI image and GNU tests
+  use the GNU image. To run only one compiler, comment out or remove the other image.
 * ``/work`` and ``/scratch`` are bound into the container.
 * ``TPN=48`` gives 48 MPI tasks per node (Stampede3 SKX nodes), with the Slurm partition
   ``skx-dev``.
@@ -935,9 +924,9 @@ Platform Definition Fields
      - Required. Must be ``container``. Becomes ``MACHINE_ID`` for the run: the machine
        name matched in the **Machines** column of ``rt.conf``, and the suffix of the container
        job card templates in ``tests/fv3_conf/`` and of the container modulefiles.
-   * - ``CONTAINER_IMG_INTEL``
-     - Absolute path to an Intel Singularity/Apptainer image file (``*.sif``) on the host.
-       ``rt.conf`` lines with the ``intel`` compiler use this image.
+   * - ``CONTAINER_IMG_ONEAPI``
+     - Absolute path to an Intel oneAPI Singularity/Apptainer image file (``*.sif``) on the
+       host. ``rt.conf`` lines with the ``oneapi`` compiler use this image.
    * - ``CONTAINER_IMG_GNU``
      - Absolute path to a GNU Singularity/Apptainer image file (``*.sif``) on the host.
        ``rt.conf`` lines with the ``gnu`` compiler use this image.
@@ -969,8 +958,8 @@ Platform Definition Fields
      - Slurm partition name (leave blank for PBS or ``none``).
    * - ``QUEUE``
      - Slurm QOS / PBS queue name (leave blank for ``none``).
-   * - ``MPI_LAUNCH_INTEL``
-     - MPI launch command for Intel tests, used when ``SCHEDULER`` is ``none`` and in PBS
+   * - ``MPI_LAUNCH_ONEAPI``
+     - MPI launch command for Intel oneAPI tests, used when ``SCHEDULER`` is ``none`` and in PBS
        job cards. Defaults to ``mpiexec`` if blank.
    * - ``MPI_LAUNCH_GNU``
      - MPI launch command for GNU tests, used when ``SCHEDULER`` is ``none`` and in PBS
@@ -1070,16 +1059,16 @@ to check a new container image or platform, or to rerun only the tests that fail
 
 The file lists one test per line: the test name, a single space, and the compiler. The test
 name is the name in the ``RUN`` line of ``rt.conf`` (and of the test file in ``tests/tests/``),
-and the compiler is ``intel`` or ``gnu``, as in the ``COMPILE`` line above that ``RUN`` line.
-For example, a file ``container_tests.list`` for Intel tests:
+and the compiler is ``oneapi`` or ``gnu``, as in the ``COMPILE`` line above that ``RUN`` line.
+For example, a file ``container_tests.list`` for Intel oneAPI tests:
 
 .. code-block:: text
 
-   control_c48 intel
-   control_p8 intel
-   rap_control intel
-   cpld_control_c48_5deg intel
-   datm_cdeps_control_cfsr intel
+   control_c48 oneapi
+   control_p8 oneapi
+   rap_control oneapi
+   cpld_control_c48_5deg oneapi
+   datm_cdeps_control_cfsr oneapi
 
 ``rt.sh`` compiles only the builds that the listed tests need, and then runs those tests.
 
@@ -1098,7 +1087,7 @@ For example, a file ``container_tests.list`` for Intel tests:
      too.
    * ``-s`` cannot be combined with ``-n`` or with the dry run ``-x``. To dry-run a container
      test, use ``-n`` with ``-x`` instead, one test at a time, for example
-     ``./rt.sh -a <account> -P container.def -n "control_c48 intel" -x -l rt.conf``.
+     ``./rt.sh -a <account> -P container.def -n "control_c48 oneapi" -x -l rt.conf``.
 
 Command-Line Options
 --------------------
@@ -1119,7 +1108,7 @@ runs are:
    * - ``-l <file>``
      - Use ``<file>`` instead of ``rt.conf`` to select tests.
    * - ``-n "<test> <compiler>"``
-     - Run a single test, for example ``-n "control_c48 intel"``. Its compile still runs.
+     - Run a single test, for example ``-n "control_c48 oneapi"``. Its compile still runs.
    * - ``-s <file>``
      - Run only the subset of tests listed in ``<file>``, one ``<test name> <compiler>`` per
        line (see :numref:`Section %s <container-rt-subset>`). Often the preferred way to run
@@ -1216,7 +1205,7 @@ On **PBS** systems the command may look similar to:
    qsub -I -l walltime=<time> -A <account> -q <queue> -l select=1:ncpus=<cores>:mpiprocs=<cores>
 
 After the allocation is granted (and connecting via ``ssh`` to the compute node if required),
-run ``rt.sh``. The model is started with the ``MPI_LAUNCH_INTEL`` or ``MPI_LAUNCH_GNU``
+run ``rt.sh``. The model is started with the ``MPI_LAUNCH_ONEAPI`` or ``MPI_LAUNCH_GNU``
 command from the platform definition file.
 
 .. code-block:: console
@@ -1259,7 +1248,7 @@ where:
 
 * ``<container.def>`` is the adapted platform definition file with the lower ``TPN``.
 * ``<failed_test>`` is the name of the failed test, e.g., ``cpld_control_gfsv17``.
-* ``<compiler>`` is ``intel`` or ``gnu``, matching the container image the test used.
+* ``<compiler>`` is ``oneapi`` or ``gnu``, matching the container image the test used.
 
 To rerun several failed tests that use the same lower ``TPN``, list them in a file, one
 ``<test name> <compiler>`` per line (see :numref:`Section %s <container-rt-subset>`), and
@@ -1273,8 +1262,8 @@ For example, ``my_tests.list`` may contain:
 
 .. code-block:: text
 
-   cpld_control_gfsv17 intel
-   cpld_control_gefs intel
+   cpld_control_gfsv17 oneapi
+   cpld_control_gefs oneapi
 
 If some tests need a different ``TPN`` value, make one adapted platform definition file
 and one test list for each value, and run them one after another.

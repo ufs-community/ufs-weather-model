@@ -43,7 +43,7 @@ elif [[ ${MACHINE_ID} = derecho ]] ; then
     if ( ! eval module help > /dev/null 2>&1 ) ; then
         source /glade/u/apps/derecho/24.12/spack/opt/spack/lmod/8.7.37/gcc/12.4.0/nr3e/lmod/lmod/init/bash
     fi
-    module purge
+    module --force purge
     
 elif [[ ${MACHINE_ID} = gaeac5 ]] ; then
     # We are on GAEA

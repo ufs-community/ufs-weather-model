@@ -11,8 +11,8 @@
 #                       can also be your own file, e.g. -l my_rt.conf
 #      -s my_test.list  optional: run only the tests listed in my_test.list,
 #                       one "<test name> <compiler>" per line, for example:
-#                         control_c48 intel
-#                         control_p8 intel
+#                         control_c48 oneapi
+#                         control_p8 oneapi
 #
 # Tests are selected from rt.conf (or -l <file>) with the machine name
 # "container" in the Machines column, like any other machine:
@@ -33,7 +33,7 @@
 #                  this run: the machine name matched in rt.conf, and the
 #                  suffix of the *_container job-card templates and
 #                  modulefiles.
-#   CONTAINER_IMG_INTEL  Absolute path to an Intel Singularity/Apptainer
+#   CONTAINER_IMG_ONEAPI Absolute path to an Intel oneAPI Singularity/Apptainer
 #                        image (*.sif) on this host.
 #   CONTAINER_IMG_GNU    Absolute path to a GNU Singularity/Apptainer image
 #                        (*.sif) on this host.
@@ -54,7 +54,7 @@
 #               interactive/no-scheduler run.
 #   PARTITION   Slurm partition name (blank for PBS or no scheduler).
 #   QUEUE       Slurm QOS / PBS queue name (blank for no scheduler).
-#   MPI_LAUNCH_INTEL  MPI launch command for Intel tests, used when SCHEDULER
+#   MPI_LAUNCH_ONEAPI  MPI launch command for Intel oneAPI tests, used when SCHEDULER
 #                     is "none" and in PBS job cards (defaults to "mpiexec"
 #                     if blank).
 #   MPI_LAUNCH_GNU    The same for GNU tests (defaults to "mpirun" if blank).
@@ -92,7 +92,7 @@
 # ------------------------------------------------------------------------
 
 PLATFORM_NAME=container
-CONTAINER_IMG_INTEL=/path/to/containers/rocky9-oneapi2024.2-ss192.sif
+CONTAINER_IMG_ONEAPI=/path/to/containers/rocky9-oneapi2024.2-ss192.sif
 CONTAINER_IMG_GNU=/path/to/containers/rocky9-gcc13-ss192-ompi416.sif
 BIND_DIRS='/path1,/path2,/path3'
 
@@ -100,7 +100,7 @@ TPN=192
 SCHEDULER=slurm
 PARTITION=mypartition
 QUEUE=myqueue
-MPI_LAUNCH_INTEL=mpiexec
+MPI_LAUNCH_ONEAPI=mpiexec
 MPI_LAUNCH_GNU=mpirun
 
 RUNDIR_ROOT=/path/to/runtime_dir

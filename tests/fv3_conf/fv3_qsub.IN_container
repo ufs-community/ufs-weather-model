@@ -60,7 +60,7 @@ CONTAINER="${CONTAINERBIN^^}"  # APPTAINER or SINGULARITY
 export "${CONTAINER}_SHELL=/bin/bash"
 export "${CONTAINER}ENV_FI_PROVIDER=tcp"
 export "${CONTAINER}ENV_RTVERBOSE=${RTVERBOSE:-false}"
-if [[ "@[RT_COMPILER]" == intel ]]; then
+if [[ "@[RT_COMPILER]" == oneapi ]]; then
   [[ -n "${FI_PROVIDER_PATH:-}" ]] && export "${CONTAINER}ENV_FI_PROVIDER_PATH=${FI_PROVIDER_PATH}"
   unset I_MPI_PMI_LIBRARY
 elif [[ "@[RT_COMPILER]" == gnu ]]; then

@@ -33,7 +33,7 @@ else
   MACHINE_ID=$1
   MAKE_OPT=${2:-}
   COMPILE_ID=${3:+$3}
-  RT_COMPILER=${4:-intel}
+  RT_COMPILER=${4:-oneapi}
   clean_before=${5:-YES}
   clean_after=${6:-YES}
 fi
@@ -57,27 +57,25 @@ BUILD_JOBS=${BUILD_JOBS:-8}
 set +x
 case ${MACHINE_ID} in
   macosx|linux)
-    # shellcheck source=/github/workspace/modulefiles/ufs_ursa.intelllvm.lua
+    # shellcheck source=/github/workspace/modulefiles/ufs_ursa.oneapi.lua
     source "${PATHTR}/modulefiles/ufs_${MACHINE_ID}.${RT_COMPILER}"
     ;;
-  ursa|hera|hercules|orion|gaeac5|gaeac6|derecho|aws-ec2)
-    # shellcheck disable=SC1091
-    source "${PATHTR}/tests/module-setup.sh"
+  *)  
+    # Activate lua environment for gaea c5
+    if [[ ${MACHINE_ID} == gaeac5 || ${MACHINE_ID} == gaeac6 ]]; then
+      module reset
+    elif [[ ${MACHINE_ID} == hercules ]]; then
+      module purge
+    elif [[ ${MACHINE_ID} == "aws-ec2" ]]; then
+      module purge
+    fi
+
     # Load fv3 module
     module use "${PATHTR}/modulefiles"
     modulefile="ufs_${MACHINE_ID}.${RT_COMPILER}"
     module load "${modulefile}"
     module list
-    ;;
-  *) # for any other machine, try to load the module from the modulefiles directory
-    # shellcheck disable=SC1091
-    # Load fv3 module
-    module use "${PATHTR}/modulefiles"
-    modulefile="ufs_${MACHINE_ID}.${RT_COMPILER}"
-    module load "${modulefile}"
-    module list
-    ;;
-esac
+  esac
 set -x
 
 echo "Compiling ${MAKE_OPT} into ${BUILD_NAME}.exe on ${MACHINE_ID}"

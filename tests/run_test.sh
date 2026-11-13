@@ -528,7 +528,7 @@ if [[ ${SCHEDULER:-none} = 'none' ]]; then
     CONTAINER="${CONTAINERBIN^^}"  # APPTAINER or SINGULARITY
     export "${CONTAINER}_SHELL=/bin/bash"
     export "${CONTAINER}ENV_FI_PROVIDER=tcp"
-    if [[ "${RT_COMPILER}" == intel ]]; then
+    if [[ "${RT_COMPILER}" == oneapi ]]; then
       [[ -n "${FI_PROVIDER_PATH:-}" ]] && export "${CONTAINER}ENV_FI_PROVIDER_PATH=${FI_PROVIDER_PATH}"
     elif [[ "${RT_COMPILER}" == gnu ]]; then
       export "${CONTAINER}ENV_PMIX_MCA_gds=hash"

@@ -61,6 +61,6 @@ setenv("I_MPI_CC", "icx")
 setenv("I_MPI_CXX", "icpx")
 setenv("I_MPI_F90", "ifort")
 
-setenv("CMAKE_Platform", "container.intel")
+setenv("CMAKE_Platform", "container.oneapi")
 
 whatis("Description: UFS build environment")

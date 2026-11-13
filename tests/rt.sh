@@ -136,7 +136,7 @@ update_rtconf() {
               CORRECT_LINE[1]=$(awk -F'RUN|RUN' '{print $2}' <<< "${dep_line}")
               CORRECT_LINE[2]=$(awk -F'RUN|RUN' '{print $3}' <<< "${dep_line}")
 
-              if [[ ${RT_COMPILER_IN} == "intel" ]]; then
+              if [[ ${RT_COMPILER_IN} == "intel" || ${RT_COMPILER_IN} == "oneapi" ]]; then
                 echo "RUN ${CORRECT_LINE[1]}" >> "${RT_TEMP_CONF}"
               elif [[ ${RT_COMPILER_IN} == "gnu" ]]; then
                 echo "RUN ${CORRECT_LINE[2]}" >> "${RT_TEMP_CONF}"
@@ -329,6 +329,19 @@ EOF
                COMPILE_WARNINGS+=" ("
                [[ ${COMPILE_NUM_WARNINGS} -gt 0 ]] && COMPILE_WARNINGS+=" ${COMPILE_NUM_WARNINGS} warnings"
                [[ ${COMPILE_NUM_REMARKS}  -gt 0 ]] && COMPILE_WARNINGS+=" ${COMPILE_NUM_REMARKS} remarks"
+               COMPILE_WARNINGS+=" )"
+            fi
+          elif [[ ${COMPILER} == "oneapi" ]]; then
+            # Fortran (ifort/ifx) uses Intel-style messages: "file.F90(12): warning #6843: ..."
+            COMPILE_NUM_WARNINGS=$(grep -c ": warning #" "${RUNDIR_ROOT}/compile_${COMPILE_ID}/err" || true)
+            COMPILE_NUM_REMARKS=$(grep -c ": remark #" "${RUNDIR_ROOT}/compile_${COMPILE_ID}/err" || true)
+            # C/C++ (icx/icpx) is Clang-based: "file.c:12:5: warning: ..."
+            COMPILE_NUM_C_WARNINGS=$(grep -cE "^[^ ]+:[0-9]+:[0-9]+: warning: " "${RUNDIR_ROOT}/compile_${COMPILE_ID}/err" || true)
+            if [[ ${COMPILE_NUM_WARNINGS} -gt 0 || ${COMPILE_NUM_REMARKS} -gt 0 || ${COMPILE_NUM_C_WARNINGS} -gt 0 ]]; then
+               COMPILE_WARNINGS+=" ("
+               [[ ${COMPILE_NUM_WARNINGS}   -gt 0 ]] && COMPILE_WARNINGS+=" ${COMPILE_NUM_WARNINGS} warnings"
+               [[ ${COMPILE_NUM_REMARKS}    -gt 0 ]] && COMPILE_WARNINGS+=" ${COMPILE_NUM_REMARKS} remarks"
+               [[ ${COMPILE_NUM_C_WARNINGS} -gt 0 ]] && COMPILE_WARNINGS+=" ${COMPILE_NUM_C_WARNINGS} C/C++ warnings"
                COMPILE_WARNINGS+=" )"
             fi
           elif [[ ${COMPILER} == "gnu" ]]; then
@@ -584,9 +597,9 @@ EOF
 # returns 1 if no container image is set for the line's compiler.
 resolve_container_image() {
   case ${RT_COMPILER} in
-    intel)
-      RT_CONTAINER_IMG=${RT_CONTAINER_IMG_INTEL}
-      MPI_LAUNCH=${RT_MPI_LAUNCH_INTEL}
+    oneapi)
+      RT_CONTAINER_IMG=${RT_CONTAINER_IMG_ONEAPI}
+      MPI_LAUNCH=${RT_MPI_LAUNCH_ONEAPI}
       ;;
     gnu)
       RT_CONTAINER_IMG=${RT_CONTAINER_IMG_GNU}
@@ -607,21 +620,21 @@ resolve_container_image() {
 
 # Sources a -P platform definition file (KEY=value assignments) and checks
 # its required keys. A few keys are copied to rt.sh's own names, e.g.
-# CONTAINER_IMG_INTEL -> RT_CONTAINER_IMG_INTEL.
+# CONTAINER_IMG_ONEAPI -> RT_CONTAINER_IMG_ONEAPI.
 parse_platform_def() {
   local file=$1
   # shellcheck disable=SC1090
   source "${file}" || die "${file}: failed to source platform definition file"
 
   MACHINE_ID=${PLATFORM_NAME:-}
-  RT_CONTAINER_IMG_INTEL=${CONTAINER_IMG_INTEL:-}
+  RT_CONTAINER_IMG_ONEAPI=${CONTAINER_IMG_ONEAPI:-}
   RT_CONTAINER_IMG_GNU=${CONTAINER_IMG_GNU:-}
   CONTAINER_BIND_DIRS=${BIND_DIRS:-}
   PLATFORM_TPN=${TPN:-}
   SCHEDULER=${SCHEDULER:-}
   PARTITION=${PARTITION:-}
   QUEUE=${QUEUE:-}
-  RT_MPI_LAUNCH_INTEL=${MPI_LAUNCH_INTEL:-mpiexec}
+  RT_MPI_LAUNCH_ONEAPI=${MPI_LAUNCH_ONEAPI:-mpiexec}
   RT_MPI_LAUNCH_GNU=${MPI_LAUNCH_GNU:-mpirun}
   RUNDIR_ROOT=${RUNDIR_ROOT:-}
   INPUTDATA_ROOT=${INPUTDATA_ROOT:-}
@@ -633,11 +646,11 @@ parse_platform_def() {
   WORKFLOW_MODULE_CMD=${WORKFLOW_MODULE_CMD:-}
 
   [[ ${MACHINE_ID} == container ]] || die "${file}: PLATFORM_NAME must be 'container', got '${MACHINE_ID}'"
-  [[ -n ${RT_CONTAINER_IMG_INTEL}${RT_CONTAINER_IMG_GNU} ]] \
-    || die "${file}: set at least one of CONTAINER_IMG_INTEL, CONTAINER_IMG_GNU"
+  [[ -n ${RT_CONTAINER_IMG_ONEAPI}${RT_CONTAINER_IMG_GNU} ]] \
+    || die "${file}: set at least one of CONTAINER_IMG_ONEAPI, CONTAINER_IMG_GNU"
   # A wrong path must stop the run here, not silently skip that compiler's tests.
   local img
-  for img in "${RT_CONTAINER_IMG_INTEL}" "${RT_CONTAINER_IMG_GNU}"; do
+  for img in "${RT_CONTAINER_IMG_ONEAPI}" "${RT_CONTAINER_IMG_GNU}"; do
     [[ -z ${img} || -f ${img} ]] || die "${file}: container image not found: ${img}"
   done
   [[ -n ${PLATFORM_TPN} ]] || die "${file}: TPN is required"
@@ -789,9 +802,9 @@ ACCNR=${ACCNR:-""}
 CONTAINER_BIND_DIRS=''
 PLATFORM_TPN=''
 RT_CONTAINER_IMG=''
-RT_CONTAINER_IMG_INTEL=''
+RT_CONTAINER_IMG_ONEAPI=''
 RT_CONTAINER_IMG_GNU=''
-RT_MPI_LAUNCH_INTEL=''
+RT_MPI_LAUNCH_ONEAPI=''
 RT_MPI_LAUNCH_GNU=''
 
 USE_CONTAINER=false
@@ -840,8 +853,8 @@ while getopts ":a:cl:mn:dwkP:reovhxs:" opt; do
       SRT_NAME="${SINGLE_OPTS[0]}"
       SRT_COMPILER="${SINGLE_OPTS[1]}"
 
-      if [[ "${SRT_COMPILER}" != "intel" ]] && [[ "${SRT_COMPILER}" != "intelllvm" ]] && [[ "${SRT_COMPILER}" != "gnu" ]]; then
-        die "COMPILER MUST BE 'intel' OR 'intelllvm' OR 'gnu'"
+      if [[ "${SRT_COMPILER}" != "intel" ]] && [[ "${SRT_COMPILER}" != "oneapi" ]] && [[ "${SRT_COMPILER}" != "gnu" ]]; then
+        die "COMPILER MUST BE 'intel' OR 'oneapi' OR 'gnu'"
       fi
       ;;
     d)
@@ -1364,7 +1377,7 @@ if [[ ${ROCOTO} == true ]]; then
   <!ENTITY RUNDIR_ROOT    "${RUNDIR_ROOT}">
   <!ENTITY NEW_BASELINE   "${NEW_BASELINE}">
 ]>
-<workflow realtime="F" scheduler="${ROCOTO_SCHEDULER}" taskthrottle="10">
+<workflow realtime="F" scheduler="${ROCOTO_SCHEDULER}" taskthrottle="25">
   <cycledef>197001010000 197001010000 01:00:00</cycledef>
   <log>&LOG;/workflow.log</log>
 EOF
