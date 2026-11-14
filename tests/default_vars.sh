@@ -137,7 +137,7 @@ if [[ ${MACHINE_ID} = wcoss2 || ${MACHINE_ID} = acorn ]]; then
 
   export TPN=128
   export EXCLUSIVE_NODES=.true.
-  
+
   export INPES_dflt=3
   export JNPES_dflt=8
   export INPES_thrd=3
@@ -464,6 +464,23 @@ export ESMF_THREADING=true
 export DumpFields="false"
 export MED_history_n=1000000
 export RESTART_FH=" "
+
+function set_restart_file_prefix() {
+  local restart_file_prefix
+  restart_file_prefix=$(date -u +"%Y%m%d.%H0000" -d "${SYEAR}${SMONTH}${SDAY} ${SHOUR} ${FHROT} hours")
+  echo "${restart_file_prefix}"
+}
+
+function set_restart_file_suffix_secs() {
+  local restart_valid_time
+  local restart_secs
+  local restart_file_suffix_secs
+  restart_valid_time=$(date -u +"%Y-%m-%d %H:%M:%S" -d "${SYEAR}${SMONTH}${SDAY} ${SHOUR} ${FHROT} hours")
+  restart_secs=$(($(date -u -d "${restart_valid_time}" +%-H) * 3600))
+  restart_file_suffix_date="$(date -u -d "${restart_valid_time}" +"%Y-%m-%d")"
+  restart_file_suffix_secs="${restart_file_suffix_date}-$(printf "%05d" "${restart_secs}")"
+  echo "${restart_file_suffix_secs}"
+}
 
 export_fv3_v16 ()
 {
