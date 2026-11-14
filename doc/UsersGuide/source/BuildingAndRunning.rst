@@ -167,7 +167,7 @@ Modulefiles for :ref:`preconfigured platforms <SupportedPlatforms>` are located 
 .. code-block:: console
 
     module use modulefiles
-    module load ufs_ursa.intel
+    module load ufs_ursa.oneapi
 
 Note that loading this module file will also set the CMake environment variables shown in
 :numref:`Table %s <CMakeEnv>`.
@@ -177,15 +177,15 @@ Note that loading this module file will also set the CMake environment variables
 .. table:: *CMake environment variables required to configure the build for the Weather Model*
 
    +-------------------------+----------------------------------------------+----------------------+
-   | **EnvironmentVariable** | **Description**                              | **Ursa Intel Value** |
+   | **EnvironmentVariable** | **Description**                              | **Ursa OneAPI Value**|
    +=========================+==============================================+======================+
    |  CMAKE_C_COMPILER       | Name of C compiler                           | mpiicx               |
    +-------------------------+----------------------------------------------+----------------------+
    |  CMAKE_CXX_COMPILER     | Name of C++ compiler                         | mpiicpx              |
    +-------------------------+----------------------------------------------+----------------------+
-   |  CMAKE_Fortran_COMPILER | Name of Fortran compiler                     | mpiifort             |
+   |  CMAKE_Fortran_COMPILER | Name of Fortran compiler                     | mpiifx               |
    +-------------------------+----------------------------------------------+----------------------+
-   |  CMAKE_Platform         | String containing platform and compiler name | ursa.intel           |
+   |  CMAKE_Platform         | String containing platform and compiler name | ursa.oneapi          |
    +-------------------------+----------------------------------------------+----------------------+
 
 On Other Systems
@@ -236,7 +236,7 @@ If any of the environment variables have not been set, the ``build.sh`` script w
 
 .. code-block:: console
 
-   ./build.sh: line 11: CMAKE_Platform: Please set the CMAKE_Platform environment variable, e.g., [ufs_hercules.intel|ufs_hercules.gnu|ufs_ursa.intel|ufs_ursa.intelllvm|...]
+   ./build.sh: line 11: CMAKE_Platform: Please set the CMAKE_Platform environment variable, e.g., [ufs_hercules.oneapi|ufs_hercules.gnu|ufs_ursa.oneapi|ufs_ursa.gnu|...]
 
 The WM can be built by running the following command from the ``ufs-weather-model`` directory:
 
@@ -418,7 +418,7 @@ The ``rt.conf`` file is a pipe-separated values (PSV) file grouped into sections
 
    #. ``COMPILE`` indicator
    #. **Compile name** -- a category of test to compile
-   #. **Compiler** to use in build (``intel`` or ``gnu``)
+   #. **Compiler** to use in build (``oneapi`` or ``gnu``)
    #. **CMAKE Options** -- Provides all CMAKE options for the build. This typically includes the ``-DAPP`` and ``-DCCPP_SUITES`` flags; these flags set which components to build and which physics suites will be available at runtime. Additional options are documented in :numref:`Section %s <other-build-options>`, but users can examine the :wm-repo:`CMakeLists.txt <blob/develop/CMakeLists.txt>` file for the most up-to-date list of options. 
    #. **Machines** to run on (``-`` is used to ignore specified machines, ``+`` is used to run only on specified machines). For example: 
       
@@ -442,7 +442,7 @@ in 32-bit mode and then runs the ``control`` test:
 
 .. code-block:: console
 
-   COMPILE | s2swa_32bit_pdlib  | intel | -DAPP=S2SWA -D32BIT=ON -DCCPP_SUITES=FV3_GFS_v17_coupled_p8_ugwpv1 -DPDLIB=ON | - noaacloud | fv3 |
+   COMPILE | s2swa_32bit_pdlib  | oneapi | -DAPP=S2SWA -D32BIT=ON -DCCPP_SUITES=FV3_GFS_v17_coupled_p8_ugwpv1 -DPDLIB=ON | - noaacloud | fv3 |
    RUN | cpld_control_gfsv17                               | - noaacloud                          | baseline |
    RUN | cpld_control_gfsv17_iau                           | - noaacloud                          | baseline | cpld_control_gfsv17
    RUN | cpld_restart_gfsv17                               | - noaacloud                          |          | cpld_control_gfsv17
@@ -543,8 +543,8 @@ To display detailed information on how to use ``rt.sh``, users can simply run ``
 When running a large number (10's or 100's) of tests, the ``-e`` or ``-r`` options can significantly
 decrease testing time by using a workflow manager (ecFlow or Rocoto, respectively) to queue the jobs 
 according to dependencies and run them concurrently. 
-The ``-n`` option can be used to run a single test; for example, ``./rt.sh -a epic -n "control_c48 intel"`` 
-will build the ATM model and run the ``control_c48`` test with an Intel compiler using the "epic" account 
+The ``-n`` option can be used to run a single test; for example, ``./rt.sh -a epic -n "control_c48 oneapi"`` 
+will build the ATM model and run the ``control_c48`` test with an Intel OneAPI compiler using the "epic" account 
 (users should substitute an account where they can charge computational resources).
 The ``-c`` option is used to create a baseline. New baselines are needed when code changes lead 
 to result changes and therefore deviate from existing baselines on a bit-for-bit basis.
@@ -565,7 +565,7 @@ To run a single test, users can try the following command instead of creating a 
 
    ./rt.sh -a <account> -r -k -n "control_p8 <compiler>"
 
-where ``<compiler>`` is ``gnu`` or ``intel``. 
+where ``<compiler>`` is ``gnu`` or ``oneapi``. 
 
 Troubleshooting
 ^^^^^^^^^^^^^^^^^^
@@ -577,8 +577,8 @@ correctly. If there is a problem with these or other variables (e.g., file paths
 .. code-block:: console
    :emphasize-lines: 5,6
 
-   + echo 'Machine: ' ursa.intel '    Account: ' nems
-   Machine:  ursa.intel     Account:  nems
+   + echo 'Machine: ' ursa.oneapi '    Account: ' nems
+   Machine:  ursa.oneapi     Account:  nems
    + mkdir -p /scratch1/NCEPDEV/stmp4/First.Last
    mkdir: cannot create directory ‘/scratch1/NCEPDEV/stmp4/First.Last’: Permission denied
    ++ echo 'rt.sh error on line 370'
@@ -597,13 +597,13 @@ of the regression test outcomes, which will look similar to this excerpt:
 
 .. code-block:: console
 
-  PASS -- COMPILE 's2sw_pdlib_intel' [14:10, 12:22] ( 1 warnings 1036 remarks )
-  PASS -- TEST 'cpld_control_pdlib_p8_intel' [12:41, 11:00](2171 MB)
-  PASS -- TEST 'cpld_restart_pdlib_p8_intel' [07:49, 05:23](1636 MB)
-  PASS -- TEST 'cpld_mpi_pdlib_p8_intel' [17:40, 15:30](2120 MB)
-  PASS -- TEST 'cpld_control_c48_5deg_intel' [13:30, 11:22](3029 MB)
-  FAILED: TEST TIMED OUT -- TEST 'cpld_warmstart_c48_5deg_intel' [, ]( MB)
-  FAILED: UNABLE TO START TEST -- TEST 'cpld_restart_c48_5deg_intel' [, ]( MB)
+  PASS -- COMPILE 's2sw_pdlib_oneapi' [14:10, 12:22] ( 1 warnings 1036 remarks )
+  PASS -- TEST 'cpld_control_pdlib_p8_oneapi' [12:41, 11:00](2171 MB)
+  PASS -- TEST 'cpld_restart_pdlib_p8_oneapi' [07:49, 05:23](1636 MB)
+  PASS -- TEST 'cpld_mpi_pdlib_p8_oneapi' [17:40, 15:30](2120 MB)
+  PASS -- TEST 'cpld_control_c48_5deg_oneapi' [13:30, 11:22](3029 MB)
+  FAILED: TEST TIMED OUT -- TEST 'cpld_warmstart_c48_5deg_oneapi' [, ]( MB)
+  FAILED: UNABLE TO START TEST -- TEST 'cpld_restart_c48_5deg_oneapi' [, ]( MB)
 
 More detailed log files for each test are located in the ``tests/logs/log_<machine>`` directory:
 
