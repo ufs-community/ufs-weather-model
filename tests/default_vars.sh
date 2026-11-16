@@ -132,6 +132,7 @@ BMIC=.false.
 
 GFSv17opn=.false.
 SFS=.false.
+AGRID_VEL_RST=.true.
 
 EXCLUSIVE_NODES=.false.
 MEM_PER_NODE_OPT=""
