@@ -146,7 +146,7 @@ function create_baseline() {
                     cd "develop-${BL_DATE}"
                     rsync -rvh "../develop-${PREVIOUS_BL_DATE}/" .
                     cd /scratch4/NAGAPE/epic/role.epic/stmp/RT_BASELINE/role.epic/FV3_RT
-                    rsync -a --no-t REGRESSION_TEST/ "${DISKNM}/NEMSfv3gfs/develop-${BL_DATE}" || echo "#### Warning! rsync $(pwd)/REGRESSION_TEST/
+                    rsync -a --no-t REGRESSION_TEST/ "${DISKNM}/NEMSfv3gfs/develop-${BL_DATE}" || echo "#### Warning! rsync $(pwd)/REGRESSION_TEST/"
 
 		    cd ${DISKNM}/NEMSfv3gfs/"develop-${BL_DATE}"
 		    chmod -R 755 .
