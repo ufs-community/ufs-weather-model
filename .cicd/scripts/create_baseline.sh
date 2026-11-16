@@ -68,6 +68,7 @@ function create_baseline() {
 		    cd ${DISKNM}/NEMSfv3gfs/"develop-${BL_DATE}"
 		    chmod -R 755 .
 		    cd "${WORKSPACE}/tests"
+                    ./rt.sh -a "${ACCNR}" "${workflow}" "${opt}" "${suite}" | tee "${WORKSPACE}/tests/logs/RT-run-${machine}.log"
 		    status=${PIPESTATUS[0]}
 		    cd logs/
 		    cp "RegressionTests_${machine_id}.log" "$(dirname "${WORKSPACE}")" #/work2/noaa/epic/role-epic/jenkins/workspace
@@ -130,6 +131,7 @@ function create_baseline() {
 		    cd ${DISKNM}/NEMSfv3gfs/"develop-${BL_DATE}"
 		    chmod -R 755 .
 		    cd "${WORKSPACE}/tests"
+                    ./rt.sh -a "${ACCNR}" "${workflow}" "${opt}" "${suite}" | tee "${WORKSPACE}/tests/logs/RT-run-${machine}.log"
 		    status=${PIPESTATUS[0]}
 		    cd logs/
 		    cp "RegressionTests_${machine_id}.log" "$(dirname "${WORKSPACE}")" #/gpfs/f5/epic/scratch/role.epic/jenkins/workspace
