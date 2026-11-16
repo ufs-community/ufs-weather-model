@@ -102,11 +102,7 @@ if [[ ${DRY_RUN:-false} == false ]]; then
   else
     cp "${PATHRT}/modules.fv3_${COMPILE_ID}.lua" "./modulefiles/modules.fv3.lua"
   fi
-  if [[ ${MACHINE_ID} == n ]]; then
-    cp "${PATHTR}/modulefiles/ufs_common_nimbus.lua" "./modulefiles/."    
-  else
-    cp "${PATHTR}/modulefiles/ufs_common.lua" "./modulefiles/."
-  fi
+  cp "${PATHTR}/modulefiles/ufs_common.lua" "./modulefiles/."
 
   # Get the shell file that loads the "module" command and purges modules:
   cp "${PATHRT}/module-setup.sh" "module-setup.sh"

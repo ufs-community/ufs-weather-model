@@ -39,7 +39,7 @@ elif [[ ${MACHINE_ID} = wcoss2 || ${MACHINE_ID} = acorn ]] ; then
     module reset
     
 elif [[ ${MACHINE_ID} = nimbus ]] ; then
-    # We are on WCOSS3
+    # We are on NIMBUS
     if ( ! eval module help > /dev/null 2>&1 ) ; then
         source /usr/share/lmod/lmod/init/bash
     fi
