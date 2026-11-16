@@ -706,7 +706,7 @@ ecflow_run() {
       nimbus)
         #shellcheck disable=SC2029
         # ssh "${ECF_HOST}" "bash -l -c \"${MOD_USE_STATEMENT} && ${ECFLOW_START} -p ${ECF_PORT}\""
-        ${MOD_USE_STATEMENT} && ${ECFLOW_START} -p ${ECF_PORT}
+        ${MOD_USE_STATEMENT} && ${ECFLOW_START} -p "${ECF_PORT}"
         ;;
       *)
         ${ECFLOW_START} -p "${ECF_PORT}" -d "${RUNDIR_ROOT}/ecflow_server"
