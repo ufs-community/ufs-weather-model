@@ -1,39 +1,41 @@
 #!/bin/bash -x
 
-export PATH=${PATH}:~/bin
-export ACCNR=epic
-echo "USER=${USER}"
-echo "WORKSPACE=${WORKSPACE}"
+set_up_env() {
 
+   export PATH=${PATH}:~/bin
+   export ACCNR=epic
+   export machine=${NODE_NAME}
+   export opt="-l"
+   export suite="rt.conf"
+      [[ -n ${WM_OPERATIONAL_TESTS}                 ]] && opt="-n" && suite="${WM_OPERATIONAL_TESTS} ${UFS_COMPILER}" || return 0
+      [[    ${WM_OPERATIONAL_TESTS} = default       ]] && opt="-n" && suite="control_p8 ${UFS_COMPILER}"
+      [[    ${WM_OPERATIONAL_TESTS} = comprehensive ]] && opt="-l" && suite="rt.conf"
+      [[    ${WM_OPERATIONAL_TESTS} = rt.conf       ]] && opt="-l" && suite="rt.conf"
+      [[   "${suite}"               = rt.conf       ]] && opt="-l"
 
-export workflow="-e"
-export opt="-l"
-export suite="rt.conf"
-   [[ -n ${WM_OPERATIONAL_TESTS}                 ]] && opt="-n" && suite="${WM_OPERATIONAL_TESTS} ${UFS_COMPILER}" || return 0
-   [[    ${WM_OPERATIONAL_TESTS} = default       ]] && opt="-n" && suite="control_p8 ${UFS_COMPILER}"
-   [[    ${WM_OPERATIONAL_TESTS} = comprehensive ]] && opt="-l" && suite="rt.conf"
-   [[    ${WM_OPERATIONAL_TESTS} = rt.conf       ]] && opt="-l" && suite="rt.conf"
-   [[   "${suite}"               = rt.conf       ]] && opt="-l"
+   set -eu
 
-set -eu
+   SCRIPT_REALPATH=$(realpath "${BASH_SOURCE[0]}")
+   SCRIPTS_DIR=$(dirname "${SCRIPT_REALPATH}")
+   UFS_MODEL_DIR=$(realpath "${SCRIPTS_DIR}/../..")
+   readonly UFS_MODEL_DIR
+   echo "UFS MODEL DIR: ${UFS_MODEL_DIR}"
 
-export machine=${NODE_NAME}
+   BUILD_DIR=${BUILD_DIR:-${UFS_MODEL_DIR}/build}
+   TESTS_DIR=${TESTS_DIR:-${UFS_MODEL_DIR}/tests}
 
-SCRIPT_REALPATH=$(realpath "${BASH_SOURCE[0]}")
-SCRIPTS_DIR=$(dirname "${SCRIPT_REALPATH}")
-UFS_MODEL_DIR=$(realpath "${SCRIPTS_DIR}/../..")
-readonly UFS_MODEL_DIR
-echo "UFS MODEL DIR: ${UFS_MODEL_DIR}"
+   pwd
+   echo "USER=${USER}"
+   echo "ACCOUNT=${ACCNR}"
+   echo "MACHINE=${machine}"
+   echo "WORKSPACE=${WORKSPACE}"
 
-BUILD_DIR=${BUILD_DIR:-${UFS_MODEL_DIR}/build}
-TESTS_DIR=${TESTS_DIR:-${UFS_MODEL_DIR}/tests}
-
-pwd
+}
 
 function update_baselines() {
    echo "Creating baselines on ${machine}"
    export PREVIOUS_BL_DATE=`ls -d develop-* | tail -n 1 | cut -d '-' -f2`
-   ./rt.sh -a "${ACCNR}" "${workflow}"cs test_changes.list | tee "${WORKSPACE}/tests/logs/RT-run-${machine}.log"
+   ./rt.sh -a "${ACCNR}" -ecs test_changes.list | tee "${WORKSPACE}/tests/logs/RT-run-${machine}.log"
    status=${PIPESTATUS[0]}
    if [[ "${machine}" = "GaeaC6" ]]
       unset LD_LIBRARY_PATH
@@ -49,7 +51,7 @@ function update_baselines() {
    cd ${DISKNM}/NEMSfv3gfs/"develop-${BL_DATE}"
    chmod -R 755 .
    cd "${WORKSPACE}/tests"
-   ./rt.sh -a "${ACCNR}" "${workflow}" "${opt}" "${suite}" | tee "${WORKSPACE}/tests/logs/RT-run-${machine}.log"
+   ./rt.sh -a "${ACCNR}" -e | tee "${WORKSPACE}/tests/logs/RT-run-${machine}.log"
    status=${PIPESTATUS[0]}
    cd logs/
    cp "RegressionTests_${machine_id}.log" "$(dirname "${WORKSPACE}")" #/work2/noaa/epic/role-epic/jenkins/workspace
@@ -108,9 +110,8 @@ function create_baseline() {
       export STMP="/scratch4/NAGAPE/epic/role.epic/stmp/RT_BASELINE/role.epic/FV3_RT"
       update_baselines
    else
-      echo "Creating baselines on ${machine}"
-      local workflow="-e"
-      ./rt.sh -a "${ACCNR}" "${workflow}"cs test_changes.list | tee "${WORKSPACE}/tests/logs/RT-run-${machine}.log"
+      echo "${machine} not recognized."
+      exit 1
       status=${PIPESTATUS[0]}
    fi
 
@@ -120,4 +121,5 @@ function create_baseline() {
    return "${status}"
 }
 
+set_up_env
 create_baseline "${machine}"
