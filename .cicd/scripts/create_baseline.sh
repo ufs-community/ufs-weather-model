@@ -59,7 +59,10 @@ function create_baseline() {
 		    status=${PIPESTATUS[0]}
 		    export DISKNM=/work2/noaa/epic/hercules/UFS-WM_RT
 		    cd ${DISKNM}/NEMSfv3gfs/
+                    export PREVIOUS_BL_DATE=`ls -d develop-* | tail -n 1 | cut -d '-' -f2`
 		    mkdir -p "develop-${BL_DATE}"
+                    cd "develop-${BL_DATE}"
+                    rsync -rvh "../develop-${PREVIOUS_BL_DATE}/" .
 		    cd /work2/noaa/epic/stmp/role-epic/stmp/role-epic/FV3_RT
 		    rsync -a --no-t REGRESSION_TEST/ "${DISKNM}/NEMSfv3gfs/develop-${BL_DATE}" || echo "#### Warning! rsync $(pwd)/REGRESSION_TEST/ incomplete."
 		    cd ${DISKNM}/NEMSfv3gfs/"develop-${BL_DATE}"
@@ -90,7 +93,10 @@ function create_baseline() {
 		    status=${PIPESTATUS[0]}
 		    export DISKNM=/work2/noaa/epic/UFS-WM_RT
 		    cd ${DISKNM}/NEMSfv3gfs/
+                    export PREVIOUS_BL_DATE=`ls -d develop-* | tail -n 1 | cut -d '-' -f2`
 		    mkdir -p "develop-${BL_DATE}"
+                    cd "develop-${BL_DATE}"
+                    rsync -rvh "../develop-${PREVIOUS_BL_DATE}/" .
 		    cd /work2/noaa/epic/stmp/role-epic/stmp/role-epic/FV3_RT/
 		    rsync -a --no-t REGRESSION_TEST/ "${DISKNM}/NEMSfv3gfs/develop-${BL_DATE}" || echo "#### Warning! rsync $(pwd)/REGRESSION_TEST/ incomplete."
 		    cd ${DISKNM}/NEMSfv3gfs/"develop-${BL_DATE}"
@@ -115,7 +121,10 @@ function create_baseline() {
 		    unset LD_LIBRARY_PATH
 		    export DISKNM=/gpfs/f6/bil-fire8/world-shared/role.epic/UFS-WM_RT
 		    cd ${DISKNM}/NEMSfv3gfs/
+                    export PREVIOUS_BL_DATE=`ls -d develop-* | tail -n 1 | cut -d '-' -f2`
 		    mkdir -p "develop-${BL_DATE}"
+                    cd "develop-${BL_DATE}"
+                    rsync -rvh "../develop-${PREVIOUS_BL_DATE}/" .
                     cd /gpfs/f6/epic/proj-shared/role.epic/RT_BASELINE/role.epic/FV3_RT
 		    rsync -a --no-t REGRESSION_TEST/ "${DISKNM}/NEMSfv3gfs/develop-${BL_DATE}" || echo "#### Warning! rsync $(pwd)/REGRESSION_TEST/ incomplete."
 		    cd ${DISKNM}/NEMSfv3gfs/"develop-${BL_DATE}"
