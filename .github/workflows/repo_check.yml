@@ -3,44 +3,27 @@ on:
   pull_request:
     branches:
       - develop
-env:
-  app: Accept:application/vnd.github.v3+json
-  base_url: $GITHUB_API_URL/repos/$GITHUB_REPOSITORY/actions/runs
-  AUTH: ${{ secrets.GITHUB_TOKEN }}
+
+permissions:
+  contents: read
 
 jobs:
-  pre:
-    name: Preprocess
+  repocheck:
+    name: Repo check
     runs-on: ubuntu-latest
 
     steps:
-      - name: Share helper id
-        run: echo -n ${{ github.run_id }} >~/id_file
-
-      - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 #v6.1.0
+      - name: Check out PR head with submodules
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 #v7.0.1
         with:
-          path: ~/id_file
-          key: helperid-${{ github.event.workflow_run.id }}
+          ref: ${{ github.event.pull_request.head.sha }}
+          submodules: recursive
+          fetch-depth: 1
+          persist-credentials: false
 
-  repocheck:
-    name: Repo check
-    runs-on: ubuntu-22.04
-
-    steps:
-      - name: Check up-to-dateness and post comment
-        run: |
-          trap 'echo "exit-code=$?" >> "$GITHUB_OUTPUT"' EXIT
-          head_sha=${{ github.event.pull_request.head.sha }}
-          head_brc=${{ github.event.pull_request.head.ref }}
-          head_url=${{ github.event.pull_request.head.repo.html_url }}
-          git clone -q -b $head_brc $head_url .
-          git checkout -q $head_sha
-          git submodule -q update --init --recursive
-          cd ${{ github.workspace }}/tests/ci
-          url=$GITHUB_API_URL/repos/$GITHUB_REPOSITORY
-          pr_number=$(curl -sS -H $app $url/pulls \
-            | jq -r '.[] | select(.head.sha == "'"$head_sha"'") | .number')
-          echo "pr_number is $pr_number"
-          pr_uid=${{ github.event.pull_request.head.repo.owner.login }}
-          echo "pr_uid is $pr_uid"
-          ./repo_check.sh
+      - name: Verify submodule commits
+        # TEMP: unmerged ufs-community/ufs-ci-tools#7 head; repin after merge
+        uses: ufs-community/ufs-ci-tools/actions/verify-submodules@d5d6dae084657c7c7fa7ef7706fdb4dc73927370
+        with:
+          config: .github/submodules.yaml
+          target-branch: develop
