@@ -456,11 +456,7 @@ elif [[ ${SCHEDULER} = 'slurm' ]]; then
   fi
 
   if [[ -e ${PATHRT}/fv3_conf/fv3_slurm.IN_${MACHINE_ID} ]]; then
-    if [[ ${MACHINE_ID} == "nimbus" && ${TASKS} -gt 10000 ]]; then
-      atparse < "${PATHRT}/fv3_conf/fv3_slurm.IN_${MACHINE_ID}_pmix" > job_card
-    else
-      atparse < "${PATHRT}/fv3_conf/fv3_slurm.IN_${MACHINE_ID}" > job_card
-    fi
+    atparse < "${PATHRT}/fv3_conf/fv3_slurm.IN_${MACHINE_ID}" > job_card
   else
     echo "Looking for fv3_conf/fv3_slurm.IN_${MACHINE_ID} but it is not found. Exiting"
     exit 1
