@@ -34,10 +34,10 @@ set_up_env() {
 
 function update_baselines() {
    echo "Creating baselines on ${machine}"
-   export PREVIOUS_BL_DATE=`ls -d develop-* | tail -n 1 | cut -d '-' -f2`
+   export PREVIOUS_BL_DATE=$(ls -d develop-* | tail -n 1 | cut -d '-' -f2)
    ./rt.sh -a "${ACCNR}" -ecs test_changes.list | tee "${WORKSPACE}/tests/logs/RT-run-${machine}.log"
    status=${PIPESTATUS[0]}
-   if [[ "${machine}" = "GaeaC6" ]]
+   if [[ "${machine}" = "GaeaC6" ]]; then
       unset LD_LIBRARY_PATH
    fi
    cd ${DISKNM}/NEMSfv3gfs/
