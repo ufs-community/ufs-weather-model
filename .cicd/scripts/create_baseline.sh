@@ -63,7 +63,7 @@ function create_baseline() {
 		    mkdir -p "develop-${BL_DATE}"
             cd "develop-${BL_DATE}"
             rsync -rvh "../develop-${PREVIOUS_BL_DATE}/" .
-		    cd /work2/noaa/epic/role-epic/stmp/role-epic/FV3_RT/REGRESSION_TEST
+		    cd /work2/noaa/epic/role-epic/stmp/role-epic/FV3_RT
 		    rsync -a --no-t REGRESSION_TEST/ "${DISKNM}/NEMSfv3gfs/develop-${BL_DATE}" || echo "#### Warning! rsync $(pwd)/REGRESSION_TEST/ incomplete."
 		    cd ${DISKNM}/NEMSfv3gfs/"develop-${BL_DATE}"
 		    chmod -R 755 .
@@ -98,7 +98,7 @@ function create_baseline() {
 		    mkdir -p "develop-${BL_DATE}"
             cd "develop-${BL_DATE}"
             rsync -rvh "../develop-${PREVIOUS_BL_DATE}/" .
-		    cd /work/noaa/epic/role-epic/stmp/role-epic/FV3_RT/REGRESSION_TEST
+		    cd /work/noaa/epic/role-epic/stmp/role-epic/FV3_RT
 		    rsync -a --no-t REGRESSION_TEST/ "${DISKNM}/NEMSfv3gfs/develop-${BL_DATE}" || echo "#### Warning! rsync $(pwd)/REGRESSION_TEST/ incomplete."
 		    cd ${DISKNM}/NEMSfv3gfs/"develop-${BL_DATE}"
 		    chmod -R 755 .
