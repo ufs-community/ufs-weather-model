@@ -34,6 +34,7 @@ set_up_env() {
 
 function update_baselines() {
    echo "Creating baselines on ${machine}"
+   # shellcheck disable=SC2155
    export PREVIOUS_BL_DATE=$(ls -d develop-* | tail -n 1 | cut -d '-' -f2)
    ./rt.sh -a "${ACCNR}" -ecs test_changes.list | tee "${WORKSPACE}/tests/logs/RT-run-${machine}.log"
    status=${PIPESTATUS[0]}
@@ -46,7 +47,7 @@ function update_baselines() {
    fi
    cd "develop-${BL_DATE}"
    rsync -rvh "../develop-${PREVIOUS_BL_DATE}/" .
-   cd ${STMP}
+   cd "${STMP}"
    rsync -a --no-t REGRESSION_TEST/ "${DISKNM}/NEMSfv3gfs/develop-${BL_DATE}" || echo "#### Warning! rsync $(pwd)/REGRESSION_TEST/ incomplete."
    cd ${DISKNM}/NEMSfv3gfs/"develop-${BL_DATE}"
    chmod -R 755 .
