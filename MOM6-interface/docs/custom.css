@@ -1,0 +1,25 @@
+/* Ensure all paragraphs have a clean vertical gap between them */
+p {
+    margin-top: 0;
+    margin-bottom: 1em; /* Adjust this value if you want more or less spacing */
+}
+
+/* Keep main headings left-flush */
+h1, .memtitle {
+    margin-left: 0;
+}
+
+/* Automatically indent Level 2 Headings and ALL content underneath them */
+h2, h2 ~ p, h2 ~ div, h2 ~ table, h2 ~ img, h2 ~ pre, h2 ~ .fragment {
+    margin-left: 20px;
+}
+
+/* Automatically indent Level 3 Headings and ALL content underneath them */
+h3, h3 ~ p, h3 ~ div, h3 ~ table, h3 ~ img, h3 ~ pre, h3 ~ .fragment {
+    margin-left: 40px;
+}
+
+/* Reset layout constraints for notes so they don't look broken */
+h2 ~ .note, h3 ~ .note {
+    margin-left: 40px;
+}

@@ -342,6 +342,7 @@ list(APPEND mom6_nuopc_src_files
   MOM6/config_src/drivers/nuopc_cap/mom_cap_profiling.F90
   MOM6/config_src/drivers/nuopc_cap/mom_inline_mod.F90
   MOM6/config_src/drivers/nuopc_cap/mom_cap_outputlog.F90
+  MOM6/config_src/drivers/nuopc_cap/mom_outputlog_methods.F90
   MOM6/config_src/drivers/unit_tests/test_MOM_ANN.F90
   MOM6/config_src/drivers/unit_tests/test_MOM_file_parser.F90
   MOM6/config_src/drivers/unit_tests/test_MOM_mixedlayer_restrat.F90

@@ -294,3 +294,9 @@ FV3_RUN=cpld_control_run.IN
 FIELD_TABLE=field_table_thompson_noaero_tke_progsigma
 DIAG_TABLE=diag_table_sfs.IN
 INPUT_NML=global_control.nml.IN
+
+# fill node for Hercules+GNU test
+if [[ $MACHINE_ID = hercules ]] && [[ $RT_COMPILER = gnu ]]; then
+    OCN_tasks="$(($OCN_tasks_sfs + 16))"
+    WLCLK=50
+fi
