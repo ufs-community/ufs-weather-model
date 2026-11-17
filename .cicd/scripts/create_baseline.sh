@@ -55,20 +55,20 @@ function create_baseline() {
 		    export dprefix=/work2/noaa/${ACCNR}/${USER}
 		    sed "s|/noaa/stmp/|/noaa/${ACCNR}/stmp/|g" -i rt.sh
 		    export ACCNR=epic
-                    ./rt.sh -a "${ACCNR}" "${workflow}"cs test_changes.list | tee "${WORKSPACE}/tests/logs/RT-run-${machine}.log"
+            ./rt.sh -a "${ACCNR}" "${workflow}"cs test_changes.list | tee "${WORKSPACE}/tests/logs/RT-run-${machine}.log"
 		    status=${PIPESTATUS[0]}
 		    export DISKNM=/work2/noaa/epic/hercules/UFS-WM_RT
 		    cd ${DISKNM}/NEMSfv3gfs/
-                    export PREVIOUS_BL_DATE=`ls -d develop-* | tail -n 1 | cut -d '-' -f2`
+            export PREVIOUS_BL_DATE=`ls -d develop-* | tail -n 1 | cut -d '-' -f2`
 		    mkdir -p "develop-${BL_DATE}"
-                    cd "develop-${BL_DATE}"
-                    rsync -rvh "../develop-${PREVIOUS_BL_DATE}/" .
-		    cd /work2/noaa/epic/stmp/role-epic/stmp/role-epic/FV3_RT
+            cd "develop-${BL_DATE}"
+            rsync -rvh "../develop-${PREVIOUS_BL_DATE}/" .
+		    cd /work2/noaa/epic/role-epic/stmp/role-epic/FV3_RT/REGRESSION_TEST
 		    rsync -a --no-t REGRESSION_TEST/ "${DISKNM}/NEMSfv3gfs/develop-${BL_DATE}" || echo "#### Warning! rsync $(pwd)/REGRESSION_TEST/ incomplete."
 		    cd ${DISKNM}/NEMSfv3gfs/"develop-${BL_DATE}"
 		    chmod -R 755 .
 		    cd "${WORKSPACE}/tests"
-                    ./rt.sh -a "${ACCNR}" "${workflow}" "${opt}" "${suite}" | tee "${WORKSPACE}/tests/logs/RT-run-${machine}.log"
+            ./rt.sh -a "${ACCNR}" "${workflow}" "${opt}" "${suite}" | tee "${WORKSPACE}/tests/logs/RT-run-${machine}.log"
 		    status=${PIPESTATUS[0]}
 		    cd logs/
 		    cp "RegressionTests_${machine_id}.log" "$(dirname "${WORKSPACE}")" #/work2/noaa/epic/role-epic/jenkins/workspace
@@ -87,18 +87,18 @@ function create_baseline() {
 		    git submodule update --init --recursive
 		    cd tests
 		    echo "Creating baselines on ${machine}"
-		    export dprefix=/work2/noaa/${ACCNR}/${USER}
+		    export dprefix=/work/noaa/${ACCNR}/${USER}
 		    sed "s|/noaa/stmp/|/noaa/${ACCNR}/stmp/|g" -i rt.sh
 		    export ACCNR=epic
-                    ./rt.sh -a "${ACCNR}" "${workflow}"cs test_changes.list | tee "${WORKSPACE}/tests/logs/RT-run-${machine}.log"
+            ./rt.sh -a "${ACCNR}" "${workflow}"cs test_changes.list | tee "${WORKSPACE}/tests/logs/RT-run-${machine}.log"
 		    status=${PIPESTATUS[0]}
 		    export DISKNM=/work2/noaa/epic/UFS-WM_RT
 		    cd ${DISKNM}/NEMSfv3gfs/
-                    export PREVIOUS_BL_DATE=`ls -d develop-* | tail -n 1 | cut -d '-' -f2`
+            export PREVIOUS_BL_DATE=`ls -d develop-* | tail -n 1 | cut -d '-' -f2`
 		    mkdir -p "develop-${BL_DATE}"
-                    cd "develop-${BL_DATE}"
-                    rsync -rvh "../develop-${PREVIOUS_BL_DATE}/" .
-		    cd /work2/noaa/epic/stmp/role-epic/stmp/role-epic/FV3_RT/
+            cd "develop-${BL_DATE}"
+            rsync -rvh "../develop-${PREVIOUS_BL_DATE}/" .
+		    cd /work/noaa/epic/role-epic/stmp/role-epic/FV3_RT/REGRESSION_TEST
 		    rsync -a --no-t REGRESSION_TEST/ "${DISKNM}/NEMSfv3gfs/develop-${BL_DATE}" || echo "#### Warning! rsync $(pwd)/REGRESSION_TEST/ incomplete."
 		    cd ${DISKNM}/NEMSfv3gfs/"develop-${BL_DATE}"
 		    chmod -R 755 .
