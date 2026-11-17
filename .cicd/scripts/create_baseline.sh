@@ -34,10 +34,11 @@ set_up_env() {
 
 function update_baselines() {
    echo "Creating baselines on ${machine}"
-   export PREVIOUS_BL_DATE=`ls -d develop-* | tail -n 1 | cut -d '-' -f2`
+   # shellcheck disable=SC2155,SC2012
+   export PREVIOUS_BL_DATE=$(ls -d develop-* | tail -n 1 | cut -d '-' -f2)
    ./rt.sh -a "${ACCNR}" -ecs test_changes.list | tee "${WORKSPACE}/tests/logs/RT-run-${machine}.log"
    status=${PIPESTATUS[0]}
-   if [[ "${machine}" = "GaeaC6" ]]
+   if [[ "${machine}" = "GaeaC6" ]]; then
       unset LD_LIBRARY_PATH
    fi
    cd ${DISKNM}/NEMSfv3gfs/
@@ -46,7 +47,7 @@ function update_baselines() {
    fi
    cd "develop-${BL_DATE}"
    rsync -rvh "../develop-${PREVIOUS_BL_DATE}/" .
-   cd ${STMP}
+   cd "${STMP}"
    rsync -a --no-t REGRESSION_TEST/ "${DISKNM}/NEMSfv3gfs/develop-${BL_DATE}" || echo "#### Warning! rsync $(pwd)/REGRESSION_TEST/ incomplete."
    cd ${DISKNM}/NEMSfv3gfs/"develop-${BL_DATE}"
    chmod -R 755 .
@@ -112,7 +113,6 @@ function create_baseline() {
    else
       echo "${machine} not recognized."
       exit 1
-      status=${PIPESTATUS[0]}
    fi
 
    cd "${WORKSPACE}"
