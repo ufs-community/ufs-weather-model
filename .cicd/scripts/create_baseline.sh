@@ -83,7 +83,7 @@ function create_baseline() {
 
    if [[ ${machine} =~ "Hercules" ]]
    then
-       export dprefix=/work2/noaa/${ACCNR}/${USER}/hercules
+       export dprefix=/work2/noaa/${ACCNR}/${USER}
        sed "s|/noaa/stmp/|/noaa/${ACCNR}/stmp/|g" -i rt.sh
        export DISKNM=/work2/noaa/epic/hercules/UFS-WM_RT
        export STMP="${dprefix}/stmp/role-epic/FV3_RT"
@@ -93,7 +93,7 @@ function create_baseline() {
       cd ..
       git submodule update --init --recursive
       cd tests
-      export dprefix=/work2/noaa/${ACCNR}/${USER}/orion
+      export dprefix=/work/noaa/${ACCNR}/${USER}
       sed "s|/noaa/stmp/|/noaa/${ACCNR}/stmp/|g" -i rt.sh
       export DISKNM=/work2/noaa/epic/UFS-WM_RT
       export STMP="${dprefix}/stmp/role-epic/FV3_RT"
