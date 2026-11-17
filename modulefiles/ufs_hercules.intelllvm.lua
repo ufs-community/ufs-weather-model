@@ -20,13 +20,12 @@ load("zlib/1.2.13")
 nccmp_ver=os.getenv("nccmp_ver") or "1.9.0.1"
 load(pathJoin("nccmp", nccmp_ver))
 
+setenv("CC", "mpiicx")
+setenv("CXX", "mpiicpx")
+setenv("FC", "mpiifx")
 setenv("I_MPI_CC", "icx")
 setenv("I_MPI_CXX", "icpx")
-setenv("I_MPI_F90", "ifx")
-
-setenv("CC", "mpiicc")
-setenv("CXX", "mpiicpc")
-setenv("FC", "mpiifort")
+setenv("I_MPI_FC", "ifx")
 setenv("CMAKE_Platform", "hercules.intel")
 
 whatis("Description: UFS build environment")
