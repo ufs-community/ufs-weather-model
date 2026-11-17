@@ -34,7 +34,7 @@ set_up_env() {
 
 function update_baselines() {
    echo "Creating baselines on ${machine}"
-   # shellcheck disable=SC2155
+   # shellcheck disable=SC2155,SC2012
    export PREVIOUS_BL_DATE=$(ls -d develop-* | tail -n 1 | cut -d '-' -f2)
    ./rt.sh -a "${ACCNR}" -ecs test_changes.list | tee "${WORKSPACE}/tests/logs/RT-run-${machine}.log"
    status=${PIPESTATUS[0]}
@@ -113,7 +113,6 @@ function create_baseline() {
    else
       echo "${machine} not recognized."
       exit 1
-      status=${PIPESTATUS[0]}
    fi
 
    cd "${WORKSPACE}"
