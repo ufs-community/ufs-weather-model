@@ -26,6 +26,7 @@ setenv("FC", "mpiifx")
 setenv("I_MPI_CC", "icx")
 setenv("I_MPI_CXX", "icpx")
 setenv("I_MPI_FC", "ifx")
-setenv("CMAKE_Platform", "hercules.intel")
+setenv("I_MPI_F90", "ifx")    -- overrides spack-stack's ifort setting
+setenv("I_MPI_F77", "ifx")
 
 whatis("Description: UFS build environment")
