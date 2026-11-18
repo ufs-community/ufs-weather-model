@@ -864,7 +864,7 @@ case ${MACHINE_ID} in
   gaeac7)
     echo "rt.sh: Setting up gaea c7..."
     if [[ "${ROCOTO:-false}" == true ]] ; then
-      module use /ncrc/proj/epic/c6/modulefiles
+      module use /ncrc/proj/epic/c7/modulefiles
       module load rocoto/1.3.7
       ROCOTO_SCHEDULER="slurm"
     fi
