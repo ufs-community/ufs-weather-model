@@ -507,7 +507,7 @@ line). For example:
 
 .. code-block:: text
 
-   control_c48 intel
+   control_c48 oneapi
    control_p8 gnu
 
 ``rt.sh`` then compiles only the builds that the listed tests need, and runs those tests.
@@ -701,8 +701,8 @@ tests enabled for the container are listed in :numref:`Section %s <container-rt-
 
    .. code-block:: text
 
-      control_c48 intel
-      control_p8 intel
+      control_c48 oneapi
+      control_p8 oneapi
 
    and is passed with ``./rt.sh -a <account> -P container.def -s <file>``. See
    :numref:`Section %s <container-rt-subset>` for details.

@@ -56,6 +56,7 @@ The goal of a ``-P`` run differs from a Tier 1 run. By default, a ``-P`` run is 
 **portability check**: it confirms that the model has been **ported, built, and run
 successfully** on the platform, with the same input data, model configuration(s), and
 test case definitions as the Tier 1 platforms. The ``-P`` run is not intended to be a
+replacement for Tier 1 regression testing or to verify results against the Tier 1 baselines.
 The platform may be a Tier 1 system, another community/HPC center system, a cloud instance,
 or a laptop/workstation with Singularity/Apptainer installed. Baselines can still be created
 (``-c``) and compared against (``-m``) on the same platform. These baselines are kept
