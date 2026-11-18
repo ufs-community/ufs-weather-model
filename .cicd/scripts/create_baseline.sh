@@ -59,6 +59,7 @@ function create_baseline() {
 		    status=${PIPESTATUS[0]}
 		    export DISKNM=/work2/noaa/epic/hercules/UFS-WM_RT
 		    cd ${DISKNM}/NEMSfv3gfs/
+			# shellcheck disable=SC2155,SC2012
             export PREVIOUS_BL_DATE=$(ls -d develop-* | tail -n 1 | cut -d '-' -f2)
 		    mkdir -p "develop-${BL_DATE}"
             cd "develop-${BL_DATE}"
@@ -94,6 +95,7 @@ function create_baseline() {
 		    status=${PIPESTATUS[0]}
 		    export DISKNM=/work2/noaa/epic/UFS-WM_RT
 		    cd ${DISKNM}/NEMSfv3gfs/
+			# shellcheck disable=SC2155,SC2012
             export PREVIOUS_BL_DATE=$(ls -d develop-* | tail -n 1 | cut -d '-' -f2)
 		    mkdir -p "develop-${BL_DATE}"
             cd "develop-${BL_DATE}"
@@ -122,6 +124,7 @@ function create_baseline() {
 		    unset LD_LIBRARY_PATH
 		    export DISKNM=/gpfs/f6/bil-fire8/world-shared/role.epic/UFS-WM_RT
 		    cd ${DISKNM}/NEMSfv3gfs/
+			# shellcheck disable=SC2155,SC2012
             export PREVIOUS_BL_DATE=$(ls -d develop-* | tail -n 1 | cut -d '-' -f2)
 		    mkdir -p "develop-${BL_DATE}"
             cd "develop-${BL_DATE}"
@@ -152,6 +155,7 @@ function create_baseline() {
 		    status=${PIPESTATUS[0]}
 		    export DISKNM=/scratch4/NAGAPE/epic/role-epic/UFS-WM_RT
 		    cd ${DISKNM}/NEMSfv3gfs/
+			# shellcheck disable=SC2155,SC2012
             export PREVIOUS_BL_DATE=$(ls -d develop-* | tail -n 1 | cut -d '-' -f2)
 		    mkdir -p "develop-${BL_DATE}"
             cd "develop-${BL_DATE}"
