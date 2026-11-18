@@ -59,7 +59,7 @@ function create_baseline() {
 		    status=${PIPESTATUS[0]}
 		    export DISKNM=/work2/noaa/epic/hercules/UFS-WM_RT
 		    cd ${DISKNM}/NEMSfv3gfs/
-            export PREVIOUS_BL_DATE=`ls -d develop-* | tail -n 1 | cut -d '-' -f2`
+            export PREVIOUS_BL_DATE=$(ls -d develop-* | tail -n 1 | cut -d '-' -f2)
 		    mkdir -p "develop-${BL_DATE}"
             cd "develop-${BL_DATE}"
             rsync -rvh "../develop-${PREVIOUS_BL_DATE}/" .
@@ -94,7 +94,7 @@ function create_baseline() {
 		    status=${PIPESTATUS[0]}
 		    export DISKNM=/work2/noaa/epic/UFS-WM_RT
 		    cd ${DISKNM}/NEMSfv3gfs/
-            export PREVIOUS_BL_DATE=`ls -d develop-* | tail -n 1 | cut -d '-' -f2`
+            export PREVIOUS_BL_DATE=$(ls -d develop-* | tail -n 1 | cut -d '-' -f2)
 		    mkdir -p "develop-${BL_DATE}"
             cd "develop-${BL_DATE}"
             rsync -rvh "../develop-${PREVIOUS_BL_DATE}/" .
@@ -117,21 +117,21 @@ function create_baseline() {
 		elif [[ ${machine} =~ "Gaea" ]]
 		then
 		    echo "Creating baselines on ${machine}"
-                    ./rt.sh -a "${ACCNR}" "${workflow}"cs test_changes.list | tee "${WORKSPACE}/tests/logs/RT-run-${machine}.log"
+            ./rt.sh -a "${ACCNR}" "${workflow}"cs test_changes.list | tee "${WORKSPACE}/tests/logs/RT-run-${machine}.log"
 		    status=${PIPESTATUS[0]}
 		    unset LD_LIBRARY_PATH
 		    export DISKNM=/gpfs/f6/bil-fire8/world-shared/role.epic/UFS-WM_RT
 		    cd ${DISKNM}/NEMSfv3gfs/
-                    export PREVIOUS_BL_DATE=`ls -d develop-* | tail -n 1 | cut -d '-' -f2`
+            export PREVIOUS_BL_DATE=$(ls -d develop-* | tail -n 1 | cut -d '-' -f2)
 		    mkdir -p "develop-${BL_DATE}"
-                    cd "develop-${BL_DATE}"
-                    rsync -rvh "../develop-${PREVIOUS_BL_DATE}/" .
-                    cd /gpfs/f6/epic/proj-shared/role.epic/RT_BASELINE/role.epic/FV3_RT
+            cd "develop-${BL_DATE}"
+            rsync -rvh "../develop-${PREVIOUS_BL_DATE}/" .
+            cd /gpfs/f6/epic/proj-shared/role.epic/RT_BASELINE/role.epic/FV3_RT
 		    rsync -a --no-t REGRESSION_TEST/ "${DISKNM}/NEMSfv3gfs/develop-${BL_DATE}" || echo "#### Warning! rsync $(pwd)/REGRESSION_TEST/ incomplete."
 		    cd ${DISKNM}/NEMSfv3gfs/"develop-${BL_DATE}"
 		    chmod -R 755 .
 		    cd "${WORKSPACE}/tests"
-                    ./rt.sh -a "${ACCNR}" "${workflow}" "${opt}" "${suite}" | tee "${WORKSPACE}/tests/logs/RT-run-${machine}.log"
+            ./rt.sh -a "${ACCNR}" "${workflow}" "${opt}" "${suite}" | tee "${WORKSPACE}/tests/logs/RT-run-${machine}.log"
 		    status=${PIPESTATUS[0]}
 		    cd logs/
 		    cp "RegressionTests_${machine_id}.log" "$(dirname "${WORKSPACE}")" #/gpfs/f5/epic/scratch/role.epic/jenkins/workspace
@@ -148,16 +148,16 @@ function create_baseline() {
 		    export ACCNR=epic
 		    sed "s|QUEUE=batch|QUEUE=windfall|g" -i rt.sh
 		    local workflow="-e"
-                    ./rt.sh -a "${ACCNR}" "${workflow}"cs test_changes.list | tee "${WORKSPACE}/tests/logs/RT-run-${machine}.log"
+            ./rt.sh -a "${ACCNR}" "${workflow}"cs test_changes.list | tee "${WORKSPACE}/tests/logs/RT-run-${machine}.log"
 		    status=${PIPESTATUS[0]}
 		    export DISKNM=/scratch4/NAGAPE/epic/role-epic/UFS-WM_RT
 		    cd ${DISKNM}/NEMSfv3gfs/
-                    export PREVIOUS_BL_DATE=`ls -d develop-* | tail -n 1 | cut -d '-' -f2`
+            export PREVIOUS_BL_DATE=$(ls -d develop-* | tail -n 1 | cut -d '-' -f2)
 		    mkdir -p "develop-${BL_DATE}"
-                    cd "develop-${BL_DATE}"
-                    rsync -rvh "../develop-${PREVIOUS_BL_DATE}/" .
-                    cd /scratch4/NAGAPE/epic/role.epic/stmp/RT_BASELINE/role.epic/FV3_RT
-                    rsync -a --no-t REGRESSION_TEST/ "${DISKNM}/NEMSfv3gfs/develop-${BL_DATE}" || echo "#### Warning! rsync $(pwd)/REGRESSION_TEST/"
+            cd "develop-${BL_DATE}"
+            rsync -rvh "../develop-${PREVIOUS_BL_DATE}/" .
+            cd /scratch4/NAGAPE/epic/role.epic/stmp/RT_BASELINE/role.epic/FV3_RT
+            rsync -a --no-t REGRESSION_TEST/ "${DISKNM}/NEMSfv3gfs/develop-${BL_DATE}" || echo "#### Warning! rsync $(pwd)/REGRESSION_TEST/"
 
 		    cd ${DISKNM}/NEMSfv3gfs/"develop-${BL_DATE}"
 		    chmod -R 755 .
