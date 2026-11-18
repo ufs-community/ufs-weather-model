@@ -704,7 +704,7 @@ tests enabled for the container are listed in :numref:`Section %s <container-rt-
       control_c48 intel
       control_p8 intel
 
-   and is passed with ``./rt.sh -a <account> -P container.def -s <file> -l rt.conf``. See
+   and is passed with ``./rt.sh -a <account> -P container.def -s <file>``. See
    :numref:`Section %s <container-rt-subset>` for details.
 
 Lines that use a different compiler than the one in the platform definition file are skipped.
