@@ -844,8 +844,7 @@ case ${MACHINE_ID} in
     module load stack-cray-mpich/8.1.32
     module load python/3.11.11
     if [[ "${ECFLOW:-false}" == true ]] ; then
-      module use /ncrc/proj/epic/spack-stack/c6/spack-stack-2.1.1/envs/ue-gcc-13.3.1/modules/Core
-      module load stack-gcc/13.3.1
+      module use /ncrc/proj/epic/spack-stack/c6/spack-stack-1.9.2/envs/ue-intel-2023.2.0/install/modulefiles/gcc/12.3.0
       module load ecflow/5.11.4
       ECF_HOST=$(hostname)
       ECF_PORT=$(( $(id -u) + 1500 ))
