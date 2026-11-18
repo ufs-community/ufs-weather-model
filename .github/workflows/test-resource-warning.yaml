@@ -33,13 +33,14 @@ jobs:
         run: |
           cd tests-dev/scripts/tests
           pytest > ./output.txt 2>&1
+          echo $PWD
       - name: Upload test output
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a #v7.0.1
         with:
           name: pytest-output
-          path: tests-dev/scripts/tests/output.txt
+          path: tests-dev/scripts/output.txt
       - name: Print test summary
         if: always()
         run: |
-          python ${{ github.workspace }}/tests-dev/scripts/tests/print_test_summary.py >> $GITHUB_STEP_SUMMARY
+          python ${{ github.workspace }}/tests-dev/scripts/tests/print_test_summary.py --file ${{ github.workspace }}/tests-dev/scripts/output.txt >> $GITHUB_STEP_SUMMARY
