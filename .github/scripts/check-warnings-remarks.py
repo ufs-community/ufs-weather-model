@@ -57,7 +57,11 @@ class Log():
 
          url = api_call.url + (f"?ref={commit}") #Could use a path join?
          r = requests.get(url, headers=api_call.header)
+         r.raise_for_status()
          return r.text
+      except requests.exceptions.HTTPError:
+         return r.text
+         sys.exit(1)
       except:
          logging.error(f"No commit found for the ref {commit}")
          sys.exit(1)
