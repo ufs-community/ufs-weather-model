@@ -1,14 +1,8 @@
 #!/bin/bash
 set -eu
 
-if [[ ${MACHINE_ID} = jet ]] ; then
-    # We are on NOAA Jet
-    if ( ! eval module help > /dev/null 2>&1 ) ; then
-        source /apps/lmod/lmod/init/bash
-    fi
-    module purge
-
-elif [[ ${MACHINE_ID} = hera ]] ; then
+# shellcheck disable=SC1091
+if [[ ${MACHINE_ID} = hera ]] ; then
     # We are on NOAA Hera
     if ( ! eval module help > /dev/null 2>&1 ) ; then
         source /apps/lmod/lmod/init/bash
@@ -36,13 +30,6 @@ elif [[ ${MACHINE_ID} = hercules ]] ; then
     fi
     module purge
 
-elif [[ ${MACHINE_ID} = s4 ]] ; then
-    # We are on SSEC Wisconsin S4
-    if ( ! eval module help > /dev/null 2>&1 ) ; then
-        source /usr/share/lmod/lmod/init/bash
-    fi
-    module purge
-
 elif [[ ${MACHINE_ID} = wcoss2 || ${MACHINE_ID} = acorn ]] ; then
     # We are on NOAA Cactus or Dogwood
     if ( ! eval module help > /dev/null 2>&1 ) ; then
@@ -51,20 +38,20 @@ elif [[ ${MACHINE_ID} = wcoss2 || ${MACHINE_ID} = acorn ]] ; then
     module purge
     module reset
     
+elif [[ ${MACHINE_ID} = nimbus ]] ; then
+    # We are on WCOSS3
+    if ( ! eval module help > /dev/null 2>&1 ) ; then
+        source /usr/share/lmod/lmod/init/bash
+    fi
+    module --force purge
+
 elif [[ ${MACHINE_ID} = derecho ]] ; then
     # We are on NCAR Derecho
     if ( ! eval module help > /dev/null 2>&1 ) ; then
-        source /glade/u/apps/derecho/23.09/spack/opt/spack/lmod/8.7.24/gcc/7.5.0/c645/lmod/lmod/init/bash
+        source /glade/u/apps/derecho/24.12/spack/opt/spack/lmod/8.7.37/gcc/12.4.0/nr3e/lmod/lmod/init/bash
     fi
-    module purge
+    module --force purge
     
-elif [[ ${MACHINE_ID} = frontera ]] ; then
-    # We are on TACC Frontera
-    if ( ! eval module help > /dev/null 2>&1 ) ; then
-        source /opt/apps/lmod/lmod/init/bash
-    fi
-    module purge
-
 elif [[ ${MACHINE_ID} = gaeac5 ]] ; then
     # We are on GAEA
     if ( ! eval module help > /dev/null 2>&1 ) ; then
@@ -89,6 +76,13 @@ elif [[ ${MACHINE_ID} = container ]] ; then
 
 elif [[ ${MACHINE_ID} = noaacloud ]] ; then
     # We are on NOAA Cloud
+    module purge
+
+elif [[ ${MACHINE_ID} = aws-ec2 ]] ; then
+    # We are in a container
+    if ( ! eval module help > /dev/null 2>&1 ) ; then
+        source /usr/share/lmod/lmod/init/bash
+    fi
     module purge
 
 else
