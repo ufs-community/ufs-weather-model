@@ -1010,6 +1010,17 @@ case ${MACHINE_ID} in
     ;;
   nimbus)
     echo "rt.sh: Setting up nimbus..."
+    if [[ "${ECFLOW:-false}" == true ]] ; then
+      module use /lfs/work/alexander_richert/stack/spack-stack/envs/nco-core-gcc-11.5.0/modules_flat/Core
+      module load python
+      module load python-venv
+      module load ecflow
+      # server on this login node (started by rt_utils.sh), one port per user;
+      # the modulo keeps the port valid for large (cloud) user ids
+      ECF_HOST=$(hostname)
+      ECF_PORT="$(( 1500 + $(id -u) % 30000 ))"
+      export ECF_HOST ECF_PORT
+    fi
     QUEUE=""
     COMPILE_QUEUE=""
     PARTITION="compute-c1b"
