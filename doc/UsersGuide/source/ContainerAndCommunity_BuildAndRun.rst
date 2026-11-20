@@ -6,9 +6,9 @@ Container Option to Test and Run the UFS Weather Model
 
 This chapter explains how to build and run the UFS Weather Model (:term:`WM`) using
 Singularity/Apptainer containers on any general HPC system or cloud instance, beyond the
-standard Tier 1 platforms with preinstalled software stacks. The container already has the
-compilers, MPI, and all libraries the model needs, so you do not need to install
-:term:`spack-stack`, and you may not need host compiler or MPI modules. One exception: for
+standard Tier-1 platforms with preinstalled software stacks. The container already has the
+compilers, MPI, and all libraries the model needs, so users do not need to install
+:term:`spack-stack` and may not need host compiler or MPI modules. One exception: For
 runs across several nodes, the host's MPI launcher must be compatible with the MPI inside
 the container (see :numref:`Section %s <container-rt-runtime-mod>`). The model code is
 cloned from GitHub as usual, then built and run inside container instances launched on the
@@ -21,13 +21,13 @@ describes your platform and container (see :numref:`Section %s <container-rt-con
 The container option has been tested on the community platform Stampede3 (TACC, University of
 Texas) with both GNU-based and Intel oneAPI-based software containers. An example platform definition
 file for Stampede3, ``tests/stampede.def``, is included (see :numref:`Section %s <container-rt-conf>`).
-The container option has also been tested on NOAA RDHPC Tier 1 platforms with the same method
+The container option has also been tested on NOAA RDHPC Tier-1 platforms with the same method
 (``-P container.def``), by adapting the platform definition file for each platform and container
 (GNU- or Intel oneAPI-based).
 
 .. attention::
 
-   This chapter covers ``rt.sh`` runs with the ``-P container.def`` option. For standard Tier 1
+   This chapter covers ``rt.sh`` runs with the ``-P container.def`` option. For standard Tier-1
    regression testing, see :numref:`Section %s <UsingRegressionTest>`. A summary of
    the ``-P`` option is also given in :numref:`Section %s <rt-container>`.
 
@@ -37,30 +37,30 @@ The container option has also been tested on NOAA RDHPC Tier 1 platforms with th
 Relationship to the Regression Test (RT) Framework
 ==========================================================
 
-Container runs use the same Regression Test (:term:`RT`) framework as Tier 1 platforms:
+Container runs use the same Regression Test (:term:`RT`) framework as Tier-1 platforms:
 
-* Tests are selected from ``tests/rt.conf`` (or from another file given with ``-l``), and the
+* Tests are selected from ``tests/rt.conf`` (or from another file given with the ``-l`` option), and the
   test definitions are the same files under ``tests/tests``. CMake build options follow the
   same conventions as ``rt.conf``.
 * A container run uses the machine name ``container`` (``MACHINE_ID=container``), which is
-  matched in the **Machines** column of ``rt.conf`` like any other machine name: an empty
-  column runs the line everywhere, ``+ <machines>`` runs it only on the listed machines, and
-  ``- <machines>`` runs it everywhere except the listed machines. For example,
-  ``+ hera ursa container`` runs a line in the container, and ``- noaacloud container``
-  excludes it. The tests currently enabled for the container are listed in
+  matched in the **Machines** column of ``rt.conf`` like any other machine name: An empty
+  column means the test or compile job can run on any system, ``+ <machines>`` means it can run only on the listed machines, and
+  ``- <machines>`` means it can run everywhere except the listed machines. For example,
+  ``+ ursa container`` means the compile or test job can run in the container and on Ursa, and ``- noaacloud container``
+  excludes it from running in the container or on noaacloud. The tests currently enabled for the container are listed in
   :numref:`Section %s <container-rt-tested>`.
-* The same ``rt.sh`` options are used, for example ``-a``, ``-l``, ``-n``, ``-o``, ``-c``,
+* The same ``rt.sh`` options are available, for example, ``-a``, ``-l``, ``-n``, ``-o``, ``-c``,
   ``-m``, ``-r``, and ``-e`` (see :numref:`Section %s <container-rt-run>`).
 
-The goal of a ``-P`` run differs from a Tier 1 run. By default, a ``-P`` run is a
-**portability check**: it confirms that the model has been **ported, built, and run
-successfully** on the platform, with the same input data, model configuration(s), and
-test case definitions as the Tier 1 platforms. The ``-P`` run is not intended to be a
-replacement for Tier 1 regression testing or to verify results against the Tier 1 baselines.
-The platform may be a Tier 1 system, another community/HPC center system, a cloud instance,
+The goal of a ``-P`` run differs from a Tier-1 run. By default, a ``-P`` run is a
+**portability check**: It confirms that the model has been **ported, built, and run
+to completion** on the platform, with the same input data, model configuration(s), and
+test case definitions as the Tier-1 platforms. The ``-P`` run is not intended to be a
+replacement for Tier-1 regression testing or to verify results against the Tier-1 baselines.
+The platform may be a Tier-1 system, another community/HPC system, a cloud instance,
 or a laptop/workstation with Singularity/Apptainer installed. Baselines can still be created
 (``-c``) and compared against (``-m``) on the same platform. These baselines are kept
-under the platform user's runtime directory, and are separate from the Tier 1 baselines.
+under the platform user's runtime directory, and are separate from the Tier-1 baselines.
 
 By default, a ``-P`` run is **sequential**: ``rt.sh`` compiles each configuration and then
 runs its tests in turn, which keeps it simple for interactive debugging. The Rocoto (``-r``)
@@ -80,10 +80,10 @@ Tests Run Successfully in a Container
 =====================================
 
 The following tests have been run successfully with ``rt.sh -P`` in the Intel oneAPI-based and/or
-GNU-based containers. In ``rt.conf`` these lines run on ``container``, and all other lines
-exclude it (see :numref:`Section %s <container-rt-vs-rt>`). Each entry gives the ``rt.conf``
-compile name (build) the test uses; a blank entry means that the test is not enabled for the
-container with that compiler.
+GNU-based containers. In ``rt.conf`` these lines run when ``+ ... container`` appears in the list of machines 
+or when no list of machines is provided; all lines with ``- ... container`` exclude container runs 
+(see :numref:`Section %s <container-rt-vs-rt>`). Each entry gives the ``rt.conf``
+compile name (build) the test uses.
 
 .. list-table:: Tests run successfully in a container
    :widths: 46 27 27
@@ -216,11 +216,6 @@ container with that compiler.
      - ``atmaero``
      - 
 
-A ``COMPILE`` line runs on ``container`` only when at least one of its ``RUN`` lines does.
-To try another test in a container, remove ``container`` from the **Machines** column of its
-``RUN`` line and of its ``COMPILE`` line (or add it to a ``+`` list), as described in
-:numref:`Section %s <container-rt-vs-rt>`.
-
 To run only some of these tests, list them in a file and pass it to ``rt.sh`` with
 ``-s <file>`` (see :numref:`Section %s <container-rt-subset>`).
 
@@ -235,9 +230,9 @@ Prerequisites
 Singularity/Apptainer
 -----------------------
 
-Users running with the container option (a platform definition file with a container image)
-must have **Singularity** or **Apptainer** software installed on their
-compute platform. `Singularity/Apptainer <https://en.wikipedia.org/wiki/Apptainer#History>`_
+Users running with the container option must have **Singularity** or **Apptainer** software 
+installed on their compute platform. 
+`Singularity/Apptainer <https://en.wikipedia.org/wiki/Apptainer#History>`_
 container software is widely used in HPC environments to provide portable and reproducible
 software environments. Multi-node MPI runs require the MPI library inside the container to be
 binary (ABI) compatible with the host MPI (for ``mpirun``/``mpiexec``) or with the host's PMI/PMIx
@@ -247,14 +242,11 @@ or hangs. See `Hybrid MPI Model (Host + Container MPI)
 on the `Containers <https://docs.rdhpcs.noaa.gov/software/containers/index.html>`__
 page of the NOAA RDHPCS documentation.
 
-
 For further information of container software, see:
 *SingularityCE* `https://sylabs.io/singularity/ <https://sylabs.io/singularity/>`_ and
 *Apptainer* `https://apptainer.org/ <https://apptainer.org/>`_
 
-
 On many HPC systems, Singularity/Apptainer is available as a loadable module:
-
 
 .. code-block:: console
 
@@ -306,7 +298,7 @@ and runtime environments.
 The container software module is loaded on the host system by the
 ``modulefiles/ufs_container.runtime.lua`` module before the container is started (see
 :numref:`Section %s <container-rt-runtime-mod>`). Examples of the module loading lines are
-given in that file: uncomment the lines needed for the platform, or add your own. For example,
+given in that file. Uncomment the lines needed for the platform, or add your own. For example,
 to run a container on Stampede3, add:
 
 .. code-block:: lua
@@ -330,18 +322,18 @@ Further information on Singularity/Apptainer is available at:
 Container Image
 ---------------
 
-The container option requires a Singularity/Apptainer image (``*.sif``). Both GNU-based and
+The container option requires a Singularity/Apptainer image (``*.sif`` file). Both GNU-based and
 Intel oneAPI-based images are supported. Users can either build their own image from the Docker Hub
 images (see :numref:`Section %s <container-rt-image-build>`), or use an existing ``*.sif`` image
 if one is already staged on the system (see :numref:`Section %s <container-rt-image-tier1>`).
-Container images are also staged on NOAA RDHPC Tier 1 platforms in common locations maintained by EPIC.
+Container images are also staged on NOAA RDHPC Tier-1 platforms in common locations maintained by EPIC.
 
 .. note::
 
-   The method for accessing pre-staged container images on NOAA RDHPC Tier 1 platforms and
+   The method for accessing pre-staged container images on NOAA RDHPC Tier-1 platforms and
    for building containers from Docker Hub on other community platforms is identical to the
    procedure described in the `UFS Short-Range Weather (SRW) App Container Quick Start Guide
-   <https://ufs-srweather-app.readthedocs.io/en/latest/BuildingRunningTesting/ContainerQuickstart.html>`__.
+   <https://ufs-srweather-app.readthedocs.io/en/latest/UsersGuide/BuildingRunningTesting/ContainerQuickstart.html>`__.
    Users already familiar with SRW App containers may refer to that guide for additional
    context, troubleshooting tips, and platform-specific notes.
 
@@ -447,12 +439,12 @@ Pre-built Container Images
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 If a ``*.sif`` image already exists on the system, it can be used directly. EPIC keeps
-pre-built images for GNU and for Intel oneAPI on the NOAA RDHPC Tier 1 platforms and on
+pre-built images for GNU and Intel oneAPI on the NOAA RDHPC Tier-1 platforms and on
 NOAA Cloud. Set the path in the platform definition file: ``CONTAINER_IMG_GNU`` for the GNU
 image, and ``CONTAINER_IMG_ONEAPI`` for the Intel oneAPI image
 (see :numref:`Section %s <container-rt-conf-fields>`).
 
-.. list-table:: Pre-built container images on NOAA RDHPC Tier 1 platforms and NOAA Cloud
+.. list-table:: Pre-built container images on NOAA RDHPC Tier-1 platforms and NOAA Cloud
    :widths: 16 42 42
    :header-rows: 1
 
@@ -481,12 +473,12 @@ The images contain these compilers and MPI libraries:
   OpenMPI 5.0.7 instead (``ompi507``).
 * **Intel oneAPI:** Intel oneAPI 2024.2 with Intel MPI 2021.13.
 
-On other platforms, such as Stampede3, build the images yourself
+On other platforms, such as Stampede3, users can build the images 
 (see :numref:`Section %s <container-rt-image-build>`).
 
 .. note::
 
-   Derecho needs OpenMPI 5.0.7 for the GNU image, to be compatible with the MPI on that
+   Derecho needs OpenMPI 5.0.7 for the GNU image to be compatible with the MPI on that
    system. The Intel oneAPI image has **not** been tested on Derecho yet. Only the GNU
    image is supported there now.
 
@@ -496,7 +488,7 @@ Bind Directories for Various Platforms
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The following table lists the typical bind directories for several platforms, including
-NOAA RDHPC Tier 1. These paths should be provided as a comma-separated list in the
+NOAA RDHPC Tier-1 systems. These paths should be provided as a comma-separated list in the
 ``BIND_DIRS`` entry of the platform definition file
 (see :numref:`Section %s <container-rt-conf>`):
 
@@ -536,7 +528,7 @@ On Level 1 and Level 2 systems these are pre-staged; see :numref:`Section %s <Da
 the ``DISKNM`` and ``INPUTDATA_ROOT`` paths for each platform. These paths are set by the
 ``INPUTDATA_*`` entries of the platform definition file (see :numref:`Section %s <container-rt-conf>`).
 
-For Level 3–4 systems, input data is publicly available in the `UFS WM Data Bucket <https://registry.opendata.aws/noaa-ufs-regtests/>`__.
+For Level 3-4 systems, input data is publicly available in the `UFS WM Data Bucket <https://registry.opendata.aws/noaa-ufs-regtests/>`__.
 The current input data sets are ``input-data-20260617`` (``INPUTDATA_ROOT``), with WaveWatch III data in
 ``input-data-20260617/WW3_input_data_20261020`` (``INPUTDATA_ROOT_WW3``) and LM4 data in
 ``input-data-20260617/LM4_input_data`` (``INPUTDATA_LM4``).
@@ -838,7 +830,7 @@ To set up a new platform:
 
       ./rt.sh -a <account> -P container.def [-l rt.conf] [-s my_test.list]
 
-   ``-l`` and ``-s`` are optional. ``-l`` gives the file with the list of tests (``rt.conf`` is
+   ``-l`` and ``-s`` are optional. ``-l`` gives the file with the COMPILE/RUN information (``rt.conf`` is
    the default), and ``-s`` runs only the tests listed in ``my_test.list`` (see
    :numref:`Section %s <container-rt-subset>`).
 
@@ -850,7 +842,7 @@ managers. Tests are not
 listed in this file; they are selected from ``rt.conf``.
 
 By default, a run with a platform definition file is sequential and does not compare results
-against baselines: it is a portability check that the model builds and runs on the platform,
+against baselines: It is a portability check that the model builds and runs on the platform,
 not a regression test. The ``-c`` and ``-m`` options create and compare against baselines,
 and ``-r`` and ``-e`` use Rocoto or ecFlow (these need ``ROCOTO_SCHEDULER`` and/or ``WORKFLOW_MODULE_CMD``).
 
@@ -938,7 +930,7 @@ Platform Definition Fields
    * - ``BIND_DIRS``
      - Comma-separated list of host directories to bind/mount to the container.
        Include all filesystems containing the source tree, input data, and run directory.
-       See :numref:`Section %s <container-rt-binddirs>` for typical values on Tier 1 platforms.
+       See :numref:`Section %s <container-rt-binddirs>` for typical values on Tier-1 platforms.
 
 **Scheduler**
 
@@ -1032,7 +1024,7 @@ Tests are launched by running ``rt.sh`` with ``-P`` from the ``tests/`` director
    cd ${WM_HOME}/tests
    ./rt.sh -a <account> -P container.def [-l rt.conf] [-s my_test.list]
 
-``-l`` and ``-s`` are optional: ``-l`` gives the file with the list of tests (``rt.conf`` by
+``-l`` and ``-s`` are optional: ``-l`` gives the file with the COMPILE/RUN lines (``rt.conf`` by
 default, or your own file such as ``my_rt.conf``), and ``-s`` runs only the tests listed in
 ``my_test.list`` (see :numref:`Section %s <container-rt-subset>`). Other options can be added
 as well (see the table below).
@@ -1043,7 +1035,7 @@ and container image, for Stampede3 example:
 
 .. code-block:: console
 
-   ./rt.sh -a <account> -P stampede.def -n "<test> <compiler>" -l rt.conf
+   ./rt.sh -a <account> -P stampede.def -n "<test> <compiler>"
 
 .. _container-rt-subset:
 
@@ -1056,10 +1048,10 @@ to check a new container image or platform, or to rerun only the tests that fail
 
 .. code-block:: console
 
-   ./rt.sh -a <account> -P container.def -s container_tests.list -l rt.conf
+   ./rt.sh -a <account> -P container.def -s container_tests.list
 
 The file lists one test per line: the test name, a single space, and the compiler. The test
-name is the name in the ``RUN`` line of ``rt.conf`` (and of the test file in ``tests/tests/``),
+name is the name in the ``RUN`` line from ``rt.conf`` (and of the test file in ``tests/tests/``),
 and the compiler is ``oneapi`` or ``gnu``, as in the ``COMPILE`` line above that ``RUN`` line.
 For example, a file ``container_tests.list`` for Intel oneAPI tests:
 
@@ -1071,7 +1063,7 @@ For example, a file ``container_tests.list`` for Intel oneAPI tests:
    cpld_control_c48_5deg oneapi
    datm_cdeps_control_cfsr oneapi
 
-``rt.sh`` compiles only the builds that the listed tests need, and then runs those tests.
+``rt.sh`` compiles only the builds that the listed tests need and then runs those tests.
 
 .. note::
 
@@ -1083,12 +1075,14 @@ For example, a file ``container_tests.list`` for Intel oneAPI tests:
      If none of the listed tests can be run, ``rt.sh`` stops with an error.
    * After each run, ``rt.sh`` writes the failed tests to ``tests/test_changes.list`` in the
      same format, so ``-s test_changes.list`` reruns only the tests that failed.
-   * With ``-l <conf file>``, tests are taken from ``<conf file>`` instead of ``rt.conf``.
+   * With ``-l <conf_file>``, tests are taken from ``<conf_file>`` instead of ``rt.conf``.
      Unlisted tests that a listed test depends on still come from ``rt.conf``, so list them
      too.
    * ``-s`` cannot be combined with ``-n`` or with the dry run ``-x``. To dry-run a container
      test, use ``-n`` with ``-x`` instead, one test at a time, for example
-     ``./rt.sh -a <account> -P container.def -n "control_c48 oneapi" -x -l rt.conf``.
+     ``./rt.sh -a <account> -P container.def -n "control_c48 oneapi" -x``. Alternatively, use 
+     ``-l`` with ``-x`` to dry run the whole set of container tests: 
+     ``./rt.sh -a <account> -P container.def -xl <my_conf_file.conf>``.
 
 Command-Line Options
 --------------------
@@ -1117,7 +1111,7 @@ runs are:
    * - ``-o``
      - Compile only; skip all tests.
    * - ``-x``
-     - Dry run. Works the same as on Tier 1 platforms: ``rt.sh`` skips the compiles,
+     - Dry run. Works the same as on Tier-1 platforms: ``rt.sh`` skips the compiles,
        sets up each test's run directory and job card, but does not copy the executable,
        stage the input data, or submit the job.
    * - ``-c``
@@ -1205,7 +1199,7 @@ On **PBS** systems the command may look similar to:
 
    qsub -I -l walltime=<time> -A <account> -q <queue> -l select=1:ncpus=<cores>:mpiprocs=<cores>
 
-After the allocation is granted (and connecting via ``ssh`` to the compute node if required),
+After the allocation is granted (and after connecting via ``ssh`` to the compute node if required),
 run ``rt.sh``. The model is started with the ``MPI_LAUNCH_ONEAPI`` or ``MPI_LAUNCH_GNU``
 command from the platform definition file.
 
@@ -1300,7 +1294,7 @@ Because ``RUNDIR_ROOT`` is reused from run to run, a compile or test directory l
 earlier run is not deleted. It is renamed to ``<directory>_old_<YYYYMMDDHHMM>`` before the
 new run starts. A symlink ``tests/run_dir`` points to ``RUNDIR_ROOT``.
 
-Log files are written to the ``tests/logs/`` directory, as for Tier 1 runs
+Log files are written to the ``tests/logs/`` directory, as for Tier-1 runs
 (see :numref:`Section %s <log-files>`):
 
 * ``RegressionTests_container.log`` — summary of the run.

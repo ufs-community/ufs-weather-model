@@ -7,8 +7,8 @@
 #   2. Run:
 #        ./rt.sh -a <account> -P container.def [-l rt.conf] [-s my_test.list]
 #
-#      -l rt.conf       file with the list of tests (rt.conf is the default);
-#                       can also be your own file, e.g. -l my_rt.conf
+#      -l rt.conf       file with the list of COMPILE/RUN information (rt.conf is 
+#                       the default); can also be your own file, e.g. -l my_rt.conf
 #      -s my_test.list  optional: run only the tests listed in my_test.list,
 #                       one "<test name> <compiler>" per line, for example:
 #                         control_c48 oneapi
@@ -16,8 +16,8 @@
 #
 # Tests are selected from rt.conf (or -l <file>) with the machine name
 # "container" in the Machines column, like any other machine:
-# "+ ... container" runs a line in the container, "- ... container"
-# excludes it, and an empty column runs it everywhere.
+# "+ ... container" runs a COMPILE/RUN line in the container, "- ... container"
+# excludes it, and an empty column allows it to run on any machine.
 #
 # This file is a bash file of KEY=value assignments, sourced by rt.sh.
 # Quote values containing spaces. By default a container run is sequential
