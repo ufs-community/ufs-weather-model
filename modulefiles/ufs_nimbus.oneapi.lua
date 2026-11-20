@@ -2,10 +2,12 @@ help([[
 loads UFS Model prerequisites for Nimbus/oneAPI (icx + ifx)
 ]])
 
-source_sh("bash", "/opt/intel/oneapi/setvars.sh")
-source_sh("bash", "/opt/intel/oneapi/compiler/2026.1/env/vars.sh")
-source_sh("bash", "/opt/intel/oneapi/mpi/2021.18/env/vars.sh")
-source_sh("bash", "/opt/intel/oneapi/mkl/2026.1/env/vars.sh")
+load("tbb")
+load("umf")
+load("tcm")
+load("compiler-rt")
+load("compiler-intel-llvm/2026.1.1")
+load("mpi/2021.18")
 
 prepend_path("MODULEPATH", "/work/alexander_richert/stack/spack-stack/envs/nco-sci-oneapi-2026.1.0/modules_flat/Core")
 
@@ -24,7 +26,7 @@ local ufs_modules = {
   {["esmf"]            = "8.8.0"},
   {["fms"]             = "2024.03-gfs-constants"},
   {["bacio"]           = "2.4.1"},
-  {["crtm"]            = "3.1.2"},
+  {["crtm"]            = "2.4.0.1"},
   {["g2"]              = "3.5.1"},
   {["g2tmpl"]          = "1.17.0"},
   {["ip"]              = "5.4.0"},
