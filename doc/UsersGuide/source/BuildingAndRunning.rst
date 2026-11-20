@@ -216,7 +216,7 @@ Note that loading this module file will also set the CMake environment variables
 .. table:: *CMake environment variables required to configure the build for the Weather Model*
 
    +-------------------------+----------------------------------------------+----------------------+
-   | **EnvironmentVariable** | **Description**                              | **Ursa OneAPI Value**|
+   | **EnvironmentVariable** | **Description**                              | **Ursa oneAPI Value**|
    +=========================+==============================================+======================+
    |  CMAKE_C_COMPILER       | Name of C compiler                           | mpiicx               |
    +-------------------------+----------------------------------------------+----------------------+
@@ -623,7 +623,7 @@ When running a large number (10's or 100's) of tests, the ``-e`` or ``-r`` optio
 decrease testing time by using a workflow manager (ecFlow or Rocoto, respectively) to queue the jobs 
 according to dependencies and run them concurrently. 
 The ``-n`` option can be used to run a single test; for example, ``./rt.sh -a epic -n "control_c48 oneapi"`` 
-will build the ATM model and run the ``control_c48`` test with an Intel OneAPI compiler using the "epic" account 
+will build the ATM model and run the ``control_c48`` test with an Intel oneAPI compiler using the "epic" account 
 (users should substitute an account where they can charge computational resources).
 The ``-c`` option is used to create a baseline. New baselines are needed when code changes lead 
 to result changes and therefore deviate from existing baselines on a bit-for-bit basis.

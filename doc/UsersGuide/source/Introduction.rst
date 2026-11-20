@@ -33,7 +33,7 @@ for those elements, are listed below:
 
 The UFS Weather Model is currently included in two UFS Application releases: The UFS Short-Range Weather (:term:`SRW`) Application v3.0.0 release (April 2025) and the Land Data Assimilation (DA) System v2.0.0 release (November 2024). These UFS apps also contain pre- and post-processing components, a comprehensive build system, and workflows for configuration and execution of the application. The SRW App v3.0.0 documentation and details can be found `here <https://ufs-srweather-app.readthedocs.io/en/release-public-v3.0.0/>`__. The Land DA v2.0.0 documentation and details can be found `here <https://land-da-workflow.readthedocs.io/en/release-public-v2.0.0/>`__.
 
-The UFS WM code is portable and can be used with Linux or Mac operating systems and with Intel or GNU compilers. It has been tested on a variety of platforms widely used by atmospheric scientists, such as the NOAA Research Ursa system, the National Center for Atmospheric Research (:term:`NCAR`) Derecho system, and the Mississippi State University (MSU) Hercules system. 
+The UFS WM code is portable and can be used with Linux or Mac operating systems and with Intel oneAPI or GNU compilers. It has been tested on a variety of platforms widely used by atmospheric scientists, such as the NOAA Research Ursa system, the National Center for Atmospheric Research (:term:`NCAR`) Derecho system, and the Mississippi State University (MSU) Hercules system. 
 
 .. note::
 

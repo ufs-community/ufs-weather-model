@@ -45,7 +45,7 @@ For all systems, users will need to:
 
          .. code-block:: console
 
-            ./rt.sh -a <account_name> -k -n "control_c48 intel"
+            ./rt.sh -a <account_name> -k -n "control_c48 oneapi"
 
          where ``<account_name>`` is replaced with the name of an account where the user can charge computational resources. 
          The ``-k`` option will preserve the run directory after the forecast finishes. The :wm-repo:`rt.conf <blob/develop/tests/rt.conf>` file contains all of the currently maintained RTs. 
@@ -60,7 +60,7 @@ For all systems, users will need to:
          
          .. code-block:: console
 
-            COMPILE | s2s | intel | -DAPP=S2S -DCCPP_SUITES=FV3_GFS_v17_coupled_p8,FV3_GFS_v17_coupled_p8_ugwpv1 |   | fv3 |
+            COMPILE | s2s | oneapi | -DAPP=S2S -DCCPP_SUITES=FV3_GFS_v17_coupled_p8,FV3_GFS_v17_coupled_p8_ugwpv1 |   | fv3 |
             RUN | cpld_control_c48         |                            | baseline |
             RUN | cpld_warmstart_c48       | - noaacloud                | baseline |
             RUN | cpld_restart_c48         | - noaacloud                |          | cpld_warmstart_c48
@@ -73,7 +73,7 @@ For all systems, users will need to:
 
          adding additional arguments as desired. 
 
-   #. Check ``${STMP}/FV3_RT/rt_PID/<test_name>`` for the model run, where ``PID`` is a process ID, and ``<test_name>`` refers to a specific test, such as ``control_c48_intel``.
+   #. Check ``${STMP}/FV3_RT/rt_PID/<test_name>`` for the model run, where ``PID`` is a process ID, and ``<test_name>`` refers to a specific test, such as ``control_c48_oneapi``.
       A successful test will produce an ``out`` file with an exit code at the bottom. ``exit code 0:0`` indicates a successful run. For example: 
 
       .. code-block:: console 
