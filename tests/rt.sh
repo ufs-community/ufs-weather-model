@@ -1013,7 +1013,8 @@ case ${MACHINE_ID} in
     QUEUE=""
     COMPILE_QUEUE=""
     PARTITION="compute-c1b"
-    dprefix=${dprefix:-"${HOME}"}
+    # $HOME (/home) is a different filesystem from the c1b compute partition
+    dprefix=${dprefix:-"/lfs-c1b/home/${USER}"}
     DISKNM="/work/data"
     STMP=${STMP:-${dprefix}/RT_BASELINE}
     PTMP=${PTMP:-${dprefix}/RT_RUNDIRS}
