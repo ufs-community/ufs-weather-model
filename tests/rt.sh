@@ -1008,6 +1008,20 @@ case ${MACHINE_ID} in
     export MPIEXEC="ibrun"
     export MPIEXECOPTS=
     ;;
+  nimbus)
+    echo "rt.sh: Setting up nimbus..."
+    QUEUE=""
+    COMPILE_QUEUE=""
+    PARTITION="compute-c1b"
+    dprefix=${dprefix:-"${HOME}"}
+    DISKNM="/work/data"
+    STMP=${STMP:-${dprefix}/RT_BASELINE}
+    PTMP=${PTMP:-${dprefix}/RT_RUNDIRS}
+    SCHEDULER="slurm"
+    # the only input-data directory on Nimbus; the GFSv17opn tests take their
+    # FV3/MOM6/CICE/WW3 inputs from INPUTDATA_GFSv17opn
+    INPUTDATA_ROOT=${INPUTDATA_ROOT:-${DISKNM}/NEMSfv3gfs/input-data-20260617}
+    ;;
   *)
     die "Unknown machine ID, please edit detect_machine.sh file"
     ;;

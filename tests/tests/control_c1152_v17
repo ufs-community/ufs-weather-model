@@ -1,0 +1,231 @@
+###############################################################################
+#
+#  global control test: ATM-only test at c1152 using operational GFSv17 configuration
+#
+#  ATM-only analog of cpld_control_c1152_v17. All ATM settings match the
+#  coupled test except those that only have meaning with an active ocean/ice
+#  (CPL* flags, MIN_SEAICE, USE_CICE_ALB).
+#
+###############################################################################
+
+TEST_DESCR="FV3 ATM only - C1152 - GFSv17 operational configuration"
+
+CNTL_DIR=control_c1152_v17
+
+LIST_FILES="sfcf006.nc \
+            sfcf012.nc \
+            sfcf018.nc \
+            sfcf024.nc \
+            atmf006.nc \
+            atmf012.nc \
+            atmf018.nc \
+            atmf024.nc \
+            RESTART/20250102.060000.coupler.res \
+            RESTART/20250102.060000.fv_core.res.nc \
+            RESTART/20250102.060000.fv_core.res.tile1.nc \
+            RESTART/20250102.060000.fv_core.res.tile2.nc \
+            RESTART/20250102.060000.fv_core.res.tile3.nc \
+            RESTART/20250102.060000.fv_core.res.tile4.nc \
+            RESTART/20250102.060000.fv_core.res.tile5.nc \
+            RESTART/20250102.060000.fv_core.res.tile6.nc \
+            RESTART/20250102.060000.fv_srf_wnd.res.tile1.nc \
+            RESTART/20250102.060000.fv_srf_wnd.res.tile2.nc \
+            RESTART/20250102.060000.fv_srf_wnd.res.tile3.nc \
+            RESTART/20250102.060000.fv_srf_wnd.res.tile4.nc \
+            RESTART/20250102.060000.fv_srf_wnd.res.tile5.nc \
+            RESTART/20250102.060000.fv_srf_wnd.res.tile6.nc \
+            RESTART/20250102.060000.fv_tracer.res.tile1.nc \
+            RESTART/20250102.060000.fv_tracer.res.tile2.nc \
+            RESTART/20250102.060000.fv_tracer.res.tile3.nc \
+            RESTART/20250102.060000.fv_tracer.res.tile4.nc \
+            RESTART/20250102.060000.fv_tracer.res.tile5.nc \
+            RESTART/20250102.060000.fv_tracer.res.tile6.nc \
+            RESTART/20250102.060000.phy_data.tile1.nc \
+            RESTART/20250102.060000.phy_data.tile2.nc \
+            RESTART/20250102.060000.phy_data.tile3.nc \
+            RESTART/20250102.060000.phy_data.tile4.nc \
+            RESTART/20250102.060000.phy_data.tile5.nc \
+            RESTART/20250102.060000.phy_data.tile6.nc \
+            RESTART/20250102.060000.sfc_data.tile1.nc \
+            RESTART/20250102.060000.sfc_data.tile2.nc \
+            RESTART/20250102.060000.sfc_data.tile3.nc \
+            RESTART/20250102.060000.sfc_data.tile4.nc \
+            RESTART/20250102.060000.sfc_data.tile5.nc \
+            RESTART/20250102.060000.sfc_data.tile6.nc "
+
+ATMRES=C1152
+DT_ATMOS=150
+
+export_fv3
+export_ugwpv1
+
+#IC
+SYEAR=2025
+SMONTH=01
+SDAY=01
+SHOUR=06
+SECS=$((10#${SHOUR} * 3600))
+FHROT=3
+
+GFSv17opn=.true.
+WARM_START=.true.
+
+FV3ATM_OUTPUT_DIR='./'
+
+#Simulation length and output
+DAYS=1.25
+FHMAX=30
+RESTART_N=3
+RESTART_INTERVAL="${RESTART_N} -1"
+FHZERO=6
+OUTPUT_FH="6 -1"
+WLCLK=90
+EXCLUSIVE_NODES=.false.
+
+# WCOSS2 uses the operational layout. Unlike the coupled test, the 16-day
+# operational length is not used here.
+if [[ ${MACHINE_ID} = wcoss2 ]]; then
+  INPES=32
+  JNPES=64
+  BLOCKSIZE=36
+  atm_omp_num_threads=4
+  WRITE_GROUP=8
+  WRTTASK_PER_GROUP=300
+  WRITE_DOPOST=.true.
+else
+  INPES=24
+  JNPES=12
+  BLOCKSIZE=32
+  atm_omp_num_threads=4
+  WRITE_GROUP=4
+  WRTTASK_PER_GROUP=192
+  WRITE_DOPOST=.true.
+fi
+
+NPX=1153
+NPY=1153
+NPZ=127
+NPZP=128
+USE_FV3_ROUTEHANDLES=.true.
+QUILTING=.true.
+QUILTING_RESTART=.true.
+OUTPUT_GRID="gaussian_grid"
+OUTPUT_FILE="'netcdf_parallel' 'netcdf_parallel'"
+IDEFLATE=1
+QUANTIZE_NSD=14
+ICHUNK2D=3072
+JCHUNK2D=1536
+ICHUNK3D=3072
+JCHUNK3D=1536
+KCHUNK3D=1
+IMO=3072
+JMO=1536
+
+DT_INNER=${DT_ATMOS}
+
+# resolution dependent "fix" files
+# atm
+FNGLAC="global_glacier.2x2.grb"
+FNMXIC="global_maxice.2x2.grb"
+FNTSFC="RTGSST.1982.2012.monthly.clim.grb"
+FNSNOC="global_snoclim.1.875.grb"
+
+FNALBC="C1152.mx025.snowfree_albedo.tileX.nc"
+FNALBC2="C1152.mx025.facsf.tileX.nc"
+FNAISC="IMS-NIC.blended.ice.monthly.clim.grb"
+FNTG3C="C1152.mx025.substrate_temperature.tileX.nc"
+FNVEGC="C1152.mx025.vegetation_greenness.tileX.nc"
+FNVETC="C1152.mx025.vegetation_type.tileX.nc"
+FNSOTC="C1152.mx025.soil_type.tileX.nc"
+FNSOCC="C1152.mx025.soil_color.tileX.nc"
+FNSMCC="global_soilmgldas.statsgo.t1534.3072.1536.grb"
+FNMSKH="global_slmask.t1534.3072.1536.grb"
+
+FNVMNC="C1152.mx025.vegetation_greenness.tileX.nc"
+FNVMXC="C1152.mx025.vegetation_greenness.tileX.nc"
+FNSLPC="C1152.mx025.slope_type.tileX.nc"
+FNABSC="C1152.mx025.maximum_snow_albedo.tileX.nc"
+FSICL=99999
+
+DNATS=0
+
+DOMAINS_STACK_SIZE=16000000
+MAX_OUTPUT_FIELDS=300
+
+NUDGE_QV=.false.
+LRADAR=.true.
+PSL_GWD_DX_FACTOR=2.0
+DOGP_CLDOPTICS_LUT=.false.
+DOGP_LWSCAT=.false.
+ISEED_CA=1477812455
+
+SKEB=0
+SKEB_TAU=-999.
+SKEB_LSCALE=-999.
+SKEBNORM=1
+SKEB_NPASS=30
+SKEB_VDOF=5
+
+ISEED_SHUM=0
+SHUM_TAU=-999.
+SHUM_LSCALE=-999.
+ISEED_SPPT=0
+SPPT_TAU=-999.
+SPPT_LSCALE=-999.
+SPPT_LOGIT=.true.
+SPPT_SFCLIMIT=.true.
+PBL_TAPER=0,0,0,0.1,0.2,0.4,0.6
+LNDP_TAU=21600
+LNDP_LSCALE=500000
+ISEED_LNDP=0
+RES_LATLON_DYNAMICS='""'
+
+#ATM IAU
+CHOUR=12
+IAU_OFFSET=6
+IAU_DELTHRS=6
+IAUFHRS='3,6,9'
+IAU_INC_FILES="'atmi003.nc','atminc.nc','atmi009.nc'"
+
+# ATM warm start
+MAKE_NH=.false.
+NA_INIT=0
+EXTERNAL_IC=.false.
+NGGPS_IC=.false.
+MOUNTAIN=.true.
+
+FV3_RUN=control_run_gfsv17opn.IN
+CCPP_SUITE=FV3_GFS_v17_coupled_p8_ugwpv1
+FIELD_TABLE=field_table_thompson_noaero_tke_progsigma
+DIAG_TABLE=diag_table_gfsv17opn.IN
+INPUT_NML=global_control.nml.IN
+esmf_logkind="ESMF_LOGKIND_MULTI_ON_ERROR"
+UFS_CONFIGURE=ufs.configure.atm.IN
+
+# The diag table contains MOM6 entries; they are ignored in ATM-only runs but
+# the template variables must be defined
+MOM6_OUTPUT_FH=6
+
+#GFSv17 settings
+PROGSIGMA=.true.
+IOPT_DIAG=2
+
+K_SPLIT=2
+N_SPLIT=6
+
+# HR4 GFSv17 GWD update
+DO_GWD_OPT_PSL=.true.
+DO_GSL_DRAG_SS=.false.
+
+# Settings that export_cpl provides in the coupled test and which are not
+# coupling-dependent
+UPDATE_FULL_OMEGA=.true.
+NSTF_NAME=2,0,0,0,0
+
+# Coupling-dependent settings: uncoupled values
+#   CPLFLX/CPLICE/CPLWAV/CPLWAV2ATM/CPLCHM are .false. from export_fv3
+#   USE_CICE_ALB: no ice model provides albedos
+#   MIN_SEAICE:   standard uncoupled value
+CPLCHM=.false.
+USE_CICE_ALB=.false.
+MIN_SEAICE=0.15

@@ -1,0 +1,16 @@
+###############################################################################
+#
+#  global MPI test: ATM-only test at c1152 using operational GFSv17 configuration, MPI dependency
+#
+###############################################################################
+
+source "${PATHRT}"/tests/control_c1152_v17
+TEST_DESCR+=" MPI"
+
+USE_FV3_ROUTEHANDLES=.false.
+
+# TODO: determine if WCOSS2 needs blocks of 8 (no leftover columns) for decomposition reproducibility
+if [[ ${MACHINE_ID} != wcoss2 ]]; then
+    INPES=12
+    JNPES=18
+fi
