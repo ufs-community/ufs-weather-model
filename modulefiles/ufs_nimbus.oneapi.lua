@@ -54,8 +54,6 @@ setenv("I_MPI_CC", "icx")
 setenv("I_MPI_CXX", "icpx")
 setenv("I_MPI_FC", "ifx")
 
--- no configure_nimbus.oneapi.cmake yet: parallel netCDF stays off until the
--- oneapi stack is checked (nc-config --has-parallel4)
 setenv("CMAKE_Platform", "nimbus.oneapi")
 
 whatis("Description: UFS build environment")
