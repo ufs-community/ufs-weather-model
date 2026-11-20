@@ -9,6 +9,9 @@ FV3_IC=@[INPUTDATA_GFSv17opn]/FV3_IC
 
 # FV3 fixed input
 cp @[INPUTDATA_GFSv17opn]/FV3_fix/*.nc ./INPUT
+# FV3_fix/grid_spec.nc is the coupled mosaic (atmosphere + ocean); ATM-only
+# uses the atmosphere mosaic as grid_spec.nc
+cp @[INPUTDATA_GFSv17opn]/FV3_fix/@[ATMRES]_mosaic.nc ./INPUT/grid_spec.nc
 cp @[INPUTDATA_GFSv17opn]/FV3_fix/*.grb .
 cp @[INPUTDATA_GFSv17opn]/FV3_fix_tiled/* .
 
