@@ -64,7 +64,15 @@ elif [[ ${MACHINE_ID} = gaeac6 ]]; then
 
 elif [[ ${MACHINE_ID} = container ]] ; then
     # We are in a container
-    source /usr/lmod/lmod/init/bash
+    # Lmod init scripts reference FPATH (a ksh/zsh variable); disable nounset
+    # temporarily so a clean bash environment does not trigger an unbound error.
+    set +u
+    if [[ -e /usr/share/lmod/lmod/init/bash ]] ; then
+        source /usr/share/lmod/lmod/init/bash
+    else
+        source /usr/lmod/lmod/init/bash
+    fi
+    set -u
     module purge
 
 elif [[ ${MACHINE_ID} = noaacloud ]] ; then
