@@ -785,7 +785,6 @@ container on Hercules/Orion):
    singularity shell -B /work -B /work2 -B /local <container-image>
    # inside the container:
    source /opt/spack-stack/spack-stack-1.9.2/.bashenv   # or equivalent init script
-   module avail
    module load stack-oneapi/2024.2.1
    module load stack-intel-oneapi-mpi/2021.13
    module avail
