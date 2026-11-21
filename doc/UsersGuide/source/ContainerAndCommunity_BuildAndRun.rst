@@ -833,7 +833,7 @@ To set up a new platform:
    the default), and ``-s`` runs only the tests listed in ``my_test.list`` (see
    :numref:`Section %s <container-rt-subset>`).
 
-The file is a bash file of ``KEY=value`` assignments, with ``#`` comments. Values containing
+The container definition file is a bash file of ``KEY=value`` assignments, with ``#`` comments. Values containing
 spaces must be quoted. ``rt.sh`` sources the file and uses the entries described in
 :numref:`Section %s <container-rt-conf-fields>`. The ``ROCOTO_SCHEDULER`` and ``WORKFLOW_MODULE_CMD``
 entries are optional and needed only for the Rocoto (``-r``) and ecFlow (``-e``) workflow
