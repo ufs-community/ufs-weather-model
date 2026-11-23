@@ -116,6 +116,11 @@ if [[ ${DRY_RUN:-false} == false ]]; then
       module load hdf5-D/1.14.0
       module load nccmp-D/1.9.0.1
       ;;
+    nimbus)
+      module use /lfs/work/alexander_richert/stack/spack-stack/envs/nco-sci-oneapi-2026.1.0/modules_flat/Core
+      module use modulefiles
+      module load modules.fv3
+      ;;
     gaeac5)
       module use /ncrc/proj/epic/spack-stack/spack-stack-1.6.0/envs/unified-env/install/modulefiles/Core
       module load stack-intel/2023.2.0 stack-cray-mpich/8.1.28
@@ -530,7 +535,7 @@ if [[ ${skip_check_results} == false ]]; then
 
       else
         if [[ ${i##*.} == nc* ]] ; then
-          if [[ " orion hercules hera ursa wcoss2 acorn derecho gaeac5 gaeac6 noaacloud " =~ ${MACHINE_ID} ]]; then
+          if [[ " orion hercules hera ursa wcoss2 nimbus acorn derecho gaeac5 gaeac6 noaacloud " =~ ${MACHINE_ID} ]]; then
             printf "USING NCCMP.." >> "${RT_LOG}"
             printf "USING NCCMP.."
               nccmp_args=(-d -S -q -f -B --Attribute=checksum --warn=format)

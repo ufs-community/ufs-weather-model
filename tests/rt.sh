@@ -799,6 +799,25 @@ case ${MACHINE_ID} in
     PTMP="/lfs/h2/emc/ptmp"
     SCHEDULER="pbs"
     ;;
+  nimbus)
+    echo "rt.sh: Setting up NIMBUS..."
+    if [[ "${ECFLOW:-false}" == true ]] ; then
+      module use /lfs/work/alexander_richert/stack/spack-stack/envs/nco-core-gcc-11.5.0/modules_flat/Core
+      module load python
+      module load python-venv
+      module load ecflow
+      export ECF_PORT=33333
+    fi
+    QUEUE="compute"
+    COMPILE_QUEUE="compute"
+    PARTITION="compute"
+    dprefix=${dprefix:-"/home/${USER}"}
+    DISKNM="/work/data"
+    STMP="${dprefix}/RT_BASELINE"
+    PTMP="${dprefix}/RT_RUNDIRS"
+    SCHEDULER="slurm"
+  ;;
+
   gaeac5)
     echo "rt.sh: Setting up gaea c5..."
     if [[ "${ROCOTO:-false}" == true ]] ; then
