@@ -9,6 +9,8 @@
 
 set -eu
 [[ "${RTVERBOSE:-false}" == true ]] && set -x
+# PBS may start the job in $HOME; the paths below are relative to the run directory.
+cd "@[RUNDIR]"
 date_s_start=$(date +%s)
 date_start=$(date)
 echo -n "${date_s_start}," > job_timestamp.txt

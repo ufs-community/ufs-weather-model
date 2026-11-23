@@ -10,6 +10,8 @@
 
 set -eu
 [[ "${RTVERBOSE:-false}" == true ]] && set -x
+# PBS may start the job in $HOME; the paths below are relative to the run directory.
+cd "@[RUNDIR]"
 echo -n " $( date +%s )," > job_timestamp.txt
 
 echo "Model started:  " $(date)

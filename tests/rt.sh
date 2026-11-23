@@ -323,15 +323,6 @@ EOF
         else
           COMPILE_RESULT="PASS"
           if [[ ${COMPILER} == "oneapi" ]]; then
-            COMPILE_NUM_WARNINGS=$(grep -c ": warning #" "${RUNDIR_ROOT}/compile_${COMPILE_ID}/err" || true)
-            COMPILE_NUM_REMARKS=$(grep -c ": remark #" "${RUNDIR_ROOT}/compile_${COMPILE_ID}/err" || true)
-            if [[ ${COMPILE_NUM_WARNINGS} -gt 0 || ${COMPILE_NUM_REMARKS} -gt 0 ]]; then
-               COMPILE_WARNINGS+=" ("
-               [[ ${COMPILE_NUM_WARNINGS} -gt 0 ]] && COMPILE_WARNINGS+=" ${COMPILE_NUM_WARNINGS} warnings"
-               [[ ${COMPILE_NUM_REMARKS}  -gt 0 ]] && COMPILE_WARNINGS+=" ${COMPILE_NUM_REMARKS} remarks"
-               COMPILE_WARNINGS+=" )"
-            fi
-          elif [[ ${COMPILER} == "oneapi" ]]; then
             # Fortran (ifort/ifx) uses Intel-style messages: "file.F90(12): warning #6843: ..."
             COMPILE_NUM_WARNINGS=$(grep -c ": warning #" "${RUNDIR_ROOT}/compile_${COMPILE_ID}/err" || true)
             COMPILE_NUM_REMARKS=$(grep -c ": remark #" "${RUNDIR_ROOT}/compile_${COMPILE_ID}/err" || true)
@@ -342,6 +333,17 @@ EOF
                [[ ${COMPILE_NUM_WARNINGS}   -gt 0 ]] && COMPILE_WARNINGS+=" ${COMPILE_NUM_WARNINGS} warnings"
                [[ ${COMPILE_NUM_REMARKS}    -gt 0 ]] && COMPILE_WARNINGS+=" ${COMPILE_NUM_REMARKS} remarks"
                [[ ${COMPILE_NUM_C_WARNINGS} -gt 0 ]] && COMPILE_WARNINGS+=" ${COMPILE_NUM_C_WARNINGS} C/C++ warnings"
+               COMPILE_WARNINGS+=" )"
+            fi
+          elif [[ ${COMPILER} == "intel" ]]; then
+            # Legacy Intel classic (ifort/icc), kept for backward compatibility:
+            # both use Intel-style messages: "file.F90(12): warning #6843: ..."
+            COMPILE_NUM_WARNINGS=$(grep -c ": warning #" "${RUNDIR_ROOT}/compile_${COMPILE_ID}/err" || true)
+            COMPILE_NUM_REMARKS=$(grep -c ": remark #" "${RUNDIR_ROOT}/compile_${COMPILE_ID}/err" || true)
+            if [[ ${COMPILE_NUM_WARNINGS} -gt 0 || ${COMPILE_NUM_REMARKS} -gt 0 ]]; then
+               COMPILE_WARNINGS+=" ("
+               [[ ${COMPILE_NUM_WARNINGS} -gt 0 ]] && COMPILE_WARNINGS+=" ${COMPILE_NUM_WARNINGS} warnings"
+               [[ ${COMPILE_NUM_REMARKS}  -gt 0 ]] && COMPILE_WARNINGS+=" ${COMPILE_NUM_REMARKS} remarks"
                COMPILE_WARNINGS+=" )"
             fi
           elif [[ ${COMPILER} == "gnu" ]]; then

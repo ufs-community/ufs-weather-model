@@ -108,7 +108,8 @@ elif [[ ${SCHEDULER} = 'slurm' ]]; then
     exit 1
   fi
 elif [[ ${SCHEDULER:-none} = 'none' && ${MACHINE_ID} = 'container' ]]; then
-  # No job scheduler — write an inline compile script (no scheduler headers).
+  # No job scheduler: write a compile script with no scheduler headers.
+  # container_exec runs it inside the container.
   # Unquoted heredoc: ${...} variables expand at write time (COMPILE_ID etc. are baked in).
   cat > job_card << COMPILE_EOF
 #!/bin/bash
@@ -128,34 +129,11 @@ fi
 # Submit compile job
 ################################################################################
 
-if [[ ${ROCOTO} = 'false' ]]; then
-  if [[ ${SCHEDULER:-none} = 'none' && ${MACHINE_ID} = 'container' ]]; then
-    echo -n "$( date +%s )," > job_timestamp.txt
-    # Load the host-side runtime module from the staged copy in the run directory.
-    # Some system module or completion scripts reference unset variables, so
-    # nounset (set -u) is temporarily disabled while they are loaded.
-    set +u
-    module use modulefiles
-    module load modules.fv3.runtime
-    set -u
-    # Run compile interactively inside the container.
-    if command -v apptainer &>/dev/null; then
-      CONTAINERBIN=apptainer
-    elif command -v singularity &>/dev/null; then
-      CONTAINERBIN=singularity
-    else
-      echo "ERROR: neither apptainer nor singularity found on this host" >&2
-      exit 1
-    fi
-    read -r -a BIND_FLAGS <<< "${CONTAINER_BIND_FLAGS:-}"
-    CONTAINER="${CONTAINERBIN^^}"
-    export "${CONTAINER}_SHELL=/bin/bash"
-    export "${CONTAINER}ENV_RTVERBOSE=${RTVERBOSE:-false}"
-    "${CONTAINERBIN}" exec -e "${BIND_FLAGS[@]}" "${CONTAINER_IMG}" "${RUNDIR}/job_card"
-    echo -n " $( date +%s )," >> job_timestamp.txt
-  else
-    submit_and_wait job_card
-  fi
+if [[ ${SCHEDULER:-none} = 'none' && ${MACHINE_ID} = 'container' ]]; then
+  # No scheduler: compile on this host, inside the container.
+  container_exec job_card
+elif [[ ${ROCOTO} = 'false' ]]; then
+  submit_and_wait job_card
 else
   chmod u+x job_card
   redirect_out_err ./job_card

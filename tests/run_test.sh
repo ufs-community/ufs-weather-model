@@ -109,7 +109,7 @@ if [[ ${DRY_RUN:-false} == false ]]; then
   elif [[ ${MACHINE_ID} == container ]]; then
     # Host-side runtime modulefile — loaded on the host before the container launches.
     cp "${PATHTR}/modulefiles/ufs_container.runtime.lua"  "./modulefiles/modules.fv3.runtime.lua"
-    # Inside-container build/run modulefile — loaded by fv3_container_run.sh inside the container.
+    # Inside-container build/run modulefile — loaded by job_card inside the container.
     if [[ -f "${PATHRT}/modules.fv3_${COMPILE_ID}.lua" ]]; then
       cp "${PATHRT}/modules.fv3_${COMPILE_ID}.lua"                "./modulefiles/modules.fv3.lua"
     elif [[ -f "${PATHTR}/modulefiles/ufs_container.${RT_COMPILER}.lua" ]]; then
@@ -492,6 +492,46 @@ elif [[ ${SCHEDULER} = 'slurm' ]]; then
     echo "Looking for fv3_conf/fv3_slurm.IN_${MACHINE_ID} but it is not found. Exiting"
     exit 1
   fi
+elif [[ ${SCHEDULER:-none} = 'none' && ${MACHINE_ID} = 'container' ]]; then
+  # No job scheduler: write a run script with no scheduler headers.
+  # container_exec runs it inside the container.
+  MPI_LAUNCH=${MPI_LAUNCH:-mpirun}
+  # MPI/libfabric settings for the model run (not needed for compile).
+  # Host-dependent values are checked here, on the host, and written into job_card.
+  MPI_ENV="export FI_PROVIDER=tcp"
+  if [[ "${RT_COMPILER}" == oneapi ]]; then
+    if [[ -n "${FI_PROVIDER_PATH:-}" ]]; then
+      MPI_ENV+=$'\n'"export FI_PROVIDER_PATH=${FI_PROVIDER_PATH}"
+    fi
+  elif [[ "${RT_COMPILER}" == gnu ]]; then
+    MPI_ENV+=$'\n'"export PMIX_MCA_gds=hash"
+    MPI_ENV+=$'\n'"export PMIX_MCA_psec=native"
+    MPI_ENV+=$'\n'"export OMPI_MCA_btl=^openib"
+    if ip link show eth0 &>/dev/null; then
+      MPI_ENV+=$'\n'"export OMPI_MCA_btl_tcp_if_include=eth0"
+      MPI_ENV+=$'\n'"export OMPI_MCA_oob_tcp_if_include=eth0"
+    fi
+    MPI_ENV+=$'\n'"export OMPI_MCA_pml=ob1"
+    MPI_ENV+=$'\n'"export OMPI_MCA_btl_vader_single_copy_mechanism=none"
+    MPI_ENV+=$'\n'"export OMPI_MCA_mca_base_component_show_load_errors=0"
+  fi
+  # Unquoted heredoc: ${...} variables expand at write time.
+  cat > job_card << RUN_EOF
+#!/bin/bash
+set -e
+[[ "\${RTVERBOSE:-false}" == true ]] && set -x
+MACHINE_ID=container
+export OMP_NUM_THREADS=${THRD}
+export OMP_STACKSIZE=512M
+${MPI_ENV}
+source ${PWD}/module-setup.sh
+module purge
+module use ${PWD}/modulefiles
+module load modules.fv3
+module list
+${MPI_LAUNCH} -n ${TASKS} ./fv3.exe
+RUN_EOF
+  chmod u+x job_card
 fi
 
 # This "if" block is part of the rt.sh self-tests in error-test.conf.
@@ -513,65 +553,19 @@ export OMP_ENV=${OMP_ENV:-""}
 if [[ ${SCHEDULER:-none} = 'none' ]]; then
   ulimit -s unlimited
   if [[ ${MACHINE_ID} = 'container' ]]; then
-    MPI_LAUNCH=${MPI_LAUNCH:-mpirun}
-    # Locate container runtime on the host.
-    if command -v apptainer &>/dev/null; then
-      CONTAINERBIN=apptainer
-    elif command -v singularity &>/dev/null; then
-      CONTAINERBIN=singularity
-    else
-      echo "ERROR: neither apptainer nor singularity found on this host" >&2
-      exit 1
-    fi
-    read -r -a BIND_FLAGS <<< "${CONTAINER_BIND_FLAGS:-}"
-    # Pass runtime environment into the container via APPTAINER/SINGULARITY ENV_ variables.
-    CONTAINER="${CONTAINERBIN^^}"  # APPTAINER or SINGULARITY
-    export "${CONTAINER}_SHELL=/bin/bash"
-    export "${CONTAINER}ENV_FI_PROVIDER=tcp"
-    if [[ "${RT_COMPILER}" == oneapi ]]; then
-      [[ -n "${FI_PROVIDER_PATH:-}" ]] && export "${CONTAINER}ENV_FI_PROVIDER_PATH=${FI_PROVIDER_PATH}"
-    elif [[ "${RT_COMPILER}" == gnu ]]; then
-      export "${CONTAINER}ENV_PMIX_MCA_gds=hash"
-      export "${CONTAINER}ENV_PMIX_MCA_psec=native"
-      export "${CONTAINER}ENV_OMPI_MCA_btl=^openib"
-      if ip link show eth0 &>/dev/null; then
-        export "${CONTAINER}ENV_OMPI_MCA_btl_tcp_if_include=eth0"
-        export "${CONTAINER}ENV_OMPI_MCA_oob_tcp_if_include=eth0"
-      fi
-      export "${CONTAINER}ENV_OMPI_MCA_pml=ob1"
-      export "${CONTAINER}ENV_OMPI_MCA_btl_vader_single_copy_mechanism=none"
-      export "${CONTAINER}ENV_OMPI_MCA_mca_base_component_show_load_errors=0"
-    fi
+    # No scheduler: run the model on this host, inside the container.
     echo "NOTE: running ${TASKS} MPI tasks interactively inside container via ${MPI_LAUNCH}"
-    # Unquoted heredoc: ${COMPILE_ID}, ${MPI_LAUNCH}, and ${TASKS} are baked in at write time.
-    cat > fv3_container_run.sh << RUN_EOF
-#!/bin/bash
-set -e
-MACHINE_ID=container
-source ${PWD}/module-setup.sh
-module purge
-module use ${PWD}/modulefiles
-module load modules.fv3
-module list
-${MPI_LAUNCH} -n ${TASKS} ./fv3.exe
-RUN_EOF
-    chmod u+x fv3_container_run.sh
-    redirect_out_err "${CONTAINERBIN}" exec "${BIND_FLAGS[@]}" "${CONTAINER_IMG}" "${PWD}/fv3_container_run.sh"
+    container_exec job_card
   elif [[ ${CI_TEST} = 'true' ]]; then
     eval "${OMP_ENV}" redirect_out_err mpiexec -n "${TASKS}" ./fv3.exe
   else
     redirect_out_err mpiexec -n "${TASKS}" ./fv3.exe
   fi
-
+elif [[ ${ROCOTO} = 'false' ]]; then
+  submit_and_wait job_card
 else
-
-  if [[ ${ROCOTO} = 'false' && ${ECFLOW:-false} = 'false' ]]; then
-    submit_and_wait job_card
-  else
-    chmod u+x job_card
-    redirect_out_err ./job_card
-  fi
-
+  chmod u+x job_card
+  redirect_out_err ./job_card
 fi
 skip_check_results=${skip_check_results:-false}
 if [[ ${skip_check_results} == false ]]; then
@@ -596,15 +590,7 @@ if [[ ${skip_check_results} == false ]]; then
 
     # nccmp lives inside the container; run it there when applicable.
     if [[ -n ${CONTAINER_IMG:-} ]]; then
-      if command -v apptainer &>/dev/null; then
-        CONTAINERBIN=apptainer
-      elif command -v singularity &>/dev/null; then
-        CONTAINERBIN=singularity
-      else
-        echo "ERROR: neither apptainer nor singularity found on this host" >&2
-        exit 1
-      fi
-      read -r -a BIND_FLAGS <<< "${CONTAINER_BIND_FLAGS:-}"
+      find_container_bin
     fi
 
     for i in ${LIST_FILES} ; do
@@ -730,7 +716,8 @@ else
   } >> "${RT_LOG}"
 fi
 
-if [[ ${SCHEDULER:-none} != 'none' ]]; then
+# Written by the batch job card, or by container_exec when there is no scheduler.
+if [[ -f ${RUNDIR}/job_timestamp.txt ]]; then
   cat "${RUNDIR}/job_timestamp.txt" >> "${LOG_DIR}/${JBNME}_timestamp.txt"
 fi
 
