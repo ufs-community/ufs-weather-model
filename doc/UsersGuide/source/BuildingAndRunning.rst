@@ -222,7 +222,7 @@ Note that loading this module file will also set the CMake environment variables
    +-------------------------+----------------------------------------------+----------------------+
    |  CMAKE_CXX_COMPILER     | Name of C++ compiler                         | mpiicpx              |
    +-------------------------+----------------------------------------------+----------------------+
-   |  CMAKE_Fortran_COMPILER | Name of Fortran compiler                     | mpiifort             |
+   |  CMAKE_Fortran_COMPILER | Name of Fortran compiler                     | mpiifx               |
    +-------------------------+----------------------------------------------+----------------------+
    |  CMAKE_Platform         | String containing platform and compiler name | ursa.oneapi          |
    +-------------------------+----------------------------------------------+----------------------+
