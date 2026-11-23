@@ -128,7 +128,8 @@ export fbh_omp_num_threads=1
 
 export histaux_enabled=.false.
 export BMIC=.false.
-export SFS=.false.
+GFSv17opn=.false.
+SFS=.false.
 
 export EXCLUSIVE_NODES=.false.
 
@@ -136,7 +137,7 @@ if [[ ${MACHINE_ID} = wcoss2 || ${MACHINE_ID} = acorn ]]; then
 
   export TPN=128
   export EXCLUSIVE_NODES=.true.
-  
+
   export INPES_dflt=3
   export JNPES_dflt=8
   export INPES_thrd=3
@@ -240,6 +241,28 @@ elif [[ ${MACHINE_ID} = ursa ]]; then
   export WPG_cpl_atmw_gdas=24
   export WAV_tasks_atmw_gdas=248
 
+
+elif [[ ${MACHINE_ID} = nimbus ]]; then
+
+  # compute-c1b partition: 188 tasks per node (see fv3_slurm.IN_nimbus)
+  export TPN=188
+
+  export INPES_dflt=3
+  export JNPES_dflt=8
+  export INPES_thrd=3
+  export JNPES_thrd=4
+  export INPES_c384=6
+  export JNPES_c384=8
+  export THRD_c384=2
+  export INPES_c768=8
+  export JNPES_c768=16
+  export THRD_c768=4
+
+  export THRD_cpl_atmw_gdas=2
+  export INPES_cpl_atmw_gdas=6
+  export JNPES_cpl_atmw_gdas=8
+  export WPG_cpl_atmw_gdas=24
+  export WAV_tasks_atmw_gdas=248
 
 elif [[ ${MACHINE_ID} = linux ]]; then
 
@@ -463,6 +486,23 @@ export ESMF_THREADING=true
 export DumpFields="false"
 export MED_history_n=1000000
 export RESTART_FH=" "
+
+function set_restart_file_prefix() {
+  local restart_file_prefix
+  restart_file_prefix=$(date -u +"%Y%m%d.%H0000" -d "${SYEAR}${SMONTH}${SDAY} ${SHOUR} ${FHROT} hours")
+  echo "${restart_file_prefix}"
+}
+
+function set_restart_file_suffix_secs() {
+  local restart_valid_time
+  local restart_secs
+  local restart_file_suffix_secs
+  restart_valid_time=$(date -u +"%Y-%m-%d %H:%M:%S" -d "${SYEAR}${SMONTH}${SDAY} ${SHOUR} ${FHROT} hours")
+  restart_secs=$(($(date -u -d "${restart_valid_time}" +%-H) * 3600))
+  restart_file_suffix_date="$(date -u -d "${restart_valid_time}" +"%Y-%m-%d")"
+  restart_file_suffix_secs="${restart_file_suffix_date}-$(printf "%05d" "${restart_secs}")"
+  echo "${restart_file_suffix_secs}"
+}
 
 export_fv3_v16 ()
 {

@@ -64,6 +64,9 @@ case $(hostname -f) in
   c*.frontera.tacc.utexas.edu) MACHINE_ID=frontera ;; ### frontera compute 
 
   discover3[1-5].prv.cube) MACHINE_ID=discover ;; ### discover31-35
+
+  wcoss3-login-*.internal) MACHINE_ID=nimbus ;; ### nimbus
+
   *) MACHINE_ID=UNKNOWN ;;  # Unknown platform
 esac
 

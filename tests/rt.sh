@@ -1008,6 +1008,34 @@ case ${MACHINE_ID} in
     export MPIEXEC="ibrun"
     export MPIEXECOPTS=
     ;;
+  nimbus)
+    echo "rt.sh: Setting up nimbus..."
+    # Nimbus login sessions can drop without warning; ignore the hangup
+    trap '' HUP
+    if [[ "${ECFLOW:-false}" == true ]] ; then
+      module use /lfs/work/alexander_richert/stack/spack-stack/envs/nco-core-gcc-11.5.0/modules_flat/Core
+      module load python
+      module load python-venv
+      module load ecflow
+      # server on this login node (started by rt_utils.sh), one port per user;
+      # the modulo keeps the port valid for large (cloud) user ids
+      ECF_HOST=$(hostname)
+      ECF_PORT="$(( 1500 + $(id -u) % 30000 ))"
+      export ECF_HOST ECF_PORT
+    fi
+    QUEUE=""
+    COMPILE_QUEUE=""
+    PARTITION="compute-c1b"
+    # $HOME (/home) is a different filesystem from the c1b compute partition
+    dprefix=${dprefix:-"/lfs-c1b/home/${USER}"}
+    DISKNM="/work/data"
+    STMP=${STMP:-${dprefix}/RT_BASELINE}
+    PTMP=${PTMP:-${dprefix}/RT_RUNDIRS}
+    SCHEDULER="slurm"
+    # the only input-data directory on Nimbus; the GFSv17opn tests take their
+    # FV3/MOM6/CICE/WW3 inputs from INPUTDATA_GFSv17opn
+    INPUTDATA_ROOT=${INPUTDATA_ROOT:-${DISKNM}/NEMSfv3gfs/input-data-20260617}
+    ;;
   *)
     die "Unknown machine ID, please edit detect_machine.sh file"
     ;;
@@ -1060,6 +1088,7 @@ fi
 INPUTDATA_ROOT=${INPUTDATA_ROOT:-${DISKNM}/NEMSfv3gfs/input-data-20251015}
 INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT}/WW3_input_data_20250807
 INPUTDATA_LM4=${INPUTDATA_LM4:-${INPUTDATA_ROOT}/LM4_input_data}
+INPUTDATA_GFSv17opn=${INPUTDATA_GFSv17opn:-${DISKNM}/NEMSfv3gfs/GFSv17opn_20251014}
 
 shift $((OPTIND-1))
 if [[ $# -gt 1 ]]; then
@@ -1329,6 +1358,7 @@ export RTPWD=${RTPWD}
 export INPUTDATA_ROOT=${INPUTDATA_ROOT}
 export INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT_WW3}
 export INPUTDATA_LM4=${INPUTDATA_LM4}
+export INPUTDATA_GFSv17opn=${INPUTDATA_GFSv17opn}
 export PATHRT=${PATHRT}
 export PATHTR=${PATHTR}
 export NEW_BASELINE=${NEW_BASELINE}
