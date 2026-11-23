@@ -423,7 +423,7 @@ The ``rt.conf`` file is a pipe-separated values (PSV) file grouped into sections
    #. **Machines** to run on (``-`` is used to ignore specified machines, ``+`` is used to run only on specified machines). For example: 
       
       * ``+ ursa orion gaeac6``: Compile will only run on Ursa, Orion, and Gaea-C6 machines
-      * ``- wcoss2 acorn``: Compile will NOT be run on WCOSS2 or Acorn
+      * ``- wcoss2`: Compile will NOT be run on WCOSS2
 
    #. ``fv3``: Set as fv3. Previously, this was used to run a test without compiling code (e.g., if FV3 was already present). 
 
