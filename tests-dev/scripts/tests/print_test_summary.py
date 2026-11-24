@@ -1,4 +1,5 @@
 from mdutils.mdutils import MdUtils
+import argparse
 
 def get_test_output(file_path):
    """Read in test output from file."""
@@ -17,7 +18,11 @@ def create_mdFile(text):
    return mdFile
 
 def main():
-   data = get_test_output("output.txt")
+   parser = argparse.ArgumentParser(description="Generate test summary markdown.")
+   parser.add_argument("--file", type=str, default="output.txt", help="Path to the test output file.")
+   args = parser.parse_args()
+
+   data = get_test_output(args.file)
    mdFile = create_mdFile(data)
    print(mdFile.get_md_text())
 
