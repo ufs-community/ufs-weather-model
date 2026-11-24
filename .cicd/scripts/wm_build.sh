@@ -1,7 +1,7 @@
 #!/bin/bash
 set -eu
 export UFS_PLATFORM=${UFS_PLATFORM:-${NODE_NAME,,}}
-export UFS_COMPILER=${UFS_COMPILER:-intel}
+export UFS_COMPILER=${UFS_COMPILER:-oneapi}
 
 SCRIPT_REALPATH=$(realpath "${BASH_SOURCE[0]}")
 SCRIPTS_DIR=$(dirname "${SCRIPT_REALPATH}")
@@ -9,22 +9,12 @@ UFS_MODEL_DIR=$(realpath "${SCRIPTS_DIR}/../..")
 readonly UFS_MODEL_DIR
 echo "UFS MODEL DIR: ${UFS_MODEL_DIR}"
 
-export CC=${CC:-mpicc}
-export CXX=${CXX:-mpicxx}
-export FC=${FC:-mpif90}
-
 cd "${UFS_MODEL_DIR}"
 pwd
-ls -l ./build.sh
 
 BUILD_DIR=${BUILD_DIR:-${UFS_MODEL_DIR}/build}
 TESTS_DIR=${TESTS_DIR:-${UFS_MODEL_DIR}/tests}
 mkdir -p "${BUILD_DIR}"
-
-(
-	cd "${BUILD_DIR}"
-	pwd
-)
 
 pwd
 echo "NODE_NAME=${NODE_NAME}"
@@ -57,8 +47,8 @@ if [[ ${UFS_PLATFORM} = gaea ]] ; then
 fi
 set +x
 module use "${PWD}/modulefiles" >/dev/null 2>&1
-module load "ufs_${machine_id}.${UFS_COMPILER}" || true
-[[ ${UFS_PLATFORM} = gaea ]] && module load cmake/3.23.1 || true
+module load "ufs_${machine_id}.${UFS_COMPILER}"
+[[ ${UFS_PLATFORM} = gaea ]] && module load cmake/3.23.1
 module list
 
 echo "Pipeline Building WM on ${UFS_PLATFORM} ${UFS_COMPILER} with Account=${ACCNR}."

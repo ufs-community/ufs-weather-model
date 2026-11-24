@@ -371,6 +371,31 @@ elif [[ ${MACHINE_ID} = noaacloud ]]; then
   ICE_tasks_cpl_thrd=10
   WAV_tasks_cpl_thrd=12
 
+elif [[ ${MACHINE_ID} = container ]]; then
+
+  # Running in a container.  TPN is provided at
+  # runtime via the job .env file; use it if already set, else fall back to 80.
+  TPN=${TPN:-80}
+  EXCLUSIVE_NODES=.true.
+
+  # Decomposition defaults similar to a typical 80-task-per-node system.
+  INPES_dflt=3
+  JNPES_dflt=8
+  INPES_thrd=3
+  JNPES_thrd=4
+  INPES_c384=6
+  JNPES_c384=8
+  THRD_c384=2
+  INPES_c768=8
+  JNPES_c768=16
+  THRD_c768=2
+
+  THRD_cpl_atmw_gdas=2
+  INPES_cpl_atmw_gdas=6
+  JNPES_cpl_atmw_gdas=8
+  WPG_cpl_atmw_gdas=24
+  WAV_tasks_atmw_gdas=248
+
 else
 
   echo "Unknown MACHINE_ID ${MACHINE_ID}"
@@ -998,6 +1023,7 @@ export_fv3() {
   USE_FV3_ROUTEHANDLES=.false.
   QUILTING=.true.
   QUILTING_RESTART=.true.
+  FV3_END_FMS_DIAG=.true.
   WRITE_GROUP=1
   WRTTASK_PER_GROUP=6
   ITASKS=1
@@ -2152,6 +2178,26 @@ export_datm_cdeps() {
 
   BL_SUFFIX=""
   RT_SUFFIX=""
+}
+
+export_lm4() {
+  # lm4_nml restart_interval (years,months,days,hours,minutes,seconds)
+  LM4_RESTART_INTERVAL="0,0,0,6,0,0"
+  # river_nml dt_slow (s), river slow time step default is daily
+  LM4_RIVER_DT_SLOW=86400.
+  # river_nml do_rivers, needs river hydrography (C96 only)
+  LM4_DO_RIVERS=.true.
+  # topo_rough_nml, 'input' needs topo_rough_land.nc (C96 only), otherwise 'computed'
+  LM4_USE_TOPO_ROUGH=.true.
+  LM4_TOPO_ROUGH_SOURCE=input
+}
+
+export_lm4_lowres() {
+  # C24/C48: no LM4 river hydrography or topographic roughness input data
+  export_lm4
+  LM4_DO_RIVERS=.false.
+  LM4_USE_TOPO_ROUGH=.false.
+  LM4_TOPO_ROUGH_SOURCE=computed
 }
 
 export_hafs_datm_cdeps() {

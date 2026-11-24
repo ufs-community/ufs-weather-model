@@ -45,7 +45,7 @@ For all systems, users will need to:
 
          .. code-block:: console
 
-            ./rt.sh -a <account_name> -k -n "control_c48 intel"
+            ./rt.sh -a <account_name> -k -n "control_c48 oneapi"
 
          where ``<account_name>`` is replaced with the name of an account where the user can charge computational resources. 
          The ``-k`` option will preserve the run directory after the forecast finishes. The :wm-repo:`rt.conf <blob/develop/tests/rt.conf>` file contains all of the currently maintained RTs. 
@@ -60,7 +60,7 @@ For all systems, users will need to:
          
          .. code-block:: console
 
-            COMPILE | s2s | intel | -DAPP=S2S -DCCPP_SUITES=FV3_GFS_v17_coupled_p8,FV3_GFS_v17_coupled_p8_ugwpv1 |   | fv3 |
+            COMPILE | s2s | oneapi | -DAPP=S2S -DCCPP_SUITES=FV3_GFS_v17_coupled_p8,FV3_GFS_v17_coupled_p8_ugwpv1 |   | fv3 |
             RUN | cpld_control_c48         |                            | baseline |
             RUN | cpld_warmstart_c48       | - noaacloud                | baseline |
             RUN | cpld_restart_c48         | - noaacloud                |          | cpld_warmstart_c48
@@ -73,7 +73,7 @@ For all systems, users will need to:
 
          adding additional arguments as desired. 
 
-   #. Check ``${STMP}/FV3_RT/rt_PID/<test_name>`` for the model run, where ``PID`` is a process ID, and ``<test_name>`` refers to a specific test, such as ``control_c48_intel``.
+   #. Check ``${STMP}/FV3_RT/rt_PID/<test_name>`` for the model run, where ``PID`` is a process ID, and ``<test_name>`` refers to a specific test, such as ``control_c48_oneapi``.
       A successful test will produce an ``out`` file with an exit code at the bottom. ``exit code 0:0`` indicates a successful run. For example: 
 
       .. code-block:: console 
@@ -641,6 +641,5 @@ What is the most recent public release of the UFS Weather Model? What has been u
 ======================================================================================================
 
 The UFS Weather Model (WM) is constantly evolving, and new features are added at a rapid pace. Users can find those features in the develop branch, but documentation is not always available for the latest updates. The UFS WM is tagged frequently for public and operational releases. The `ufs-land-da-v3.0.0 <https://github.com/ufs-community/land-DA_workflow/releases/tag/v3.0.0>`_ tag of the WM is the most recent public release of the UFS WM, which was released as part of the Land Data Assimilation (DA) System v3.0.0. This tag represents a snapshot of a continuously evolving system undergoing open development. Users may also find the `ufs-srw-v3.0.0 <https://github.com/ufs-community/ufs-weather-model/releases/tag/ufs-srw-v3.0.0>`_ tag of the WM useful; the UFS WM was released as part of the UFS Short-Range Weather (SRW) Application v3.0.0 using this tag. 
-Since the UFS WM contains a huge number of components (e.g., dynamical core, physics, ocean coupling, infrastructure), there have been a wide variety of updates since the most recent SRW App and Land DA release tags. Users can peruse the :wm-repo:`large number of pull requests <pulls?q=is%3Apr+is%3Aclosed+merged%3A%3E2025-09-25+>` in the UFS WM repository to gain a full understanding of the changes to the top-level system. For changes to specific components, users should consult the component repositories. 
-
-
+Since the UFS WM contains a number of components (e.g., dynamical core, physics, ocean coupling, infrastructure), there have been a wide variety of updates since the most recent SRW App and Land DA release tags. Users can peruse the :wm-repo:`number of pull requests <pulls?q=is%3Apr+is%3Aclosed+merged%3A%3E2025-09-25+>` in the UFS WM repository to gain a fuller understanding of the changes to the top-level system.
+For changes to specific components, users should consult the component repositories. 
