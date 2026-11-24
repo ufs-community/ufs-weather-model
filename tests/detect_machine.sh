@@ -19,9 +19,6 @@ fi
 
 # First detect w/ hostname
 case $(hostname -f) in
-
-  adecflow0[12].acorn.wcoss2.ncep.noaa.gov)  MACHINE_ID=acorn ;; ### acorn
-  alogin0[123].acorn.wcoss2.ncep.noaa.gov)    MACHINE_ID=acorn ;; ### acorn
   clogin0[1-9].cactus.wcoss2.ncep.noaa.gov)  MACHINE_ID=wcoss2 ;; ### cactus01-9
   clogin10.cactus.wcoss2.ncep.noaa.gov)      MACHINE_ID=wcoss2 ;; ### cactus10
   dlogin0[1-9].dogwood.wcoss2.ncep.noaa.gov) MACHINE_ID=wcoss2 ;; ### dogwood01-9
@@ -88,9 +85,6 @@ fi
 if [[ -d /lfs/h3 ]]; then
   # We are on NOAA Cactus or Dogwood
   MACHINE_ID=wcoss2
-elif [[ -d /lfs/h1 && ! -d /lfs/h3 ]]; then
-  # We are on NOAA TDS Acorn
-  MACHINE_ID=acorn
 elif [[ -d /scratch3 ]]; then
   # We are on NOAA Hera or Ursa
   mount=$(findmnt -n -o SOURCE /home)   

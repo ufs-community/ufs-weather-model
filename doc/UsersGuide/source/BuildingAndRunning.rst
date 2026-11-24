@@ -462,7 +462,7 @@ The ``rt.conf`` file is a pipe-separated values (PSV) file grouped into sections
    #. **Machines** to run on (``-`` is used to ignore specified machines, ``+`` is used to run only on specified machines). For example:
 
       * ``+ ursa orion gaeac6``: Compile will only run on Ursa, Orion, and Gaea-C6 machines
-      * ``- wcoss2 acorn``: Compile will NOT be run on WCOSS2 or Acorn; it will run on all other machines and in a container.
+      * ``- wcoss2``: Compile will NOT be run on WCOSS2; it will run on all other machines and in a container.
       * ``- noaacloud container``: Line will NOT be run on NOAA Cloud or for a container option; it will run on all other machines.
         Container runs (``-P``) use the machine name ``container``.
         See :numref:`Section %s <rt-container>`.

@@ -977,8 +977,8 @@ if [[ ${USE_CONTAINER} == true ]]; then
   fi
 else
 case ${MACHINE_ID} in
-  wcoss2|acorn)
-    echo "rt.sh: Setting up WCOSS2/Acorn"
+  wcoss2)
+    echo "rt.sh: Setting up WCOSS2"
     if [[ "${ECFLOW:-false}" == true ]] ; then
       module load ecflow/5.6.0.13
     fi
@@ -1346,7 +1346,7 @@ if [[ ${ROCOTO} == true ]]; then
   fi
 
   case ${MACHINE_ID} in
-    wcoss2|acorn)
+    wcoss2)
       die "Rocoto not supported on this machine, please do not use '-r'."
       ;;
     *)
