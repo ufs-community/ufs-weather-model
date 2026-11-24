@@ -68,11 +68,10 @@
     kmt_file     = '@[CICE_MASK]'
     kcatbound    = 0
     ncat         = 5
-    nfsd         = 1
+    nfsd         = @[CICE_nfsd]
     nilyr        = 7
     nslyr        = 1
     nblyr        = 1
-    nfsd         = 1
     grid_atm     = '@[CICE_GRIDATM]'
     grid_ocn     = '@[CICE_GRIDOCN]'
     grid_ice     = '@[CICE_GRIDICE]'
@@ -93,8 +92,8 @@
     restart_pond_sealvl = .false.
     tr_aero      = .false.
     restart_aero = .false.
-    tr_fsd       = .false.
-    restart_fsd  = .false.
+    tr_fsd       = @[CICE_tr_fsd]
+    restart_fsd  = @[CICE_restart_fsd]
     tr_snow      = @[CICE_TR_SNOW]
 /
 
@@ -108,7 +107,7 @@
     dSdt_slow_mode    = -5.0e-8
     phi_c_slow_mode   =    0.05
     phi_i_mushy       =    0.85
-    tscale_pnd_drain  = 10.0d0
+    tscale_pnd_drain  = @[CICE_TSCALE_PND_DRAIN]
 /
 
 &dynamics_nml
@@ -190,6 +189,7 @@
     congel_freeze   = 'two-step'
     tfrz_option     = '@[CICE_TFREEZE_OPTION]'
     restart_coszen  = .true.
+    wave_spec_type = '@[CICE_wave_spec_type]'
     ice_data_type   = 'latsst'
     ice_data_conc   = 'parabolic'
     ice_data_dist   = 'uniform'
@@ -365,6 +365,21 @@
     f_sitempbot    = 'x'
 /
 
+&icefields_snow_nml
+    f_smassice   = 'x'
+    f_smassicen  = 'x'
+    f_smassliq   = 'x'
+    f_smassliqn  = 'x'
+    f_rhos_cmp   = 'x'
+    f_rhos_cmpn  = 'x'
+    f_rhos_cnt   = 'x'
+    f_rhos_cntn  = 'x'
+    f_rsnw       = 'x'
+    f_rsnwn      = 'x'
+    f_meltsliq   = 'x'
+    f_fsloss     = 'x'
+/
+
 &icefields_mechred_nml
     f_alvl         = 'x'
     f_vlvl         = 'x'
@@ -403,13 +418,13 @@
     f_apeff_ai     = 'x'
 /
 
-&icefields_snow_nml
-/
-
 &icefields_drag_nml
     f_drag         = 'x'
     f_Cdn_atm      = 'x'
     f_Cdn_ocn      = 'x'
+/
+
+&icefields_fsd_nml
 /
 
 &icefields_bgc_nml

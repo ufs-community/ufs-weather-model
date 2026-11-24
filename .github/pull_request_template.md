@@ -2,25 +2,29 @@
 - READ/FOLLOW THE DIRECTIONS IN EACH SECTION
 - Complete the 'Commit Queue Requirements' below
 - Use GitHub markup as much as possible (https://docs.github.com/en/get-started/writing-on-github)
-- Leave your PR in a draft state until all underlying work is completed.
 -->
 
 ## Commit Queue Requirements:
 <!--
 - Check off completed items. Use [X] for a filled in checkbox or leave it [ ] for an empty checkbox
 - Your pull request (PR) will not be considered until all requirements are met.
-- THIS IS YOUR RESPONSIBILITY
- -->
+-->
 - [ ] This PR addresses a relevant WM issue (if not, create an issue). 
-- [ ] All subcomponent pull requests (if any) have been reviewed by their code managers.
+- [ ] All subcomponent pull requests (if any) have been reviewed by their code managers. (Developers should request reviews when they believe their development and testing are complete.)
 - [ ] Run the full Intel+GNU RT suite (compared to current baselines), preferably on Ursa (Hercules is also an acceptable alternative). **Exceptions:** documentation-only PRs, CI-only PRs, etc.
    - [ ] Commit log file w/full results from RT suite run (if applicable).
-   - [ ] Verify that `test_changes.list` indicates which tests, if any, are changed by this PR. Commit `test_changes.list`, even if it is empty.
+   - [ ] Verify that `test_changes.list` indicates which tests, if any, are changed by this PR. Commit `test_changes.list`, even if it is empty. Ensure that syncs w/develop do not overwrite this file. 
+- [ ] All CI is passing. 
+  - Note that any increase in compile warnings must be investigated and solved before a PR can be processed. 
 - Transparency in the use of generative AI is required by NOAA policy. Was GenAI used in this work?
    - [ ] No.
    - [ ] Yes. [Generative AI tool (insert name, if any)] was used to assist with developing this code. 
      - [ ] The code has been reviewed, edited, and validated by NWS staff. (Note: If the code has not yet been reviewed by NWS staff, leave unchecked, and OMD CMs will review as part of the PR review process.)
 - [ ] Fill out all sections of this template.
+
+**NOTE:** Keep PR in draft mode until all requirements are complete. 
+For questions, take a look at [Expectations for Developers](https://github.com/ufs-community/ufs-weather-model/wiki/Expectations-for-Developers) and tag a code manager (CM) with any remaining questions. 
+Current WM CMs: @BrianCurtis-NOAA, @dpsarmie, @gspetro-NOAA, @NickSzapiro-NOAA
 
 ---
 
@@ -155,7 +159,22 @@ Does this PR change which subcomponent branch will be used in the UFS WM?
   * Library names w/versions:
   * Git Stack Issue (JCSDA/spack-stack#)
 - [ ] No Updates
-  
+
+---
+<!-- STOP!!! THE FOLLOWING IS FOR CODE MANAGERS ONLY. PLEASE DO NOT FILL OUT -->
+## What's Missing? 
+CMs are waiting on the following items before this PR can be scheduled for the commit queue:
+- [ ] Reviews for ALL subcomponent PRs (developer should request that subcomponent code managers review their subcomponent PRs)
+- [ ] Updated Ursa logs (or Hercules)
+- [ ] `test_changes.list` file reflecting changes in the developers PR (do not overwrite when sync'ing w/`develop`)
+- [ ] Passing CI in WM and all subcomponent PRs (if CI is expected to fail, note the reason in the relevant (sub-)PR)
+- [ ] Updated `.gitmodules` file points to developer's branch at every level
+- [ ] Commit message (a short message for the WM and every affected subcomponent)
+- [ ] Updated hashes? - It is the developer's responsibility to keep their PR up-to-date with WM `develop`.
+- [ ] Other: 
+
+If the developer is unable to complete any of these items, tag a WM CM (e.g., @gspetro-NOAA) for help. 
+
 ---
 <!-- STOP!!! THE FOLLOWING IS FOR CODE MANAGERS ONLY. PLEASE DO NOT FILL OUT -->
 ## Testing Log:

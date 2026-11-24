@@ -43,7 +43,7 @@ elif [[ ${MACHINE_ID} = derecho ]] ; then
     if ( ! eval module help > /dev/null 2>&1 ) ; then
         source /glade/u/apps/derecho/24.12/spack/opt/spack/lmod/8.7.37/gcc/12.4.0/nr3e/lmod/lmod/init/bash
     fi
-    module purge
+    module --force purge
     
 elif [[ ${MACHINE_ID} = gaeac5 ]] ; then
     # We are on GAEA
@@ -64,7 +64,15 @@ elif [[ ${MACHINE_ID} = gaeac6 ]]; then
 
 elif [[ ${MACHINE_ID} = container ]] ; then
     # We are in a container
-    source /usr/lmod/lmod/init/bash
+    # Lmod init scripts reference FPATH (a ksh/zsh variable); disable nounset
+    # temporarily so a clean bash environment does not trigger an unbound error.
+    set +u
+    if [[ -e /usr/share/lmod/lmod/init/bash ]] ; then
+        source /usr/share/lmod/lmod/init/bash
+    else
+        source /usr/lmod/lmod/init/bash
+    fi
+    set -u
     module purge
 
 elif [[ ${MACHINE_ID} = noaacloud ]] ; then

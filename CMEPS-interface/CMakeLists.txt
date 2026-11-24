@@ -16,7 +16,7 @@ elseif(CMAKE_Fortran_COMPILER_ID MATCHES "Intel")
   set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -g -traceback")
   set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -assume realloc_lhs")
   if(FASTER)
-    set(CMAKE_Fortran_FLAGS_RELEASE "-O3 -fp-model precise -assume buffered_stdout -fno-alias -align all -debug minimal -qoverride-limits -ftz -no-ip")
+    set(CMAKE_Fortran_FLAGS_RELEASE "-O3 -fp-model precise -assume buffered_stdout -fno-alias -align all -debug minimal -qoverride-limits -ftz")
   else()
     set(CMAKE_Fortran_FLAGS_RELEASE "-O2 -fp-model precise")
   endif()
@@ -186,8 +186,9 @@ if(CMEPS_AOFLUX)
                    TYPE "HOST")
 
     #------------------------------------------------------------------------------
-    # Call Capgen
+    # Call Capgen; CMEPS always uses double precision
     #------------------------------------------------------------------------------
+    ccpp_kinds(CCPP_KINDS KIND_PHYS REAL64 KIND_DYN REAL64)
     ccpp_capgen(VERBOSITY    ${CCPP_VERBOSITY}
                 HOSTFILES    ${HOST_METADATA_FILES}
                 SCHEMEFILES  ${SCHEME_METADATA_FILES}

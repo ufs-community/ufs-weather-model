@@ -12,7 +12,7 @@ elseif(CMAKE_Fortran_COMPILER_ID MATCHES "^(Intel)$")
   set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -i4 -r8")
   set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -sox")
   if(FASTER)
-    set(CMAKE_Fortran_FLAGS_RELEASE "-O3 -fp-model precise -assume buffered_stdout -fno-alias -align all -debug minimal -qoverride-limits -ftz -no-ip")
+    set(CMAKE_Fortran_FLAGS_RELEASE "-O3 -fp-model precise -assume buffered_stdout -fno-alias -align all -debug minimal -qoverride-limits -ftz")
   else()
     set(CMAKE_Fortran_FLAGS_RELEASE "-O2 -debug minimal -fp-model source")
   endif()
@@ -130,6 +130,13 @@ if(MOM6SOLO)
   #if(OpenMP_Fortran_FOUND)
   #  target_link_libraries(mom6solo PRIVATE OpenMP::OpenMP_Fortran)
   #endif()
+endif()
+
+option(ENABLE_UNIT_TESTS "Build MOM6 unit test suite" OFF)
+
+if(ENABLE_UNIT_TESTS)
+  enable_testing()
+  add_subdirectory(unit-tests)
 endif()
 
 ###############################################################################

@@ -2,7 +2,7 @@
 
 # Output a CSV report of disk usage on subdirs of some path
 # Usage: 
-#    [JOB_NAME=<ci_job>] [BUILD_NUMBER=<n>] [UFS_COMPILER=<intel>] [UFS_PLATFORM=<machine_id>] disk_usage path depth size outfile.csv
+#    [JOB_NAME=<ci_job>] [BUILD_NUMBER=<n>] [UFS_COMPILER=<oneapi>] [UFS_PLATFORM=<machine_id>] disk_usage path depth size outfile.csv
 #
 # args:
 #    directory=$1
@@ -11,7 +11,7 @@
 #    outfile=$4
 
 export UFS_PLATFORM=${UFS_PLATFORM:-${NODE_NAME,,}}
-export UFS_COMPILER=${UFS_COMPILER:-intel}
+export UFS_COMPILER=${UFS_COMPILER:-oneapi}
 [[ -n ${WORKSPACE} ]] || WORKSPACE="$(pwd)"
 [[ -n ${UFS_PLATFORM} ]] || UFS_PLATFORM="$(hostname -s 2>/dev/null)" || UFS_PLATFORM="$(hostname 2>/dev/null)"
 [[ -n ${UFS_COMPILER} ]] || UFS_COMPILER="compiler"

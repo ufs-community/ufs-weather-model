@@ -33,7 +33,7 @@ else
   MACHINE_ID=$1
   MAKE_OPT=${2:-}
   COMPILE_ID=${3:+$3}
-  RT_COMPILER=${4:-intel}
+  RT_COMPILER=${4:-oneapi}
   clean_before=${5:-YES}
   clean_after=${6:-YES}
 fi
@@ -57,20 +57,15 @@ BUILD_JOBS=${BUILD_JOBS:-8}
 set +x
 case ${MACHINE_ID} in
   macosx|linux)
-    # shellcheck source=/github/workspace/modulefiles/ufs_ursa.intelllvm.lua
+    # shellcheck source=/github/workspace/modulefiles/ufs_ursa.oneapi.lua
     source "${PATHTR}/modulefiles/ufs_${MACHINE_ID}.${RT_COMPILER}"
     ;;
-  *)
+  *)  
     # Activate lua environment for gaea c5
-    if [[ ${MACHINE_ID} == gaeac5 ]]; then
+    if [[ ${MACHINE_ID} == gaeac5 || ${MACHINE_ID} == gaeac6 ]]; then
       module reset
-    fi
-    if [[ ${MACHINE_ID} == gaeac6 ]]; then
-      module reset
-    elif [[ ${MACHINE_ID} == container ]]; then
-      # shellcheck disable=SC1091
-      source /usr/lmod/lmod/init/bash
-      module purge
+    elif [[ ${MACHINE_ID} == derecho ]]; then
+      module --force purge
     elif [[ ${MACHINE_ID} == hercules ]]; then
       module purge
     elif [[ ${MACHINE_ID} == "aws-ec2" ]]; then
@@ -82,7 +77,7 @@ case ${MACHINE_ID} in
     modulefile="ufs_${MACHINE_ID}.${RT_COMPILER}"
     module load "${modulefile}"
     module list
-esac
+  esac
 set -x
 
 echo "Compiling ${MAKE_OPT} into ${BUILD_NAME}.exe on ${MACHINE_ID}"

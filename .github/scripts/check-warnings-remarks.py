@@ -15,7 +15,6 @@ class APICall():
       self.url = f"{self.base_url}/{self.endpoint}" #Could use a path join?
       self.num_commits = num_commits
       self.header = {
-         "Accept": "application/vnd.github.v3+json",
          "Authorization": f"Bearer {self.token}",
          "X-GitHub-Api-Version": "2022-11-28",
          "Accept": "application/vnd.github.raw"
@@ -170,47 +169,31 @@ def main():
 
    machines = os.environ.get('MACHINES').split()
    # Use non-capturing groups in pattern to indicate warnings/remarks may or may not be present.
-   compile_pattern = r"COMPILE \'(.*)\' \[\d+:\d+, \d+:\d+\](?: \( (?:(\d+) warnings)?\s*(?:(\d+) remarks)? \))?"
-   # failure_pattern = r"^(?:FAILED|SKIPPED): (?!UNABLE TO (?:COMPLETE COMPARISON|START TEST))(.+?) -- (?:TEST|COMPILE) '([^']+)"
-   failure_pattern = r"^(?:FAILED|SKIPPED): (.+?) -- (?:TEST|COMPILE) '([^']+)"
-      
+   compile_pattern = r"COMPILE \'(.*)\' \[\d+:\d+, \d+:\d+\](?: \( (?:(\d+) warnings)?\s*(?:(\d+) remarks)? \))?"   
 
    # For each machine, increased_warnings_remarks records where warnings and/or remarks increase
    increased_warnings_remarks = {}
-   # For each machine, failures records which tests fail by reason
-   failures = {}
 
    for machine in machines:
       log = Log(machine)
       log._get_commits()
       log.pr_log_text = log._fetch_log_text(log.pr_head_commit)
       log.pr_warn_rmk = log._get_data(log.pr_log_text, compile_pattern, log.handle_warn_rmk)
-      log.pr_failures = log._get_data(log.pr_log_text, failure_pattern, log.handle_failures, to_clean=False)
 
       log.base_log_text = log._fetch_log_text(log.pr_base_commit)
       log.base_warn_rmk = log._get_data(log.base_log_text, compile_pattern, log.handle_warn_rmk)
       
       increased_warnings_remarks[machine] = log.compare_results(log.pr_warn_rmk, log.base_warn_rmk)
-      failures[machine] = log.pr_failures
 
    pr_num = os.environ.get('PR_NUM')
    warn_rmk_results = print_html_results(increased_warnings_remarks, 
                                      f"Increased Warnings/Remarks for PR #{pr_num}",
                                      "warn_rmk.md")
-   failure_results = print_html_results(failures, 
-                                    f"Compile and Test Failures for PR #{pr_num}", 
-                                    "failures.md")
-
    if len(warn_rmk_results.splitlines()) > 3: # HTML header is 3 lines long
       print(warn_rmk_results)
-      if len(failure_results.splitlines()) > 3:
-         print(failure_results)
       sys.exit(1)
-   elif len(failure_results.splitlines()) > 3:
-      print(failure_results)
-      sys.exit(0)
    else:
-      print(f"No increase in warnings or remarks. All RTs passed.")
+      print(f"No increase in warnings or remarks.")
       sys.exit(0)
 
 if __name__ == "__main__": # pragma: no coverage

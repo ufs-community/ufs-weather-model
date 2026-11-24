@@ -1,6 +1,7 @@
 #!/bin/bash
-set -eux
+set -eu
 set -o pipefail
+[[ "${RTVERBOSE:-false}" == true ]] && set -x
 
 echo "PID=$$"
 SECONDS=0
@@ -82,7 +83,13 @@ echo "Test ${TEST_ID} ${TEST_DESCR}"
 source rt_utils.sh
 source atparse.bash
 
-rm -rf "${RUNDIR}"
+if [[ ${USE_CONTAINER:-false} == true && -d ${RUNDIR} ]]; then
+  # A community platform (-P) reuses a fixed RUNDIR_ROOT across runs; keep
+  # a prior test directory instead of clobbering it.
+  mv "${RUNDIR}" "${RUNDIR}_old_$(date +%Y%m%d%H%M)"
+else
+  rm -rf "${RUNDIR}"
+fi
 mkdir -p "${RUNDIR}"
 cd "${RUNDIR}"
 
@@ -99,14 +106,32 @@ if [[ ${DRY_RUN:-false} == false ]]; then
   mkdir -p modulefiles
   if [[ ${MACHINE_ID} == linux ]]; then
     cp "${PATHRT}/modules.fv3_${COMPILE_ID}" "./modulefiles/modules.fv3"
+  elif [[ ${MACHINE_ID} == container ]]; then
+    # Host-side runtime modulefile — loaded on the host before the container launches.
+    cp "${PATHTR}/modulefiles/ufs_container.runtime.lua"  "./modulefiles/modules.fv3.runtime.lua"
+    # Inside-container build/run modulefile — loaded by job_card inside the container.
+    if [[ -f "${PATHRT}/modules.fv3_${COMPILE_ID}.lua" ]]; then
+      cp "${PATHRT}/modules.fv3_${COMPILE_ID}.lua"                "./modulefiles/modules.fv3.lua"
+    elif [[ -f "${PATHTR}/modulefiles/ufs_container.${RT_COMPILER}.lua" ]]; then
+      cp "${PATHTR}/modulefiles/ufs_container.${RT_COMPILER}.lua"  "./modulefiles/modules.fv3.lua"
+    else
+      echo "ERROR: no inside-container build module found for COMPILE_ID=${COMPILE_ID}" >&2
+      echo "       Provide ${PATHRT}/modules.fv3_${COMPILE_ID}.lua" >&2
+      echo "       or ${PATHTR}/modulefiles/ufs_container.${RT_COMPILER}.lua" >&2
+      exit 1
+    fi
   else
     cp "${PATHRT}/modules.fv3_${COMPILE_ID}.lua" "./modulefiles/modules.fv3.lua"
   fi
+  
   cp "${PATHTR}/modulefiles/ufs_common.lua" "./modulefiles/."
-
+  
   # Get the shell file that loads the "module" command and purges modules:
   cp "${PATHRT}/module-setup.sh" "module-setup.sh"
-
+  
+  # Some system module or completion scripts reference unset variables, so
+  # nounset (set -u) is temporarily disabled while they are loaded.
+  set +u
   case ${MACHINE_ID} in
     wcoss2|acorn)
       module load intel/19.1.3.304
@@ -129,11 +154,16 @@ if [[ ${DRY_RUN:-false} == false ]]; then
       #module load modules.fv3
       #module load gcc-native/12.3
       ;;
+    container)
+      module use modulefiles
+      module load modules.fv3.runtime
+      ;;
     *)
       module use modulefiles
       module load modules.fv3
       ;;
   esac
+  set -u
 fi
 
 # FV3_RUN could have multiple entry seperated by space
@@ -154,6 +184,12 @@ if [[ ${DO_UGWP_V1:-.false.} == .true. ]] ; then
 else
   export HIDE_UGWPV0=' '
   export HIDE_UGWPV1='!'
+fi
+
+if [[ ${GFSv17opn} == .true. && -z ${INPUTDATA_GFSv17opn:-} ]]; then
+  echo "ERROR: ${TEST_NAME} needs GFSv17 operational input data:" >&2
+  echo "       set INPUTDATA_GFSv17opn in the platform definition file (-P)" >&2
+  exit 1
 fi
 
 # Set IAU Global workflow related tags to ' '
@@ -456,6 +492,46 @@ elif [[ ${SCHEDULER} = 'slurm' ]]; then
     echo "Looking for fv3_conf/fv3_slurm.IN_${MACHINE_ID} but it is not found. Exiting"
     exit 1
   fi
+elif [[ ${SCHEDULER:-none} = 'none' && ${MACHINE_ID} = 'container' ]]; then
+  # No job scheduler: write a run script with no scheduler headers.
+  # container_exec runs it inside the container.
+  MPI_LAUNCH=${MPI_LAUNCH:-mpirun}
+  # MPI/libfabric settings for the model run (not needed for compile).
+  # Host-dependent values are checked here, on the host, and written into job_card.
+  MPI_ENV="export FI_PROVIDER=tcp"
+  if [[ "${RT_COMPILER}" == oneapi ]]; then
+    if [[ -n "${FI_PROVIDER_PATH:-}" ]]; then
+      MPI_ENV+=$'\n'"export FI_PROVIDER_PATH=${FI_PROVIDER_PATH}"
+    fi
+  elif [[ "${RT_COMPILER}" == gnu ]]; then
+    MPI_ENV+=$'\n'"export PMIX_MCA_gds=hash"
+    MPI_ENV+=$'\n'"export PMIX_MCA_psec=native"
+    MPI_ENV+=$'\n'"export OMPI_MCA_btl=^openib"
+    if ip link show eth0 &>/dev/null; then
+      MPI_ENV+=$'\n'"export OMPI_MCA_btl_tcp_if_include=eth0"
+      MPI_ENV+=$'\n'"export OMPI_MCA_oob_tcp_if_include=eth0"
+    fi
+    MPI_ENV+=$'\n'"export OMPI_MCA_pml=ob1"
+    MPI_ENV+=$'\n'"export OMPI_MCA_btl_vader_single_copy_mechanism=none"
+    MPI_ENV+=$'\n'"export OMPI_MCA_mca_base_component_show_load_errors=0"
+  fi
+  # Unquoted heredoc: ${...} variables expand at write time.
+  cat > job_card << RUN_EOF
+#!/bin/bash
+set -e
+[[ "\${RTVERBOSE:-false}" == true ]] && set -x
+MACHINE_ID=container
+export OMP_NUM_THREADS=${THRD}
+export OMP_STACKSIZE=512M
+${MPI_ENV}
+source ${PWD}/module-setup.sh
+module purge
+module use ${PWD}/modulefiles
+module load modules.fv3
+module list
+${MPI_LAUNCH} -n ${TASKS} ./fv3.exe
+RUN_EOF
+  chmod u+x job_card
 fi
 
 # This "if" block is part of the rt.sh self-tests in error-test.conf.
@@ -474,23 +550,22 @@ fi
 # Submit test job
 ################################################################################
 export OMP_ENV=${OMP_ENV:-""}
-if [[ ${SCHEDULER} = 'none' ]]; then
+if [[ ${SCHEDULER:-none} = 'none' ]]; then
   ulimit -s unlimited
-  if [[ ${CI_TEST} = 'true' ]]; then
+  if [[ ${MACHINE_ID} = 'container' ]]; then
+    # No scheduler: run the model on this host, inside the container.
+    echo "NOTE: running ${TASKS} MPI tasks interactively inside container via ${MPI_LAUNCH}"
+    container_exec job_card
+  elif [[ ${CI_TEST} = 'true' ]]; then
     eval "${OMP_ENV}" redirect_out_err mpiexec -n "${TASKS}" ./fv3.exe
   else
     redirect_out_err mpiexec -n "${TASKS}" ./fv3.exe
   fi
-
+elif [[ ${ROCOTO} = 'false' ]]; then
+  submit_and_wait job_card
 else
-
-  if [[ ${ROCOTO} = 'false' ]]; then
-    submit_and_wait job_card
-  else
-    chmod u+x job_card
-    redirect_out_err ./job_card
-  fi
-
+  chmod u+x job_card
+  redirect_out_err ./job_card
 fi
 skip_check_results=${skip_check_results:-false}
 if [[ ${skip_check_results} == false ]]; then
@@ -512,6 +587,12 @@ if [[ ${skip_check_results} == false ]]; then
     #
     # --- regression test comparison
     #
+
+    # nccmp lives inside the container; run it there when applicable.
+    if [[ -n ${CONTAINER_IMG:-} ]]; then
+      find_container_bin
+    fi
+
     for i in ${LIST_FILES} ; do
       printf %s " Comparing ${i} ....." >> "${RT_LOG}"
       printf %s " Comparing ${i} ....."
@@ -530,14 +611,28 @@ if [[ ${skip_check_results} == false ]]; then
 
       else
         if [[ ${i##*.} == nc* ]] ; then
-          if [[ " orion hercules hera ursa wcoss2 acorn derecho gaeac5 gaeac6 noaacloud " =~ ${MACHINE_ID} ]]; then
+          # A container run (-P, MACHINE_ID=container) also uses nccmp, from
+          # inside the container (see the branch right below).
+          if [[ " orion hercules hera ursa wcoss2 acorn derecho gaeac5 gaeac6 noaacloud container " =~ ${MACHINE_ID} ]]; then
             printf "USING NCCMP.." >> "${RT_LOG}"
             printf "USING NCCMP.."
               nccmp_args=(-d -S -q -f -B --Attribute=checksum --warn=format)
               if [[ ${CMP_DATAONLY} == false ]]; then nccmp_args+=("-g"); fi
               if [[ -n "${nccmp_exclude// }" ]]; then nccmp_args+=("${nccmp_exclude}"); fi
               if [[ -n "${nccmp_exclude_attr// }" ]]; then nccmp_args+=("${nccmp_exclude_attr}"); fi
-              nccmp "${nccmp_args[@]}" "${RTPWD}/${CNTL_DIR}_${RT_COMPILER}/${i}" "${RUNDIR}/${i}" > "${i}_nccmp.log" 2>&1 && d=$? || d=$?
+              if [[ -n ${CONTAINER_IMG:-} ]]; then
+                "${CONTAINERBIN}" exec "${BIND_FLAGS[@]}" "${CONTAINER_IMG}" bash -c "
+                  set -e
+                  MACHINE_ID=container
+                  source ${PWD}/module-setup.sh
+                  module purge
+                  module use ${PWD}/modulefiles
+                  module load modules.fv3
+                  nccmp ${nccmp_args[*]} '${RTPWD}/${CNTL_DIR}_${RT_COMPILER}/${i}' '${RUNDIR}/${i}'
+                " > "${i}_nccmp.log" 2>&1 && d=$? || d=$?
+              else
+                nccmp "${nccmp_args[@]}" "${RTPWD}/${CNTL_DIR}_${RT_COMPILER}/${i}" "${RUNDIR}/${i}" > "${i}_nccmp.log" 2>&1 && d=$? || d=$?
+              fi
               if [[ ${d} -ne 0 && ${d} -ne 1 ]]; then
                 printf "....ERROR" >> "${RT_LOG}"
                 printf "....ERROR"
@@ -621,7 +716,8 @@ else
   } >> "${RT_LOG}"
 fi
 
-if [[ ${SCHEDULER} != 'none' ]]; then
+# Written by the batch job card, or by container_exec when there is no scheduler.
+if [[ -f ${RUNDIR}/job_timestamp.txt ]]; then
   cat "${RUNDIR}/job_timestamp.txt" >> "${LOG_DIR}/${JBNME}_timestamp.txt"
 fi
 

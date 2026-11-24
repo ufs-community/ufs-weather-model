@@ -23,12 +23,11 @@ Preconfigured (Level 1) systems for the UFS WM already have the required externa
 
 Currently, Level 1 (or Tier-1) platforms for regression testing are: 
 
-   * WCOSS2 (Intel)
-   * Gaea C6 (Intel)
-   * Ursa (Intel/GNU compilers)
-   * Orion (Intel)
-   * Hercules (Intel/GNU compilers)
-   * Derecho (Intel/GNU compilers)
+   * WCOSS2 (Intel Classic)
+   * Gaea C6 (Intel oneAPI)
+   * Ursa (Intel oneAPI/GNU compilers)
+   * Orion (Intel oneAPI)
+   * Hercules (Intel oneAPI/GNU compilers)
    
 More information is available in the :wm-wiki:`UFS WM wiki <Regression-Test-Policy-for-Weather-Model-Platforms-and-Compilers>`. 
 
@@ -142,8 +141,8 @@ The umbrella repository for the UFS WM is named ``ufs-weather-model``. Under thi
     │    └── (ESMF)                                 -------- GOCART model
     ├── LICENSE.md
     ├── LM4-driver 
-    │    ├── (LM4)                                  -------- NUOPC NOAA-GFDL Land Model version 4
-    │    └── (nuopc_cap)                            -------- NUOPC LM4 cap
+    │    ├── (LM4)                                  -------- NOAA-GFDL Land Model version 4
+    │    └── (nuopc_cap)                            -------- NUOPC LM4 cap and surface fluxes
     ├── modulefiles                                 -------- system module files for supported HPC systems
     ├── MOM6-interface
     │    └── MOM6

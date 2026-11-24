@@ -16,6 +16,13 @@ The prerequisite software libraries for building the WM already exist in a centr
 systems, so users may skip directly to :ref:`getting the data <GetData>` and downloading the code. 
 On other systems, users will need to build the prerequisite libraries using :term:`spack-stack`.
 
+.. note::
+
+   Regression tests can also be run inside a software container, using the
+   ``rt.sh -P container.def`` option; see
+   :numref:`Section %s <rt-container>` in this chapter. Full instructions, including how to
+   obtain or build a container image, are given in :numref:`Chapter %s <container-rt-tests>`.
+
 =======================
 Prerequisite Libraries
 =======================
@@ -86,7 +93,7 @@ the data required to run the WM RTs are already available at the following ``DIS
 
    * - Machine
      - File location
-   * - Derecho
+   * - Derecho (Level 2)
      - /glade/derecho/scratch/epicufsrt/ufs-weather-model/RT/
    * - Gaea-C6
      - /gpfs/f6/bil-fire8/world-shared/role.epic/UFS-WM_RT
@@ -103,10 +110,11 @@ the data required to run the WM RTs are already available at the following ``DIS
 
 Within ``DISKNM``, input data for the UFS WM is located at the following locations: 
 
-  * **INPUTDATA_ROOT**: ``${DISKNM}/NEMSfv3gfs/input-data-20251015``
-  * **INPUTDATA_ROOT_WW3** ``${INPUTDATA_ROOT}/WW3_input_data_20250807``
+  * **INPUTDATA_ROOT**: ``${DISKNM}/NEMSfv3gfs/input-data-20260617``
+  * **INPUTDATA_ROOT_WW3**: ``${INPUTDATA_ROOT}/WW3_input_data_20261020``
   * **INPUTDATA_ROOT_BMIC**: ``${DISKNM}/NEMSfv3gfs/BM_IC-20220207``
   * **INPUTDATA_LM4**: ``${INPUTDATA_ROOT}/LM4_input_data``
+  * **INPUTDATA_GFSv17opn**: ``${DISKNM}/NEMSfv3gfs/GFSv17opn_20251014``
 
 For Level 3-4 systems, the data must be added to the user's system. 
 Publicly available data is available in the `UFS WM Data Bucket <https://registry.opendata.aws/noaa-ufs-regtests/>`_. 
@@ -115,12 +123,25 @@ The regression testing script (``rt.sh``) has certain default data directories (
 The corresponding data is publicly available in the data bucket. To view the data, users can visit https://noaa-ufs-regtests-pds.s3.amazonaws.com/index.html. 
 Users can download the data and update the ``rt.sh`` script to point to the appropriate locations in order to run RTs on their own system: 
   
-* ``INPUTDATA_ROOT``: https://noaa-ufs-regtests-pds.s3.amazonaws.com/index.html#input-data-20251015
-* ``INPUTDATA_ROOT_WW3``: https://noaa-ufs-regtests-pds.s3.amazonaws.com/index.html#input-data-20251015/WW3_input_data_20250807/
+* ``INPUTDATA_ROOT``: https://noaa-ufs-regtests-pds.s3.amazonaws.com/index.html#input-data-20260617/
+* ``INPUTDATA_ROOT_WW3``: https://noaa-ufs-regtests-pds.s3.amazonaws.com/index.html#input-data-20260617/WW3_input_data_20261020/
 * ``INPUTDATA_ROOT_BMIC``: https://noaa-ufs-regtests-pds.s3.amazonaws.com/index.html#BM_IC-20220207/
-* ``INPUTDATA_LM4``: https://noaa-ufs-regtests-pds.s3.amazonaws.com/index.html#input-data-20251015/LM4_input_data/
+* ``INPUTDATA_LM4``: https://noaa-ufs-regtests-pds.s3.amazonaws.com/index.html#input-data-20260617/LM4_input_data/
+* ``INPUTDATA_GFSv17opn``: https://noaa-ufs-regtests-pds.s3.amazonaws.com/index.html#GFSv17opn_20251014/
 
-To download data, users must select the files they want from the bucket and download them either in their browser, via a ``wget`` command, or through the AWS CLI. 
+To download data, users must select the files they want from the bucket and download them either in their browser, via a ``wget`` command, or through the AWS CLI.
+No AWS account is needed; with the AWS CLI, add ``--no-sign-request`` to each command, for example:
+
+.. code-block:: console
+
+   export BUCKET=s3://noaa-ufs-regtests-pds/input-data-20260617
+   export INPUTDATA_ROOT=/path/to/input-data-20260617
+   aws s3 sync ${BUCKET}/FV3_fix/ ${INPUTDATA_ROOT}/FV3_fix/ --no-sign-request
+
+The complete input dataset is large (several hundred GiB), so users on Level 3-4 systems are encouraged
+to download only the subdirectories required by the tests they plan to run. Download steps to obtain
+the subsets needed for the tests enabled for the container in ``rt.conf`` are given in
+:numref:`Section %s <container-rt-data>`.
 
 Detailed information on input files can be found in :numref:`Chapter %s <InputsOutputs>`. 
 
@@ -145,9 +166,27 @@ Compiling the model will take place within the ``ufs-weather-model`` directory c
 Building the Weather Model
 ==========================
 
-.. note:: 
+The most straightforward way to run the UFS WM on NOAA Tier 1 platforms is to use the
+regression testing (RT) framework. The RT framework is designed for these officially
+supported systems: it loads modulefiles, builds (compiles) the desired WM
+configuration, and runs the test(s), comparing results against baselines maintained on
+each platform. Users can create new tests or modify existing tests to correspond to the
+WM configuration(s) they wish to run.
 
-   The most straightforward way to run the UFS WM is to use the regression testing (RT) framework. The RT framework will load modulefiles, build (compile) the desired WM configuration, and run the test(s). Users can create new tests or modify existing tests to correspond to the WM configuration(s) they wish to run. This section is provided for those who do not want to use the RT framework to run the WM. However, most users should skip to :numref:`Section %s <rt-config>` to learn more about RT configuration or :numref:`Section %s <run-wm>` to build/run the WM with the RT framework. 
+This section is provided for those who do not want to use the RT framework to build and
+run the WM directly. Most users on Tier 1 platforms should instead skip to
+:numref:`Section %s <rt-config>` to learn more about RT configuration, or to
+:numref:`Section %s <run-wm>` to build/run the WM with the RT framework.
+
+Users on other (non-Tier 1) platforms, or anyone who wants a portable, containerized
+build environment, can instead run the RT framework with the ``rt.sh -P container.def``
+option described in :numref:`Chapter %s <container-rt-tests>`. It uses the same ``rt.sh``
+script, ``rt.conf`` file, and test definitions. By default, a ``-P container.def`` run
+confirms that the WM has been ported, built, and run to completion on the user's own
+platform, without comparing results against baselines. Creating baselines (``-c``) and
+running regression tests against them (``-m``) are still supported with
+``-P container.def``; these baselines are kept on the user's platform, separate from the
+baselines maintained on Tier-1 systems.
 
 ----------------------------
 Loading the Required Modules
@@ -167,7 +206,7 @@ Modulefiles for :ref:`preconfigured platforms <SupportedPlatforms>` are located 
 .. code-block:: console
 
     module use modulefiles
-    module load ufs_ursa.intel
+    module load ufs_ursa.oneapi
 
 Note that loading this module file will also set the CMake environment variables shown in
 :numref:`Table %s <CMakeEnv>`.
@@ -177,15 +216,15 @@ Note that loading this module file will also set the CMake environment variables
 .. table:: *CMake environment variables required to configure the build for the Weather Model*
 
    +-------------------------+----------------------------------------------+----------------------+
-   | **EnvironmentVariable** | **Description**                              | **Ursa Intel Value** |
+   | **EnvironmentVariable** | **Description**                              | **Ursa oneAPI Value**|
    +=========================+==============================================+======================+
    |  CMAKE_C_COMPILER       | Name of C compiler                           | mpiicx               |
    +-------------------------+----------------------------------------------+----------------------+
    |  CMAKE_CXX_COMPILER     | Name of C++ compiler                         | mpiicpx              |
    +-------------------------+----------------------------------------------+----------------------+
-   |  CMAKE_Fortran_COMPILER | Name of Fortran compiler                     | mpiifort             |
+   |  CMAKE_Fortran_COMPILER | Name of Fortran compiler                     | mpiifx               |
    +-------------------------+----------------------------------------------+----------------------+
-   |  CMAKE_Platform         | String containing platform and compiler name | ursa.intel           |
+   |  CMAKE_Platform         | String containing platform and compiler name | ursa.oneapi          |
    +-------------------------+----------------------------------------------+----------------------+
 
 On Other Systems
@@ -236,7 +275,7 @@ If any of the environment variables have not been set, the ``build.sh`` script w
 
 .. code-block:: console
 
-   ./build.sh: line 11: CMAKE_Platform: Please set the CMAKE_Platform environment variable, e.g., [ufs_hercules.intel|ufs_hercules.gnu|ufs_ursa.intel|ufs_ursa.intelllvm|...]
+   ./build.sh: line 11: CMAKE_Platform: Please set the CMAKE_Platform environment variable, e.g., [ufs_hercules.oneapi|ufs_hercules.gnu|ufs_ursa.oneapi...]
 
 The WM can be built by running the following command from the ``ufs-weather-model`` directory:
 
@@ -418,40 +457,72 @@ The ``rt.conf`` file is a pipe-separated values (PSV) file grouped into sections
 
    #. ``COMPILE`` indicator
    #. **Compile name** -- a category of test to compile
-   #. **Compiler** to use in build (``intel`` or ``gnu``)
+   #. **Compiler** to use in build (``oneapi`` or ``gnu``)
    #. **CMAKE Options** -- Provides all CMAKE options for the build. This typically includes the ``-DAPP`` and ``-DCCPP_SUITES`` flags; these flags set which components to build and which physics suites will be available at runtime. Additional options are documented in :numref:`Section %s <other-build-options>`, but users can examine the :wm-repo:`CMakeLists.txt <blob/develop/CMakeLists.txt>` file for the most up-to-date list of options. 
-   #. **Machines** to run on (``-`` is used to ignore specified machines, ``+`` is used to run only on specified machines). For example: 
-      
+   #. **Machines** to run on (``-`` is used to ignore specified machines, ``+`` is used to run only on specified machines). For example:
+
       * ``+ ursa orion gaeac6``: Compile will only run on Ursa, Orion, and Gaea-C6 machines
-      * ``- wcoss2 acorn``: Compile will NOT be run on WCOSS2 or Acorn
+      * ``- wcoss2 acorn``: Compile will NOT be run on WCOSS2 or Acorn; it will run on all other machines and in a container.
+      * ``- noaacloud container``: Line will NOT be run on NOAA Cloud or for a container option; it will run on all other machines.
+        Container runs (``-P``) use the machine name ``container``.
+        See :numref:`Section %s <rt-container>`.
 
-   #. ``fv3``: Set as fv3. Previously, this was used to run a test without compiling code (e.g., if FV3 was already present). 
+   #. ``fv3``: Set as fv3. Previously, this was used to run a test without compiling code (e.g., if FV3 was already present).
 
-After each compile line is one or more ``RUN`` lines. ``RUN`` lines have five columns. The build resulting from the ``COMPILE`` line above the ``RUN`` line will be used to run the tests. 
+After each compile line is one or more ``RUN`` lines. ``RUN`` lines have five columns. The build resulting from the ``COMPILE`` line above the ``RUN`` line will be used to run the tests.
 
    #. ``RUN`` indicator
    #. **Test name** -- indicates which test in the :wm-repo:`tests/tests <tree/develop/tests/tests>` directory should be sourced.
-   #. **Machines** to run on (``+``) or ignore (``-``).
+   #. **Machines** to run on (``+``) or ignore (``-``), same as in the ``COMPILE`` line (``container`` for container runs).
    #. **Baseline Creation** -- controls whether the run creates its own baseline or uses the baseline from a different (control) test (see information on ``-c`` option :ref:`below <cmd-line-opts>` for more).
    #. **Comparison Test** -- Test name to compare baselines with if not itself.
 
 The order of lines in ``rt.conf`` matters since ``rt.sh`` processes them sequentially; a ``RUN`` line should be preceeded
 by a ``COMPILE`` line that builds the model used in the test. The following
-``rt.conf`` file excerpt builds the standalone ATM model with GFS_v16 physics 
-in 32-bit mode and then runs the ``control`` test:
+``rt.conf`` file excerpt builds the coupled S2SW model (atmosphere, ocean, sea ice, and
+waves) with GFS v17 physics in 32-bit mode and then runs the ``cpld_control_gfsv17`` test and
+tests that depend on it:
 
 .. code-block:: console
 
-   COMPILE | s2swa_32bit_pdlib  | intel | -DAPP=S2SWA -D32BIT=ON -DCCPP_SUITES=FV3_GFS_v17_coupled_p8_ugwpv1 -DPDLIB=ON | - noaacloud | fv3 |
-   RUN | cpld_control_gfsv17                               | - noaacloud                          | baseline |
-   RUN | cpld_control_gfsv17_iau                           | - noaacloud                          | baseline | cpld_control_gfsv17
-   RUN | cpld_restart_gfsv17                               | - noaacloud                          |          | cpld_control_gfsv17
-   RUN | cpld_restart_gfsv17_iau                           | - noaacloud                          |          | cpld_control_gfsv17_iau
-   RUN | cpld_mpi_gfsv17                                   | - noaacloud                          |          |
+   COMPILE | s2sw_32bit_pdlib  | oneapi | -DAPP=S2SW -D32BIT=ON -DCCPP_SUITES=FV3_GFS_v17_coupled_p8_ugwpv1 -DPDLIB=ON -DUFS_TRACING=ON | - noaacloud            | fv3 |
+   RUN | cpld_control_gfsv17                               | - noaacloud                           | baseline |
+   RUN | cpld_control_gfsv17_iau                           | - noaacloud container                | baseline | cpld_control_gfsv17
+   RUN | cpld_restart_gfsv17                               | - noaacloud container                |          | cpld_control_gfsv17
+   RUN | cpld_restart_gfsv17_iau                           | - noaacloud container                |          | cpld_control_gfsv17_iau
+   RUN | cpld_mpi_gfsv17                                   | - noaacloud container                |          |
+
+None of these lines run on NOAA Cloud (``noaacloud``). The ``COMPILE`` line and the
+``cpld_control_gfsv17`` test also run in a container (``-P``), while the other tests list
+``container`` to exclude it (see :numref:`Section %s <rt-container>`).
 
 The ``rt.conf`` file includes a large number of tests. If the user wants to run
-only specific tests, s/he can either (1) comment out the tests to be skipped (using the ``#`` prefix)
-or (2) create a new file (e.g., ``my_rt.conf``), add the tests, and execute ``./rt.sh -a  <account> -l my_rt.conf``.
+only specific tests, s/he can either (1) comment out the tests to be skipped (using the ``#`` prefix),
+(2) create a new file (e.g., ``my_rt.conf``), add the tests, and execute ``./rt.sh -a  <account> -l my_rt.conf``,
+or (3) list the tests to run in a file and execute ``./rt.sh -a <account> -s <file>``.
+
+The file given with ``-s`` lists one test per line: the test name (as in the ``RUN`` line of
+``rt.conf``), a single space, and the compiler (as in the ``COMPILE`` line above that ``RUN``
+line). For example:
+
+.. code-block:: text
+
+   control_c48 oneapi
+   control_p8 gnu
+
+``rt.sh`` then compiles only the builds that the listed tests need, and runs those tests.
+``-s`` can be combined with ``-l``, e.g., ``./rt.sh -a <account> -l my_rt.conf -s <file>``;
+the listed tests and their ``COMPILE`` lines are then taken from ``my_rt.conf`` instead of
+``rt.conf``. Unlisted tests that a listed test depends on (e.g., ``control_p8`` is needed
+to run ``control_restart_p8``) still come from ``rt.conf``, so list them too.
+A listed test is skipped if its ``RUN`` line is not enabled for the machine (or for
+``container``, with ``-P``) in the **Machines** column, or, with ``-P``, if its compiler
+differs from the one in the platform definition file. Make sure that the ``COMPILE`` line
+above the test is enabled for the same machine (or container) as well; otherwise the test
+may run with the executable of a different build. After each run, the failed
+tests are written to ``test_changes.list`` in the same format, so
+``./rt.sh -a <account> -s test_changes.list`` reruns only those tests. ``-s`` cannot be
+combined with ``-n`` or ``-x``.
 
 For the most up-to-date list of supported tests see the :wm-repo:`rt.conf <blob/develop/tests/rt.conf>` file. 
 
@@ -524,27 +595,35 @@ To display detailed information on how to use ``rt.sh``, users can simply run ``
 
 .. code-block:: console
 
-   ./rt.sh -a <account> | -b <file> | -c | -d | -e | -h | -k | -l <file> | -m | -n <name> | -o | -r | -v | -w
-      -a  <account> to use on for HPC queue
-      -b  create new baselines only for tests listed in <file>
-      -c  create new baseline results
-      -d  delete run directories that are not used by other tests
-      -e  use ecFlow workflow manager
-      -h  display this help
-      -k  keep run directory after rt.sh is completed
-      -l  runs test specified in <file>
-      -m  compare against new baseline results
-      -n  run single test <name>
-      -o  compile only, skip tests
-      -r  use Rocoto workflow manager
-      -v  verbose output
-      -w  for weekly_test, skip comparing baseline results
+   ./rt.sh -a <account> | -c | -d | -e | -h | -k | -l <file> | -m | -n <name> | -o | -P <container.def> | -r | -s <file> | -v | -w | -x
+     -a  <account> to use on for HPC queue
+     -c  create new baseline results
+     -d  delete run directories that are not used by other tests
+     -e  use ecFlow workflow manager
+     -h  display this help
+     -k  keep run directory after rt.sh is completed
+     -l  runs test specified in <file>
+     -m  compare against new baseline results
+     -n  run single test <name>
+     -o  compile only, skip tests
+     -P  <container.def> build and run in a container on a platform
+         defined in <container.def>; sequential by default, or -r/-e if
+         <container.def> declares a ROCOTO_SCHEDULER. By default a portability
+         check only (no comparison); -c/-m create/compare against a baseline
+         under that platform's own $RUNDIR_ROOT/REGRESSION_TEST
+     -r  use Rocoto workflow manager
+     -s  run only the subset of tests listed in <file>
+     -v  verbose output
+     -w  for weekly_test, skip comparing baseline results
+     -x  dry-run
+
+The ``-P`` option is covered separately in :numref:`Section %s <rt-container>`.
 
 When running a large number (10's or 100's) of tests, the ``-e`` or ``-r`` options can significantly
 decrease testing time by using a workflow manager (ecFlow or Rocoto, respectively) to queue the jobs 
 according to dependencies and run them concurrently. 
-The ``-n`` option can be used to run a single test; for example, ``./rt.sh -a epic -n "control_c48 intel"`` 
-will build the ATM model and run the ``control_c48`` test with an Intel compiler using the "epic" account 
+The ``-n`` option can be used to run a single test; for example, ``./rt.sh -a epic -n "control_c48 oneapi"`` 
+will build the ATM model and run the ``control_c48`` test with an Intel oneAPI compiler using the "epic" account 
 (users should substitute an account where they can charge computational resources).
 The ``-c`` option is used to create a baseline. New baselines are needed when code changes lead 
 to result changes and therefore deviate from existing baselines on a bit-for-bit basis.
@@ -565,7 +644,7 @@ To run a single test, users can try the following command instead of creating a 
 
    ./rt.sh -a <account> -r -k -n "control_p8 <compiler>"
 
-where ``<compiler>`` is ``gnu`` or ``intel``. 
+where ``<compiler>`` is ``gnu`` or ``oneapi``. 
 
 Troubleshooting
 ^^^^^^^^^^^^^^^^^^
@@ -577,14 +656,67 @@ correctly. If there is a problem with these or other variables (e.g., file paths
 .. code-block:: console
    :emphasize-lines: 5,6
 
-   + echo 'Machine: ' ursa.intel '    Account: ' nems
-   Machine:  ursa.intel     Account:  nems
+   + echo 'Machine: ' ursa.oneapi '    Account: ' nems
+   Machine:  ursa.oneapi     Account:  nems
    + mkdir -p /scratch1/NCEPDEV/stmp4/First.Last
    mkdir: cannot create directory ‘/scratch1/NCEPDEV/stmp4/First.Last’: Permission denied
    ++ echo 'rt.sh error on line 370'
    rt.sh error on line 370
 
-Then, users can adjust the information in ``rt.sh`` accordingly. 
+Then, users can adjust the information in ``rt.sh`` accordingly.
+
+.. _rt-container:
+
+Container Runs (``-P``)
+^^^^^^^^^^^^^^^^^^^^^^^
+
+The ``-P container.def`` option compiles and runs the selected tests on a platform described by a
+*platform definition file* (e.g., ``container.def``), inside a Singularity/Apptainer container:
+
+.. code-block:: console
+
+   ./rt.sh -a <account> -P container.def [-l rt.conf] [-s my_test.list]
+
+``-l`` and ``-s`` are optional: ``-l`` gives the name of the file with compile/run information for a series of tests (``rt.conf`` by
+default, or your own file such as ``my_rt.conf``). ``-s`` takes a file (e.g., ``my_test.list``) with a list of tests and runs just those tests. 
+
+The platform definition file is a bash file of ``KEY=value`` assignments that specify the platform
+name (always ``container``), the compiler to be used, the full path to the container
+image, the platform's job scheduler, the run directory
+(``RUNDIR_ROOT``), and the paths to the locally staged input data. Optional entries specify
+the workflow manager (Rocoto or ecFlow) and the module command needed to load it. The template
+``tests/container.def`` describes every entry and can be adapted for other platforms. See
+:numref:`Section %s <container-rt-conf>` for a detailed description of the platform definition file.
+
+A container run uses the machine name ``container``, which is matched in the **Machines**
+column of ``rt.conf`` like any other machine name (see :numref:`Section %s <rt-conf>`):
+``+ ... container`` runs a line in the container, and ``- ... container`` excludes it. The
+tests enabled for the container are listed in :numref:`Section %s <container-rt-tested>`.
+
+.. note::
+
+   Running a subset of the container tests with ``-s <file>`` is often the preferred way to
+   run containerized tests. The file lists one test per line as the test name and the
+   compiler separated by a single space, for example:
+
+   .. code-block:: text
+
+      control_c48 oneapi
+      control_p8 oneapi
+
+   and is passed with ``./rt.sh -a <account> -P container.def -s <file>``. See
+   :numref:`Section %s <container-rt-subset>` for details.
+
+Lines that use a different compiler than the one in the platform definition file are skipped.
+By default, a ``-P`` run is sequential and does not compare results against baselines; it
+checks that the model builds and runs on the platform. ``-c`` creates a baseline and ``-m``
+compares against it; both use ``${RUNDIR_ROOT}/REGRESSION_TEST``, separate from the Tier 1
+baselines. ``-r`` or ``-e`` can be used when the platform definition file provides the
+optional Rocoto/ecFlow line.
+
+See :numref:`Chapter %s <container-rt-tests>` for the full description of the platform
+definition file, the required modulefiles, the container images, and the input data needed
+for the container tests.
 
 .. _log-files:
 
@@ -597,13 +729,13 @@ of the regression test outcomes, which will look similar to this excerpt:
 
 .. code-block:: console
 
-  PASS -- COMPILE 's2sw_pdlib_intel' [14:10, 12:22] ( 1 warnings 1036 remarks )
-  PASS -- TEST 'cpld_control_pdlib_p8_intel' [12:41, 11:00](2171 MB)
-  PASS -- TEST 'cpld_restart_pdlib_p8_intel' [07:49, 05:23](1636 MB)
-  PASS -- TEST 'cpld_mpi_pdlib_p8_intel' [17:40, 15:30](2120 MB)
-  PASS -- TEST 'cpld_control_c48_5deg_intel' [13:30, 11:22](3029 MB)
-  FAILED: TEST TIMED OUT -- TEST 'cpld_warmstart_c48_5deg_intel' [, ]( MB)
-  FAILED: UNABLE TO START TEST -- TEST 'cpld_restart_c48_5deg_intel' [, ]( MB)
+  PASS -- COMPILE 's2sw_pdlib_oneapi' [14:10, 12:22] ( 1 warnings 1036 remarks )
+  PASS -- TEST 'cpld_control_pdlib_p8_oneapi' [12:41, 11:00](2171 MB)
+  PASS -- TEST 'cpld_restart_pdlib_p8_oneapi' [07:49, 05:23](1636 MB)
+  PASS -- TEST 'cpld_mpi_pdlib_p8_oneapi' [17:40, 15:30](2120 MB)
+  PASS -- TEST 'cpld_control_c48_5deg_oneapi' [13:30, 11:22](3029 MB)
+  FAILED: TEST TIMED OUT -- TEST 'cpld_warmstart_c48_5deg_oneapi' [, ]( MB)
+  FAILED: UNABLE TO START TEST -- TEST 'cpld_restart_c48_5deg_oneapi' [, ]( MB)
 
 More detailed log files for each test are located in the ``tests/logs/log_<machine>`` directory:
 
