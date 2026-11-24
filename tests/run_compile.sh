@@ -1,6 +1,7 @@
 #!/bin/bash
-set -eux
+set -eu
 set -o pipefail
+[[ "${RTVERBOSE:-false}" == true ]] && set -x
 
 echo "PID=$$"
 SECONDS=0
@@ -64,12 +65,36 @@ export RT_LOG=${LOG_DIR}/${JBNME}.log
 source rt_utils.sh
 source atparse.bash
 
-rm -rf "${RUNDIR}"
+if [[ ${USE_CONTAINER:-false} == true && -d ${RUNDIR} ]]; then
+  # A community platform (-P) reuses a fixed RUNDIR_ROOT across runs; keep
+  # a prior compile directory instead of clobbering it (rt.sh only invokes
+  # this compile at all when the executable wasn't already found reusable).
+  mv "${RUNDIR}" "${RUNDIR}_old_$(date +%Y%m%d%H%M)"
+else
+  rm -rf "${RUNDIR}"
+fi
 mkdir -p "${RUNDIR}"
 cd "${RUNDIR}"
 
+if [[ ${MACHINE_ID} = container ]]; then
+    mkdir -p modulefiles
+    if [[ -f "${PATHTR}/modulefiles/ufs_container.${RT_COMPILER}.lua" ]]; then
+        cp "${PATHTR}/modulefiles/ufs_container.${RT_COMPILER}.lua" "modulefiles/modules.fv3.lua"
+    else
+        echo "ERROR: no inside-container build module found" >&2
+        echo "       Provide ${PATHTR}/modulefiles/ufs_container.${RT_COMPILER}.lua" >&2
+        exit 1
+    fi
+    # Host-side runtime modulefile — loaded on the host before the container launches.
+    cp "${PATHTR}/modulefiles/ufs_container.runtime.lua" "modulefiles/modules.fv3.runtime.lua"
+    [[ -f "${PATHTR}/modulefiles/ufs_common.lua" ]] && \
+        cp "${PATHTR}/modulefiles/ufs_common.lua" "modulefiles/ufs_common.lua"
+    cp "${PATHRT}/module-setup.sh" "module-setup.sh"
+fi
+
+
 if [[ ${SCHEDULER} = 'pbs' ]]; then
-  if [[ -e ${PATHRT}/fv3_conf/compile_qsub.IN_${MACHINE_ID} ]]; then 
+  if [[ -e ${PATHRT}/fv3_conf/compile_qsub.IN_${MACHINE_ID} ]]; then
     atparse < "${PATHRT}/fv3_conf/compile_qsub.IN_${MACHINE_ID}" > job_card
   else
     echo "Looking for fv3_conf/compile_qsub.IN_${MACHINE_ID} but it is not found. Exiting"
@@ -82,13 +107,32 @@ elif [[ ${SCHEDULER} = 'slurm' ]]; then
     echo "Looking for fv3_conf/compile_slurm.IN_${MACHINE_ID} but it is not found. Exiting"
     exit 1
   fi
+elif [[ ${SCHEDULER:-none} = 'none' && ${MACHINE_ID} = 'container' ]]; then
+  # No job scheduler: write a compile script with no scheduler headers.
+  # container_exec runs it inside the container.
+  # Unquoted heredoc: ${...} variables expand at write time (COMPILE_ID etc. are baked in).
+  cat > job_card << COMPILE_EOF
+#!/bin/bash
+set -e
+MACHINE_ID=container
+source ${PWD}/module-setup.sh
+module purge
+module use ${PWD}/modulefiles
+module load modules.fv3
+module list
+"${PATHRT}/compile.sh" "${MACHINE_ID}" "${MAKE_OPT}" "${COMPILE_ID}" "${RT_COMPILER}"
+COMPILE_EOF
+  chmod u+x job_card
 fi
 
 ################################################################################
 # Submit compile job
 ################################################################################
 
-if [[ ${ROCOTO} = 'false' ]]; then
+if [[ ${SCHEDULER:-none} = 'none' && ${MACHINE_ID} = 'container' ]]; then
+  # No scheduler: compile on this host, inside the container.
+  container_exec job_card
+elif [[ ${ROCOTO} = 'false' ]]; then
   submit_and_wait job_card
 else
   chmod u+x job_card
