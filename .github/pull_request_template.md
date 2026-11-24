@@ -146,7 +146,12 @@ If there are changes to input data for a test, provide information here. Delete 
 
 ### Subcomponent Branch Changes
 Does this PR change which subcomponent branch will be used in the UFS WM? 
-- [ ] Yes --> Update `tests/ci/repo_check.sh` to point the CI to the new branch.
+- [ ] Yes --> Update the `branch` in `.gitmodules` at every affected level.
+- [ ] No
+
+### Submodule Commit Changes
+Does this PR change any submodule commit (gitlink), at any nesting level, or add/remove a submodule?
+- [ ] Yes --> Update the matching entries in `.github/submodules.yaml` so the pins equal the new commits.
 - [ ] No
 
 ### Library Changes/Upgrades:
