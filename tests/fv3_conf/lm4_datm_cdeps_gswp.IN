@@ -1,0 +1,16 @@
+## For LM4 with data atmosphere. This requires also using lm4_common.IN
+############################################################################
+
+mkdir -p INPUT $CMEPS_RESTART_DIR 
+
+
+if [[ $atm_model != 'datm' ]]; then
+    echo "Error: atm_model is not 'datm'"
+    exit 1
+fi
+
+# forcing data
+cd INPUT
+rsync -arv @[INPUTDATA_ROOT]/DATM_GSWP3_input_data/. .
+cd -
+
