@@ -705,10 +705,8 @@ ecflow_run() {
 
   # Make sure ECF_HOST and ECF_PORT are set/ready on systems that have an
   # explicit ecflow node
-  if [[ ${MACHINE_ID} == wcoss2 || ${MACHINE_ID} == acorn ]]; then
-    if [[ "${HOST::1}" == "a" ]]; then
-      ECF_HOST=aecflow01
-    elif [[ "${HOST::1}" == "c" ]]; then
+  if [[ ${MACHINE_ID} == wcoss2 ]]; then
+    if [[ "${HOST::1}" == "c" ]]; then
       ECF_HOST=cdecflow01
     elif [[ "${HOST::1}" == "d" ]]; then
       ECF_HOST=ddecflow01
@@ -739,7 +737,7 @@ ecflow_run() {
     save_traps=$(trap)
     trap "" SIGINT  # Ignore INT signal during ecflow startup
     case ${MACHINE_ID} in
-      wcoss2|acorn|hera)
+      wcoss2|hera)
         #shellcheck disable=SC2029
         ssh "${ECF_HOST}" "bash -l -c \"module load ecflow && ${ECFLOW_START} -p ${ECF_PORT}\""
         ;;
