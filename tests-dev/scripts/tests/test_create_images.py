@@ -188,8 +188,8 @@ def test_plot_results(set_env_vars, metrics_subset, category):
 def test_main(set_env_vars, monkeypatch):
 
    set_env_vars
-   monkeypatch.setenv("PLOT_DATA", "/Users/gpetro/wm-warn/tests-dev/scripts/tests/data")
-      
+   monkeypatch.setenv("PLOT_DATA", "data")
+
    plot_manager = main()
 
    assert plot_manager
