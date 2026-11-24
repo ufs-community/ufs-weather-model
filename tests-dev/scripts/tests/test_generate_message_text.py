@@ -1,4 +1,6 @@
 import pytest
+import re
+from datetime import datetime, timedelta
 from mdutils.mdutils import MdUtils
 from scripts.generate_message_text import *
 
@@ -130,13 +132,29 @@ def test_create_md_file(set_env_vars,message_content,expected_messages):
 
       with open("pr_post.md") as fh:
          actual_contents = fh.read()
-         assert actual_contents == expected_messages[key]
+         #assert actual_contents == expected_messages[key]
+         expected_contents = expected_messages[key]
+
+         # Extract timestamps for comparison
+         timestamp_pattern = r"\d{4}-\d{2}-\d{2} \d{2}:\d{2} UTC\.$"
+         actual_time = re.search(timestamp_pattern, actual_contents)
+         expected_time = re.search(timestamp_pattern, expected_contents)
+
+         assert actual_time and expected_time
+         assert actual_contents[:actual_time.start()] == expected_contents[:expected_time.start()]
+
+         # Check that actual and expected time are within a minute of each other 
+         # (when code runs over a minute boundary, they might be different, prodicing a seemingly random failure)
+         fmt = "%Y-%m-%d %H:%M UTC."
+         actual_date = datetime.strptime(actual_time.group(), fmt)
+         expected_date = datetime.strptime(expected_time.group(), fmt)
+         assert abs(actual_date - expected_date) <= timedelta(minutes=1)
 
 def test_main(set_env_vars,monkeypatch):
 
    set_env_vars
-   monkeypatch.setenv("RUNTIME_RESULTS", "/Users/gpetro/wm-warn/tests-dev/scripts/tests/data/sample_runtime_results.json")
-   monkeypatch.setenv("MEMORY_RESULTS", "/Users/gpetro/wm-warn/tests-dev/scripts/tests/data/sample_memory_results.json")
+   monkeypatch.setenv("RUNTIME_RESULTS", "data/sample_runtime_results.json")
+   monkeypatch.setenv("MEMORY_RESULTS", "data/sample_memory_results.json")
    mdFile = main()
    print(mdFile)
 
