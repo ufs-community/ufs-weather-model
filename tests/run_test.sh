@@ -159,6 +159,7 @@ if [[ ${DRY_RUN:-false} == false ]]; then
       module load stack-intel-oneapi-compilers/2025.3.1
       module load stack-cray-mpich/9.2.0
       module load nccmp/1.11.0.0
+      ;;
     container)
       module use modulefiles
       module load modules.fv3.runtime
