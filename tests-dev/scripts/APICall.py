@@ -12,7 +12,6 @@ class APICall():
       self.url = f"{self.base_url}/{self.endpoint}" #Could use a path join?
       self.num_commits = num_commits
       self.header = {
-         "Accept": "application/vnd.github.v3+json",
          "Authorization": f"Bearer {self.token}",
          "X-GitHub-Api-Version": "2022-11-28",
          "Accept": "application/vnd.github.raw"
