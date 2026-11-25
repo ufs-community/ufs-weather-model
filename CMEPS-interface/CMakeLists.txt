@@ -186,8 +186,9 @@ if(CMEPS_AOFLUX)
                    TYPE "HOST")
 
     #------------------------------------------------------------------------------
-    # Call Capgen
+    # Call Capgen; CMEPS always uses double precision
     #------------------------------------------------------------------------------
+    ccpp_kinds(CCPP_KINDS KIND_PHYS REAL64 KIND_DYN REAL64)
     ccpp_capgen(VERBOSITY    ${CCPP_VERBOSITY}
                 HOSTFILES    ${HOST_METADATA_FILES}
                 SCHEMEFILES  ${SCHEME_METADATA_FILES}

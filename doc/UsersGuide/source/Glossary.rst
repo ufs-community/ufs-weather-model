@@ -118,7 +118,7 @@ Glossary
       The `Interactive Multisensor Snow and Ice Mapping System <https://usicecenter.gov/Products/ImsHome>`_.
 
    LM4
-      NUOPC NOAA-GFDL Land Model version 4
+      The NOAA-GFDL Land Model version 4, through its NUOPC cap (LM4-NUOPC-driver). Used with a data atmosphere (``LND-LM4``) or active FV3 atmosphere (``ATML-LM4``).
 
    Mediator
       A mediator, sometimes called a coupler, is a software component that includes code for representing component interactions. Typical operations include merging data fields, ensuring consistent treatment of coastlines, computing fluxes, and temporal averaging.

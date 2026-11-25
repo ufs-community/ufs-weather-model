@@ -300,3 +300,6 @@ if [[ $MACHINE_ID = hercules ]] && [[ $RT_COMPILER = gnu ]]; then
     OCN_tasks="$(($OCN_tasks_sfs + 16))"
     WLCLK=50
 fi
+if [[  -n ${CONTAINER_IMG:-} ]]; then
+  WLCLK=50
+fi

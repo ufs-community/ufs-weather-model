@@ -84,7 +84,7 @@ case ${MACHINE_ID} in
     modulefile="ufs_${MACHINE_ID}.${RT_COMPILER}"
     module load "${modulefile}"
     module list
-esac
+  esac
 set -x
 
 echo "Compiling ${MAKE_OPT} into ${BUILD_NAME}.exe on ${MACHINE_ID}"
