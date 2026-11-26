@@ -8,7 +8,16 @@ class Log():
    """A Regression Test log file."""
    
    def __init__(self, machine, repo_commits, pr_head_commit):
-      """Create the log file object for a specific machine."""
+      """Initialize current-PR and historical data for one machine.
+
+      Args:
+         machine (str): Machine name whose regression log is evaluated.
+         repo_commits (list[str]): Historical commits ordered newest to oldest.
+         pr_head_commit (str): Commit identifier for the pull request head.
+
+      Returns:
+         None.
+      """
       self.machine = machine.lower()
       self.pr_head_commit = pr_head_commit
       self.repo_commits = repo_commits
@@ -27,15 +36,29 @@ class Log():
       self.memory_results = {}
 
    def get_pr_head(self):
+      """Return the pull request head commit hash.
+
+      Returns:
+         str: Pull request head commit.
+      """
       return self.pr_head_commit
 
    def get_repo_commits(self):
+      """Return the historical repository commit hashes.
+
+      Returns:
+         list[str]: Commit hashes in configured order.
+      """
       return self.repo_commits
 
    def _fetch_log_text(self, list_of_commits): 
       """For each commit of a log, extract the log text. Store in a dictionary w/hash as key.
       Args:
-         commits (list): list of commits for the repository - even the PR head commit is expected to be in list form. 
+         list_of_commits (list[str]): Commit hashes to fetch; pass even a single PR-head commit 
+            as a one-item list.
+
+      Returns:
+         None. Stores raw log text in ``text_per_log`` keyed by commit hash.
       """
       try:
          api_call = APICall(f"contents/tests/logs/RegressionTests_{self.machine}.log")
@@ -54,6 +77,14 @@ class Log():
          sys.exit()
 
    def get_log_text(self, list_of_commits):
+      """Fetch requested log text when needed and return loaded log contents.
+
+      Args:
+         list_of_commits (list[str]): Commit hashes to fetch.
+
+      Returns:
+         dict[str, str]: Mapping from commit hash to raw regression test log text.
+      """
       try:
          if list_of_commits == [self.pr_head_commit] and self.pr_head_commit[0] not in self.text_per_log:
             self._fetch_log_text(list_of_commits)
@@ -66,11 +97,12 @@ class Log():
          self._fetch_log_text(list_of_commits)
 
    def _get_instance_test_data(self, log_text):
-      """For each instance of a log at a given commit, extract runtime and memory data from the log text
+      """For each instance of a log at a given commit, extract runtime and memory data from the log text.
          Args:
-            log_text: Log text for a given commit
+            log_text (str): Raw regression test log for one commit.
+
          Returns: 
-            tests_for_log_instance: A dictionary of tests (keys) with an array of total runtime and memory use as the value for each test
+            dict[str, list[int]]: ``{test_name: [runtime_minutes, memory_megabytes]}``.
       """
 
       tests_for_log_instance = {}
@@ -89,8 +121,12 @@ class Log():
    
    def get_current_pr_data(self):
       """Extract runtime/memory data for the PR's most recent commit.
+
+      Args:
+         None.
+
       Returns:
-         pr_log_data: Dictionary of tests (keys) with an array of total runtime and memory use as the value for each test
+         dict[str, list[int]]: ``{test_name: [runtime_minutes, memory_megabytes]}``.
       """
 
       try: 
@@ -103,6 +139,11 @@ class Log():
 
    # Could change current_pr_log_data to pandas DataFrame to access by column
    def get_current_pr_runtime_data(self):
+      """Return the PR-head runtime for each test, extracting the log if needed.
+
+      Returns:
+         dict[str, int]: ``{test_name: runtime_minutes}``.
+      """
       if not self.current_pr_log_data:
          self.get_current_pr_data()
       for test in self.current_pr_log_data:
@@ -111,6 +152,11 @@ class Log():
 
    # Could change current_pr_log_data to pandas DataFrame to access by column
    def get_current_pr_mem_data(self):
+      """Return the PR-head memory use for each test, extracting the log if needed.
+
+      Returns:
+         dict[str, int]: ``{test_name: memory_megabytes}``.
+      """
       if not self.current_pr_log_data: # pragma: no cover
          self.get_current_pr_data()
       for test in self.current_pr_log_data:
@@ -118,8 +164,16 @@ class Log():
       return self.current_pr_mem_data
 
    def _compare_results(self, category): 
-      """Check results from previous three commits to determine whether the test runtime/memory usage 
-      is within normal bounds."""
+      """Classify current results against historical-mean-plus-two-standard-deviation thresholds.
+
+      Args:
+         category (str): ``"runtime"`` or ``"memory"``; selects the corresponding
+            measurements and statistics.
+
+      Returns:
+         dict[str, str]: ``{test_name: status}``, where status is a pass, warning,
+         failure, or ``"New"`` when no comparison statistics exist.
+      """
 
       results = {}
 
@@ -162,17 +216,39 @@ class Log():
       return results
 
    def compare_runtimes(self):
+      """Calculate and store classifications for current PR runtimes.
+
+      Returns:
+         None. Stores results in ``runtime_results``.
+      """
       self.runtime_results = self._compare_results("runtime")
 
    def get_runtime_results(self):
+      """Return cached runtime classifications, computing them when absent.
+
+      Returns:
+         dict[str, str]: ``{test_name: status}`` using pass/warning/fail symbols
+         or ``"New"`` for tests without historical statistics.
+      """
       if not self.runtime_results:
          self.runtime_results = self._compare_results("runtime")
       return self.runtime_results 
 
    def compare_mem(self):
+      """Calculate and store classifications (pass/warn/fail) for current PR memory usage.
+
+      Returns:
+         None. Stores results in ``mem_results``.
+      """
       self.mem_results = self._compare_results("memory")
 
    def get_mem_results(self):
+      """Return cached memory classifications (pass/warn/fail), computing them when absent.
+
+      Returns:
+         dict[str, str]: ``{test_name: status}`` using pass/warning/fail symbols
+         or ``"New"`` for tests without historical statistics.
+      """
       if not self.memory_results:
          self.memory_results = self._compare_results("memory")
       return self.memory_results

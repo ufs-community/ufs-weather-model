@@ -2,14 +2,19 @@ import os
 from .Manager import *
 from .LogManager import *
 
-"""This script contains a main() function that gets log information from GitHub using the APICall class 
-and extracts data from the RegressionTest_<machine>.log files for each machine. 
+"""Entry point for processing regression test log data and saving pull request results.
+Uses cached data when TEST_STATS is set; otherwise, collects historical log data.
 """
 
 def get_data():
-   """For each machine, create a log object, get current PR data, gather historical runtime/memory data, 
-   and compare results to determine which test/machine combinations fall more than 2 standard deviations 
-   above the historical mean for each test.""" 
+   """Initialize a LogManager and process log data.
+
+   Uses cached data if TEST_STATS environment variable is set, otherwise collects 
+   historical log data. Manages the data and saves PR-related results.
+
+   Returns:
+      int: Zero after the manager has processed and saved data.
+   """
 
    log_manager = LogManager()
       

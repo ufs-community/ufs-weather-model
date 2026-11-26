@@ -6,6 +6,15 @@ class APICall():
    """A GitHub API call"""
 
    def __init__(self, endpoint='', num_commits=1):
+      """Configure a GitHub API request.
+
+      Args:
+         endpoint (str): API path relative to ``BASE_URL``; defaults to an empty path.
+         num_commits (int): Number of commits associated with the request.
+
+      Returns:
+         None.
+      """
       self.token = os.environ.get('GITHUB_TOKEN')
       self.base_url = os.environ.get('BASE_URL')
       self.endpoint = endpoint
@@ -18,25 +27,35 @@ class APICall():
       }
    
    def set_endpoint(self, endpoint):
-      """Set the API call endpoint and update URL accordingly."""
+      """Set the API path and rebuild the request URL.
+
+      Args:
+         endpoint (str): API path relative to the configured base URL.
+
+      Returns:
+         None.
+      """
       self.endpoint = endpoint
       self.url = f"{self.base_url}/{self.endpoint}"
 
    def call_API(self):
-      """Call the GitHub API.
+      """Send the configured GET request.
+
       Returns:
-         response: The results of the GET request
+         requests.Response: The HTTP response returned by ``requests.get``.
       """
       response = requests.get(self.url, headers=self.header)
       
       return response
    
    def load_json_from_api_call(self, response):
-      """Parses the results of the GET request text into a dictionary
+      """Decode a JSON response body.
+
       Args:
-         response: The results of a GET request
+         response (requests.Response): HTTP response whose ``text`` is JSON.
+
       Returns:
-         results: text of the GET request as a dictionary
+         object: The decoded JSON value; the precise information depends on the endpoint.
       """
 
       results = json.loads(response.text)
