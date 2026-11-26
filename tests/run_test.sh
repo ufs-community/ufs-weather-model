@@ -133,7 +133,7 @@ if [[ ${DRY_RUN:-false} == false ]]; then
   # nounset (set -u) is temporarily disabled while they are loaded.
   set +u
   case ${MACHINE_ID} in
-    wcoss2|acorn)
+    wcoss2)
       module load intel/19.1.3.304
       module load craype/2.7.13 cray-mpich/8.1.12
       module load netcdf-D/4.9.2
@@ -613,7 +613,7 @@ if [[ ${skip_check_results} == false ]]; then
         if [[ ${i##*.} == nc* ]] ; then
           # A container run (-P, MACHINE_ID=container) also uses nccmp, from
           # inside the container (see the branch right below).
-          if [[ " orion hercules hera ursa wcoss2 acorn derecho gaeac5 gaeac6 noaacloud container " =~ ${MACHINE_ID} ]]; then
+          if [[ " orion hercules hera ursa wcoss2 derecho gaeac5 gaeac6 noaacloud container " =~ ${MACHINE_ID} ]]; then
             printf "USING NCCMP.." >> "${RT_LOG}"
             printf "USING NCCMP.."
               nccmp_args=(-d -S -q -f -B --Attribute=checksum --warn=format)

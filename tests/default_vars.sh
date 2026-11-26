@@ -140,7 +140,7 @@ MEM_PER_NODE_OPT=""
 # always be true if CPLCAT is true.
 CPLCAT=.false.
 
-if [[ ${MACHINE_ID} = wcoss2 || ${MACHINE_ID} = acorn ]]; then
+if [[ ${MACHINE_ID} = wcoss2 ]]; then
 
   TPN=128
   EXCLUSIVE_NODES=.true.

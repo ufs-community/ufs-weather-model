@@ -93,7 +93,7 @@ else
   CMAKE_FLAGS+=" -DCMAKE_BUILD_TYPE=Release"
 fi
 
-if [[ ${MACHINE_ID} == wcoss2 ]] || [[ ${MACHINE_ID} == acorn ]]; then
+if [[ ${MACHINE_ID} == wcoss2 ]]; then
     CMAKE_FLAGS+=" -DENABLE_PARALLELRESTART=ON"
 fi
 
