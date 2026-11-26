@@ -21,6 +21,58 @@ redirect_out_err() {
     # redirect_out_err command will return non-zero if "$@" or tee return non-zero.
 }
 
+################################################################################
+# Container helpers, used by run_compile.sh and run_test.sh when
+# MACHINE_ID=container and there is no batch scheduler (SCHEDULER=none).
+################################################################################
+
+# Sets CONTAINERBIN (apptainer or singularity), CONTAINER (APPTAINER or
+# SINGULARITY: the prefix of ${CONTAINER}ENV_* variables, which the runtime
+# passes into the container) and BIND_FLAGS (array from CONTAINER_BIND_FLAGS).
+# Expects the host runtime module (modules.fv3.runtime) to be loaded already
+# when the container runtime comes from a module.
+find_container_bin() {
+  if command -v apptainer &>/dev/null; then
+    CONTAINERBIN=apptainer
+  elif command -v singularity &>/dev/null; then
+    CONTAINERBIN=singularity
+  else
+    echo "ERROR: neither apptainer nor singularity found on this host" >&2
+    exit 1
+  fi
+  CONTAINER=${CONTAINERBIN^^}
+  read -r -a BIND_FLAGS <<< "${CONTAINER_BIND_FLAGS:-}"
+}
+
+# Runs a script (normally job_card) inside ${CONTAINER_IMG} on the current
+# host, in place of submit_and_wait. Must be called from the RUNDIR.
+# Uses "exec -e", which clears the host environment, so the script must set
+# everything it needs itself (as the generated job_card files do). Writes
+# job_timestamp.txt in the same format as the batch job cards, and copies
+# stdout/stderr to "out"/"err" as the batch job cards do.
+container_exec() {
+  local -r script=$1
+
+  echo -n " $( date +%s )," > job_timestamp.txt
+
+  # Host-side runtime module (apptainer/singularity, host MPI). Some system
+  # module scripts reference unset variables, so nounset is disabled while
+  # it is loaded.
+  set +u
+  module use modulefiles
+  module load modules.fv3.runtime
+  set -u
+
+  find_container_bin
+  export "${CONTAINER}_SHELL=/bin/bash"
+  export "${CONTAINER}ENV_RTVERBOSE=${RTVERBOSE:-false}"
+
+  chmod u+x "${script}"
+  redirect_out_err "${CONTAINERBIN}" exec -e "${BIND_FLAGS[@]}" "${CONTAINER_IMG}" "${PWD}/${script}"
+
+  echo -n " $( date +%s )," >> job_timestamp.txt
+}
+
 function compute_petbounds_and_tasks_traditional_threading() {
 
   # each test MUST define ${COMPONENT}_tasks variable for all components it is using

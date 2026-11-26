@@ -60,17 +60,10 @@ case ${MACHINE_ID} in
     # shellcheck source=/github/workspace/modulefiles/ufs_ursa.oneapi.lua
     source "${PATHTR}/modulefiles/ufs_${MACHINE_ID}.${RT_COMPILER}"
     ;;
-  *)
+  *)  
     # Activate lua environment for gaea c5
-    if [[ ${MACHINE_ID} == gaeac5 ]]; then
+    if [[ ${MACHINE_ID} == gaeac5 || ${MACHINE_ID} == gaeac6 ]]; then
       module reset
-    fi
-    if [[ ${MACHINE_ID} == gaeac6 ]]; then
-      module reset
-    elif [[ ${MACHINE_ID} == container ]]; then
-      # shellcheck disable=SC1091
-      source /usr/lmod/lmod/init/bash
-      module purge
     elif [[ ${MACHINE_ID} == derecho ]]; then
       module --force purge
     elif [[ ${MACHINE_ID} == hercules ]]; then
@@ -84,7 +77,7 @@ case ${MACHINE_ID} in
     modulefile="ufs_${MACHINE_ID}.${RT_COMPILER}"
     module load "${modulefile}"
     module list
-esac
+  esac
 set -x
 
 echo "Compiling ${MAKE_OPT} into ${BUILD_NAME}.exe on ${MACHINE_ID}"
