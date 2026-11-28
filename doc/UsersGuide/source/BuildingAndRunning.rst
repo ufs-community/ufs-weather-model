@@ -97,6 +97,8 @@ the data required to run the WM RTs are already available at the following ``DIS
      - /glade/derecho/scratch/epicufsrt/ufs-weather-model/RT/
    * - Gaea-C6
      - /gpfs/f6/bil-fire8/world-shared/role.epic/UFS-WM_RT
+   * - Gaea-C7
+     - /gpfs/f7/epic/world-shared/role.epic/UFS-WM_RT
    * - Ursa
      - /scratch4/NAGAPE/epic/role-epic/UFS-WM_RT
    * - Hercules

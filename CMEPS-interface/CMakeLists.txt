@@ -246,7 +246,8 @@ target_include_directories(cmeps PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY
                                         $<INSTALL_INTERFACE:mod>)
 target_compile_definitions(cmeps PRIVATE ${CDEPS_SHARE_DEFS})
 target_link_libraries(cmeps PUBLIC ESMF::ESMF
-                                   PIO::PIO_Fortran)
+                                   PIO::PIO_Fortran
+								   MPI::MPI_Fortran)
 if(UFS_TRACING)
   target_link_libraries(cmeps PUBLIC ufs_tracing)
 endif()

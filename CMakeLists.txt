@@ -474,7 +474,7 @@ target_link_libraries(ufs PUBLIC "${_ufs_libs_public}")
 ###############################################################################
 add_executable(ufs_model driver/UFS.F90)
 add_dependencies(ufs_model ufs)
-target_link_libraries(ufs_model ufs ESMF::ESMF w3emc::w3emc_d)
+target_link_libraries(ufs_model ufs ESMF::ESMF w3emc::w3emc_d MPI::MPI_Fortran)
 set_target_properties(ufs_model PROPERTIES LINKER_LANGUAGE Fortran)
 
 ###############################################################################
